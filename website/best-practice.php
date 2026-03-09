@@ -16,7 +16,7 @@
     <section class="hero" style="margin-top:1.5rem;">
         <div class="hero-eyebrow"><?php echo icon('star', 18); ?> Best Practice</div>
         <h1>Best Practice for Housing Digital Transformation</h1>
-        <p>Evidence-based best practice drawn from MSP programme management, the Scottish Approach to Service Design, GDS guidance, PROSCI change management, Audit Scotland findings, and sector experience in housing digital transformation.</p>
+        <p>Evidence-based best practice drawn from MSP programme management, the Scottish Approach to Service Design, GDS guidance, PROSCI change management, Rogers' diffusion of innovation, poka-yoke work practices, Audit Scotland findings, and sector experience in housing digital transformation.</p>
     </section>
 
     <div class="callout info" style="margin-top:1.5rem;">
@@ -87,6 +87,28 @@
             <li><strong>Data quality is a programme workstream, not a problem to solve later:</strong> Housing management data is often incomplete, inconsistent, and duplicated after years in legacy systems. A dedicated data cleansing and migration workstream must run in parallel with the build phase. Aberdeenshire Council's 3-month data migration overrun nearly derailed their programme.</li>
             <li><strong>Power BI dashboards for real-time programme KPIs:</strong> Build the benefits tracking dashboard in Power BI from Month 3. The Programme Board should see live KPI data at every meeting, not a slide with last quarter's numbers. Power BI is already in use at ERC and available within the M365 subscription.</li>
             <li><strong>Benefits measurement framework: baseline, track, report, adjust:</strong> Benefits realisation is not a report written at the end of the programme. It is a continuous cycle of measuring, comparing to baseline, reporting to the board, and adjusting activity to improve trajectory. Set up the measurement framework in Phase 0 and run it throughout.</li>
+        </ul>
+    </div>
+
+    <!-- Rogers, Willing/Able/Allowed, Poka-yoke -->
+    <div class="bp-section">
+        <h3><span class="bp-icon"><?php echo icon('trending-up', 18); ?></span> Rogers' Diffusion of Innovation &amp; Adoption Theory</h3>
+        <p style="font-size:0.88rem; color:#6B7280; margin-bottom:1rem;">Rogers' diffusion of innovation (1962) describes how new ideas and practices spread through populations. Combined with the &ldquo;willing, able, allowed&rdquo; adoption model, these frameworks inform how we plan for workforce and tenant adoption.</p>
+        <ul class="bp-list">
+            <li><strong>People adopt at different rates &mdash; plan for the adoption curve:</strong> Rogers identified five adopter categories: Innovators (2.5%), Early Adopters (13.5%), Early Majority (34%), Late Majority (34%), and Laggards (16%). Do not expect uniform adoption. Pilot with innovators and early adopters; design communications and support for each segment. The early majority will follow once they see peer success.</li>
+            <li><strong>Willing, able, and allowed &mdash; the three conditions for adoption:</strong> For someone to adopt a new way of working, they must be <strong>willing</strong> (motivated, see the benefit, want to change), <strong>able</strong> (have the skills, training, support, and confidence to use the new system), and <strong>allowed</strong> (policies, procedures, and systems permit the new behaviour; managers support it; there are no structural barriers). If any one condition is missing, adoption fails. Assess each for both workforce and tenants in the discovery phase.</li>
+            <li><strong>Address barriers in each dimension:</strong> Willingness requires clear benefit communication and visible success stories. Ability requires training, documentation, and peer support (Digital Champions). Allowed requires removing policy blockers (e.g. &ldquo;we've always done it this way&rdquo;), ensuring managers endorse the change, and designing systems that do not force workarounds back to the old process.</li>
+        </ul>
+    </div>
+
+    <!-- Poka-yoke -->
+    <div class="bp-section">
+        <h3><span class="bp-icon"><?php echo icon('shield', 18); ?></span> Poka-yoke Work Practices</h3>
+        <p style="font-size:0.88rem; color:#6B7280; margin-bottom:1rem;">Poka-yoke (mistake-proofing) is a lean methodology from Toyota: design processes and systems so that errors cannot occur or are immediately detected. Applied to housing digital transformation, it reduces rework, improves data quality, and makes correct practice the path of least resistance.</p>
+        <ul class="bp-list">
+            <li><strong>Design for correct behaviour by default:</strong> Mandatory fields, validation rules, and workflow constraints prevent incomplete or incorrect data entry. The tenant repairs portal should not allow submission without required information; the operative app should require photos or sign-off before job completion. The system guides users toward correct completion.</li>
+            <li><strong>Prevent the error, not just detect it:</strong> Where possible, eliminate steps where errors can occur (e.g. auto-populate from tenant record, pre-fill appointment slots based on availability). Where elimination is not possible, make incorrect input impossible (e.g. dropdowns instead of free text for repair category, date pickers instead of manual date entry).</li>
+            <li><strong>Visual and immediate feedback:</strong> Users should know immediately if something is wrong &mdash; inline validation, clear error messages, and confirmation steps before irreversible actions. Poka-yoke is not about blaming users for mistakes; it is about designing so mistakes are hard to make.</li>
         </ul>
     </div>
 

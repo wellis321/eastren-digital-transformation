@@ -1328,6 +1328,13 @@ tbody tr:nth-child(even):hover {
     transition: transform var(--transition), box-shadow var(--transition);
 }
 
+/* Digital Direction page: square corners, no curves on top */
+.page-digital-direction .hero,
+.page-digital-direction .direction-card,
+.page-digital-direction .callout {
+    border-radius: 0;
+}
+
 .direction-card:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-md);

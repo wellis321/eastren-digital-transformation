@@ -1,6 +1,6 @@
 <?php include 'includes/header.php'; ?>
 
-<div class="page-wrapper">
+<div class="page-wrapper page-digital-direction">
 <main class="main-content" id="main">
 
     <!-- Breadcrumb -->
