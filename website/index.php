@@ -1,4 +1,4 @@
-<?php require_once 'includes/header.php'; ?>
+<?php include 'includes/header.php'; ?>
 
 <div class="page-wrapper">
 <main class="main-content" id="main">
@@ -132,4 +132,4 @@
     </div>
 
 </main>
-<?php require_once 'includes/footer.php'; ?>
+<?php include 'includes/footer.php'; ?>
