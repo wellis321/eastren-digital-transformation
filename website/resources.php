@@ -228,7 +228,7 @@
                 </div>
                 <div class="resource-desc">ERC's corporate digital transformation web pages, including published information about the MAP programme, Digital Champions network, and digital strategy progress. A starting point for researching ERC's published commitments and achievements.</div>
                 <div class="resource-relevance"><?php echo icon('info', 14); ?> Know what ERC says publicly about its digital programme. Demonstrates that you have done more than the minimum in your research.</div>
-                <a href="https://www.eastrenfrewshire.gov.uk/digital-transformation" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:0.5rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Visit Resource &#8599;</a>
+                <a href="https://eastrenfrewshire.gov.uk/programmes-and-plans" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:0.5rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Visit Resource &#8599;</a>
             </div>
 
             <div class="resource-card">
@@ -238,7 +238,7 @@
                 </div>
                 <div class="resource-desc">ERC's citizen self-service portal using mygov.scot SSO. The tenant housing repairs portal will be an extension of this infrastructure. Understanding the existing citizen portal &mdash; its design, user experience, and service scope &mdash; is important for the Housing Digital Transformation programme.</div>
                 <div class="resource-relevance"><?php echo icon('info', 14); ?> Experience the existing tenant-facing digital infrastructure yourself. Note the UX, the services available, and the integration points. The Housing Repairs portal needs to feel consistent with MyEastRen.</div>
-                <a href="https://www.eastrenfrewshire.gov.uk/myeastren" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:0.5rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Visit Resource &#8599;</a>
+                <a href="https://eastrenfrewshire.gov.uk/MyEastRen" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:0.5rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Visit Resource &#8599;</a>
             </div>
 
             <div class="resource-card">
@@ -248,7 +248,7 @@
                 </div>
                 <div class="resource-desc">ERC's housing service web pages for tenants, including information on reporting repairs, housing policies, and tenant rights. Understanding the current state of tenant-facing housing information &mdash; what is already online, what is still telephone-only &mdash; informs the discovery phase of the programme.</div>
                 <div class="resource-relevance"><?php echo icon('info', 14); ?> Current state research. Map what information and transactions are already digital vs. what requires phone/in-person contact. This is your channel audit starting point for Phase 0 discovery.</div>
-                <a href="https://www.eastrenfrewshire.gov.uk/housing" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:0.5rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Visit Resource &#8599;</a>
+                <a href="https://eastrenfrewshire.gov.uk/housing" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:0.5rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Visit Resource &#8599;</a>
             </div>
 
             <div class="resource-card">
@@ -258,7 +258,7 @@
                 </div>
                 <div class="resource-desc">The HAMP document is available on ERC's website. It contains the formal scoping of the Digital Repairs project, the housing stock data (3,141 units), energy efficiency targets, and the investment priorities that give the Housing Digital Transformation programme its strategic business case.</div>
                 <div class="resource-relevance"><?php echo icon('info', 14); ?> Essential reading. The single most important ERC-specific document for the interview. Contains the numbers (3,141 units, 171 new builds, EPC Band B by 2032) and the mandate for the Digital Repairs programme.</div>
-                <a href="https://www.eastrenfrewshire.gov.uk/housing-asset-management-plan" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:0.5rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Visit Resource &#8599;</a>
+                <a href="https://eastrenfrewshire.gov.uk/programmes-and-plans" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:0.5rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Visit Resource &#8599;</a>
             </div>
         </div>
 

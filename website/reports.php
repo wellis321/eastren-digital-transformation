@@ -28,6 +28,7 @@
         <div>
             <h4>How I Use This Page</h4>
             <p style="margin:0;">Each report card contains a summary, key findings, and a relevance note connecting the research to my delivery plan. I have worked through these documents because being able to name the source, what it found, and why it matters for this specific programme is how I demonstrate that my thinking is grounded in evidence — not just pattern-matching from generic project management experience.</p>
+            <p style="margin-top:0.75rem; margin-bottom:0;"><a href="resources.php"><?php echo icon('link', 14); ?> View full Research Resources</a> for more links and references.</p>
         </div>
     </div>
 
@@ -63,6 +64,10 @@
                 <span><?php echo icon('check-circle', 14); ?></span>
                 <span><strong>Why this matters to me:</strong> This is my foundational document for understanding ERC. I need to demonstrate command of the three-front structure and the MAP programme to show I understand ERC's strategic context — not just the technology layer sitting on top of it.</span>
             </div>
+            <div style="margin-top:1rem; display:flex; flex-wrap:wrap; gap:0.5rem;">
+                <a href="https://www.eastrenfrewshire.gov.uk/digital-transformation" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:0.8rem; padding:0.35rem 0.75rem;">Visit ERC Digital Transformation &#8599;</a>
+                <a href="assets/media/ERC_Digital_Strategy.pptx" download class="btn btn-outline" style="font-size:0.8rem; padding:0.35rem 0.75rem;">Download PowerPoint</a>
+            </div>
         </div>
     </div>
 
@@ -91,6 +96,7 @@
                 <span><?php echo icon('check-circle', 14); ?></span>
                 <span><strong>Why this matters to me:</strong> The HAMP is the business case for this role. I reference it to show I understand the housing context — not just the digital context. The figures — 3,141 units, EPC Band B by 2032, 171 new units — are the backdrop to every investment decision in the programme.</span>
             </div>
+            <a href="https://www.eastrenfrewshire.gov.uk/housing-asset-management-plan" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:1rem; font-size:0.8rem; padding:0.35rem 0.75rem;">View HAMP on ERC website &#8599;</a>
         </div>
     </div>
 
@@ -119,6 +125,7 @@
                 <span><?php echo icon('check-circle', 14); ?></span>
                 <span><strong>Why this matters to me:</strong> This document defines the scope of the role I'm applying for. I need to be clear on both what is directly in scope (productivity, tenant experience) and what sits alongside it (legacy system modernisation) — understanding the boundaries demonstrates strategic awareness rather than a narrow delivery focus.</span>
             </div>
+            <a href="https://www.eastrenfrewshire.gov.uk/housing" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:1rem; font-size:0.8rem; padding:0.35rem 0.75rem;">ERC Housing Service &#8599;</a>
         </div>
     </div>
 
@@ -152,6 +159,7 @@
                 <span><?php echo icon('check-circle', 14); ?></span>
                 <span><strong>Why this matters to me:</strong> I frame ERC's Housing Digital programme within the national Digital Scotland context. Using SAtSD is not just best practice — it aligns with national policy. Integrating with mygov.scot is not just convenient — it is the Scottish Government's strategic platform for public sector citizen access, and choosing it is the right decision architecturally as well as politically.</span>
             </div>
+            <a href="https://www.gov.scot/publications/a-changing-nation-how-scotland-will-thrive-in-a-digital-world/" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:1rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Read Digital Scotland Strategy &#8599;</a>
         </div>
     </div>
 
@@ -180,6 +188,7 @@
                 <span><?php echo icon('check-circle', 14); ?></span>
                 <span><strong>Why this matters to me:</strong> I connect the Housing Digital programme to Housing to 2040 specifically to show that the digital investment serves long-term housing quality and sustainability goals. EPC targets strengthen the case for expanding ERC's IoT sensor pilot; tenant participation requirements mean SAtSD co-design is legally as well as practically the right approach.</span>
             </div>
+            <a href="https://www.gov.scot/publications/housing-2040-2/" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:1rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Read Housing to 2040 &#8599;</a>
         </div>
     </div>
 
@@ -212,6 +221,7 @@
                 <span><?php echo icon('check-circle', 14); ?></span>
                 <span><strong>Why this matters to me:</strong> I'm aware of the Scottish innovation ecosystem and the CivTech route specifically. Solutions developed through CivTech are procured via Public Contracts Scotland — a route I would consider for innovative repairs technology where a traditional full tender process would be disproportionate to the scope.</span>
             </div>
+            <a href="https://www.civtech.scot/" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:1rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Visit CivTech Scotland &#8599;</a>
         </div>
     </div>
 
@@ -239,6 +249,7 @@
                 <span><?php echo icon('check-circle', 14); ?></span>
                 <span><strong>Why this matters to me:</strong> I use SFHA benchmarking data to contextualise ERC's ambitions. A 30% digital channel shift target is ahead of the sector average — which I think reflects the right level of ambition. The barriers the survey identifies — legacy systems, staff resistance, programme leadership — are exactly the risks I address explicitly in my delivery plan.</span>
             </div>
+            <a href="https://www.sfha.co.uk/" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:1rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Visit SFHA &#8599;</a>
         </div>
     </div>
 
@@ -266,6 +277,7 @@
                 <span><?php echo icon('check-circle', 14); ?></span>
                 <span><strong>Why this matters to me:</strong> I understand the national support ecosystem available to ERC and would actively use it. LGDP peer learning means ERC does not need to solve every problem from scratch — it can draw on the experience of councils that have already navigated similar programmes. That is a resource I would build into the delivery approach from day one.</span>
             </div>
+            <a href="https://digitaloffice.scot/" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:1rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Digital Office for Scottish Local Government &#8599;</a>
         </div>
     </div>
 
@@ -299,6 +311,7 @@
                 <span><?php echo icon('check-circle', 14); ?></span>
                 <span><strong>Why this matters to me:</strong> The Audit Scotland findings are directly reflected in my delivery plan — named SRO from day one, benefits baseline captured at Month 2, change management as a dedicated workstream, procurement starting in Phase 0. I have specifically designed the plan to address the failure modes Audit Scotland identified across Scottish council digital programmes.</span>
             </div>
+            <a href="https://audit.scot/publications/digital-progress-in-local-government" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:1rem; font-size:0.8rem; padding:0.35rem 0.75rem;">Read Audit Scotland Report &#8599;</a>
         </div>
     </div>
 
@@ -328,6 +341,7 @@
                 <span><?php echo icon('check-circle', 14); ?></span>
                 <span><strong>Why this matters to me:</strong> I reference the GDS Service Standard to structure the tenant portal requirements and give technical partners a shared language. Points 5 (solve the whole problem for users) and Point 10 (define what success looks like) map directly to the KPIs and digital inclusion strategy in my delivery plan — and they are points I can cite by number when discussing design decisions.</span>
             </div>
+            <a href="https://www.gov.uk/service-manual" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:1rem; font-size:0.8rem; padding:0.35rem 0.75rem;">GDS Service Manual &#8599;</a>
         </div>
     </div>
 
