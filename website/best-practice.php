@@ -14,7 +14,7 @@
 
     <!-- Hero -->
     <section class="hero" style="margin-top:1.5rem;">
-        <div class="hero-eyebrow"><?php echo icon('star', 18); ?> Best Practice</div>
+        <div class="hero-eyebrow">Best Practice</div>
         <h1>Best Practice for Housing Digital Transformation</h1>
         <p>Evidence-based best practice drawn from MSP programme management, the Scottish Approach to Service Design, GDS guidance, PROSCI change management, Rogers' diffusion of innovation, poka-yoke work practices, Audit Scotland findings, and sector experience in housing digital transformation.</p>
     </section>

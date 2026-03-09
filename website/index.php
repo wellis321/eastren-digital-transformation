@@ -5,7 +5,7 @@
 
     <!-- Hero Banner -->
     <section class="hero">
-        <div class="hero-eyebrow"><?php echo icon('diamond', 14); ?> East Renfrewshire Council &mdash; Interview Research Portal</div>
+        <div class="hero-eyebrow">East Renfrewshire Council &mdash; Interview Research Portal</div>
         <h1>Housing Repairs Digital Transformation</h1>
         <p>A comprehensive research portal prepared by William Ellis for the Housing Digital Transformation interview at East Renfrewshire Council. Explore ERC's digital journey, sector comparisons, policy context, and a structured delivery plan.</p>
         <div class="hero-meta">

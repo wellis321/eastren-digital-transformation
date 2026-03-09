@@ -14,7 +14,7 @@
 
     <!-- Hero -->
     <section class="hero" style="margin-top:1.5rem;">
-        <div class="hero-eyebrow"><?php echo icon('globe', 18); ?> Sector Comparisons</div>
+        <div class="hero-eyebrow">Sector Comparisons</div>
         <h1>What Others Are Doing in Housing Digital</h1>
         <p>Comparisons with Scottish councils and housing associations that have undertaken repairs and housing digital transformation. Key lessons learned, outcomes achieved, and models ERC can learn from or adapt.</p>
         <div class="hero-meta">

@@ -14,7 +14,7 @@
 
     <!-- Hero -->
     <section class="hero" style="margin-top:1.5rem;">
-        <div class="hero-eyebrow"><?php echo icon('presentation', 18); ?> Interview Presentation</div>
+        <div class="hero-eyebrow">Interview Presentation</div>
         <h1>Leading Housing Repairs Digital Transformation</h1>
         <p>A structured 13-minute interview presentation for the Housing Digital Transformation Lead role at East Renfrewshire Council. Eight sections covering vision, delivery plan, governance, and benefits realisation.</p>
         <div class="hero-meta">

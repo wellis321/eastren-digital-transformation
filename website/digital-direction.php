@@ -14,7 +14,7 @@
 
     <!-- Hero -->
     <section class="hero" style="margin-top:1.5rem;">
-        <div class="hero-eyebrow"><?php echo icon('bolt', 18); ?> Future Digital Direction</div>
+        <div class="hero-eyebrow">Future Digital Direction</div>
         <h1>Where Housing Digital Is Heading</h1>
         <p>Beyond the 20-month programme: the emerging technologies and digital approaches that will shape the future of social housing management. Understanding these trends demonstrates strategic vision and the ability to think beyond the immediate delivery horizon.</p>
         <div class="hero-meta">

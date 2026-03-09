@@ -14,7 +14,7 @@
 
     <!-- Hero -->
     <section class="hero" style="margin-top:1.5rem;">
-        <div class="hero-eyebrow"><?php echo icon('clock', 18); ?> ERC Digital Transformation History</div>
+        <div class="hero-eyebrow">ERC Digital Transformation History</div>
         <h1>East Renfrewshire Council's Digital Journey</h1>
         <p>A chronological timeline of ERC's digital transformation from early foundations in 2018 through to the current horizon of housing system modernisation, AI exploration, and the Digital Repairs programme. Understanding this journey is essential for the interview &mdash; it shows what ERC has built, what works, and what the Housing Digital Transformation programme is building on.</p>
         <div class="hero-meta">

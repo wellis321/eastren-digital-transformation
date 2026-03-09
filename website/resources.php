@@ -14,7 +14,7 @@
 
     <!-- Hero -->
     <section class="hero" style="margin-top:1.5rem;">
-        <div class="hero-eyebrow"><?php echo icon('link', 18); ?> Research Resources</div>
+        <div class="hero-eyebrow">Research Resources</div>
         <h1>Useful Resources &amp; References</h1>
         <p>Categorised links to Scottish Government guidance, housing sector bodies, digital delivery frameworks, and tools relevant to the Housing Digital Transformation role. Each resource includes a description and a note on its relevance.</p>
     </section>

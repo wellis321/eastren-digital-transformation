@@ -51,7 +51,7 @@ $pageTitle = isset($pageTitles[$currentPage]) ? $pageTitles[$currentPage] : 'Res
 <!-- Top Bar -->
 <div class="site-topbar">
     <div class="topbar-left">
-        <span class="topbar-flag"><?php echo icon('flag', 16); ?></span>
+        <img src="<?php echo $assetBase; ?>assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
         <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
     </div>
     <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>

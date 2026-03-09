@@ -47,7 +47,7 @@ if (!is_dir($mediaDst)) {
     mkdir($mediaDst, 0755, true);
 }
 $mediaSrc = $assetsSrc . '/media';
-$rootMediaFiles = ['videoplayback.mp4', 'InfoGraphic.png', 'New infographis.png', 'ERC_Digital_Strategy.pptx', 'East-Ren-Digital-Housing-Transformation-William-Ellis-CV.pdf', 'mind-map.png', 'mind-map.pdf'];
+$rootMediaFiles = ['videoplayback.mp4', 'InfoGraphic.png', 'New infographis.png', 'ERC_Digital_Strategy.pptx', 'East-Ren-Digital-Housing-Transformation-William-Ellis-CV.pdf', 'mind-map.png', 'mind-map.pdf', 'leaves.png'];
 foreach ($rootMediaFiles as $f) {
     $fromRoot = $outputDir . '/' . $f;
     $fromMedia = $mediaSrc . '/' . $f;

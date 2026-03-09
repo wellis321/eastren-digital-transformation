@@ -14,7 +14,7 @@
 
     <!-- Hero -->
     <section class="hero" style="margin-top:1.5rem;">
-        <div class="hero-eyebrow"><?php echo icon('document', 18); ?> Key Reports &amp; Analysis</div>
+        <div class="hero-eyebrow">Key Reports &amp; Analysis</div>
         <h1>Essential Reading for the Interview</h1>
         <p>Annotated summaries of the ten most important reports and documents for the Housing Digital Transformation interview. Each entry includes key findings, direct relevance to the role, and talking points for the panel.</p>
         <div class="hero-meta">

@@ -14,7 +14,7 @@
 
     <!-- Hero -->
     <section class="hero" style="margin-top:1.5rem;">
-        <div class="hero-eyebrow"><?php echo icon('flag', 18); ?> Scotland's Policy Context</div>
+        <div class="hero-eyebrow">Scotland's Policy Context</div>
         <h1>The Policy Backdrop for Housing Digital Transformation</h1>
         <p>Understanding the national and legislative context gives the Housing Digital Transformation programme both its mandate and its constraints. These are not optional frameworks &mdash; they are the policy environment within which ERC must operate.</p>
         <div class="hero-meta">
