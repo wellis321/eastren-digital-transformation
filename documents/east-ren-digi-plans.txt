@@ -1,0 +1,29 @@
+Digital technology acts as an integral enabler for East Renfrewshire Council, shifting operations from reactive responses to proactive, data-led service delivery
+. The Council’s plans are structured around a three-front Digital Transformation Strategy (2021–2024) focusing on customer experience, business systems, and workforce productivity
+.
+How Digital Helps
+Digital tools provide measurable improvements in safety, efficiency, and accessibility:
+Operational Efficiency: Digitising manual processes reduces administrative burdens; for example, in-cab telematics for bin lorries saved more than one day of admin time per week by automating job allocations and notifications
+.
+Enhanced Safety and Health: Wearable technology in the Roads Service monitors health and safety standards (such as hand-arm vibration), while IoT sensors in schools and offices monitor CO2 and airflow to ensure safe environments
+.
+Early Intervention: In housing, air quality sensors monitor humidity and temperature to diagnose the causes of damp and mould, allowing the Council to intervene before conditions deteriorate or tenants complain
+.
+Data-Driven Targeting: Data matching (the "Golden Record" concept) allows the Council to cross-reference client lists with financial indicators to identify "pockets of vulnerability" in historically affluent areas, ensuring support like Money Advice is targeted where it is most needed
+.
+24/7 Accessibility: Digital platforms shift engagement to cheaper, always-available online channels, such as the Parent Portal for school information and online booking for birth registrations, which 90% of parents prefer over telephone calls
+.
+Plans for Digital to Help
+The Council has outlined several strategic roadmaps to further embed technology:
+Infrastructure Modernisation: A major priority is replacing legacy ICT systems for Housing management, Education (SEEMIS), and Social Care (CareFirst) to ensure they are fit for purpose and support mobile working
+.
+Digital Telecare Transition: By 2025, the Council plans to transition 3,000 vulnerable residents from analogue to digital telecare systems in response to the national analogue phone line switch-off
+.
+Unified Communications: Plans include a Unified Communications project to modernise how calls and enquiries are routed, alongside exploring AI, chatbots, and voice recognition to provide a seamless multi-channel contact centre
+.
+Citizen Self-Service: Expanding the MyEastRen portal using national mygov.scot single sign-on will provide residents with a consistent "look and feel" across all Council services
+.
+Workforce Empowerment: The Council is embedding Microsoft 365 capabilities to enhance collaboration and has established a network of Digital Champions to ensure staff have the necessary Digital, Data, and Technology (DDaT) skills
+.
+User-Centred Design: Future digital projects will strictly follow the Scottish Approach to Service Design (SAtSD), involving citizens in co-designing services through feedback sessions and remote testing to ensure systems solve actual user problems
+.

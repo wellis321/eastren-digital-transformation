@@ -1,0 +1,29 @@
+The vision for improving customer experience and productivity is central to East Renfrewshire Council’s Digital Transformation Strategy for 2021-2024, which focuses on moving forward on three key fronts: customer experience, workforce productivity, and business systems and processes
+.
+Vision for Customer Experience
+The core vision for this area is to provide a consistent, efficient customer experience designed with the user at the heart
+. The Council aims to achieve this through several strategic actions:
+User-Centred Design: All digital processes—such as booking, scheduling, and payments—are being designed end-to-end using the Scottish Approach to Service Design (SAtSD) to ensure they are inclusive and meet actual user needs
+.
+Foundation Platforms: The strategy builds on the successful July 2020 launch of a new council website and the implementation of a new Customer Experience Management (CXM) platform
+.
+Single Citizen Portal: The vision includes a single portal (MyEastRen) where citizens can access all services with a consistent "look and feel," utilizing the national mygov.scot account for secure single sign-on
+.
+Advanced Technologies: The Council is exploring the use of AI, chatbots, live chat, and voice recognition to offer seamless, multi-channel contact and further drive "channel shift" to online services
+.
+Data Integration: Improving the use of customer data and linking various "line of business" systems to replace legacy forms and provide a more joined-up experience
+.
+Vision for Workforce Productivity
+The vision for workforce productivity is to increase the effectiveness of the workforce, primarily by capitalising on Microsoft 365 (M365) capabilities
+. Key elements include:
+Embedding Digital Tools: Moving beyond basic usage to fully embed M365 tools (like Teams and MS Planner) for creating, communicating, collaborating, and automating tasks
+.
+New Ways of Working: Shifting organizational culture to "build back better," focusing on hybrid working models that increase productivity and job satisfaction
+.
+Automation and Efficiency: Identifying opportunities for Robotic Process Automation (RPA) and digitisation to reduce manual processing, rekeying of data, and duplication of effort
+.
+Skills and Empowerment: Building the workforce's Digital, Data, and Technology (DDaT) skills through training programs, a dedicated Digital Learning Officer, and a network of over 30 Digital Champions who support colleagues in using new technology
+.
+Frontline Support: Implementing mobile technologies and wearable tech to support frontline staff, such as in-cab telematics for bin lorries and health and safety monitors for Roads Service workers
+.
+Both areas are underpinned by a commitment to benefits realisation, ensuring that every project delivers a good return on investment and measurable improvements for both residents and employees

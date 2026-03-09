@@ -1,0 +1,27 @@
+The Scottish Approach to Service Design (SAtSD) is a methodology used by East Renfrewshire Council to ensure that public services are inclusive and effective by putting the user at the heart of the design process
+.
+According to the provided sources, the approach works through several key principles and actions:
+1. Core Principles: User-Centred and Inclusive
+The primary goal of SAtSD is to move away from designing services based on internal organizational requirements and instead focus on customer insight
+.
+User Involvement: It involves engaging users—both internal staff and external citizens—directly in the design or redesign of services
+.
+Inclusivity: Processes are designed end-to-end to be inclusive, ensuring that support is available for those who may struggle with digital-only options
+.
+2. Practical Application: Research and Testing
+The approach utilizes specific techniques to gather evidence and validate designs:
+User Research: Employees are trained in user research to deeply understand the actual needs and problems faced by customers
+.
+User Engagement: This includes activities like feedback sessions where customers provide real-time input on what they like, dislike, or want improved
+.
+Remote Testing: During the pandemic, the Council used tools like Microsoft Teams for remote testing of new systems, such as the Council Tax and Benefits platform, to see how users interacted with them before full rollout
+.
+3. Strategic Implementation
+Within the Council's Digital Transformation Strategy, SAtSD is applied in the following ways:
+End-to-End Design: It is used to design complete digital journeys for processes like booking, scheduling, and payments, rather than just fixing individual parts of a process
+.
+Integration with Agile: The approach often works alongside Agile project methods, allowing change to be managed incrementally and "chunked" to deliver value to users as quickly as possible
+.
+Workforce Training: To embed this culture, the Council collaborated with the Scottish Digital Academy to train over 100 employees in these service design and user research techniques
+.
+By using this approach, the Council aims to deliver a consistent, efficient customer experience that effectively addresses user problems while reducing administrative time and frustration

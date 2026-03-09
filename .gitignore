@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Editor / IDE
+.idea/
+*.swp
+*.swo
+
+# Local config (database credentials)
+website/config/database.php
+
+# Cursor/IDE
+.claude/
+
+# Optional: keep database.php out of repo; add config/database.example.php if needed

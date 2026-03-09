@@ -1,0 +1,63 @@
+Citizen Engagement Impact Report: Transforming Services Through Co-Design
+1. Strategic Vision and the MAP Framework
+East Renfrewshire Council (ERC) is redefining the relationship between the local authority and the community. Our transformation is governed by the Modern, Ambitious Programme (MAP), which seeks to develop three foundational capabilities: modernising, digital, and data. This is not merely a technical upgrade; it represents a fundamental shift from "inside-out" service provision to "outside-in" service co-creation.
+The urgency of this shift was underscored by the 2020 pandemic, which acted as a catalyst for digital adoption. While face-to-face visits plummeted by 80%, we saw a 127% increase in Twitter engagement, a 183% increase in Facebook reach, and a 164% surge in web chat usage. To manage this demand while reducing failure demand—the cost of services failing to meet user needs the first time—MAP is executed through six strategic change programmes:
+Core Systems: Replacing resource-heavy legacy ICT with modern, integrated platforms.
+Digital & Data: Driving the overarching digital strategy and emergent data analytics capabilities.
+Environment: Structural redesigns and digital tools for housing and infrastructure.
+Health and Social Care Partnership (HSCP): Adapting frontline care for a stronger locality focus.
+Education: Modernising digital learning and parental engagement.
+Corporate & Community Services: Overseeing workforce planning, organisational development, and the Customer Experience programme.
+2. The Methodology: The Scottish Approach to Service Design (SAtSD)
+Our commitment to evidence-led design is codified in our adoption of the Scottish Approach to Service Design (SAtSD). We believe that value is co-created with the citizens who use our services. By focusing on the "Double Diamond" of design—properly discovering the problem before developing the solution—we ensure our digital tools are intuitive and inclusive. To embed this culture, we partnered with the Scottish Digital Academy to upskill our workforce.
+Building Design Capacity We have successfully trained over 100 employees across all departments in user research and the principles of the SAtSD. This ensures that our transformation is led by practitioners who understand how to place the user at the heart of every process.
+The core principles of our design philosophy include:
+Designing End-to-End Processes: Mapping the entire user journey to eliminate friction.
+Involving Users at the Heart of Design: Moving beyond consultation to active co-design with citizens and staff.
+Agile Project Methods: Using incremental delivery to provide value quickly and iterate based on real-world feedback.
+3. Citizen Engagement Methods and Tools
+To bridge the gap between policy and practice, we utilised a diverse toolkit of engagement methods to gather high-fidelity user insight.
+Method
+Application/Description
+Remote User Testing
+Pioneering use of Microsoft Teams to conduct live, collaborative testing of systems like Council Tax and Benefits during the lockdown.
+Citizens Panel
+Deployed a specific new question set regarding digital access, usage patterns, and barriers to inform the Digital Inclusion Partnership.
+Digital Champions
+A support network of 30+ staff members established to guide both colleagues and citizens through new technological adoptions.
+User Research
+Direct, ethnographic involvement of citizens during the discovery and design phases to ensure platforms are streamlined and accessible.
+4. Impact Analysis: Feedback-Driven Service Outcomes
+The following highlights demonstrate how citizen-centric design and agile delivery have translated into tangible service improvements and fiscal responsibility.
+4.1 Council Tax and Benefits
+Before/Need: A complex, resource-intensive legacy ICT system that created silos and administrative burdens.
+Outcome/Impact: This was a pioneering project for SAtSD at ERC. By using Microsoft Teams for remote user testing during the pandemic, we captured the citizen's voice despite social distancing. This feedback refined the customer portal, which went live in December 2020, focusing on streamlined end-to-end processes that reduce the need for manual intervention.
+4.2 Registration and Civic Bookings
+Before/Need: Essential legal and civic services were traditionally face-to-face, posing a significant risk to "life and limb" continuity during the pandemic.
+Outcome/Impact: We introduced remote death registrations in March 2020, enabling online document submission for the first time. We also co-designed online booking systems for civic amenity sites, providing residents with 24/7 access and controlled, efficient service delivery.
+4.3 Environment and Waste Services
+Before/Need: High volumes of manual processing for "missed bins" and special uplifts led to inefficiencies and customer frustration.
+Outcome/Impact: Based on direct customer feedback, these processes were moved to our new digital customer platform. The deployment of in-cab telematics in 25 bin lorries now facilitates real-time communication and online job tracking. Furthermore, the launch of a self-service Land Ownership map (viewed over 1,600 times) has significantly reduced failure demand by removing the need for residents to contact the Estates team directly for spatial data.
+4.4 Education and Early Years
+Before/Need: Heavy reliance on paper-based systems and manual rekeying of data for school and nursery admissions.
+Outcome/Impact: We launched a new online application for 3-4 year old nursery admissions in January 2021. The digital transformation of Primary 1 and Primary 7 document submission has drastically reduced parental effort. Most notably, the "Parent Portal" has seen massive adoption, with 7,847 parents linking 11,855 children, facilitating online payments (Parent Pay) and reducing administrative overhead in schools.
+4.5 Health and Social Care (HSCP)
+Before/Need: The requirement to maintain support for vulnerable families while face-to-face contact was restricted.
+Outcome/Impact: Through the "Fit for the Future" project, the HSCP adopted video calling (WhatsApp, Zoom) and online appointments as standard models. This was not just a crisis response but a strategic redesign that helped deliver nearly £1.2 million in savings (£954k original target plus £250k in 2020/21) while strengthening locality-focused support.
+5. Digital Inclusion: Bridging the Participation Gap
+A digital-first approach must never be a digital-only approach. We are committed to ensuring that our transformation does not exacerbate social exclusion. Through the "Connecting Scotland" programme and our "Digital Inclusion Partnership," we have worked to ensure that access and skills are distributed equitably.
+Impact: Distributed over 2,000 devices (Chromebooks, iPads) and MIFI connectivity to households by May 2021.
+Support: Every device recipient had access to a Digital Champion to build their confidence and online skills.
+Target groups for inclusion efforts included:
+Individuals at high COVID-19 clinical risk (shielding).
+Older people.
+People with disabilities.
+Low-income families.
+6. Future Strategy (2021-2024): The Three Fronts of Transformation
+Our strategy for the next three years synthesizes our progress into three overlapping priority areas, all underpinned by SAtSD and agile methodologies:
+Customer Experience: Using "outside-in" thinking to provide a consistent, streamlined journey. We will leverage the new website and customer platform as foundations for all booking, scheduling, and payments, ensuring the experience is designed around customer preference.
+Business Systems & Processes: Applying lean principles and enterprise architecture to our core Finance, Procurement, and HR systems. By joining up information flows, we will reduce duplication and ensure we are getting the maximum return on our technology investment.
+Workforce Productivity: Empowering our staff through Microsoft 365 tools. By enhancing collaboration (evidenced by 33,000 Teams meetings and 50,000 calls in a 6-month period), we enable a more responsive workforce that can dedicate more time to high-value citizen support.
+7. Conclusion: The Value of Co-Design
+East Renfrewshire Council has moved beyond simply "doing digital" to a culture of "building back better." This transition has proved that the true value of transformation lies not in the software, but in the insight gathered from our citizens and employees. By embracing agile delivery and the Scottish Approach to Service Design, we are not just modernising systems—we are modernising our relationship with the community to reduce waste, increase efficiency, and improve lives.
+Our vision is to be a modern, ambitious council creating a fairer future with all and our ultimate aim is to make people’s lives better.

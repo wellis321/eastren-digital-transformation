@@ -1,0 +1,15 @@
+While the sources do not provide a specific "Digital Champion" curriculum, they indicate that the training for these individuals is part of a broader strategic commitment to building Digital, Data, and Technology (DDaT) skills across the organisation
+.
+The training and support that Digital Champions receive and help facilitate include:
+Service Design and User Research: More than 100 employees have been trained in User Research and the Scottish Approach to Service Design (SAtSD) in collaboration with the Scottish Digital Academy
+.
+Agile Methodologies: Specific training has been provided in Agile for Teams to support incremental project management
+.
+Microsoft 365 Proficiency: Champions are trained to be experts in the M365 suite, specifically in tools like Microsoft Teams and MS Planner
+. This allows them to support the transition to remote and hybrid working models
+.
+Specialised Digital Upskilling: Staff have access to digital upskilling provided by the Learning and Development Team to enhance their technical capabilities
+.
+Dedicated Support: The rollout of these skills is overseen by a dedicated Digital Learning Officer, who provides ongoing guidance and targets training activities using "staff personas" to ensure the training is relevant to different roles
+.
+Essentially, Digital Champions are trained to be peer-to-peer leaders who can help colleagues "make the most of their technology" and embed a more efficient, automated culture within the workforce
