@@ -20,9 +20,9 @@
     <div class="callout highlight mb-3">
         <div class="callout-icon"><?php echo icon('memo', 18); ?></div>
         <div>
-            <h4>The Interview Question &mdash; What You Are Being Asked To Do</h4>
+            <h4>The Interview Question &mdash; What I Need To Answer</h4>
             <p style="font-style: italic; font-size: 0.95rem; margin-bottom:0.5rem;">"East Renfrewshire Council's Housing service is embarking on a digital transformation programme to enhance the productivity of the Housing Repairs service and improve the experience for our tenants. You will be responsible for leading the delivery of this digital transformation programme over a 20-month period, working with a range of internal and external stakeholders."</p>
-            <p style="margin-bottom:0.25rem;"><strong>Key deliverables:</strong> Outline how you would approach this programme from mobilisation through to delivery. Demonstrate your understanding of ERC's digital context, relevant policy, best practice from the sector, and your programme management approach.</p>
+            <p style="margin-bottom:0.25rem;"><strong>What I need to show them:</strong> How I would approach this programme from mobilisation through to delivery. I need to demonstrate my understanding of ERC's digital context, relevant policy, best practice from the sector, and my programme management approach.</p>
             <span class="badge badge-blue">20-Month Programme</span>&nbsp;
             <span class="badge badge-gold">3,141 Housing Units</span>&nbsp;
             <span class="badge badge-green">Tenant Experience</span>&nbsp;
@@ -122,8 +122,8 @@
     <!-- About This Portal -->
     <div class="card">
         <h3>About This Research Portal</h3>
-        <p style="font-size:0.9rem;">This site has been built by William Ellis to support preparation for the East Renfrewshire Council Housing Digital Transformation interview. It brings together research from ERC's own published documents, Scottish Government strategy, sector benchmarking data, and digital delivery best practice into a single, navigable resource.</p>
-        <p style="font-size:0.9rem;">Every section contains substantive, researched content — not placeholder text. The presentation page is structured as a 13-minute interview delivery, with timings, a phase-by-phase delivery plan, governance model, and measurable benefits targets. The portal may be shared with interviewers as evidence of preparation depth.</p>
+        <p style="font-size:0.9rem;">I built this site to support my preparation for the East Renfrewshire Council Housing Digital Transformation interview. It brings together research from ERC's own published documents, Scottish Government strategy, sector benchmarking data, and digital delivery best practice into a single, navigable resource.</p>
+        <p style="font-size:0.9rem;">Every section contains substantive, researched content — not placeholder text. The presentation page is structured as my 13-minute interview delivery, with timings, a phase-by-phase delivery plan, governance model, and measurable benefits targets. I can share this portal with interviewers as evidence of my preparation depth. The content will continue to be updated right up until the interview.</p>
         <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:0.75rem;">
             <a href="presentation.php" class="btn btn-primary"><?php echo icon('presentation', 18); ?> View Presentation</a>
             <a href="history.php" class="btn btn-outline"><?php echo icon('clock', 18); ?> ERC Digital History</a>

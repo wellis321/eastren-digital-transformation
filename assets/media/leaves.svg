@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 40" width="80" height="40">
+  <!-- Left sprig: stem green, leaves blue and lime green -->
+  <path d="M14 34 Q6 22 14 10" fill="none" stroke="#8BC34A" stroke-width="2.2" stroke-linecap="round"/>
+  <ellipse cx="18" cy="8" rx="8" ry="5" fill="#2196F3" transform="rotate(-25 18 8)"/>
+  <ellipse cx="10" cy="20" rx="8" ry="5" fill="#8BC34A" transform="rotate(20 10 20)"/>
+  <!-- Right sprig: stem blue, leaves lime green and blue -->
+  <path d="M66 6 Q74 18 66 30" fill="none" stroke="#2196F3" stroke-width="2.2" stroke-linecap="round"/>
+  <ellipse cx="62" cy="10" rx="8" ry="5" fill="#8BC34A" transform="rotate(25 62 10)"/>
+  <ellipse cx="70" cy="26" rx="8" ry="5" fill="#2196F3" transform="rotate(-20 70 26)"/>
+</svg>
