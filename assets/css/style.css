@@ -1626,7 +1626,8 @@ tbody tr:nth-child(even):hover {
 /* ----------------------------------------------------------
    Responsive — Tablet
    ---------------------------------------------------------- */
-@media (max-width: 1024px) {
+/* Nav switches to hamburger before it overflows */
+@media (max-width: 1300px) {
     .site-nav {
         display: none;
     }
@@ -1634,6 +1635,9 @@ tbody tr:nth-child(even):hover {
     .hamburger {
         display: flex;
     }
+}
+
+@media (max-width: 1024px) {
 
     .cards-grid-3 {
         grid-template-columns: repeat(2, 1fr);
