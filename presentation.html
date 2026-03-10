@@ -108,7 +108,7 @@
     <div class="presentation-controls">
         <button id="pdf-btn" class="btn btn-gold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
         <button id="print-btn" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Print</button>
-        <a href="index.html" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><path d="M12 19l-7-7 7-7"/></svg> Back to Dashboard</a>
+        <a href="index.html" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><path d="M12 19l-7-7 7-7"/></svg> Home</a>
         <span style="font-size:0.8rem; color: var(--color-muted, #6B7280);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Download PDF for a clean A4 version to share with interviewers</span>
     </div>
 
@@ -620,7 +620,7 @@
     <div class="presentation-controls">
         <button id="pdf-btn-bottom" class="btn btn-gold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
         <button id="print-btn-bottom" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Print</button>
-        <a href="index.html" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><path d="M12 19l-7-7 7-7"/></svg> Back to Dashboard</a>
+        <a href="index.html" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><path d="M12 19l-7-7 7-7"/></svg> Home</a>
     </div>
 
 </main>
@@ -669,7 +669,11 @@
             filename: 'ERC-Housing-Digital-Transformation-Presentation.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak: {
+                mode: ['avoid-all', 'css'],
+                avoid: ['p', 'li', '.callout', '.pres-headline', '.kpi-box', '.pres-section-header', '.progress-container', 'h2', 'h3', 'h4']
+            }
         };
         function resetBtns() { btns.forEach(function(b) { if (b) { b.disabled = false; b.innerHTML = pdfBtnSvg; } }); }
         html2pdf().set(opt).from(element).save().then(resetBtns).catch(resetBtns);

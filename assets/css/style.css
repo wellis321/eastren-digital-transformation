@@ -1068,6 +1068,26 @@ tbody tr:nth-child(even):hover {
     text-decoration: none;
 }
 
+/* PDF-friendly: prevent orphans/widows and awkward splits (used by html2pdf) */
+#pdf-content p,
+#pdf-content li,
+#pdf-content .callout,
+#pdf-content .pres-headline,
+#pdf-content .kpi-box,
+#pdf-content .pres-section-header,
+#pdf-content .progress-container,
+#pdf-content h2,
+#pdf-content h3,
+#pdf-content h4 {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+#pdf-content p,
+#pdf-content li {
+    orphans: 2;
+    widows: 2;
+}
+
 .pres-section {
     background: var(--erc-surface);
     border-radius: var(--radius-lg);
