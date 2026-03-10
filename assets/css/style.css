@@ -812,6 +812,141 @@ tbody tr:nth-child(even):hover {
 }
 
 /* ----------------------------------------------------------
+   Gantt Chart (20-Month Programme)
+   ---------------------------------------------------------- */
+.gantt-chart {
+    background: var(--erc-surface);
+    border: 1px solid var(--erc-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.gantt-grid {
+    display: grid;
+    grid-template-columns: 12rem 1fr;
+    grid-template-rows: auto repeat(6, 3.25rem);
+    gap: 0 1rem;
+    row-gap: 0.35rem;
+    align-items: stretch;
+}
+
+.gantt-month-header {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.gantt-months {
+    grid-column: 2;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 2px;
+    font-size: 0.65rem;
+    text-align: center;
+    color: var(--erc-text-light);
+    margin-bottom: 0.35rem;
+}
+
+.gantt-month {
+    min-width: 0;
+}
+
+.gantt-label-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    justify-content: center;
+    min-height: 0;
+    overflow: visible;
+}
+
+.gantt-phase-name {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--erc-blue);
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
+.gantt-phase-tag {
+    font-size: 0.68rem;
+    display: inline-block;
+    line-height: 1.3;
+    flex-shrink: 0;
+}
+
+.gantt-bar-wrapper {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 2px;
+    min-width: 0;
+}
+
+.gantt-bar {
+    background: var(--erc-border);
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+
+.gantt-bar-0 { background: #6B7280; }
+.gantt-bar-1 { background: #3B82F6; }
+.gantt-bar-2 { background: #0D9488; }
+.gantt-bar-3 { background: #D97706; }
+.gantt-bar-4 { background: #059669; }
+.gantt-bar-5 { background: #1D4ED8; }
+
+/* Custom tooltips for Gantt (visible on hover) */
+.gantt-tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.gantt-tooltip:hover::after,
+.gantt-tooltip:focus-visible::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: calc(100% + 0.5rem);
+    min-width: 220px;
+    max-width: 320px;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--erc-white);
+    background: var(--erc-blue);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    z-index: 100;
+    white-space: normal;
+    pointer-events: none;
+}
+
+.gantt-bar.gantt-tooltip:hover::after,
+.gantt-bar.gantt-tooltip:focus-visible::after {
+    bottom: auto;
+    top: calc(100% + 0.5rem);
+}
+
+@media (max-width: 900px) {
+    .gantt-grid {
+        grid-template-columns: 8rem 1fr;
+    }
+
+    .gantt-bar {
+        font-size: 0.6rem;
+    }
+}
+
+/* ----------------------------------------------------------
    Tabs
    ---------------------------------------------------------- */
 .tabs {

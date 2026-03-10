@@ -4,13 +4,13 @@ Interview research portal for the Housing Digital Transformation Lead role at Ea
 
 ## GitHub Pages
 
-This repo is set up for **GitHub Pages**. The static site is at the project root:
+This repo is set up for **GitHub Pages**. The site is pure static HTML — no build step, no PHP.
 
 - `index.html` — Home / dashboard
 - `presentation.html` — 13-minute interview presentation
 - `history.html` — ERC digital transformation timeline
 - `reports.html`, `resources.html`, `sector.html`, etc.
-- `assets/` — CSS and JS
+- `assets/` — CSS, JS, and media (images, PDF, video, etc.)
 
 ### Enabling GitHub Pages
 
@@ -20,25 +20,26 @@ This repo is set up for **GitHub Pages**. The static site is at the project root
 4. Choose the **main** (or default) branch, folder **/ (root)**
 5. Save — the site will be at `https://<username>.github.io/<repo-name>/`
 
-### Rebuilding the static site
+### Local preview
 
-The HTML is generated from PHP. To rebuild after editing the PHP source:
+Open `index.html` in a browser, or use a simple server:
 
 ```bash
-cd website
-php build-static.php
+python3 -m http.server 8000
+# Open http://localhost:8000
 ```
 
-Commit the updated `*.html` and `assets/` at the project root.
+### Editing
 
-**Media files** (video, infographics, PowerPoint, CV, mind map): place them in the project root or `website/assets/media/` before running the build. They will be copied to `assets/media/` in the output.
+Edit the `.html` files directly. To change the header or navigation, update it in each page (or use find-and-replace across files).
+
+**Media files:** add images, PDFs, video, etc. to `assets/media/`.
 
 ## Project structure
 
 | Path | Description |
 |------|-------------|
 | `index.html`, `*.html` | Static site (GitHub Pages) |
-| `assets/` | CSS and JS |
-| `website/` | PHP source (header, footer, icons, pages) |
+| `assets/` | CSS, JS, media (images, PDF, video) |
 | `documents/` | Research notes, strategy extracts, CSV data |
 | `CLAUDE.md` | Workspace guidance for AI tools |
