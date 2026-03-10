@@ -98,13 +98,17 @@
     // ----------------------------------------------------------
     // Print Button Handler
     // ----------------------------------------------------------
-    const printBtn = document.getElementById('print-btn');
-    if (printBtn) {
-        printBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            window.print();
-        });
+    function initPrintBtn(id) {
+        var btn = document.getElementById(id);
+        if (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                window.print();
+            });
+        }
     }
+    initPrintBtn('print-btn');
+    initPrintBtn('print-btn-bottom');
 
     // ----------------------------------------------------------
     // Smooth Scroll to Sections

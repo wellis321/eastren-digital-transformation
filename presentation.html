@@ -104,8 +104,16 @@
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero" style="margin-top:1.5rem;">
+    <!-- Controls -->
+    <div class="presentation-controls">
+        <button id="pdf-btn" class="btn btn-gold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
+        <button id="print-btn" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Print</button>
+        <a href="index.html" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><path d="M12 19l-7-7 7-7"/></svg> Back to Dashboard</a>
+        <span style="font-size:0.8rem; color: var(--color-muted, #6B7280);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Download PDF for a clean A4 version to share with interviewers</span>
+    </div>
+
+    <div id="pdf-content">
+    <section class="hero" style="margin-top:0; margin-bottom:2rem;">
         <div class="hero-eyebrow">Interview Presentation</div>
         <h1>Leading Housing Repairs Digital Transformation</h1>
         <p>A structured 13-minute interview presentation for the Housing Digital Transformation Lead role at East Renfrewshire Council. Eight sections covering vision, delivery plan, governance, and benefits realisation.</p>
@@ -115,15 +123,6 @@
             <div class="hero-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> <strong>Candidate:</strong>&nbsp;William Ellis</div>
         </div>
     </section>
-
-    <!-- Controls -->
-    <div class="presentation-controls">
-        <button id="print-btn" class="btn btn-gold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Print Presentation (A4)</button>
-        <a href="index.html" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><path d="M12 19l-7-7 7-7"/></svg> Back to Dashboard</a>
-        <span style="font-size:0.8rem; color: var(--color-muted, #6B7280);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Use Ctrl+P or the print button for a clean A4 version to share with interviewers</span>
-    </div>
-
-    <!-- SECTION 1 -->
     <div class="pres-section" id="section-intro">
         <div class="pres-section-header">
             <div style="display:flex; align-items:center; gap:0.75rem;">
@@ -616,9 +615,11 @@
             </div>
         </div>
     </div>
+    </div><!-- /#pdf-content -->
 
     <div class="presentation-controls">
-        <button id="print-btn-bottom" onclick="window.print()" class="btn btn-gold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Print Presentation (A4)</button>
+        <button id="pdf-btn-bottom" class="btn btn-gold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
+        <button id="print-btn-bottom" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Print</button>
         <a href="index.html" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><path d="M12 19l-7-7 7-7"/></svg> Back to Dashboard</a>
     </div>
 
@@ -653,6 +654,29 @@
     </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="assets/js/main.js"></script>
+<script>
+(function() {
+    var pdfBtnSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF';
+    function downloadPDF(e) {
+        var element = document.getElementById('pdf-content');
+        if (!element || typeof html2pdf === 'undefined') return;
+        var btns = [document.getElementById('pdf-btn'), document.getElementById('pdf-btn-bottom')];
+        btns.forEach(function(b) { if (b) { b.disabled = true; b.textContent = 'Generating…'; } });
+        var opt = {
+            margin: 12,
+            filename: 'ERC-Housing-Digital-Transformation-Presentation.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        function resetBtns() { btns.forEach(function(b) { if (b) { b.disabled = false; b.innerHTML = pdfBtnSvg; } }); }
+        html2pdf().set(opt).from(element).save().then(resetBtns).catch(resetBtns);
+    }
+    document.getElementById('pdf-btn') && document.getElementById('pdf-btn').addEventListener('click', downloadPDF);
+    document.getElementById('pdf-btn-bottom') && document.getElementById('pdf-btn-bottom').addEventListener('click', downloadPDF);
+})();
+</script>
 </body>
 </html>
