@@ -273,6 +273,9 @@ p { margin-bottom: 1rem; }
 
 .mobile-nav.open {
     display: flex;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-nav a {
@@ -1626,8 +1629,41 @@ tbody tr:nth-child(even):hover {
 /* ----------------------------------------------------------
    Responsive — Tablet
    ---------------------------------------------------------- */
-/* Nav switches to hamburger before it overflows */
-@media (max-width: 1300px) {
+/* Keep nav visible down to tablet: scale down size so it fits */
+@media (max-width: 1200px) {
+    .site-nav a {
+        font-size: 0.72rem;
+        padding: 0.4rem 0.5rem;
+    }
+    .site-nav {
+        gap: 0.05rem;
+    }
+}
+
+@media (max-width: 1000px) {
+    .header-inner {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+    .site-nav a {
+        font-size: 0.65rem;
+        padding: 0.35rem 0.4rem;
+    }
+}
+
+@media (max-width: 880px) {
+    .header-inner {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .site-nav a {
+        font-size: 0.6rem;
+        padding: 0.3rem 0.32rem;
+    }
+}
+
+/* Only switch to hamburger below tablet width */
+@media (max-width: 768px) {
     .site-nav {
         display: none;
     }
