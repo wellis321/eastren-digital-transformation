@@ -28,11 +28,6 @@
     </div>
 </footer>
 
-<?php
-$scriptPath = ltrim($_SERVER['PHP_SELF'], '/');
-$depth = substr_count($scriptPath, '/');
-$assetBase = $depth > 1 ? str_repeat('../', $depth - 1) : '';
-?>
-<script src="<?php echo $assetBase; ?>assets/js/main.js"></script>
+<script src="<?php echo $assetBase; ?>js/main.js"></script>
 </body>
 </html>

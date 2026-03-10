@@ -68,7 +68,7 @@
                 <a href="https://www.eastrenfrewshire.gov.uk/media/8450/Digital-Strategy-2021-24/pdf/Digital_Strategy_2021-24.pdf?m=1668436901140" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:0.8rem; padding:0.35rem 0.75rem;">Digital Strategy 2021&ndash;24 (PDF) &#8599;</a>
                 <a href="https://eastrenfrewshire.gov.uk/media/12288/Digital-Transformation-Strategy-2025-30/pdf/Digital_Strategy_Summary_v2.pdf?m=1771513698300" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:0.8rem; padding:0.35rem 0.75rem;">Digital Strategy 2025&ndash;30 (PDF) &#8599;</a>
                 <a href="https://eastrenfrewshire.gov.uk/media/11861/Audit-and-Scrutiny-Committee-Item-10-25-September-2025/pdf/Audit_and_Scrutiny_Committee_Item_10_-_25_September_2025.pdf?m=1758044511803" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:0.8rem; padding:0.35rem 0.75rem;">Audit &amp; Scrutiny 2025 (PDF) &#8599;</a>
-                <a href="<?php echo $assetBase; ?>assets/media/ERC_Digital_Strategy.pptx" download class="btn btn-outline" style="font-size:0.8rem; padding:0.35rem 0.75rem;">Download PowerPoint</a>
+                <a href="<?php echo $assetBase; ?>media/ERC_Digital_Strategy.pptx" download class="btn btn-outline" style="font-size:0.8rem; padding:0.35rem 0.75rem;">Download PowerPoint</a>
             </div>
         </div>
     </div>
