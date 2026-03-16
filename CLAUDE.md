@@ -37,9 +37,34 @@ Key programmes:
 - **Housing Asset Management Plan (HAMP 2024–2026):** 3,141 units, EPC Band B by 2032, 171 new units by 2028
 - **Digital Telecare:** Transitioning 3,000 residents from analogue before 2025 national switch-off
 
+## Static Site
+
+This repo also contains a **GitHub Pages interview research portal** — pure static HTML, no build step.
+
+| Path | Role |
+|---|---|
+| `index.html` | Home / dashboard |
+| `presentation.html` | 13-minute interview presentation |
+| `history.html` | ERC digital transformation timeline |
+| `reports.html`, `resources.html`, `sector.html`, `best-practice.html`, `digital-direction.html`, `scotland-policy.html` | Thematic content pages |
+| `assets/css/style.css` | Single shared stylesheet (CSS custom properties for ERC design tokens) |
+| `assets/js/main.js` | Shared JavaScript |
+| `assets/media/` | Images, PDF, video |
+
+**Local preview:**
+```bash
+python3 -m http.server 8000
+# Open http://localhost:8000
+```
+
+**Navigation is duplicated across every `.html` file** — use find-and-replace when updating the nav or header.
+
+**Design tokens** are defined as CSS custom properties in `style.css` (e.g. `--erc-green: #006A51`). Use these variables rather than hardcoding colours.
+
 ## Working with These Files
 
 - `documents/strategic-notes.md` is the authoritative consolidated reference — start here for an overview
 - Most `documents/*.txt` files are thematic deep-dives extracted from the same source material; expect overlapping content
 - The `.csv` file contains structured progress/status data suitable for tables or analysis
 - PDF/PPTX are the original source documents; prefer the `.txt`/`.md` files for text extraction tasks
+- `documents/east-ren-digi-plans.txt` exists in the directory but is not yet listed in the key documents table above

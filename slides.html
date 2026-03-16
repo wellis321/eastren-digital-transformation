@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Interview Slides | ERC Housing Digital Transformation</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* ======================================================
+           SLIDE DECK — overrides & additions
+           ====================================================== */
+        html, body { height: 100%; overflow: hidden; margin: 0; }
+
+        /* Hide the main site nav in slide mode */
+        .site-header { display: none !important; }
+
+        /* Extra controls in topbar */
+        .topbar-slide-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.75rem;
+        }
+        .topbar-slide-controls a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .topbar-slide-controls a:hover { color: #fff; }
+        .topbar-divider { color: rgba(255,255,255,0.3); }
+
+        /* ---- Deck wrapper ---- */
+        .deck-wrapper {
+            position: fixed;
+            top: 42px; /* topbar height */
+            left: 0; right: 0; bottom: 0;
+            background: #0d1f18;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Progress bar */
+        .deck-progress {
+            height: 3px;
+            background: rgba(255,255,255,0.15);
+            flex-shrink: 0;
+        }
+        .deck-progress-fill {
+            height: 100%;
+            background: #00c988;
+            transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        /* Slides viewport */
+        .slides-viewport {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Individual slide */
+        .slide {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.38s;
+            opacity: 0;
+        }
+        .slide.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .slide.exit-left {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        /* Slide header strip */
+        .sl-header {
+            background: var(--erc-green, #006A51);
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            gap: 1rem;
+        }
+        .sl-header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 0;
+        }
+        .sl-num {
+            width: 2rem; height: 2rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .sl-title {
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin: 0;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sl-timing {
+            font-size: 0.75rem;
+            opacity: 0.72;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* Slide body */
+        .sl-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem 2rem;
+        }
+
+        /* Slide footer / nav */
+        .deck-footer {
+            background: #0d1f18;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.55rem 1.2rem;
+            flex-shrink: 0;
+            gap: 1rem;
+        }
+        .deck-nav-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            border-radius: 6px;
+            padding: 0.35rem 0.9rem;
+            font-size: 0.82rem;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .deck-nav-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.6);
+        }
+        .deck-nav-btn:disabled { opacity: 0.3; cursor: default; }
+        .deck-counter {
+            color: rgba(255,255,255,0.65);
+            font-size: 0.8rem;
+            letter-spacing: 0.03em;
+        }
+        .deck-dots {
+            display: flex;
+            gap: 0.35rem;
+            align-items: center;
+        }
+        .deck-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .deck-dot.active {
+            background: #00c988;
+            transform: scale(1.3);
+        }
+
+        /* ---- Content helpers ---- */
+
+        /* Two-column grid */
+        .s-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        .s-cols.three { grid-template-columns: 1fr 1fr 1fr; }
+
+        .s-col-head {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--erc-green, #006A51);
+            margin: 0 0 0.65rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--erc-green, #006A51);
+        }
+
+        .s-col ul {
+            margin: 0;
+            padding-left: 1.15rem;
+        }
+        .s-col li {
+            font-size: 0.875rem;
+            line-height: 1.55;
+            margin-bottom: 0.45rem;
+            color: #333;
+        }
+        .s-col li strong { color: #1a3a2f; }
+
+        /* Quote / headline */
+        .s-quote {
+            background: linear-gradient(135deg, #f0f9f5, #e6f5ef);
+            border-left: 4px solid var(--erc-green, #006A51);
+            padding: 1rem 1.4rem;
+            font-style: italic;
+            font-size: 0.98rem;
+            line-height: 1.6;
+            color: #1a3a2f;
+            margin-bottom: 1.4rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* KPI boxes */
+        .s-kpis {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.4rem;
+        }
+        .s-kpi {
+            background: var(--erc-green, #006A51);
+            color: #fff;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .s-kpi-val {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+        .s-kpi-label {
+            font-size: 0.72rem;
+            opacity: 0.85;
+            margin-top: 0.4rem;
+            line-height: 1.3;
+        }
+
+        /* Phase table */
+        .s-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.83rem;
+        }
+        .s-table th {
+            background: var(--erc-green, #006A51);
+            color: #fff;
+            padding: 0.55rem 0.8rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .s-table td {
+            padding: 0.55rem 0.8rem;
+            border-bottom: 1px solid #e8e8e8;
+            vertical-align: top;
+            color: #333;
+        }
+        .s-table tr:nth-child(even) td { background: #f7faf9; }
+        .ph-badge {
+            display: inline-block;
+            background: var(--erc-green, #006A51);
+            color: #fff;
+            border-radius: 4px;
+            padding: 0.1rem 0.45rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .milestone-tick {
+            color: var(--erc-green, #006A51);
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        /* Gantt */
+        .gantt-wrap { margin-top: 1.2rem; }
+        .gantt-months {
+            display: grid;
+            grid-template-columns: 9rem 1fr;
+            gap: 0.5rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.7rem;
+            color: #888;
+        }
+        .gantt-months-track {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 0 0.2rem;
+        }
+        .gantt-row {
+            display: grid;
+            grid-template-columns: 9rem 1fr;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+            align-items: center;
+        }
+        .gantt-label {
+            font-size: 0.77rem;
+            color: #333;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .gantt-track {
+            position: relative;
+            height: 20px;
+            background: #e8eeeb;
+            border-radius: 4px;
+        }
+        .gantt-bar {
+            position: absolute;
+            top: 0; bottom: 0;
+            background: var(--erc-green, #006A51);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 0.4rem;
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 600;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .gantt-milestone {
+            margin-top: 0.5rem;
+            font-size: 0.72rem;
+            color: #555;
+            line-height: 1.6;
+        }
+        .gantt-milestone span {
+            display: inline-block;
+            background: #e8f5f0;
+            border: 1px solid #b8dfd0;
+            color: #006A51;
+            border-radius: 12px;
+            padding: 0.1rem 0.5rem;
+            margin: 0.1rem 0.2rem;
+            font-weight: 600;
+        }
+
+        /* Progress bars */
+        .s-prog {
+            margin-bottom: 1rem;
+        }
+        .s-prog-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+        .s-prog-label strong { color: var(--erc-green, #006A51); font-size: 0.9rem; }
+        .s-prog-track {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .s-prog-fill {
+            height: 100%;
+            background: var(--erc-green, #006A51);
+            border-radius: 5px;
+        }
+
+        /* Callout */
+        .s-callout {
+            background: #f0f9f5;
+            border: 1px solid #c0dfd0;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.83rem;
+            color: #1a3a2f;
+            margin-top: 1rem;
+        }
+        .s-callout strong { color: #006A51; }
+        .s-callout.warn {
+            background: #fff8ee;
+            border-color: #f0d090;
+            color: #6b4a0a;
+        }
+        .s-callout.warn strong { color: #a06010; }
+
+        /* Board grid */
+        .s-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .s-board-item {
+            background: #f0f9f5;
+            border: 1px solid #c0dfd0;
+            border-radius: 6px;
+            padding: 0.55rem 0.7rem;
+            font-size: 0.8rem;
+            color: #1a3a2f;
+        }
+        .s-board-item .role {
+            font-weight: 700;
+            color: var(--erc-green, #006A51);
+            font-size: 0.75rem;
+            display: block;
+        }
+
+        /* Title slide */
+        .slide-title-bg {
+            flex: 1;
+            background: linear-gradient(140deg, #004d3a 0%, #006A51 50%, #007a5e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 3rem;
+            color: #fff;
+        }
+        .slide-title-bg .leaves {
+            height: 44px;
+            margin-bottom: 1.5rem;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+        }
+        .slide-title-bg h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin: 0 0 0.75rem;
+            color: #fff;
+            max-width: 720px;
+            line-height: 1.2;
+        }
+        .slide-title-bg .subtitle {
+            font-size: 1rem;
+            opacity: 0.78;
+            margin: 0 0 2rem;
+        }
+        .slide-title-bg .meta {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.85rem;
+            opacity: 0.68;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 1.5rem;
+        }
+
+        /* Closing slide accent */
+        .s-close-quote {
+            background: var(--erc-green, #006A51);
+            color: #fff;
+            padding: 1.1rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.98rem;
+            font-style: italic;
+            line-height: 1.65;
+            margin-bottom: 1.4rem;
+        }
+
+        /* Timing summary chips */
+        .timing-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .timing-chip {
+            background: #f0f9f5;
+            border: 1px solid #c0dfd0;
+            border-radius: 20px;
+            padding: 0.25rem 0.8rem;
+            font-size: 0.78rem;
+            color: #1a3a2f;
+        }
+        .timing-chip strong { color: var(--erc-green, #006A51); }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .s-cols { grid-template-columns: 1fr; gap: 1rem; }
+            .s-kpis { grid-template-columns: 1fr 1fr; }
+            .sl-title { font-size: 1.1rem; }
+            .slide-title-bg h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="site-topbar">
+    <a href="index.html" class="topbar-left" aria-label="ERC Research Portal — Home">
+        <img src="assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-slide-controls">
+        <a href="presentation.html">Document view</a>
+        <span class="topbar-divider">|</span>
+        <a href="index.html">Portal home</a>
+        <span class="topbar-divider">|</span>
+        <span id="current-date" style="color: rgba(255,255,255,0.5);"></span>
+    </div>
+</div>
+
+<!-- DECK WRAPPER -->
+<div class="deck-wrapper">
+
+    <!-- Progress bar -->
+    <div class="deck-progress">
+        <div class="deck-progress-fill" id="progressFill" style="width:10%;"></div>
+    </div>
+
+    <!-- Slides -->
+    <div class="slides-viewport" id="slidesViewport">
+
+
+        <!-- ================================================
+             SLIDE 1: TITLE
+             ================================================ -->
+        <div class="slide active" data-index="0">
+            <div class="slide-title-bg">
+                <img src="assets/media/leaves.png" alt="ERC" class="leaves">
+                <p class="subtitle" style="margin:0 0 0.4rem;">Interview Presentation &mdash; Housing Digital Transformation Lead</p>
+                <h1>Leading Housing Repairs<br>Digital Transformation</h1>
+                <p class="subtitle">A 13-minute structured presentation for East Renfrewshire Council</p>
+                <div class="meta">
+                    <span>William Ellis</span>
+                    <span>17 March 2026 &nbsp;&bull;&nbsp; 11:30&ndash;12:30</span>
+                    <span>8 sections &nbsp;&bull;&nbsp; 13 minutes</span>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================================================
+             SLIDE 2: INTRODUCTION & VISION  (1 min)
+             ================================================ -->
+        <div class="slide" data-index="1">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">1</span>
+                    <h2 class="sl-title">Introduction &amp; Vision</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; 1 minute</span>
+            </div>
+            <div class="sl-body">
+                <div class="s-quote">
+                    &ldquo;I will deliver measurable improvements in repairs productivity and tenant experience within 20 months, through a phased, risk-managed programme governed by clear accountability and driven by resident co-design.&rdquo;
+                </div>
+                <div class="s-cols">
+                    <div class="s-col">
+                        <p class="s-col-head">Personal Framing</p>
+                        <ul>
+                            <li>Digital transformation leader bringing structured, accountable delivery to complex public sector programmes</li>
+                            <li>Track record translating strategy into operational reality through phased, user-centred delivery</li>
+                            <li>Experience bridging technical delivery teams, operational services, and senior stakeholders</li>
+                            <li>Committed to genuine co-design &mdash; not just consultation</li>
+                            <li>MSP programme management thinking within an agile delivery model</li>
+                        </ul>
+                    </div>
+                    <div class="s-col">
+                        <p class="s-col-head">The Opportunity</p>
+                        <ul>
+                            <li>Housing Repairs is a high-frequency, high-impact service &mdash; the most tangible touchpoint between council and tenant</li>
+                            <li>Getting it right transforms tenant trust; getting it wrong is visible and damaging</li>
+                            <li>ERC already has strong foundations: M365, Goss CXM, SAtSD capability, 30+ Digital Champions, MAP governance</li>
+                            <li>This programme sits at the intersection of tenant experience, workforce productivity, and legacy modernisation</li>
+                            <li>National policy tailwinds: <em>Housing to 2040</em>, Digital Scotland, mygov.scot platform</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================================================
+             SLIDE 3: UNDERSTANDING THE CHALLENGE  (2 min)
+             ================================================ -->
+        <div class="slide" data-index="2">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">2</span>
+                    <h2 class="sl-title">Understanding the Challenge</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; 2 minutes</span>
+            </div>
+            <div class="sl-body">
+                <div class="s-cols">
+                    <div class="s-col">
+                        <p class="s-col-head">&#x26A0; Current State Pain Points</p>
+                        <ul>
+                            <li><strong>Legacy systems:</strong> Housing management not integrated with repairs scheduling or mobile tools; rekeying data between systems</li>
+                            <li><strong>No tenant self-service:</strong> Repairs must be reported by phone or in person; no online portal or status tracking</li>
+                            <li><strong>Paper-heavy processes:</strong> Job cards, inspection reports, compliance records all manual</li>
+                            <li><strong>Limited mobile access:</strong> Field staff cannot update job status in real time; updates batch-processed end of day</li>
+                            <li><strong>Reactive maintenance:</strong> Limited use of sensor data or demand analytics to predict failures</li>
+                            <li><strong>Fragmented data:</strong> Tenant, property, and repairs data held in separate systems; no &ldquo;golden record&rdquo; view</li>
+                            <li><strong>Scheduling inefficiency:</strong> Manual job allocation; no AI-assisted route or trade optimisation</li>
+                        </ul>
+                    </div>
+                    <div class="s-col">
+                        <p class="s-col-head">&#x2713; ERC&rsquo;s Existing Digital Foundations</p>
+                        <ul>
+                            <li><strong>Microsoft 365:</strong> 2,000+ staff since 2020; Teams, Power BI already embedded</li>
+                            <li><strong>Goss CXM:</strong> Customer experience platform in place; digital forms migration underway</li>
+                            <li><strong>MyEastRen portal:</strong> mygov.scot SSO citizen portal live; tenant account infrastructure exists</li>
+                            <li><strong>Digital Champions:</strong> 30+ champions across departments; 100+ staff trained in SAtSD with Scottish Digital Academy</li>
+                            <li><strong>IoT precedent:</strong> 50 housing properties fitted with humidity/temperature sensors &mdash; proven technology foundation</li>
+                            <li><strong>MAP Programme:</strong> Modern, Ambitious Programme governance already established</li>
+                            <li><strong>HAMP 2024&ndash;26:</strong> Digital Repairs project already scoped within the Housing Asset Management Plan</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="s-callout">
+                    <strong>Key Insight &mdash; Build on What Exists:</strong> ERC is not starting from zero. The strategic foundations, governance structures, technical platforms and digital skills are in place. The task is to harness these into a coherent programme with clear accountability, tenant involvement, and measurable outcomes.
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================================================
+             SLIDE 4: VISION & SUCCESS OUTCOMES  (1.5 min)
+             ================================================ -->
+        <div class="slide" data-index="3">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">3</span>
+                    <h2 class="sl-title">Vision &amp; Success Outcomes</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; 1.5 minutes</span>
+            </div>
+            <div class="sl-body">
+                <div class="s-kpis">
+                    <div class="s-kpi">
+                        <div class="s-kpi-val">30%+</div>
+                        <div class="s-kpi-label">Repairs reported digitally by Month 18</div>
+                    </div>
+                    <div class="s-kpi">
+                        <div class="s-kpi-val">+10%</div>
+                        <div class="s-kpi-label">First-time fix rate improvement vs baseline</div>
+                    </div>
+                    <div class="s-kpi">
+                        <div class="s-kpi-val">1 day</div>
+                        <div class="s-kpi-label">Admin time saved per housing officer per week</div>
+                    </div>
+                    <div class="s-kpi">
+                        <div class="s-kpi-val">+15pts</div>
+                        <div class="s-kpi-label">Tenant satisfaction with repairs service</div>
+                    </div>
+                </div>
+                <div class="s-cols">
+                    <div class="s-col">
+                        <p class="s-col-head">&#x1F3E0; For Tenants</p>
+                        <ul>
+                            <li>Report a repair online, 24/7, in under 3 minutes &mdash; from any device</li>
+                            <li>Real-time status updates at every stage of the job lifecycle</li>
+                            <li>Choose appointment slots; receive automated reminders</li>
+                            <li>First-time fix improvement: right trade, right parts, right time</li>
+                            <li>Post-repair satisfaction survey; results visible to service managers</li>
+                            <li>Phone and in-person channels retained for digitally excluded tenants</li>
+                            <li>WCAG 2.1 AA minimum; translated into community languages where needed</li>
+                        </ul>
+                    </div>
+                    <div class="s-col">
+                        <p class="s-col-head">&#x1F477; For Staff</p>
+                        <ul>
+                            <li>Mobile-enabled field workforce: job details, property history, compliance records on device</li>
+                            <li>Automated scheduling optimisation: no more manual job allocation spreadsheets</li>
+                            <li>No rekeying: data flows from tenant report through to job completion without duplication</li>
+                            <li>Reduced admin burden: housing officers freed from routine chasing and manual reporting</li>
+                            <li>Real-time dashboard: supervisors see live job status, SLA performance, demand levels</li>
+                            <li>Electronic job completion and compliance sign-off</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================================================
+             SLIDE 5: 20-MONTH DELIVERY PLAN — PHASES  (3 min)
+             ================================================ -->
+        <div class="slide" data-index="4">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">4</span>
+                    <h2 class="sl-title">The 20-Month Delivery Plan &mdash; Phases</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; 3 minutes</span>
+            </div>
+            <div class="sl-body">
+                <table class="s-table">
+                    <thead>
+                        <tr>
+                            <th style="width:12rem;">Phase</th>
+                            <th style="width:6rem;">Months</th>
+                            <th>Key Activities</th>
+                            <th style="width:14rem;">Milestone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="ph-badge">Phase 1</span> Mobilisation &amp; Discovery</td>
+                            <td>1&ndash;2</td>
+                            <td>Stakeholder mapping; current state audit of systems, processes &amp; data; tenant research &amp; digital inclusion baseline; governance established; benefits baseline captured; risk register initiated</td>
+                            <td class="milestone-tick">Discovery Report &amp; Project Charter signed off</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ph-badge">Phase 2</span> Foundation &amp; Procurement</td>
+                            <td>3&ndash;5</td>
+                            <td>Housing ICT procurement (Public Contracts Scotland); SAtSD user research with tenants &amp; staff; requirements specification; integration architecture design; GDPR review; PROSCI ADKAR change management strategy agreed</td>
+                            <td class="milestone-tick">Contract awarded; requirements signed off; Change Management Plan approved</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ph-badge">Phase 3</span> Build &amp; Configure</td>
+                            <td>6&ndash;11</td>
+                            <td>Housing system configuration; staff mobile access; tenant portal alpha build (sprints); Goss CXM integration; data migration planning; staff training developed; Digital Champions briefed; WCAG 2.1 AA accessibility audit</td>
+                            <td class="milestone-tick">Alpha demo to steering group; sign-off to proceed to pilot</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ph-badge">Phase 4</span> Pilot &amp; Iterate</td>
+                            <td>12&ndash;14</td>
+                            <td>Controlled pilot with subset of tenants &amp; repair types; user testing with tenant panel; iterative improvements (sprint cycles); staff training begins for pilot cohort; benefits tracking begins; incident management testing</td>
+                            <td class="milestone-tick">Beta sign-off; Pilot Lessons Report to Programme Board</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ph-badge">Phase 5</span> Full Rollout</td>
+                            <td>15&ndash;18</td>
+                            <td>Full tenant portal launch to all 3,141 households; all field staff equipped &amp; trained on mobile app; RPA automations live; tenant communications campaign; digital inclusion support activated; channel shift monitoring begins</td>
+                            <td class="milestone-tick">Go-live; channel shift target tracking confirmed; all staff live</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ph-badge">Phase 6</span> Stabilise &amp; Realise</td>
+                            <td>19&ndash;20</td>
+                            <td>Hypercare support; KPI benefits measurement vs baselines; lessons learned workshop; BAU handover with documentation &amp; support model; next phase planning: IoT expansion, AI triage, predictive maintenance</td>
+                            <td class="milestone-tick">Benefits Realisation Report published; programme closed; BAU handover signed off</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- ================================================
+             SLIDE 6: PROGRAMME TIMELINE (GANTT)
+             ================================================ -->
+        <div class="slide" data-index="5">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">4</span>
+                    <h2 class="sl-title">The 20-Month Delivery Plan &mdash; Timeline</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; 3 minutes (cont.)</span>
+            </div>
+            <div class="sl-body">
+                <div class="gantt-wrap">
+                    <div class="gantt-row">
+                        <div class="gantt-label" style="color:#888; font-size:0.7rem;">Month</div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#888; padding:0 2px;">
+                            <span>1</span><span>3</span><span>5</span><span>7</span><span>9</span><span>11</span><span>13</span><span>15</span><span>17</span><span>19</span><span>20</span>
+                        </div>
+                    </div>
+                    <!-- Phase 1: months 1-2 → left 0%, width 10% -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">Phase 1 &mdash; Mobilise</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar" style="left:0%;width:10%;">Months 1&ndash;2</div>
+                        </div>
+                    </div>
+                    <!-- Phase 2: months 3-5 → left 10%, width 15% -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">Phase 2 &mdash; Procure</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar" style="left:10%;width:15%; background:#008062;">Months 3&ndash;5</div>
+                        </div>
+                    </div>
+                    <!-- Phase 3: months 6-11 → left 25%, width 30% -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">Phase 3 &mdash; Build</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar" style="left:25%;width:30%;">Months 6&ndash;11</div>
+                        </div>
+                    </div>
+                    <!-- Phase 4: months 12-14 → left 55%, width 15% -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">Phase 4 &mdash; Pilot</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar" style="left:55%;width:15%; background:#008062;">Months 12&ndash;14</div>
+                        </div>
+                    </div>
+                    <!-- Phase 5: months 15-18 → left 70%, width 20% -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">Phase 5 &mdash; Rollout</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar" style="left:70%;width:20%;">Months 15&ndash;18</div>
+                        </div>
+                    </div>
+                    <!-- Phase 6: months 19-20 → left 90%, width 10% -->
+                    <div class="gantt-row">
+                        <div class="gantt-label">Phase 6 &mdash; Stabilise</div>
+                        <div class="gantt-track">
+                            <div class="gantt-bar" style="left:90%;width:10%; background:#008062;">19&ndash;20</div>
+                        </div>
+                    </div>
+
+                    <div class="gantt-milestone">
+                        Key milestones:
+                        <span>M2: Discovery Report</span>
+                        <span>M5: Contract Award</span>
+                        <span>M11: Alpha Demo</span>
+                        <span>M14: Beta Sign-off</span>
+                        <span>M18: Go-live</span>
+                        <span>M20: Benefits Realisation Report</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================================================
+             SLIDE 7: GOVERNANCE & PROGRAMME MANAGEMENT  (2 min)
+             ================================================ -->
+        <div class="slide" data-index="6">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">5</span>
+                    <h2 class="sl-title">Governance &amp; Programme Management</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; 2 minutes</span>
+            </div>
+            <div class="sl-body">
+                <p class="s-col-head" style="margin-bottom:0.75rem;">Programme Board Composition</p>
+                <div class="s-board">
+                    <div class="s-board-item"><span class="role">Chair / SRO</span>Head of Housing</div>
+                    <div class="s-board-item"><span class="role">Technical</span>Housing ICT Manager</div>
+                    <div class="s-board-item"><span class="role">Delivery</span>Digital Transformation Lead</div>
+                    <div class="s-board-item"><span class="role">Finance</span>Benefits &amp; Budget Oversight</div>
+                    <div class="s-board-item"><span class="role">People</span>Change Manager (ADKAR)</div>
+                    <div class="s-board-item"><span class="role">Voice</span>Tenant Representative</div>
+                    <div class="s-board-item"><span class="role">Procurement</span>Phase 2 representative</div>
+                    <div class="s-board-item"><span class="role">Comms</span>Communications Lead</div>
+                </div>
+                <div class="s-cols">
+                    <div class="s-col">
+                        <p class="s-col-head">Cadence</p>
+                        <ul>
+                            <li><strong>Daily:</strong> delivery team stand-up (sprint model)</li>
+                            <li><strong>Weekly:</strong> risk register review; sprint review</li>
+                            <li><strong>Fortnightly:</strong> steering group &mdash; programme highlights report</li>
+                            <li><strong>Monthly:</strong> Programme Board with full RAG dashboard</li>
+                            <li><strong>Quarterly:</strong> benefits tracking presentation to senior leadership</li>
+                        </ul>
+                    </div>
+                    <div class="s-col">
+                        <p class="s-col-head">Management Disciplines</p>
+                        <ul>
+                            <li><strong>Benefits owner:</strong> Named individual accountable for benefits realisation &mdash; separate from programme manager</li>
+                            <li><strong>Exception protocol:</strong> Clear trigger for escalation outside normal cycle</li>
+                            <li><strong>Change control:</strong> Formal request process; scope changes assessed on time, cost, benefits before approval</li>
+                            <li><strong>Risk register:</strong> Weekly review; owner, likelihood, impact, and mitigation for each risk</li>
+                            <li><strong>Monthly retros:</strong> Lessons learned embedded throughout &mdash; not just at close</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="s-callout warn">
+                    <strong>Sector lesson (Audit Scotland):</strong> Most council digital programme failures stem from unclear ownership, benefits not baselined before delivery, and change management treated as an afterthought. This programme addresses all three from day one.
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================================================
+             SLIDE 8: IMPLEMENTATION APPROACH  (1.5 min)
+             ================================================ -->
+        <div class="slide" data-index="7">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">6</span>
+                    <h2 class="sl-title">Implementation Approach</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; 1.5 minutes</span>
+            </div>
+            <div class="sl-body">
+                <div class="s-cols">
+                    <div class="s-col">
+                        <p class="s-col-head">Methodology</p>
+                        <ul>
+                            <li><strong>Agile within programme governance:</strong> Two-week sprint cycles for build phases; MSP-style oversight at board level</li>
+                            <li><strong>SAtSD for all tenant-facing elements:</strong> Discover &rarr; Define &rarr; Develop &rarr; Test &rarr; Implement applied rigorously to the tenant portal</li>
+                            <li><strong>User research throughout:</strong> Real tenants recruited in Phase 1 &mdash; not assumed requirements</li>
+                            <li><strong>Iterative prototyping:</strong> Clickable prototypes tested before build; no &ldquo;big bang&rdquo; delivery</li>
+                            <li><strong>Phased gates:</strong> Alpha &rarr; Beta &rarr; Pilot &rarr; Full launch; each gate requires sign-off before proceeding</li>
+                        </ul>
+                    </div>
+                    <div class="s-col">
+                        <p class="s-col-head">Leveraging ERC&rsquo;s Existing Assets</p>
+                        <ul>
+                            <li><strong>Goss CXM:</strong> Integrate repairs portal with existing CXM for a unified service request view</li>
+                            <li><strong>mygov.scot SSO:</strong> Tenants log in with existing national account &mdash; no new password; builds on MyEastRen investment</li>
+                            <li><strong>Microsoft 365:</strong> Power BI for KPI dashboards; Teams for delivery collaboration; Power Automate for workflow automations</li>
+                            <li><strong>Digital Champions:</strong> Peer-to-peer change agents for staff adoption; one champion assigned per workstream</li>
+                            <li><strong>Scottish Digital Academy:</strong> Continued SAtSD and user research skills development in housing staff during the programme</li>
+                            <li><strong>IoT foundation:</strong> 50-property sensor pilot as proof of concept for proactive maintenance expansion</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================================================
+             SLIDE 9: BENEFITS REALISATION  (1.5 min)
+             ================================================ -->
+        <div class="slide" data-index="8">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">7</span>
+                    <h2 class="sl-title">Benefits Realisation</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; 1.5 minutes</span>
+            </div>
+            <div class="sl-body">
+                <div class="s-cols">
+                    <div class="s-col">
+                        <p class="s-col-head">Benefits Framework</p>
+                        <ul>
+                            <li><strong>Baseline at Month 2:</strong> Current state metrics captured before any changes &mdash; first-time fix rate, phone vs digital channel split, admin time per officer, tenant satisfaction score</li>
+                            <li><strong>Leading indicators:</strong> Channel shift %, mobile app adoption, portal registration rate &mdash; tracked monthly from go-live</li>
+                            <li><strong>Lagging indicators:</strong> Tenant satisfaction, cost per repair, first-time fix &mdash; tracked quarterly vs baseline</li>
+                            <li><strong>Benefits owner:</strong> Named at outset; accountable to Programme Board; separate from delivery lead</li>
+                            <li><strong>Formal reviews:</strong> Month 12 interim report; Month 20 final Benefits Realisation Report</li>
+                            <li><strong>Sector benchmarking:</strong> Results compared against Housemark data; published transparently</li>
+                        </ul>
+                    </div>
+                    <div class="s-col">
+                        <p class="s-col-head">Target Outcomes by Month 20</p>
+                        <div class="s-prog">
+                            <div class="s-prog-label"><span>Digital channel shift &mdash; repairs reported online</span><strong>30%+</strong></div>
+                            <div class="s-prog-track"><div class="s-prog-fill" style="width:30%;"></div></div>
+                        </div>
+                        <div class="s-prog">
+                            <div class="s-prog-label"><span>First-time fix rate improvement vs baseline</span><strong>+10%</strong></div>
+                            <div class="s-prog-track"><div class="s-prog-fill" style="width:40%;"></div></div>
+                        </div>
+                        <div class="s-prog">
+                            <div class="s-prog-label"><span>Tenant satisfaction improvement</span><strong>+15 pts</strong></div>
+                            <div class="s-prog-track"><div class="s-prog-fill" style="width:55%;"></div></div>
+                        </div>
+                        <div class="s-prog">
+                            <div class="s-prog-label"><span>Admin time saved per housing officer per week</span><strong>1 full day</strong></div>
+                            <div class="s-prog-track"><div class="s-prog-fill" style="width:65%;"></div></div>
+                        </div>
+                        <div class="s-callout" style="margin-top:0.75rem; font-size:0.8rem;">
+                            <strong>Power BI Dashboard:</strong> Monthly benefits tracking built in Power BI, shared live with Programme Board and senior leadership &mdash; no end-of-year surprises.
+                        </div>
+                        <p style="font-size:0.72rem; color:#888; margin:0.5rem 0 0;">Bar widths are illustrative targets; actual baselines set at Phase 1.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================================================
+             SLIDE 10: CLOSING  (0.5 min)
+             ================================================ -->
+        <div class="slide" data-index="9">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">8</span>
+                    <h2 class="sl-title">Closing &mdash; Why I Am Ready to Lead This</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; 0.5 minutes</span>
+            </div>
+            <div class="sl-body">
+                <div class="s-close-quote">
+                    &ldquo;ERC has the strategy, the foundations, the platform, and the people. What this programme needs now is a delivery leader who can hold all of that together, keep it moving, and make sure benefits are real &mdash; not just reported. I am ready to lead this from day one.&rdquo;
+                </div>
+                <div class="s-cols">
+                    <div class="s-col">
+                        <p class="s-col-head">Confidence in ERC</p>
+                        <ul>
+                            <li>MAP Programme governance already established &mdash; programme has a home</li>
+                            <li>30+ Digital Champions and 100+ SAtSD-trained staff are a real asset</li>
+                            <li>MyEastRen portal and Goss CXM remove the need to build tenant infrastructure from scratch</li>
+                            <li>IoT pilot proves ERC is willing to innovate &mdash; not just talk about it</li>
+                            <li>HAMP 2024&ndash;26 shows Housing leadership has already scoped the need &mdash; this is not a speculative project</li>
+                        </ul>
+                    </div>
+                    <div class="s-col">
+                        <p class="s-col-head">My Personal Commitment</p>
+                        <ul>
+                            <li><strong>Rigorous delivery:</strong> Milestones are milestones; risks are managed, not hidden; red is red</li>
+                            <li><strong>Transparent reporting:</strong> Programme Board gets accurate, honest dashboards</li>
+                            <li><strong>Genuine tenant-centred design:</strong> Real users, real testing, real feedback</li>
+                            <li><strong>Staff with us, not done to them:</strong> Housing officers and repairs staff involved, not managed around</li>
+                            <li><strong>Benefits that stick:</strong> Handover to BAU with capability and confidence to sustain what we build</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="s-callout" style="margin-top:1rem;">
+                    <strong>Total: 13 Minutes</strong> &mdash;
+                    <div class="timing-chips">
+                        <span class="timing-chip">Slides 1&ndash;3: <strong>4.5 min</strong> &mdash; context, challenge, vision</span>
+                        <span class="timing-chip">Slide 4: <strong>3 min</strong> &mdash; delivery plan</span>
+                        <span class="timing-chip">Slides 5&ndash;7: <strong>5 min</strong> &mdash; governance, approach, benefits</span>
+                        <span class="timing-chip">Slide 8: <strong>0.5 min</strong> &mdash; close</span>
+                        <span class="timing-chip">+ 5&ndash;10 min panel questions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /slides-viewport -->
+
+    <!-- Footer nav -->
+    <div class="deck-footer">
+        <button class="deck-nav-btn" id="prevBtn" onclick="prevSlide()" disabled>&#8592; Previous</button>
+        <div style="display:flex; align-items:center; gap:1rem;">
+            <div class="deck-dots" id="dotsContainer"></div>
+            <span class="deck-counter" id="counter">1 / 10</span>
+        </div>
+        <button class="deck-nav-btn" id="nextBtn" onclick="nextSlide()">Next &#8594;</button>
+    </div>
+
+</div><!-- /deck-wrapper -->
+
+<script src="assets/js/main.js"></script>
+<script>
+(function () {
+    var slides = document.querySelectorAll('.slide');
+    var total = slides.length;
+    var current = 0;
+
+    var prevBtn = document.getElementById('prevBtn');
+    var nextBtn = document.getElementById('nextBtn');
+    var counter = document.getElementById('counter');
+    var progressFill = document.getElementById('progressFill');
+    var dotsContainer = document.getElementById('dotsContainer');
+
+    // Build dots
+    for (var i = 0; i < total; i++) {
+        var dot = document.createElement('button');
+        dot.className = 'deck-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        dot.dataset.index = i;
+        dot.addEventListener('click', function () { goTo(parseInt(this.dataset.index)); });
+        dotsContainer.appendChild(dot);
+    }
+
+    function goTo(idx) {
+        if (idx < 0 || idx >= total) return;
+        var dir = idx > current ? 1 : -1;
+
+        slides[current].classList.remove('active');
+        if (dir > 0) slides[current].classList.add('exit-left');
+
+        // Force reflow
+        slides[idx].getBoundingClientRect();
+        slides[idx].style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+        slides[idx].style.opacity = '0';
+
+        slides[current].style.transform = '';
+        slides[current].style.opacity = '';
+
+        requestAnimationFrame(function () {
+            slides[idx].classList.add('active');
+            slides[idx].style.transform = '';
+            slides[idx].style.opacity = '';
+
+            setTimeout(function () {
+                slides[current].classList.remove('exit-left');
+                slides[current].style.transform = '';
+                slides[current].style.opacity = '';
+                current = idx;
+                updateUI();
+            }, 380);
+        });
+
+        current = idx;
+        updateUI();
+    }
+
+    function updateUI() {
+        counter.textContent = (current + 1) + ' / ' + total;
+        progressFill.style.width = (((current + 1) / total) * 100) + '%';
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current === total - 1;
+
+        var dots = dotsContainer.querySelectorAll('.deck-dot');
+        dots.forEach(function (d, i) {
+            d.classList.toggle('active', i === current);
+        });
+    }
+
+    function nextSlide() { goTo(current + 1); }
+    function prevSlide() { goTo(current - 1); }
+
+    // Expose globally for onclick
+    window.nextSlide = nextSlide;
+    window.prevSlide = prevSlide;
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            prevSlide();
+        }
+    });
+
+    // Touch / swipe
+    var touchStartX = 0;
+    document.addEventListener('touchstart', function (e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+        var dx = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(dx) > 50) { dx > 0 ? nextSlide() : prevSlide(); }
+    });
+
+    updateUI();
+})();
+</script>
+</body>
+</html>
