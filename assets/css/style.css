@@ -75,6 +75,16 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Inline content links: clearly visible as links (colour + underline) */
+a.link-visible {
+    color: var(--erc-green);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+a.link-visible:hover {
+    color: var(--erc-green-dark);
+}
+
 img {
     max-width: 100%;
     height: auto;
