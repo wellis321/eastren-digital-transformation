@@ -664,20 +664,20 @@
         var element = document.getElementById('pdf-content');
         if (!element || typeof html2pdf === 'undefined') return;
         var btns = [document.getElementById('pdf-btn'), document.getElementById('pdf-btn-bottom')];
-        btns.forEach(function(b) { if (b) { b.disabled = true; b.textContent = 'Generating…'; } });
+        btns.forEach(function(b) { if (b) { b.disabled = true; b.textContent = 'Generating… (30–60s)'; } });
         var opt = {
             margin: 12,
             filename: 'ERC-Housing-Digital-Transformation-Presentation.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
+            image: { type: 'jpeg', quality: 0.92 },
+            html2canvas: { scale: 1.5, useCORS: true, logging: false, removeContainer: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
             pagebreak: {
-                mode: ['avoid-all', 'css'],
-                avoid: ['p', 'li', '.callout', '.pres-headline', '.kpi-box', '.pres-section-header', '.progress-container', 'h2', 'h3', 'h4']
+                mode: ['css'],
+                avoid: ['.pres-section-header', 'h2', 'h3', 'h4']
             }
         };
         function resetBtns() { btns.forEach(function(b) { if (b) { b.disabled = false; b.innerHTML = pdfBtnSvg; } }); }
-        html2pdf().set(opt).from(element).save().then(resetBtns).catch(resetBtns);
+        html2pdf().set(opt).from(element).save().then(resetBtns).catch(function(err) { console.error('PDF error:', err); resetBtns(); });
     }
     document.getElementById('pdf-btn') && document.getElementById('pdf-btn').addEventListener('click', downloadPDF);
     document.getElementById('pdf-btn-bottom') && document.getElementById('pdf-btn-bottom').addEventListener('click', downloadPDF);
