@@ -1237,6 +1237,40 @@ tbody tr:nth-child(even):hover {
     text-align: center;
 }
 
+/* Phase cards (Section 4) */
+.phase-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+.phase-card {
+    background: var(--erc-surface-alt);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--erc-border);
+    padding: 1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+}
+.phase-card-header {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #003875;
+    margin-bottom: 0.15rem;
+}
+.phase-card-meta {
+    font-size: 0.78rem;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+.phase-card ul {
+    font-size: 0.8rem;
+    padding-left: 1.1rem;
+    margin: 0;
+}
+.phase-card--full {
+    grid-column: 1 / -1;
+}
+
 .kpi-value {
     font-size: 1.5rem;
     font-weight: 800;
@@ -1852,7 +1886,7 @@ tbody tr:nth-child(even):hover {
     }
 
     .pres-section-header {
-        background: #003875 !important;
+        background: #006A51 !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
@@ -1862,7 +1896,7 @@ tbody tr:nth-child(even):hover {
     }
 
     .hero {
-        background: #003875 !important;
+        background: #006A51 !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
@@ -1872,7 +1906,7 @@ tbody tr:nth-child(even):hover {
     }
 
     a {
-        color: #003875;
+        color: #006A51;
         text-decoration: none;
     }
 
@@ -1881,7 +1915,7 @@ tbody tr:nth-child(even):hover {
     }
 
     thead {
-        background: #003875 !important;
+        background: #006A51 !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
