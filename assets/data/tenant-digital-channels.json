@@ -1,0 +1,232 @@
+{
+  "meta": {
+    "title": "Tenant-facing digital repairs channels (Scottish councils)",
+    "note": "Linked = a primary public web/form or tenant portal for reporting council housing repairs was found and captured below. Not linked yet = not curated in this workspace—check the council housing/repairs pages; absence here is not evidence that no digital route exists.",
+    "lastReviewed": "2026-04-15"
+  },
+  "councils": [
+    {
+      "slug": "aberdeen-city",
+      "name": "Aberdeen City",
+      "status": "linked",
+      "urls": [
+        { "label": "Housing Online (tenant portal)", "href": "https://housing.aberdeencity.gov.uk/" },
+        { "label": "Housing Online — council site hub", "href": "https://www.aberdeencity.gov.uk/services/housing/housing-online" }
+      ]
+    },
+    {
+      "slug": "aberdeenshire",
+      "name": "Aberdeenshire",
+      "status": "linked",
+      "urls": [
+        { "label": "Repairs & maintenance (tenant)", "href": "https://www.aberdeenshire.gov.uk/housing/tenant-information/repairs-and-maintenance/" }
+      ]
+    },
+    {
+      "slug": "angus",
+      "name": "Angus",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "argyll-and-bute",
+      "name": "Argyll and Bute",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "city-of-edinburgh",
+      "name": "City of Edinburgh",
+      "status": "linked",
+      "urls": [
+        { "label": "Council house repairs", "href": "https://www.edinburgh.gov.uk/councilhouserepairs" }
+      ]
+    },
+    {
+      "slug": "clackmannanshire",
+      "name": "Clackmannanshire",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "dumfries-and-galloway",
+      "name": "Dumfries and Galloway",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "dundee-city",
+      "name": "Dundee City",
+      "status": "linked",
+      "urls": [
+        { "label": "Reporting a housing repair (hub)", "href": "https://www.dundeecity.gov.uk/housing/reportingrepairs" },
+        { "label": "Housing repair request (MyDundee)", "href": "https://my.dundeecity.gov.uk/service/Housing_Repair_Request" },
+        { "label": "Repair tracker", "href": "https://my.dundeecity.gov.uk/service/Housing_Repair_Tracker" }
+      ]
+    },
+    {
+      "slug": "east-ayrshire",
+      "name": "East Ayrshire",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "east-dunbartonshire",
+      "name": "East Dunbartonshire",
+      "status": "linked",
+      "urls": [
+        { "label": "Repairs & improvements (tenants)", "href": "https://www.eastdunbarton.gov.uk/services/a-z-of-services/housing-properties/council-housing-tenants/repairs-and-improvements/" },
+        { "label": "Report a problem (Report It)", "href": "https://www.eastdunbarton.gov.uk/residents/report-problem" }
+      ]
+    },
+    {
+      "slug": "east-lothian",
+      "name": "East Lothian",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "east-renfrewshire",
+      "name": "East Renfrewshire",
+      "status": "linked",
+      "urls": [
+        { "label": "Report a housing repair", "href": "https://www.eastrenfrewshire.gov.uk/article/1879/Report-a-housing-repair" },
+        { "label": "Housing Online / MyEastRen", "href": "https://www.eastrenfrewshire.gov.uk/housing-online" }
+      ]
+    },
+    {
+      "slug": "eilean-siar",
+      "name": "Eilean Siar",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "falkirk",
+      "name": "Falkirk",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "fife",
+      "name": "Fife",
+      "status": "linked",
+      "urls": [
+        { "label": "Request a non-emergency housing repair", "href": "https://www.fife.gov.uk/services/form-pages/request-a-non-emergency-repair" },
+        { "label": "Request an emergency housing repair", "href": "https://www.fife.gov.uk/services/form-pages/request-an-emergency-housing-repair" }
+      ]
+    },
+    {
+      "slug": "glasgow-city",
+      "name": "Glasgow City",
+      "status": "linked",
+      "urls": [
+        { "label": "myGlasgow customer portal", "href": "https://my.glasgow.gov.uk/" },
+        { "label": "Property maintenance request (example form)", "href": "https://www.glasgow.gov.uk/article/4986/Property-Maintenance-Request-Form" }
+      ]
+    },
+    {
+      "slug": "highland",
+      "name": "Highland",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "inverclyde",
+      "name": "Inverclyde",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "midlothian",
+      "name": "Midlothian",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "moray",
+      "name": "Moray",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "north-ayrshire",
+      "name": "North Ayrshire",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "north-lanarkshire",
+      "name": "North Lanarkshire",
+      "status": "linked",
+      "urls": [
+        { "label": "Housing: request a repair (form)", "href": "https://www.northlanarkshire.gov.uk/form/housing-request-a-repair" },
+        { "label": "Repairs & advice (hub)", "href": "https://www.northlanarkshire.gov.uk/housing/repairs-and-advice" }
+      ]
+    },
+    {
+      "slug": "orkney-islands",
+      "name": "Orkney Islands",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "perth-and-kinross",
+      "name": "Perth and Kinross",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "renfrewshire",
+      "name": "Renfrewshire",
+      "status": "linked",
+      "urls": [
+        { "label": "Report a housing repair (MyAccount)", "href": "https://myaccount.renfrewshire.gov.uk/service/report_a_housing_repair" },
+        { "label": "Repairs — council housing hub", "href": "https://www.renfrewshire.gov.uk/housing/council-housing/repairs-and-maintenance/report-housing-repair" }
+      ]
+    },
+    {
+      "slug": "scottish-borders",
+      "name": "Scottish Borders",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "shetland-islands",
+      "name": "Shetland Islands",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "south-ayrshire",
+      "name": "South Ayrshire",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "south-lanarkshire",
+      "name": "South Lanarkshire",
+      "status": "linked",
+      "urls": [
+        { "label": "Housing repairs (hub)", "href": "https://www.southlanarkshire.gov.uk/info/200194/council_and_social_tenants/1907/housing_repairs" }
+      ]
+    },
+    {
+      "slug": "stirling",
+      "name": "Stirling",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "west-dunbartonshire",
+      "name": "West Dunbartonshire",
+      "status": "unverified",
+      "urls": []
+    },
+    {
+      "slug": "west-lothian",
+      "name": "West Lothian",
+      "status": "unverified",
+      "urls": []
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "note": "Published figures and named signals — verify on source before business cases.",
+    "lastReviewed": "2026-06-16"
+  },
+  "rows": [
+    {
+      "organisation": "Leicester City Council",
+      "label": "Housing Repairs Mobile Working Solution (ROCC Computers)",
+      "theme": "workforce",
+      "amountGbp": 690980,
+      "vat": "excluded",
+      "period": "Dec 2025 – Dec 2028 (extensions toward 2030)",
+      "href": "https://www.find-tender.service.gov.uk/Notice/DDT-0959-2025",
+      "note": "Find a Tender DDT0959. BARIS named as NEC ↔ scheduling/mobile SOAP path."
+    },
+    {
+      "organisation": "London Borough of Hammersmith & Fulham",
+      "label": "Standalone BARIS interface contract (Northgate Public Services)",
+      "theme": "integration",
+      "amountGbp": 65000,
+      "vat": "excluded",
+      "period": "One-year contract (2019, per cabinet papers)",
+      "href": "https://localdigital.gov.uk/our-work/collaboration-projects/",
+      "note": "BARIS priced as a distinct integration line item. NEC/BARIS contract window to 2027."
+    },
+    {
+      "organisation": "Local Digital — Housing Repairs Alpha",
+      "label": "Housing Repairs Alpha (Greenwich, Lincoln, South Kesteven, Southwark)",
+      "theme": "programme_grant",
+      "amountGbp": 100000,
+      "vat": "unknown",
+      "period": "Alpha award Sep 2019",
+      "href": "https://localdigital.gov.uk/our-work/collaboration-projects/",
+      "note": "Roadmap included API connectors and open API tests with vendors."
+    },
+    {
+      "organisation": "First Choice Homes Oldham",
+      "label": "Reported savings via ROCC (voids focus)",
+      "theme": "other",
+      "amountGbp": 750000,
+      "vat": "unknown",
+      "period": "First two years (savings, not contract value)",
+      "href": "https://localdigital.gov.uk/our-work/collaboration-projects/",
+      "note": "Sector narrative — treat as indicative, not a PCS notice."
+    },
+    {
+      "organisation": "England — Social Housing Data Community",
+      "label": "Estimated annual cost of service inefficiencies linked to poor data",
+      "theme": "other",
+      "amountGbp": 400000000,
+      "vat": "unknown",
+      "period": "Sector headline, discovery Jan 2025",
+      "href": "https://localdigital.gov.uk/",
+      "note": "MHCLG discovery — sector-wide context for integration and data quality."
+    }
+  ],
+  "signals": [
+    {
+      "organisation": "London Borough of Newham",
+      "text": "Sandboxing and modernising the NEC API layer with supplier.",
+      "href": "https://localdigital.gov.uk/our-work/collaboration-projects/"
+    },
+    {
+      "organisation": "London Borough of Camden",
+      "text": "Reviewing NEC integration issues, including BARIS.",
+      "href": "https://localdigital.gov.uk/our-work/collaboration-projects/"
+    },
+    {
+      "organisation": "Royal Borough of Greenwich",
+      "text": "NEC contracted to 2031 — long lock-in horizon.",
+      "href": "https://localdigital.gov.uk/our-work/collaboration-projects/"
+    },
+    {
+      "organisation": "Local Digital",
+      "text": "Housing Repairs Service Project — NEC/BARIS repairs collaboration.",
+      "href": "https://localdigital.gov.uk/our-work/collaboration-projects/"
+    },
+    {
+      "organisation": "THiSTLe",
+      "text": "Housing IT strategic leadership group for NEC estates — shared learning.",
+      "href": "https://localdigital.gov.uk/our-work/collaboration-projects/"
+    }
+  ]
+}

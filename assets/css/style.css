@@ -581,6 +581,54 @@ p { margin-bottom: 1rem; }
     color: #7dd3c0;
 }
 
+.hero a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-color: rgba(255, 255, 255, 0.7);
+}
+
+.hero a:hover {
+    color: #fff;
+    text-decoration-color: #fff;
+}
+
+.hero-jumplinks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.65rem;
+    margin-top: 1.5rem;
+    padding: 0.85rem 1rem;
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: var(--radius-sm);
+}
+
+.hero-jumplinks-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    margin-right: 0.15rem;
+}
+
+.hero-jumplinks a {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.3rem 0.7rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: var(--radius-sm);
+}
+
+.hero-jumplinks a:hover {
+    background: rgba(255, 255, 255, 0.32);
+    border-color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+}
+
 /* ----------------------------------------------------------
    Stat Cards
    ---------------------------------------------------------- */
@@ -2121,3 +2169,53 @@ tbody tr:nth-child(even):hover {
 .bp-icon .site-icon {
     color: var(--erc-accent);
 }
+
+/* Peer benchmarks */
+.benchmarks-toolbar__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+}
+.benchmarks-toolbar__label {
+    font-weight: 700;
+    font-size: 0.92rem;
+}
+.benchmarks-filter {
+    font: inherit;
+    padding: 0.4rem 0.65rem;
+    border: 1px solid var(--erc-border);
+    border-radius: var(--radius-sm);
+    background: var(--erc-surface);
+    min-width: 12rem;
+}
+.benchmarks-authority {
+    vertical-align: top;
+    min-width: 9rem;
+}
+.benchmarks-amount {
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--erc-green-dark);
+}
+.benchmarks-theme { font-size: 0.72rem; }
+.benchmarks-note {
+    display: block;
+    color: #555;
+    font-size: 0.85rem;
+    font-weight: 400;
+    margin-top: 0.2rem;
+}
+.benchmarks-signals {
+    margin: 0;
+    padding-left: 1.2rem;
+    font-size: 0.92rem;
+}
+.benchmarks-signals li { margin: 0.45rem 0; }
+
+.tenant-channel-links {
+    margin: 0;
+    padding-left: 1.1rem;
+    font-size: 0.92rem;
+}
+.tenant-channel-links li { margin: 0.25rem 0; }

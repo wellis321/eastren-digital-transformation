@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "note": "Published PCS figures — verify on source before reusing in business cases.",
+    "lastReviewed": "2026-06-16"
+  },
+  "rows": [
+    {
+      "council": "Glasgow City",
+      "theme": "repairs_contract",
+      "label": "Statutory private sector housing repairs framework",
+      "text": "Multi-lot framework for statutory repairs to privately owned properties (minor works up to £499,999 and major works £500,000+).",
+      "amountGbp": 12000000,
+      "vat": "excluded",
+      "period": "Framework award Aug 2024 — verify call-off spend on PCS",
+      "href": "https://www.publiccontractsscotland.gov.uk/search/show/search_view.aspx?ID=FEB524466"
+    },
+    {
+      "council": "City of Edinburgh",
+      "theme": "repairs_contract",
+      "label": "Edinburgh Living — letting, management and maintenance",
+      "text": "Service contract for Edinburgh Living LLPs: lettings, tenancy management, and maintenance including repairs.",
+      "amountGbp": 10000000,
+      "vat": "excluded",
+      "period": "4 years from May 2023 (+ optional 3-year extension)",
+      "href": "https://www.publiccontractsscotland.gov.uk/search/show/search_view.aspx?ID=JUN480944"
+    },
+    {
+      "council": "Glasgow City",
+      "theme": "other",
+      "label": "ERP system implementation partner (Oracle)",
+      "text": "Back-office ERP replacing SAP — finance, procurement, integration, service portal.",
+      "amountGbp": 3994096,
+      "vat": "excluded",
+      "period": "Contract concluded Jul 2025 — Mastek Systems",
+      "href": "https://www.publiccontractsscotland.gov.uk/search/show/search_view.aspx?ID=DEC546197"
+    },
+    {
+      "council": "Fife",
+      "theme": "repairs_contract",
+      "label": "House clearance and cleaning framework (voids)",
+      "text": "Void clearance, deep cleaning, trauma cleaning, and minor repairs to prepare homes for re-let.",
+      "amountGbp": 1967777,
+      "vat": "excluded",
+      "period": "Framework award Jun 2025",
+      "href": "https://www.publiccontractsscotland.gov.uk/search/show/search_view.aspx?ID=JUL534031"
+    },
+    {
+      "council": "North Lanarkshire",
+      "theme": "workforce",
+      "label": "Hosted Job Manager & Dynamic Scheduling",
+      "text": "Mobile worker scheduling (Social Work, Housing, Pest Control). G-Cloud 11 call-off — relates to Optitime / workforce programme in sector case below.",
+      "amountGbp": 898722.67,
+      "vat": "excluded",
+      "period": "Award May 2020 — verify renewals on PCS",
+      "href": "https://www.publiccontractsscotland.gov.uk/search/show/search_view.aspx?ID=MAY386134"
+    },
+    {
+      "council": "Fife",
+      "theme": "hms_change",
+      "label": "Civica Cx housing system — implementation support",
+      "text": "Implementation support for Civica Cx housing system replacement.",
+      "amountGbp": 120000,
+      "vat": "excluded",
+      "period": "Award Oct 2024",
+      "href": "https://www.publiccontractsscotland.gov.uk/search/show/search_view.aspx?ID=OCT516598"
+    },
+    {
+      "council": "City of Edinburgh",
+      "theme": "other",
+      "label": "Falcon scanner software and maintenance",
+      "text": "Property scanning software for condition / survey workflows.",
+      "amountGbp": 119900,
+      "vat": "excluded",
+      "period": "Award Mar 2025",
+      "href": "https://www.publiccontractsscotland.gov.uk/search/show/search_view.aspx?ID=MAR525532"
+    },
+    {
+      "council": "Fife",
+      "theme": "hms_change",
+      "label": "IBM Informix licences (housing system database)",
+      "text": "Licences for Housing Service database platform.",
+      "amountGbp": 40000,
+      "vat": "excluded",
+      "period": "Award May 2024",
+      "href": "https://www.publiccontractsscotland.gov.uk/search/show/search_view.aspx?ID=SEP514751"
+    }
+  ]
+}
