@@ -174,7 +174,7 @@ p { margin-bottom: 1rem; }
     max-width: 1600px;
     margin: 0 auto;
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .site-logo {
@@ -308,6 +308,163 @@ p { margin-bottom: 1rem; }
     background: var(--erc-green-light);
     color: var(--erc-white);
     font-weight: 700;
+}
+
+/* ----------------------------------------------------------
+   Nav Groups / Dropdowns
+   ---------------------------------------------------------- */
+.nav-group {
+    position: relative;
+}
+
+.nav-group-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    background: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background var(--transition), color var(--transition);
+    font-family: var(--font-stack);
+    line-height: 1.4;
+}
+
+.nav-group-btn:hover,
+.nav-group:hover .nav-group-btn {
+    background: rgba(255,255,255,0.12);
+    color: var(--erc-white);
+}
+
+.nav-group-btn.active {
+    background: var(--erc-green-light);
+    color: var(--erc-white);
+    font-weight: 700;
+}
+
+.nav-caret {
+    transition: transform var(--transition);
+    flex-shrink: 0;
+    opacity: 0.75;
+}
+
+.nav-group:hover .nav-caret,
+.nav-group-btn[aria-expanded="true"] .nav-caret {
+    transform: rotate(180deg);
+    opacity: 1;
+}
+
+.nav-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: var(--erc-surface);
+    border: 1px solid var(--erc-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    min-width: 190px;
+    padding: 0.35rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity var(--transition), transform var(--transition), visibility 0s 0.2s;
+    z-index: 200;
+}
+
+.nav-group:hover .nav-dropdown,
+.nav-group-btn[aria-expanded="true"] + .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity var(--transition), transform var(--transition), visibility 0s 0s;
+}
+
+.site-nav .nav-dropdown a {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--erc-text);
+    white-space: nowrap;
+    text-decoration: none;
+    border-radius: 0;
+    background: none;
+    transition: background var(--transition), color var(--transition);
+}
+
+.site-nav .nav-dropdown a:hover {
+    background: var(--erc-surface-alt);
+    color: var(--erc-green);
+}
+
+.site-nav .nav-dropdown a.active {
+    color: var(--erc-green);
+    font-weight: 600;
+    background: #ebf5ef;
+}
+
+/* Mobile nav groups */
+.mobile-nav-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-nav-group-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.07);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-stack);
+    transition: background var(--transition), color var(--transition);
+    margin-top: 0.15rem;
+}
+
+.mobile-nav-group-btn:hover {
+    background: rgba(255,255,255,0.13);
+    color: var(--erc-white);
+}
+
+.mobile-nav-group-btn.active {
+    background: var(--erc-green-light);
+    color: var(--erc-white);
+    font-weight: 700;
+}
+
+.mobile-nav-group-btn[aria-expanded="true"] .nav-caret {
+    transform: rotate(180deg);
+    opacity: 1;
+}
+
+.mobile-nav-sub {
+    display: none;
+    flex-direction: column;
+    padding: 0.2rem 0 0.3rem 0.75rem;
+    border-left: 2px solid rgba(255,255,255,0.15);
+    margin: 0.15rem 0 0.1rem 0.75rem;
+}
+
+.mobile-nav-sub.open {
+    display: flex;
+}
+
+.mobile-nav-sub a {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 400;
 }
 
 /* ----------------------------------------------------------

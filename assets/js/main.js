@@ -1,5 +1,5 @@
 /**
- * ERC Housing Digital Transformation — Interview Research Portal
+ * ERC Housing Digital Transformation
  * Main JavaScript
  */
 
@@ -19,7 +19,7 @@
             hamburger.setAttribute('aria-expanded', isOpen);
         });
 
-        // Close mobile nav when a link is clicked
+        // Close mobile nav when a link (not a group toggle button) is clicked
         mobileNav.querySelectorAll('a').forEach(function (link) {
             link.addEventListener('click', function () {
                 mobileNav.classList.remove('open');
@@ -39,11 +39,46 @@
     }
 
     // ----------------------------------------------------------
+    // Desktop Dropdown Toggles
+    // ----------------------------------------------------------
+    document.querySelectorAll('.nav-group-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+            // Close all other dropdowns first
+            document.querySelectorAll('.nav-group-btn').forEach(function (b) {
+                if (b !== btn) b.setAttribute('aria-expanded', 'false');
+            });
+            btn.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+            e.stopPropagation();
+        });
+    });
+
+    // Close desktop dropdowns when clicking outside
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.nav-group-btn').forEach(function (btn) {
+            btn.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    // ----------------------------------------------------------
+    // Mobile Sub-group Toggles
+    // ----------------------------------------------------------
+    document.querySelectorAll('.mobile-nav-group-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const sub = btn.nextElementSibling;
+            if (!sub) return;
+            const isOpen = sub.classList.toggle('open');
+            btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+    });
+
+    // ----------------------------------------------------------
     // Active Navigation Link Detection
     // ----------------------------------------------------------
     function setActiveNavLinks() {
         const currentPath = window.location.pathname;
-        const currentFile = currentPath.split('/').pop() || 'index.php';
+        const currentFile = currentPath.split('/').pop() || 'index.html';
 
         document.querySelectorAll('.site-nav a, .mobile-nav a').forEach(function (link) {
             const href = link.getAttribute('href');
@@ -51,10 +86,30 @@
             const linkFile = href.split('/').pop();
             if (
                 linkFile === currentFile ||
-                (currentFile === '' && linkFile === 'index.php') ||
-                (currentFile === 'index.php' && linkFile === 'index.php')
+                (currentFile === '' && linkFile === 'index.html')
             ) {
                 link.classList.add('active');
+                link.setAttribute('aria-current', 'page');
+
+                // Mark parent desktop dropdown button as active
+                var dropdown = link.closest('.nav-dropdown');
+                if (dropdown) {
+                    var groupBtn = dropdown.previousElementSibling;
+                    if (groupBtn && groupBtn.classList.contains('nav-group-btn')) {
+                        groupBtn.classList.add('active');
+                    }
+                }
+
+                // Mark parent mobile sub-group button as active and open the sub
+                var sub = link.closest('.mobile-nav-sub');
+                if (sub) {
+                    sub.classList.add('open');
+                    var mobileBtn = sub.previousElementSibling;
+                    if (mobileBtn && mobileBtn.classList.contains('mobile-nav-group-btn')) {
+                        mobileBtn.classList.add('active');
+                        mobileBtn.setAttribute('aria-expanded', 'true');
+                    }
+                }
             }
         });
     }

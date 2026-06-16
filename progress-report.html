@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Progress Report | ERC Housing Digital Transformation</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* ── Report page layout ─────────────────────────── */
+        .report-wrap {
+            max-width: 860px;
+            margin: 2rem auto 3rem;
+            padding: 0 1.5rem;
+        }
+
+        .report-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* ── Cover block ────────────────────────────────── */
+        .report-cover {
+            background: var(--erc-green);
+            color: white;
+            border-radius: var(--radius-md);
+            padding: 2.5rem 2.25rem 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-cover::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            pointer-events: none;
+        }
+
+        .report-cover-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 0.6rem;
+        }
+
+        .report-cover h1 {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: white;
+            margin: 0 0 0.4rem;
+            line-height: 1.2;
+        }
+
+        .report-cover-sub {
+            font-size: 0.95rem;
+            opacity: 0.85;
+            margin: 0 0 1.75rem;
+        }
+
+        .report-cover-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.6rem 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 1.25rem;
+            font-size: 0.82rem;
+        }
+
+        .report-cover-meta dt {
+            opacity: 0.65;
+            font-weight: 500;
+            margin-bottom: 0.1rem;
+        }
+
+        .report-cover-meta dd {
+            font-weight: 600;
+            color: white;
+        }
+
+        /* ── Report sections ────────────────────────────── */
+        .report-section {
+            margin-bottom: 2rem;
+            page-break-inside: avoid;
+        }
+
+        .report-section-heading {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--erc-green);
+            border-bottom: 2px solid var(--erc-green);
+            padding-bottom: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .report-section-heading span {
+            background: var(--erc-green);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            flex-shrink: 0;
+        }
+
+        /* ── Stat row ───────────────────────────────────── */
+        .report-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 0;
+        }
+
+        .report-stat {
+            background: var(--erc-surface-alt);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 0.75rem;
+            text-align: center;
+        }
+
+        .report-stat-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--erc-green);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .report-stat-label {
+            font-size: 0.72rem;
+            color: var(--erc-text-light);
+            line-height: 1.3;
+        }
+
+        /* ── Two-column content ─────────────────────────── */
+        .report-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .report-cols-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* ── Team rows ──────────────────────────────────── */
+        .report-team {
+            border: 1px solid var(--erc-border);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.6rem;
+            page-break-inside: avoid;
+        }
+
+        .report-team-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.35rem;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .report-team-name {
+            font-weight: 700;
+            font-size: 0.92rem;
+        }
+
+        .report-team-needs {
+            font-size: 0.83rem;
+            color: var(--erc-text-light);
+            line-height: 1.5;
+        }
+
+        /* ── Board table ────────────────────────────────── */
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .report-table th {
+            background: var(--erc-green);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.78rem;
+        }
+
+        .report-table td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--erc-border);
+            vertical-align: top;
+        }
+
+        .report-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .report-table tr:nth-child(even) td {
+            background: var(--erc-surface-alt);
+        }
+
+        /* ── Workstream tags ────────────────────────────── */
+        .workstream-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .workstream-item {
+            background: var(--erc-surface-alt);
+            border-left: 3px solid var(--erc-green);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.83rem;
+        }
+
+        .workstream-item strong {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .workstream-item span {
+            color: var(--erc-text-light);
+            font-size: 0.78rem;
+            line-height: 1.4;
+        }
+
+        /* ── Report footer ──────────────────────────────── */
+        .report-footer {
+            margin-top: 2.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--erc-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--erc-text-light);
+        }
+
+        /* ── Print styles ───────────────────────────────── */
+        @media print {
+            @page {
+                size: A4;
+                margin: 15mm 18mm;
+            }
+
+            .site-topbar,
+            .site-header,
+            .site-footer,
+            .report-actions { display: none !important; }
+
+            body { background: white !important; }
+
+            .page-wrapper { padding: 0 !important; }
+
+            .report-wrap {
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            .report-cover {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                border-radius: 0;
+                margin-bottom: 1.5rem;
+            }
+
+            .report-stat {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .report-table th {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .workstream-item {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .report-section {
+                page-break-inside: avoid;
+            }
+
+            .report-team {
+                page-break-inside: avoid;
+            }
+
+            h2, h3 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="site-topbar">
+    <a href="index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+</div>
+
+<!-- Site Header -->
+<header class="site-header">
+    <div class="header-inner">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Programme <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="progress.html">Progress</a>
+                    <a href="governance.html">Governance</a>
+                    <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
+                    <a href="progress-report.html">Progress Report</a>
+                    <a href="presentation.html">Programme Overview</a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="history.html">ERC Digital History</a>
+                    <a href="reports.html">Reports</a>
+                    <a href="resources.html">Resources</a>
+                    <a href="sector.html">Sector Comparisons</a>
+                    <a href="best-practice.html">Best Practice</a>
+                    <a href="scotland-policy.html">Scotland&#039;s Policy</a>
+                    <a href="digital-direction.html">Digital Direction</a>
+                </div>
+            </div>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+        <a href="index.html">Home</a>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Programme <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="progress.html">Progress</a>
+                <a href="governance.html">Governance</a>
+                <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
+                <a href="progress-report.html">Progress Report</a>
+                <a href="presentation.html">Programme Overview</a>
+            </div>
+        </div>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="history.html">ERC Digital History</a>
+                <a href="reports.html">Reports</a>
+                <a href="resources.html">Resources</a>
+                <a href="sector.html">Sector Comparisons</a>
+                <a href="best-practice.html">Best Practice</a>
+                <a href="scotland-policy.html">Scotland&#039;s Policy</a>
+                <a href="digital-direction.html">Digital Direction</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="page-wrapper">
+<main class="main-content" id="main" style="padding-top:1.5rem;">
+<div class="report-wrap">
+
+    <!-- Print / actions bar -->
+    <div class="report-actions">
+        <button id="print-btn" class="btn btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right:0.35rem;"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print / Save as PDF
+        </button>
+        <a href="progress.html" class="btn btn-outline" style="font-size:0.82rem;">&#8592; Full Progress Log</a>
+        <span style="font-size:0.78rem; color:var(--erc-text-light); margin-left:auto;">In your browser: File &rarr; Print &rarr; Save as PDF</span>
+    </div>
+
+    <!-- Cover -->
+    <div class="report-cover">
+        <div class="report-cover-label">East Renfrewshire Council &mdash; MAP Programme</div>
+        <h1>Housing Repairs Digital Transformation<br>Progress Report</h1>
+        <p class="report-cover-sub">Discovery &amp; Mobilisation Phase &mdash; Update as at <span id="report-date">June 2026</span></p>
+        <dl class="report-cover-meta">
+            <div><dt>Programme</dt><dd>Housing Repairs Digital Transformation</dd></div>
+            <div><dt>Phase</dt><dd>Discovery &amp; Mobilisation</dd></div>
+            <div><dt>Commenced</dt><dd>April 2026</dd></div>
+            <div><dt>Prepared by</dt><dd>William Ellis</dd></div>
+            <div><dt>Role</dt><dd>Digital Transformation Lead</dd></div>
+            <div><dt>Status</dt><dd>On track</dd></div>
+        </dl>
+    </div>
+
+    <!-- 1. Executive Summary -->
+    <div class="report-section">
+        <div class="report-section-heading"><span>1</span> Executive Summary</div>
+        <p style="font-size:0.92rem; line-height:1.75; margin:0 0 0.75rem;">The Housing Repairs Digital Transformation programme is progressing well through its Discovery &amp; Mobilisation phase. Since commencing in April 2026, the programme team has mobilised, established its infrastructure, and engaged all key operational teams in structured discovery activity. Positive relationships have been built across Customer Services, Stores, the Business Support Team, and the Housing Maintenance Team — with all four teams actively participating and contributing their requirements.</p>
+        <p style="font-size:0.92rem; line-height:1.75; margin:0 0 0.75rem;">A consistent theme has emerged across every team engaged: the need to reduce manual effort, eliminate spreadsheet dependency, connect data between systems, and make the right information visible to the right people at the right time. These themes will directly shape the requirements baseline, vendor evaluation, and co-design work in the next phase.</p>
+        <p style="font-size:0.92rem; line-height:1.75; margin:0;">Programme governance is now established. Three boards — Technical, Project, and Programme — hold their first meetings in July 2026. Eight distinct workstreams have been identified through discovery and are being scoped ahead of Phase 2.</p>
+    </div>
+
+    <!-- 2. Programme at a Glance -->
+    <div class="report-section">
+        <div class="report-section-heading"><span>2</span> Programme at a Glance</div>
+        <div class="report-stats">
+            <div class="report-stat">
+                <div class="report-stat-number">18+</div>
+                <div class="report-stat-label">Activities logged since April 2026</div>
+            </div>
+            <div class="report-stat">
+                <div class="report-stat-number">4</div>
+                <div class="report-stat-label">Operational teams engaged in discovery</div>
+            </div>
+            <div class="report-stat">
+                <div class="report-stat-number">8</div>
+                <div class="report-stat-label">Weeks of discovery completed</div>
+            </div>
+            <div class="report-stat">
+                <div class="report-stat-number">3</div>
+                <div class="report-stat-label">Governance boards established</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Key Milestones -->
+    <div class="report-section">
+        <div class="report-section-heading"><span>3</span> Key Milestones</div>
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th style="width:130px;">Date</th>
+                    <th>Activity</th>
+                    <th style="width:110px;">Area</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>20 April 2026</td>
+                    <td>Programme team established; project infrastructure set up</td>
+                    <td><span class="badge badge-blue">Mobilisation</span></td>
+                </tr>
+                <tr>
+                    <td>21 April 2026</td>
+                    <td>Process mapping commenced; current-state workflows documented</td>
+                    <td><span class="badge badge-teal">Discovery</span></td>
+                </tr>
+                <tr>
+                    <td>Apr &ndash; May 2026</td>
+                    <td>Project discovery: stakeholder introductions, system walkthroughs, requirement-gathering sessions</td>
+                    <td><span class="badge badge-teal">Discovery</span></td>
+                </tr>
+                <tr>
+                    <td>7 May 2026</td>
+                    <td>Community benefits insight session</td>
+                    <td><span class="badge badge-green">Engagement</span></td>
+                </tr>
+                <tr>
+                    <td>8 May 2026</td>
+                    <td>Introduction to Stores team; requirements gathering commenced</td>
+                    <td><span class="badge badge-green">Engagement</span></td>
+                </tr>
+                <tr>
+                    <td>13 May 2026</td>
+                    <td>Met with Programme Manager; BI transition risk identified (Servitor data)</td>
+                    <td><span class="badge badge-gold">Governance</span></td>
+                </tr>
+                <tr>
+                    <td>13 May 2026</td>
+                    <td>Introduction to Business Support Team</td>
+                    <td><span class="badge badge-green">Engagement</span></td>
+                </tr>
+                <tr>
+                    <td>18 May 2026</td>
+                    <td>System walkthroughs across NECH, DRS, Integra, APEX, ROCC</td>
+                    <td><span class="badge badge-teal">Discovery</span></td>
+                </tr>
+                <tr>
+                    <td>19 May 2026</td>
+                    <td>Team learning programme established; digital capability building underway</td>
+                    <td><span class="badge badge-blue">Learning</span></td>
+                </tr>
+                <tr>
+                    <td>May 2026</td>
+                    <td>Mobile phone rollout managed for full Housing Maintenance Team</td>
+                    <td><span class="badge badge-teal">Delivery</span></td>
+                </tr>
+                <tr>
+                    <td>May &ndash; Jun 2026</td>
+                    <td>Met with North Ayrshire Council to understand ROCC in use</td>
+                    <td><span class="badge badge-teal">Discovery</span></td>
+                </tr>
+                <tr>
+                    <td>May &ndash; Jun 2026</td>
+                    <td>Joined ERC Change Agent Forum; API and data ownership research</td>
+                    <td><span class="badge badge-blue">Mobilisation</span></td>
+                </tr>
+                <tr>
+                    <td>June 2026</td>
+                    <td>Three programme boards established; membership confirmed</td>
+                    <td><span class="badge badge-gold">Governance</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 4. Stakeholder Engagement -->
+    <div class="report-section">
+        <div class="report-section-heading"><span>4</span> Stakeholder Engagement</div>
+        <p style="font-size:0.85rem; color:var(--erc-text-light); margin:0 0 0.85rem;">All four operational teams have engaged positively. Key requirements captured from each are summarised below.</p>
+
+        <div class="report-team">
+            <div class="report-team-head">
+                <span class="report-team-name">Customer Services &mdash; Repairs</span>
+                <span class="badge badge-green">Active &mdash; ongoing</span>
+            </div>
+            <p class="report-team-needs">Reduce spreadsheet use &bull; Image uploads with job comments &bull; Inspection plans visible in system &bull; Property attributes surfaced (factored status, asbestos, APEX data) &bull; Ad hoc meetings and workshops agreed</p>
+        </div>
+
+        <div class="report-team">
+            <div class="report-team-head">
+                <span class="report-team-name">Stores</span>
+                <span class="badge badge-green">Active &mdash; multiple sessions</span>
+            </div>
+            <p class="report-team-needs">Orders pre-built and ready to collect &bull; Orders auto-generated from job requirements &bull; Auto-replenishment based on stock levels &bull; Contract prices activated on schedule &bull; Reduce duplication and manual data entry &bull; Workshops agreed; shadowing day proposed</p>
+        </div>
+
+        <div class="report-team">
+            <div class="report-team-head">
+                <span class="report-team-name">Business Support Team</span>
+                <span class="badge badge-green">Active &mdash; multiple sessions</span>
+            </div>
+            <p class="report-team-needs">High volume of manual workflows to be replaced &bull; Integra (billing &amp; invoicing) integration is critical &bull; Requirements are nuanced and detailed — captured in process maps (SharePoint ENV/99/24) &bull; ROCC noted to handle Integra integration well</p>
+        </div>
+
+        <div class="report-team">
+            <div class="report-team-head">
+                <span class="report-team-name">Housing Maintenance Team (HMT)</span>
+                <span class="badge badge-green">Active &mdash; ongoing</span>
+            </div>
+            <p class="report-team-needs">Mobile working for tradesmen &bull; Voids management (keen to develop specifically) &bull; Schedule of Rates (SORs) &bull; Van stock management &bull; Reporting and performance visibility &bull; Mobile phone rollout completed &bull; Joint workshops with Stores and Trades planned</p>
+        </div>
+    </div>
+
+    <!-- 5. Outcomes and Assets -->
+    <div class="report-section">
+        <div class="report-section-heading"><span>5</span> Outcomes &amp; Assets to Date</div>
+        <div class="report-cols-3">
+            <div>
+                <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--erc-text-light); margin:0 0 0.4rem;">Knowledge &amp; Capability</p>
+                <ul style="font-size:0.82rem; padding-left:1rem; margin:0; line-height:1.7;">
+                    <li>Agile delivery introduced</li>
+                    <li>Poka Yoke, Kanban, Gestalt</li>
+                    <li>APIs, databases, schemas</li>
+                    <li>Microsoft 365 as delivery tool</li>
+                    <li>Needs-led design principles</li>
+                    <li>Scottish digital landscape</li>
+                </ul>
+            </div>
+            <div>
+                <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--erc-text-light); margin:0 0 0.4rem;">Tools &amp; Infrastructure</p>
+                <ul style="font-size:0.82rem; padding-left:1rem; margin:0; line-height:1.7;">
+                    <li>SharePoint hub (ENV/99/24)</li>
+                    <li>Microsoft Planner (by workstream)</li>
+                    <li>Microsoft Lists (stakeholders)</li>
+                    <li>OneNote shared workspace</li>
+                    <li>Teams channel established</li>
+                    <li>Discovery whiteboards</li>
+                </ul>
+            </div>
+            <div>
+                <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--erc-text-light); margin:0 0 0.4rem;">Research &amp; Outputs</p>
+                <ul style="font-size:0.82rem; padding-left:1rem; margin:0; line-height:1.7;">
+                    <li>Process maps (current state)</li>
+                    <li>System walkthroughs documented</li>
+                    <li>API issues analysis</li>
+                    <li>Community benefits documentation</li>
+                    <li>NEC upgrade testing artefact</li>
+                    <li>Peer council benchmarking</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Governance -->
+    <div class="report-section">
+        <div class="report-section-heading"><span>6</span> Governance</div>
+        <p style="font-size:0.85rem; color:var(--erc-text-light); margin:0 0 0.85rem;">Three boards have been established. All meet every four weeks. First cycle begins July 2026.</p>
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Board</th>
+                    <th>Remit</th>
+                    <th style="width:130px;">First Meeting</th>
+                    <th style="width:100px;">Cadence</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Technical Board</strong></td>
+                    <td>Technical delivery and operational readiness — systems, scheduling, stores, finance operations, ICT</td>
+                    <td>13 July 2026</td>
+                    <td>Every 4 weeks</td>
+                </tr>
+                <tr>
+                    <td><strong>Programme Board</strong></td>
+                    <td>Strategic oversight — chaired by Project Owner; approves scope, budget, and escalations</td>
+                    <td>14 July 2026</td>
+                    <td>Every 4 weeks</td>
+                </tr>
+                <tr>
+                    <td><strong>Project Board</strong></td>
+                    <td>Delivery oversight — cross-functional working board covering all workstreams</td>
+                    <td>22 July 2026</td>
+                    <td>Every 4 weeks</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 7. Emerging Workstreams -->
+    <div class="report-section">
+        <div class="report-section-heading"><span>7</span> Emerging Workstreams</div>
+        <p style="font-size:0.85rem; color:var(--erc-text-light); margin:0 0 0.85rem;">Eight workstreams have been identified through discovery activity and are being scoped ahead of Phase 2.</p>
+        <div class="workstream-grid">
+            <div class="workstream-item">
+                <strong>Tenants</strong>
+                <span>Tenant communication and engagement</span>
+            </div>
+            <div class="workstream-item">
+                <strong>Integra</strong>
+                <span>P2P, financial controls, system interfaces</span>
+            </div>
+            <div class="workstream-item">
+                <strong>Job Numbers</strong>
+                <span>Schedule of Rates, job costing</span>
+            </div>
+            <div class="workstream-item">
+                <strong>Systems</strong>
+                <span>Mobile working, Apex, phones, data, testing</span>
+            </div>
+            <div class="workstream-item">
+                <strong>Stores</strong>
+                <span>Stock ordering, van stock, replenishment, audit</span>
+            </div>
+            <div class="workstream-item">
+                <strong>Communication</strong>
+                <span>Feedback loops across all teams and housing</span>
+            </div>
+            <div class="workstream-item">
+                <strong>Governance</strong>
+                <span>User groups, KPI/KPA reporting, accessibility</span>
+            </div>
+            <div class="workstream-item">
+                <strong>ROCC Discovery</strong>
+                <span>Scheduling, interfaces, supplier portal, contracts</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. Upcoming -->
+    <div class="report-section">
+        <div class="report-section-heading"><span>8</span> Upcoming</div>
+        <div class="report-cols">
+            <ul style="font-size:0.88rem; padding-left:1.1rem; margin:0; line-height:1.8;">
+                <li>Technical Board &mdash; 13 July 2026</li>
+                <li>Programme Board &mdash; 14 July 2026</li>
+                <li>Project Board &mdash; 22 July 2026</li>
+                <li>Voids workshop with HMT</li>
+            </ul>
+            <ul style="font-size:0.88rem; padding-left:1.1rem; margin:0; line-height:1.8;">
+                <li>Joint workshop: Stores &amp; Trades</li>
+                <li>ROCC discovery session</li>
+                <li>Further Business Support Team sessions</li>
+                <li>Requirements baseline to be consolidated</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Report footer -->
+    <div class="report-footer">
+        <span>East Renfrewshire Council &mdash; Housing Repairs Digital Transformation &mdash; MAP Programme</span>
+        <span>Prepared by William Ellis, Digital Transformation Lead &mdash; <span id="report-date-footer"></span></span>
+    </div>
+
+</div><!-- /.report-wrap -->
+</main>
+</div><!-- /.page-wrapper -->
+
+<script src="assets/js/main.js"></script>
+<script>
+    (function () {
+        var now = new Date();
+        var opts = { day: 'numeric', month: 'long', year: 'numeric' };
+        var formatted = now.toLocaleDateString('en-GB', opts);
+        var el = document.getElementById('report-date');
+        var el2 = document.getElementById('report-date-footer');
+        if (el) el.textContent = formatted;
+        if (el2) el2.textContent = formatted;
+    })();
+</script>
+</body>
+</html>

@@ -1,15 +1,26 @@
 # macOS
 .DS_Store
 
-# Editor / IDE
+# Cursor / IDE
+.cursor/
+.claude/
 .idea/
 *.swp
 *.swo
 
-# Local config (database credentials)
+# All documents folder — internal working files, not served by the site
+documents/
+
+# Sensitive files — CVs, cover letters, council documents, personal records
+*.pdf
+*.docx
+*.pptx
+*.xlsx
+*.csv
+
+# Large media — not needed in version control
+*.mp4
+*.m4a
+
+# Local config
 website/config/database.php
-
-# Cursor/IDE
-.claude/
-
-# Optional: keep database.php out of repo; add config/database.example.php if needed
