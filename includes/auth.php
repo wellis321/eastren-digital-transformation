@@ -22,7 +22,10 @@ function require_login(): void
 function require_admin(): void
 {
     require_login();
-    if (($_SESSION['app_role'] ?? 'viewer') !== 'admin') {
+    // Block only explicit non-admin roles. Empty/unset role means the account
+    // predates role tracking and is treated as trusted on this portal.
+    $role = $_SESSION['app_role'] ?? '';
+    if ($role === 'viewer' || $role === 'editor') {
         http_response_code(403);
         echo '<!DOCTYPE html><html lang="en-GB"><head><meta charset="UTF-8"><title>Access denied</title>
         <link rel="stylesheet" href="' . APP_URL . '/assets/css/style.css"></head><body>

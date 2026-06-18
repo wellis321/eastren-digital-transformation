@@ -45,6 +45,12 @@ require_admin();
         }
         .copy-btn:hover { background: #005a44; }
         .copy-btn.copied { background: #1a7f64; }
+        /* Square corners — consistent with ERC design */
+        .card,
+        .comms-message,
+        .callout,
+        .copy-btn { border-radius: 0 !important; }
+
         .admin-badge {
             display: inline-flex;
             align-items: center;
