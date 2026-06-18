@@ -37,6 +37,23 @@ if (!is_logged_in()) {
     exit;
 }
 
+// Pages restricted to admin (or accounts with no role set)
+$adminOnlyPages = ['/emails.html'];
+if (in_array($uri, $adminOnlyPages, true)) {
+    $role = $_SESSION['app_role'] ?? '';
+    if ($role === 'viewer' || $role === 'editor') {
+        http_response_code(403);
+        header('Content-Type: text/html; charset=UTF-8');
+        echo '<!DOCTYPE html><html lang="en-GB"><head><meta charset="UTF-8"><title>Access restricted</title>
+        <link rel="stylesheet" href="' . APP_URL . '/assets/css/style.css"></head><body>
+        <div style="max-width:480px;margin:6rem auto;padding:2rem;text-align:center;">
+        <h1 style="font-size:1.4rem;margin-bottom:0.75rem;">Access restricted</h1>
+        <p style="color:#555;margin-bottom:1.5rem;">This page is only available to administrators.</p>
+        <a href="' . APP_URL . '/" style="color:#006A51;">Return to home</a></div></body></html>';
+        exit;
+    }
+}
+
 if (str_ends_with($uri, '.php')) {
     if ($builtIn) {
         return false;
