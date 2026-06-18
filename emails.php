@@ -3,8 +3,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
-require_once __DIR__ . '/includes/permissions.php';
-require_admin();
+require_login();
 ?>
 <!DOCTYPE html>
 <html lang="en-GB">
@@ -13,7 +12,7 @@ require_admin();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
-    <title>Email Templates | ERC Housing Digital Transformation</title>
+    <title>Emails | ERC Housing Digital Transformation</title>
     <link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
     <style>
         .comms-message {
@@ -140,7 +139,7 @@ require_admin();
 
     <section class="hero" style="margin-top:1.5rem;">
         <div class="hero-eyebrow">Admin only</div>
-        <h1>Email Templates</h1>
+        <h1>Emails</h1>
         <p>Ready-to-send email drafts for the programme. Click <strong>Copy</strong> on any message to copy the full text to your clipboard. Fill in the bracketed placeholders before sending.</p>
     </section>
 
@@ -150,7 +149,7 @@ require_admin();
         </div>
         <div>
             <h4>Admin access only</h4>
-            <p style="margin:0;">These templates are only visible to administrator accounts. Do not share links to this page with non-admin users.</p>
+            <p style="margin:0;">These emails are only visible to logged-in users. Click <strong>Copy</strong> on any message and paste straight into your email client &mdash; then fill in the bracketed placeholders before sending.</p>
         </div>
     </div>
 
@@ -538,7 +537,7 @@ East Renfrewshire Council</div>
             <p><strong>William Ellis</strong></p>
         </div>
         <div class="footer-disclaimer">
-            <p>Admin-only page. Email templates for use by the programme manager.</p>
+            <p>Emails for use by the programme manager.</p>
         </div>
     </div>
     <div class="footer-bottom">
