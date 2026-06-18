@@ -407,6 +407,176 @@
         </div><!-- /.theme-block-body -->
     </div><!-- /.theme-block -->
 
+    <!-- ── Theme 2: Data Migration & Standardisation ──────────── -->
+    <div class="theme-block">
+        <div class="theme-block-header">
+            <span class="theme-status-badge">Active &mdash; Ongoing</span>
+            <h2>Data Migration &amp; Standardisation</h2>
+            <p>Moving to a new system is not just a technical migration &mdash; it is an opportunity to fix every data quality problem the organisation has been living with for years. That only happens if we plan for it deliberately. Messy data migrated into a clean system is still messy data. The goal is a database layer that is as simple as possible, strongly typed, standardised at the point of entry, and integrated through APIs and JSON rather than spreadsheet file transfers.</p>
+        </div>
+
+        <div class="theme-block-body">
+
+            <p class="theme-subsection-label">Improvement Areas</p>
+
+            <!-- Sub-topic 1 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    Schema Simplicity &amp; Type Discipline
+                </h4>
+                <p>The simplest schema that correctly models the domain is always preferable to one that tries to anticipate every future need. Every field in the database should have a reason to exist, a defined type, and a constraint where appropriate.</p>
+                <ul>
+                    <li>Use the most specific data type available: <code>DATE</code> not <code>VARCHAR</code> for dates, <code>DECIMAL(10,2)</code> not <code>FLOAT</code> for prices, <code>BOOLEAN</code> not <code>TINYINT</code> for flags</li>
+                    <li>Apply <code>NOT NULL</code> constraints on every field that must always exist &mdash; do not default to nullable columns &ldquo;just in case&rdquo;</li>
+                    <li>Use <code>ENUM</code> or a reference table for any field with a fixed set of valid values (status, type, category) &mdash; never free text for controlled vocabularies</li>
+                    <li>Every table should have a surrogate primary key, a <code>created_at</code> timestamp, and an <code>updated_at</code> timestamp as standard</li>
+                    <li>Foreign key constraints enforced at the database level, not just in application code</li>
+                    <li>Soft deletes (<code>deleted_at</code>) rather than hard deletes for any record with audit or compliance significance (tenants, repairs, staff, properties)</li>
+                </ul>
+            </div>
+
+            <!-- Sub-topic 2 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Address Standardisation via Gazetteer &amp; UPRN
+                </h4>
+                <p>ERC uses the Local Land and Property Gazetteer (LLPG) as its authoritative address register, accessible through the Improvement Service&rsquo;s Spatial Hub Scotland. Every property in the housing stock has a Unique Property Reference Number (UPRN) &mdash; a 12-digit identifier that should become the primary key for all property records across every system.</p>
+                <ul>
+                    <li>UPRN stored as <code>BIGINT</code> on every property record &mdash; this is the join key between housing management, repairs, SOR, tenant portal, and any future system</li>
+                    <li>Address display generated from Gazetteer data at query time, not stored as a free-text string that can drift out of date</li>
+                    <li>Legacy address strings in the current system matched to UPRN during migration &mdash; use OpenAI Structured Outputs to parse ambiguous or abbreviated addresses and suggest UPRN candidates for human confirmation</li>
+                    <li>Any new address entered into the new system validated against the live Gazetteer feed before being committed &mdash; no unmatched addresses accepted</li>
+                    <li>Postcode stored separately in consistent format: uppercase, space before the inward code (<code>G77 5NE</code>), validated against the Royal Mail PAF</li>
+                </ul>
+            </div>
+
+            <!-- Sub-topic 3 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    Phone Number &amp; Contact Data Standardisation
+                </h4>
+                <p>Phone numbers in most housing management systems are a mess: some start with 0141, some with +44141, some have spaces, some have brackets. Storing the canonical form in E.164 format and displaying it formatted is a one-time discipline that eliminates the problem permanently.</p>
+                <ul>
+                    <li>All phone numbers stored in E.164 format: <code>+441355XXXXXX</code> as <code>VARCHAR(20)</code> &mdash; validated at input, displayed in local format (<code>01355 XXXXXX</code>) to users</li>
+                    <li>Mobile and landline distinguished by type field, not inferred from the number</li>
+                    <li>Email addresses stored lowercase, validated against RFC 5322 at input, indexed for deduplication</li>
+                    <li>During migration: run existing phone number data through an OpenAI batch job to parse and normalise to E.164, with confidence score &mdash; flag low-confidence results for manual review</li>
+                    <li>No free-text &ldquo;other contact&rdquo; fields &mdash; structured contact type (emergency, next of kin, advocate) with its own phone/email fields</li>
+                </ul>
+            </div>
+
+            <!-- Sub-topic 4 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Entity Data: Tenants, Staff, Stock, Suppliers &amp; Prices
+                </h4>
+                <p>Each major entity in the system deserves its own data quality audit and standardisation pass before migration. These are not the same problem &mdash; they have different field shapes, different sources of truth, and different downstream systems that consume them.</p>
+                <ul>
+                    <li><strong>Tenants:</strong> Tenancy reference as the primary identifier; dates of birth as <code>DATE</code> not text; correspondence preference as a typed ENUM; vulnerability flags as structured fields not free-text notes; deduplication on name + UPRN + date of birth combination before migration</li>
+                    <li><strong>Staff:</strong> Staff ID matched to HR system as the canonical source; role and trade as reference table lookups; certifications as structured records with expiry dates, not a notes field; operative app login linked to staff record not a separate credential</li>
+                    <li><strong>Stock / Materials:</strong> SOR code as primary key for schedule items; stock items with a defined unit of measure (<code>EA</code>, <code>M</code>, <code>M2</code>, <code>KG</code>) stored as ENUM; supplier part numbers as separate foreign records, not concatenated strings</li>
+                    <li><strong>Suppliers:</strong> Company registration number as canonical identifier; VAT number stored as <code>GB</code> prefix + 9-digit string, validated; payment terms as integer days not free text</li>
+                    <li><strong>Prices:</strong> All monetary values as <code>DECIMAL(10,2)</code> &mdash; never <code>FLOAT</code>; currency as ISO 4217 code (<code>GBP</code>); price lists versioned with effective date range so historical data is preserved and auditable</li>
+                </ul>
+            </div>
+
+            <!-- Sub-topic 5 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 3"/></svg>
+                    OpenAI-Assisted Migration &amp; Cleansing
+                </h4>
+                <p>The OpenAI API &mdash; specifically Structured Outputs with a defined JSON Schema &mdash; is the most practical tool available for transforming legacy records that are too inconsistent to fix with deterministic rules alone. The key is treating AI as a preprocessing step that produces structured candidates for human confirmation, not as an autonomous data editor.</p>
+                <ul>
+                    <li>Use the OpenAI Batch API to process thousands of legacy records overnight: send a messy record, receive a structured JSON object with confidence score and explanation</li>
+                    <li>Define a JSON Schema for each entity before starting &mdash; the schema is the contract between the old and new system; Structured Outputs guarantees the AI returns valid JSON that matches it</li>
+                    <li>Address normalisation workflow: send legacy address string &rarr; receive <code>{ "uprn": 12345678, "confidence": 0.94, "matched_address": "12 High Street, Barrhead, G78 1AA" }</code> &rarr; flag anything below 0.85 for manual review</li>
+                    <li>Phone number normalisation: send a raw phone string &rarr; receive <code>{ "e164": "+441355810000", "type": "landline", "confidence": 0.99 }</code></li>
+                    <li>Duplicate tenant detection: batch-process pairs of records with similar name + postcode, receive a probability score and the fields that differ &mdash; route high-probability duplicates to a confirmation queue</li>
+                    <li>Migration audit log: every AI-suggested change is recorded with the original value, the suggested value, the confidence, and whether it was accepted or overridden by a human</li>
+                </ul>
+            </div>
+
+            <!-- Sub-topic 6 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    JSON-First Integration Architecture
+                </h4>
+                <p>Every integration between systems should use structured JSON over a REST or webhook API. The goal is that no data ever travels via a spreadsheet attached to an email, a shared network folder, or a scheduled CSV export &mdash; because those channels cannot be monitored, versioned, or automatically validated.</p>
+                <ul>
+                    <li>All APIs accept and return JSON with a defined schema &mdash; document with OpenAPI 3.0 spec so any future developer or system can consume without asking</li>
+                    <li>Event-driven webhooks for state changes (job completed, tenant updated, certificate expired) rather than polling or scheduled exports</li>
+                    <li>JSON Schema validation at the API boundary: reject malformed payloads at ingestion, not after they have corrupted a table</li>
+                    <li>Versioned API endpoints (<code>/api/v1/</code>) so integrations do not break when the schema evolves</li>
+                    <li>Idempotent endpoints: sending the same payload twice produces the same result &mdash; safe for retry on network failure</li>
+                    <li>Structured logs for every API call: request body, response, timestamp, duration &mdash; makes debugging and auditing straightforward</li>
+                </ul>
+            </div>
+
+            <!-- Sub-topic 7 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                    Eliminating Manual File Transfers &amp; Spreadsheet Workflows
+                </h4>
+                <p>Every spreadsheet that travels between systems or people via email is a data quality incident waiting to happen: it can be edited, forwarded to the wrong person, become the &ldquo;live&rdquo; version without anyone knowing, and is impossible to audit. The goal is to make the new system the authoritative source so that no one needs a spreadsheet because the data is always one click away.</p>
+                <ul>
+                    <li>Map all current spreadsheet-based workflows in the data audit: who sends what to whom, how often, and what decisions it drives &mdash; each one is a candidate for automation</li>
+                    <li>Self-service reports in the system replace &ldquo;could you send me the list of&hellip;&rdquo; emails &mdash; role-based access means each user sees the data relevant to them without an intermediary</li>
+                    <li>Price list updates sent from suppliers via API or structured CSV import with validation, not a shared Excel file on a Teams channel</li>
+                    <li>Contractor compliance data (certifications, insurance, accreditations) maintained in the supplier record and automatically flagged when expiring &mdash; not tracked in a spreadsheet by one person</li>
+                    <li>Power Automate or a lightweight job scheduler for any genuinely batch process: nightly reconciliation, weekly summary emails, monthly SLA reports &mdash; triggered automatically, not by someone remembering to run a query</li>
+                    <li>Change log on every record: who changed what and when &mdash; replaces the spreadsheet version-history question with a proper audit trail</li>
+                </ul>
+            </div>
+
+            <!-- How others approach this -->
+            <p class="theme-subsection-label">How Do Others Approach This?</p>
+
+            <div class="peer-card">
+                <strong>Improvement Service &mdash; Spatial Hub Scotland (national)</strong>
+                <p>The Improvement Service provides all Scottish councils with access to the National Gazetteer through the Spatial Hub. ERC already has LLPG obligations as a local authority. The practical step is ensuring the UPRN is exposed as a field in the new housing system and that the Spatial Hub API is called at address entry time rather than relying on a periodic bulk import. Several Scottish councils &mdash; including North Lanarkshire and South Ayrshire &mdash; have completed UPRN adoption programmes that reduced address duplication by over 30% and improved integration between housing, planning, and environmental services.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Aberdeenshire Council &mdash; housing data migration</strong>
+                <p>Aberdeenshire&rsquo;s housing system migration identified that approximately 22% of tenant records had phone numbers in inconsistent formats, 14% had addresses not matched to UPRN, and 8% were probable duplicates. They used a combination of deterministic rules and manual review &mdash; a process that took three months longer than planned. The lesson they cite: start the data quality audit at the same time as the procurement process, not after contract award. Having a clean data profile early changes what you ask for in a specification.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Riverside Group &mdash; API-first integration strategy</strong>
+                <p>Riverside eliminated approximately 40 recurring spreadsheet-based workflows over three years by requiring every new system integration to use their internal API gateway. The discipline they applied: any data that moves between systems must go through the API; anything that cannot go through the API is a project to add that capability, not a reason to revert to email. They report that data quality incidents dropped by 60% and that their compliance reporting workload reduced significantly because the audit trail was always available in the system.</p>
+            </div>
+            <div class="peer-card">
+                <strong>NHS Scotland &mdash; CHI number discipline</strong>
+                <p>The Community Health Index (CHI) number is the NHS Scotland universal patient identifier &mdash; analogous in function to the UPRN for properties or a tenancy reference for tenants. Every NHS system uses CHI as the primary key for patient records, which means that a patient seen in A&amp;E, a GP practice, and a district nursing team has one consistent identity across all three. The lesson for housing is the same: pick a canonical identifier for each entity (UPRN for properties, tenancy reference for tenancies) and enforce it across every system from day one. Adding it later costs significantly more.</p>
+            </div>
+            <div class="peer-card">
+                <strong>OpenAI Structured Outputs &mdash; data migration pattern</strong>
+                <p>Several UK local authorities and housing associations piloting AI-assisted data migration (including a Midlands housing association and a Scottish council, both reported at the 2024 Chartered Institute of Housing digital conference) used GPT-4 with Structured Outputs to pre-process legacy records before human review. The typical pattern: define a JSON Schema for the target record, batch-process 500&ndash;1,000 records per API call overnight, review the flagged low-confidence results in the morning. One team reported processing 85,000 tenant records in four working days with a 94% auto-acceptance rate, leaving 5,100 records for manual review &mdash; work that would have taken several weeks by hand.</p>
+            </div>
+
+            <!-- Reflection questions -->
+            <div class="reflection-questions">
+                <h4>Questions to Keep Asking</h4>
+                <ol>
+                    <li>Have we done a data audit of the current system? What percentage of property records can be matched to a UPRN today?</li>
+                    <li>Where are phone numbers, addresses, and tenant details stored that are <em>not</em> in the main housing management system &mdash; and how do those copies get out of sync?</li>
+                    <li>Which recurring spreadsheets could we list right now &mdash; who creates them, how often, and what decision they drive? Each one is a workflow to automate.</li>
+                    <li>When a supplier updates their price list, what is the current journey from their end to it being live in our system? How many steps involve a human copying data from one place to another?</li>
+                    <li>If the new system goes live with the same data quality problems the current system has, what will the impact be in 12 months? Is the migration plan designed to prevent that?</li>
+                    <li>Which fields in the current system are free text that should be structured? Names used to mean different things over time are the hardest to fix after migration.</li>
+                    <li>Are we treating the JSON schema for each entity as a design document that the whole team agrees on before build starts &mdash; or as something that gets defined after the tables are built?</li>
+                    <li>What does the Scottish Housing Regulator require us to be able to demonstrate about data accuracy? Is our current system capable of producing that evidence?</li>
+                </ol>
+            </div>
+
+        </div><!-- /.theme-block-body -->
+    </div><!-- /.theme-block -->
+
     <!-- Future themes -->
     <div class="section-header" style="margin-top:1rem;">
         <h2>Future Themes Under Consideration</h2>
@@ -420,7 +590,6 @@
         <span class="future-theme-tag">First-Time Fix Rate</span>
         <span class="future-theme-tag">Void Property Turnaround</span>
         <span class="future-theme-tag">Digital Inclusion &amp; Access</span>
-        <span class="future-theme-tag">Data Quality &amp; Deduplication</span>
         <span class="future-theme-tag">Apprentice &amp; Early Career Digital Skills</span>
         <span class="future-theme-tag">Environmental &amp; Fleet Efficiency</span>
         <span class="future-theme-tag">Contractor Compliance Monitoring</span>
