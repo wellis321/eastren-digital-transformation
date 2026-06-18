@@ -124,7 +124,7 @@ $asisSiteUrl = defined('ASIS_SITE_URL') && ASIS_SITE_URL !== ''
         </form>
 
         <nav class="auth-related-sites" aria-label="Related systems">
-            <p class="auth-related-sites__label">Other ERC tools</p>
+            <p class="auth-related-sites__label">Other tools</p>
             <ul class="auth-related-sites__list">
                 <li>
                     <a href="<?= e(rtrim($sorSiteUrl, '/')) ?>/" class="auth-related-sites__link">
