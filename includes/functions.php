@@ -123,8 +123,32 @@ function enhance_static_html(string $html, string $baseDir): string
             . 'padding:.28rem .65rem;border:1px solid rgba(255,255,255,.55);border-radius:4px;'
             . 'background:rgba(255,255,255,.14);white-space:nowrap}'
             . '.site-topbar a.topbar-signout:hover{color:#fff!important;background:rgba(255,255,255,.24)!important}'
+            . '.footer-tools-strip{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;'
+            . 'padding:.65rem 1.25rem;border-top:1px solid rgba(255,255,255,.1);font-size:.75rem;}'
+            . '.footer-tools-strip .ft-label{color:rgba(255,255,255,.45);font-weight:600;'
+            . 'text-transform:uppercase;letter-spacing:.05em;font-size:.68rem;margin-right:.25rem}'
+            . '.footer-tools-strip a{color:rgba(255,255,255,.75);text-decoration:none;'
+            . 'padding:.15rem .45rem;border:1px solid rgba(255,255,255,.25);border-radius:3px}'
+            . '.footer-tools-strip a:hover{color:#fff;background:rgba(255,255,255,.15);'
+            . 'border-color:rgba(255,255,255,.5)}'
             . '</style>';
         $html = preg_replace('/<\/head>/i', $criticalCss . '</head>', $html, 1);
+    }
+
+    // Inject related-tools links into the page footer
+    if (stripos($html, 'footer-tools-strip') === false) {
+        $sorUrl  = defined('SOR_SITE_URL')  ? htmlspecialchars(SOR_SITE_URL,  ENT_QUOTES, 'UTF-8') : '';
+        $asisUrl = defined('ASIS_SITE_URL') ? htmlspecialchars(ASIS_SITE_URL, ENT_QUOTES, 'UTF-8') : '';
+        $ercUrl  = defined('APP_URL')       ? htmlspecialchars(APP_URL,        ENT_QUOTES, 'UTF-8') : '';
+        if ($sorUrl !== '' && $asisUrl !== '') {
+            $strip = "\n" . '<div class="footer-tools-strip">'
+                . '<span class="ft-label">ERC Digital Tools</span>'
+                . '<a href="' . $sorUrl  . '/">SOR Management System</a>'
+                . '<a href="' . $ercUrl  . '/">ERC Portal</a>'
+                . '<a href="' . $asisUrl . '/">AS-IS Process Mapping</a>'
+                . '</div>';
+            $html = preg_replace('/<\/footer>/i', $strip . "\n</footer>", $html, 1);
+        }
     }
 
     return $html;
