@@ -105,6 +105,25 @@ $flash = render_flash();
             </div>
             <button type="submit" class="auth-btn auth-btn--primary">Sign in</button>
         </form>
+
+        <nav class="auth-related-sites" aria-label="Related systems">
+            <p class="auth-related-sites__label">Other ERC tools</p>
+            <ul class="auth-related-sites__list">
+                <li>
+                    <a href="<?= e(SOR_SITE_URL) ?>/" class="auth-related-sites__link">
+                        <span class="auth-related-sites__name">SOR Management System</span>
+                        <span class="auth-related-sites__desc">Schedule of Rates codes, trades and review</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= e(ASIS_SITE_URL) ?>/" class="auth-related-sites__link">
+                        <span class="auth-related-sites__name">AS-IS process mapping</span>
+                        <span class="auth-related-sites__desc">Swimlane process maps and systems library</span>
+                    </a>
+                </li>
+            </ul>
+            <p class="auth-related-sites__hint">Same username and password when all three use the shared database.</p>
+        </nav>
     </div>
 </main>
 

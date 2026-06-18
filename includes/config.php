@@ -50,6 +50,8 @@ define('DB_NAME', env_val('DB_NAME', 'sor_management'));
 define('DB_USER', env_val('DB_USER', 'root'));
 define('DB_PASS', env_val('DB_PASS'));
 define('SESSION_SECRET', env_val('SESSION_SECRET', 'changeme'));
+define('SOR_SITE_URL', rtrim(env_val('SOR_SITE_URL', 'https://papayawhip-hamster-802775.hostingersite.com'), '/'));
+define('ASIS_SITE_URL', rtrim(env_val('ASIS_SITE_URL', 'https://slategray-cat-335719.hostingersite.com'), '/'));
 
 header('X-Frame-Options: DENY');
 header('X-Content-Type-Options: nosniff');

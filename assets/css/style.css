@@ -2372,6 +2372,66 @@ tbody tr:nth-child(even):hover {
     background: var(--erc-border);
 }
 
+.auth-related-sites {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--erc-border);
+}
+
+.auth-related-sites__label {
+    margin: 0 0 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--erc-text-light);
+}
+
+.auth-related-sites__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.auth-related-sites__link {
+    display: block;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--erc-border);
+    border-radius: var(--radius-sm);
+    background: var(--erc-bg);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--transition), background var(--transition);
+}
+
+.auth-related-sites__link:hover {
+    border-color: var(--erc-green);
+    background: #fff;
+    text-decoration: none;
+}
+
+.auth-related-sites__name {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--erc-green-dark);
+}
+
+.auth-related-sites__desc {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.8rem;
+    color: var(--erc-text-light);
+}
+
+.auth-related-sites__hint {
+    margin: 0.75rem 0 0;
+    font-size: 0.78rem;
+    color: var(--erc-text-light);
+}
+
 .flash {
     padding: 0.65rem 0.85rem;
     margin-bottom: 1rem;
