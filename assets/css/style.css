@@ -131,6 +131,14 @@ p { margin-bottom: 1rem; }
     gap: 0.75rem;
     color: inherit;
     text-decoration: none;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.topbar-left span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .topbar-left:hover {
@@ -175,6 +183,7 @@ p { margin-bottom: 1rem; }
     margin: 0 auto;
     width: 100%;
     overflow: visible;
+    position: relative;
 }
 
 .site-logo {
@@ -2371,16 +2380,54 @@ tbody tr:nth-child(even):hover {
     align-items: center;
     gap: 1rem;
     margin-left: auto;
+    flex-shrink: 0;
 }
 
 .topbar-signout {
-    color: rgba(255, 255, 255, 0.85);
+    color: #fff;
     font-size: 0.72rem;
+    font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
+    padding: 0.28rem 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .topbar-signout:hover {
     color: #fff;
-    text-decoration: underline;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+.header-signout {
+    margin-left: auto;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.92);
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.header-signout:hover {
+    color: #fff;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.22);
+}
+
+.mobile-nav-signout {
+    display: block;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: var(--erc-green-dark) !important;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--radius-sm);
+    text-align: center;
 }

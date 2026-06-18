@@ -5,18 +5,8 @@ $builtIn = PHP_SAPI === 'cli-server';
 
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/auth.php';
-require_once __DIR__ . '/includes/debug-log.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-
-// #region agent log
-auth_debug_log('router.php:entry', 'router invoked', [
-    'uri' => $uri,
-    'sapi' => PHP_SAPI,
-    'logged_in' => is_logged_in(),
-    'script' => $_SERVER['SCRIPT_NAME'] ?? '',
-], 'H-C');
-// #endregion
 
 $publicPaths = [
     '/login.php',
@@ -41,9 +31,6 @@ if (in_array($uri, $publicPaths, true) || str_starts_with($uri, '/auth/microsoft
 }
 
 if (!is_logged_in()) {
-    // #region agent log
-    auth_debug_log('router.php:redirect-login', 'unauthenticated — redirecting to login', ['uri' => $uri], 'H-C');
-    // #endregion
     header('Location: ' . APP_URL . '/login.php?next=' . urlencode(login_next_url()));
     exit;
 }
@@ -92,8 +79,5 @@ $types = [
     'pdf'  => 'application/pdf',
 ];
 header('Content-Type: ' . ($types[$ext] ?? 'application/octet-stream'));
-// #region agent log
-auth_debug_log('router.php:serve', 'serving file after auth', ['uri' => $uri, 'file' => basename($file)], 'H-C');
-// #endregion
 readfile($file);
 exit;

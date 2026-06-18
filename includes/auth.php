@@ -56,8 +56,6 @@ function establish_session(array $user, array $entraRoles = []): void
 
 function attempt_login(string $user, string $pass): bool
 {
-    require_once __DIR__ . '/debug-log.php';
-
     $user = trim($user);
     $email = strtolower($user);
 
@@ -88,27 +86,6 @@ function attempt_login(string $user, string $pass): bool
 
     $_SESSION['_last_login_fail'] = $reason;
 
-    $dbActual = '';
-    try {
-        $dbActual = (string)$db->query('SELECT DATABASE()')->fetchColumn();
-    } catch (Throwable) {
-        $dbActual = 'unknown';
-    }
-
-    // #region agent log
-    auth_debug_log('auth.php:attempt_login', 'login attempt', [
-        'username' => $user,
-        'db_name_config' => DB_NAME,
-        'db_name_actual' => $dbActual,
-        'user_found' => (bool)$row,
-        'matched_username' => $row['username'] ?? null,
-        'auth_provider' => $row['auth_provider'] ?? null,
-        'has_password_hash' => $row && !empty($row['password_hash']),
-        'password_ok' => $valid,
-        'reason' => $reason,
-    ], 'H-login');
-    // #endregion
-
     if ($row && $valid && !empty($row['password_hash'])) {
         establish_session($row);
         unset($_SESSION['_last_login_fail']);
@@ -120,15 +97,6 @@ function attempt_login(string $user, string $pass): bool
 function last_login_fail_reason(): string
 {
     return (string)($_SESSION['_last_login_fail'] ?? '');
-}
-
-function connected_database_name(): string
-{
-    try {
-        return (string)db()->query('SELECT DATABASE()')->fetchColumn();
-    } catch (Throwable) {
-        return 'connection failed';
-    }
 }
 
 function active_users_count(): int

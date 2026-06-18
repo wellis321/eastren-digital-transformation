@@ -7,6 +7,56 @@
     'use strict';
 
     // ----------------------------------------------------------
+    // Sign out links (top bar, header, mobile menu)
+    // ----------------------------------------------------------
+    (function ensureSignOutLinks() {
+        var topbarSignOut = document.querySelector('.topbar-signout');
+        var logoutHref = topbarSignOut
+            ? topbarSignOut.getAttribute('href')
+            : (window.location.pathname.indexOf('/plan/') !== -1 ? '../logout.php' : 'logout.php');
+
+        if (!topbarSignOut) {
+            var topbar = document.querySelector('.site-topbar');
+            var right = topbar && topbar.querySelector('.topbar-right');
+            if (topbar && !right) {
+                right = document.createElement('div');
+                right.className = 'topbar-right';
+                topbar.appendChild(right);
+            }
+            if (right && !right.querySelector('.topbar-signout')) {
+                var topLink = document.createElement('a');
+                topLink.href = logoutHref;
+                topLink.className = 'topbar-signout';
+                topLink.textContent = 'Sign out';
+                right.insertBefore(topLink, right.firstChild);
+            }
+        }
+
+        var headerInner = document.querySelector('.header-inner');
+        if (headerInner && !headerInner.querySelector('.header-signout')) {
+            var headerLink = document.createElement('a');
+            headerLink.href = logoutHref;
+            headerLink.className = 'header-signout';
+            headerLink.textContent = 'Sign out';
+            var burger = headerInner.querySelector('.hamburger');
+            if (burger) {
+                headerInner.insertBefore(headerLink, burger);
+            } else {
+                headerInner.appendChild(headerLink);
+            }
+        }
+
+        var mobileNav = document.getElementById('mobile-nav');
+        if (mobileNav && !mobileNav.querySelector('.mobile-nav-signout')) {
+            var mobileLink = document.createElement('a');
+            mobileLink.href = logoutHref;
+            mobileLink.className = 'mobile-nav-signout';
+            mobileLink.textContent = 'Sign out';
+            mobileNav.appendChild(mobileLink);
+        }
+    })();
+
+    // ----------------------------------------------------------
     // Mobile Navigation Toggle
     // ----------------------------------------------------------
     const hamburger = document.getElementById('hamburger');

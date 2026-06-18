@@ -7,13 +7,6 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/entra_config.php';
 
 $userCount = active_users_count();
-// #region agent log
-require_once __DIR__ . '/includes/debug-log.php';
-auth_debug_log('login.php:load', 'login page loaded', [
-    'db_name' => DB_NAME,
-    'active_users' => $userCount,
-], 'H-login');
-// #endregion
 
 if (is_logged_in()) {
     redirect(resolve_next_redirect($_GET['next'] ?? '', APP_URL . '/index.html'));
@@ -25,9 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Invalid form submission. Please try again.';
     } elseif (is_rate_limited(client_ip())) {
         $error = 'Too many failed attempts. Please wait 15 minutes, or ask an administrator to run: DELETE FROM login_attempts; in phpMyAdmin.';
-        // #region agent log
-        auth_debug_log('login.php:rate-limited', 'login blocked by rate limit', ['ip' => client_ip()], 'H-rate');
-        // #endregion
     } else {
         $user = trim($_POST['username'] ?? '');
         $pass = $_POST['password'] ?? '';
@@ -88,12 +78,6 @@ $flash = render_flash();
         <?php endif; ?>
         <?php if ($error): ?>
             <div class="flash flash-error"><?= e($error) ?></div>
-            <p class="auth-login-hint" style="margin:0 0 1rem;font-size:0.82rem;color:#555;">
-                Connected to <code><?= e(connected_database_name()) ?></code>
-                (config: <code><?= e(DB_NAME) ?></code>) ·
-                <?= (int)$userCount ?> active user<?= $userCount === 1 ? '' : 's' ?>
-                <?php if (last_login_fail_reason()): ?> · last check: <code><?= e(last_login_fail_reason()) ?></code><?php endif; ?>
-            </p>
         <?php endif; ?>
 
         <?php if (entra_enabled()): ?>

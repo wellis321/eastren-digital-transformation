@@ -31,10 +31,6 @@ DirectoryIndex index.php
     Require all denied
 </Files>
 
-<Files "auth-login-debug.log">
-    Require all denied
-</Files>
-
 <FilesMatch "\.(sql)$">
     Require all denied
 </FilesMatch>
