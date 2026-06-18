@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Continuous Improvement Themes | ERC Housing Digital Transformation</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .theme-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.22rem 0.65rem;
+            border-radius: 2rem;
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        .theme-status-badge::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #059669;
+            border-radius: 50%;
+        }
+        .theme-block {
+            background: var(--erc-surface);
+            border: 1px solid var(--erc-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .theme-block-header {
+            background: #006A51;
+            padding: 1.5rem 1.75rem 1.25rem;
+            color: white;
+        }
+        .theme-block-header h2 {
+            color: white;
+            font-size: 1.4rem;
+            margin: 0.5rem 0 0.6rem;
+            line-height: 1.2;
+        }
+        .theme-block-header p {
+            color: rgba(255,255,255,0.85);
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+        .theme-block-body {
+            padding: 1.75rem;
+        }
+        .sub-topic {
+            padding: 1.1rem 0;
+            border-bottom: 1px solid #f0f2f5;
+        }
+        .sub-topic:last-of-type { border-bottom: none; padding-bottom: 0; }
+        .sub-topic h4 {
+            font-size: 0.925rem;
+            font-weight: 700;
+            color: var(--erc-blue);
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sub-topic p {
+            font-size: 0.875rem;
+            color: var(--erc-text-light);
+            margin: 0 0 0.5rem;
+        }
+        .sub-topic ul {
+            padding-left: 1.2rem;
+            margin: 0;
+        }
+        .sub-topic ul li {
+            font-size: 0.875rem;
+            color: var(--erc-text-light);
+            margin-bottom: 0.3rem;
+            line-height: 1.5;
+        }
+        .theme-subsection-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--erc-text-light);
+            margin: 1.5rem 0 0.85rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid var(--erc-border);
+        }
+        .reflection-questions {
+            background: #f0f7f4;
+            border: 1px solid #b2d8c8;
+            border-left: 4px solid var(--erc-green);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .reflection-questions h4 {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #005a44;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .reflection-questions ol {
+            padding-left: 1.2rem;
+            margin: 0;
+        }
+        .reflection-questions ol li {
+            font-size: 0.875rem;
+            color: var(--erc-text);
+            margin-bottom: 0.5rem;
+            line-height: 1.55;
+        }
+        .peer-card {
+            background: #f9fafb;
+            border: 1px solid var(--erc-border);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+        .peer-card:last-child { margin-bottom: 0; }
+        .peer-card strong {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--erc-green);
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+        .peer-card p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--erc-text-light);
+            line-height: 1.5;
+        }
+        .themes-future {
+            background: #f9fafb;
+            border: 2px dashed var(--erc-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem 1.75rem;
+        }
+        .themes-future h3 {
+            font-size: 1rem;
+            color: var(--erc-blue);
+            margin-bottom: 0.5rem;
+        }
+        .themes-future p {
+            font-size: 0.875rem;
+            color: var(--erc-text-light);
+            margin-bottom: 1rem;
+        }
+        .future-theme-tag {
+            display: inline-block;
+            background: #e5e7eb;
+            color: #374151;
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            margin: 0.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="site-topbar">
+    <a href="index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<!-- Site Header -->
+<header class="site-header">
+    <div class="header-inner">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="continuous-improvement.html" class="active">Themes</a>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Programme <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="progress.html">Progress</a>
+                    <a href="governance.html">Governance</a>
+                    <a href="group-comms.html">Group Communications</a>
+                    <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
+                    <a href="progress-report.html">Progress Report</a>
+                    <a href="presentation.html">Programme Overview</a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="history.html">ERC Digital History</a>
+                    <a href="reports.html">Reports</a>
+                    <a href="resources.html">Resources</a>
+                    <a href="sector.html">Sector Comparisons</a>
+                    <a href="peer-benchmarks.html">Peer Benchmarks (costs)</a>
+                    <a href="best-practice.html">Best Practice</a>
+                    <a href="scotland-policy.html">Scotland&#039;s Policy</a>
+                    <a href="digital-direction.html">Digital Direction</a>
+                </div>
+            </div>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+        <a href="index.html">Home</a>
+        <a href="continuous-improvement.html" class="active">Themes</a>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Programme <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="progress.html">Progress</a>
+                <a href="governance.html">Governance</a>
+                <a href="group-comms.html">Group Communications</a>
+                <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
+                <a href="progress-report.html">Progress Report</a>
+                <a href="presentation.html">Programme Overview</a>
+            </div>
+        </div>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="history.html">ERC Digital History</a>
+                <a href="reports.html">Reports</a>
+                <a href="resources.html">Resources</a>
+                <a href="sector.html">Sector Comparisons</a>
+                <a href="peer-benchmarks.html">Peer Benchmarks (costs)</a>
+                <a href="best-practice.html">Best Practice</a>
+                <a href="scotland-policy.html">Scotland&#039;s Policy</a>
+                <a href="digital-direction.html">Digital Direction</a>
+            </div>
+        </div>
+        <a href="logout.php" class="mobile-nav-signout">Sign out</a>
+    </nav>
+</header>
+
+<div class="page-wrapper">
+<main class="main-content" id="main">
+
+    <!-- Hero -->
+    <section class="hero" style="margin-top:1.5rem;">
+        <div class="hero-eyebrow">Continuous Improvement</div>
+        <h1>Ongoing Themes</h1>
+        <p>Some things don&rsquo;t get solved once and filed away. These are the topics that the programme and the organisation need to keep returning to, discussing across teams, and improving iteratively over time. Each theme is a live question, not a closed action.</p>
+    </section>
+
+    <!-- What this page is for -->
+    <div class="callout highlight" style="margin-top:1.5rem;">
+        <div class="callout-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+            <h4>How to Use This Page</h4>
+            <p>Each theme captures a problem space that the digital transformation can help address &mdash; but only if we work on it deliberately and across the organisation. Use these themes to frame conversations, commission discovery work, benchmark against peers, and track progress over time. Add new themes as they emerge. Return to existing ones as the programme matures.</p>
+            <p style="margin:0;">Themes are not project plans. They are structured thinking about where we should be improving, the questions we haven&rsquo;t fully answered, and what others are doing that we might learn from.</p>
+        </div>
+    </div>
+
+    <div class="section-header" style="margin-top:2rem;">
+        <h2>Active Themes</h2>
+    </div>
+
+    <!-- ── Theme 1: Staff & Tenant Safety ──────────────────────── -->
+    <div class="theme-block">
+        <div class="theme-block-header">
+            <span class="theme-status-badge">Active &mdash; Ongoing</span>
+            <h2>Staff &amp; Tenant Safety</h2>
+            <p>Digital transformation should make the working environment safer for housing staff, reduce safety risks in tenant properties, and create auditable evidence that safety obligations are being met. Many of the checks and records that protect people are still paper-based, intermittent, or inaccessible in the field &mdash; and that is a risk that the programme can directly address.</p>
+        </div>
+
+        <div class="theme-block-body">
+
+            <p class="theme-subsection-label">Improvement Areas</p>
+
+            <!-- Sub-topic 1 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    PPE Compliance &amp; Issuing
+                </h4>
+                <p>PPE issuing is often recorded informally or not at all. Staff may not have the right equipment for specific property types, and there is no automatic link between job type and required PPE.</p>
+                <ul>
+                    <li>Digital PPE records per operative &mdash; what was issued, when, and by whom</li>
+                    <li>Automatic prompts on job dispatch: if a property has an asbestos survey flag, require acknowledgement of appropriate PPE before the job is confirmed</li>
+                    <li>Expiry tracking and automated alerts for items with renewal dates (e.g. hard hats, harnesses, respiratory equipment)</li>
+                    <li>Mobile sign-off when PPE is collected, replacing paper log books in the depot</li>
+                </ul>
+            </div>
+
+            <!-- Sub-topic 2 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Mobile Compliance Forms &amp; Regulation Sign-off
+                </h4>
+                <p>Risk assessments, COSHH records, method statements, and regulatory sign-offs are still handled on paper in many areas. Operatives and tenants should be able to sign and receive documents on a mobile device at point of work.</p>
+                <ul>
+                    <li>RAMS (Risk Assessment and Method Statements) completed and signed on mobile before work begins</li>
+                    <li>Tenant sign-off for access, gas safety notices, and damp treatment consent &mdash; captured digitally at the door</li>
+                    <li>Completed forms automatically attached to the property record &mdash; no scanning, no lost paperwork</li>
+                    <li>Offline capability so operatives can complete forms in properties with no signal</li>
+                </ul>
+            </div>
+
+            <!-- Sub-topic 3 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Property Safety Records in the Field
+                </h4>
+                <p>Operatives arrive at properties without access to asbestos surveys, dampness histories, or structural notes. This is a direct safety risk and also a liability risk for the organisation.</p>
+                <ul>
+                    <li>Asbestos register surfaced in the operative&rsquo;s app before they enter a property &mdash; not buried in a back-office system</li>
+                    <li>Dampness and mould history visible per property so operatives understand the context of the repair</li>
+                    <li>Property-level hazard flags (e.g. aggressive dog, access difficulties, safeguarding notes) shown on job dispatch</li>
+                    <li>Automatic prompts when a job type interacts with a known property hazard (e.g. drilling near a flagged asbestos area)</li>
+                </ul>
+            </div>
+
+            <!-- Sub-topic 4 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Automated Operational Audits
+                </h4>
+                <p>Van checks, stock checks, equipment calibration records, and tool inspections are currently done on paper clipboards or not consistently done at all. The system should make these automatic, timestamped, and undeniable.</p>
+                <ul>
+                    <li>Daily van inspection completed on the operative&rsquo;s device before the first job &mdash; not a paper form in the glove box</li>
+                    <li>Stock checks and materials reconciliation done on mobile at the depot, with automatic discrepancy alerts</li>
+                    <li>Equipment calibration schedules tracked digitally &mdash; the system flags when a tool is overdue for inspection</li>
+                    <li>Audit trail available to supervisors in real time, not reconstructed from paper records after an incident</li>
+                    <li>Certificates and compliance documents (gas safety, electrical, legionella) tracked against renewal dates with automated reminders</li>
+                </ul>
+            </div>
+
+            <!-- Sub-topic 5 -->
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Lone Worker Safety
+                </h4>
+                <p>Housing officers and repairs operatives often work alone in tenant properties. The current check-in arrangements rely on informal practices that would not withstand scrutiny after a serious incident.</p>
+                <ul>
+                    <li>Structured lone worker check-ins via the operative&rsquo;s app &mdash; timed prompts, automatic escalation if overdue</li>
+                    <li>GPS location shared with supervisors during high-risk visits (e.g. enforcement actions, disputed tenancies)</li>
+                    <li>Duress alert built into the job management app &mdash; one action to alert a supervisor without alerting the person causing concern</li>
+                    <li>Post-incident reporting integrated into the same app to reduce friction and increase reporting rates</li>
+                </ul>
+            </div>
+
+            <!-- How others approach this -->
+            <p class="theme-subsection-label">How Do Others Approach This?</p>
+
+            <div class="peer-card">
+                <strong>Wheatley Housing Group (Glasgow)</strong>
+                <p>Scotland&rsquo;s largest housing organisation uses Totalmobile for job management, with van inspection logs, PPE acknowledgement steps, and compliance checks built into the operative workflow. Safety flags from the property record surface automatically before job confirmation. They credit the system with a significant reduction in near-miss incidents by operatives entering properties without hazard awareness.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Mears Group (national contractor, multiple Scottish councils)</strong>
+                <p>Mears operate digital RAMS sign-off at job commencement, with tenant and operative signatures captured on the operative&rsquo;s device. Risk assessments are pre-populated from the property hazard record and amended in the field if conditions differ from the file. Completed forms are uploaded to the job record in real time &mdash; no manual filing.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Sanctuary Group (England)</strong>
+                <p>Implemented Peoplesafe lone worker monitoring integrated with their housing management system. Lone worker sessions are started and ended through the operative app; overdue check-ins escalate automatically to the on-call supervisor. Post-incident reviews showed that the structured session approach also improved reporting discipline across the workforce.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Riverside Group (North West England)</strong>
+                <p>Property-level safety data &mdash; asbestos, structural, dampness &mdash; is surfaced in the field app before job dispatch, not just available to back-office staff. Operatives must acknowledge hazard flags before the job opens. This was introduced after an asbestos exposure incident where the operative had not been informed of a survey result held in a separate system.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Scottish Housing Regulator &mdash; Annual Assurance Statement</strong>
+                <p>The SHR now requires landlords to certify compliance with all safety obligations as part of the Annual Assurance process. Landlords with digital audit trails &mdash; showing that checks were done, certificates are current, and operatives were informed of hazards &mdash; are significantly better placed to provide that assurance. Paper-based systems create gaps that are difficult to defend in a regulatory review.</p>
+            </div>
+
+            <!-- Reflection questions -->
+            <div class="reflection-questions">
+                <h4>Questions to Keep Asking</h4>
+                <ol>
+                    <li>What does an operative genuinely need to know before entering a property to do their job safely &mdash; and does the current system surface that information at the right moment?</li>
+                    <li>Which paper safety checks are being done consistently, and which are being done intermittently or skipped? How would we know if we didn&rsquo;t ask?</li>
+                    <li>How do we know PPE is actually being used, not just issued? What evidence could we produce if there was an incident?</li>
+                    <li>What is the current lag between a safety concern being identified in a property (e.g. mould, structural crack, electrical hazard) and it being recorded in a way that protects both the tenant and the organisation?</li>
+                    <li>Could a lone worker incident happen today and go unnoticed for two hours or more? What would it take to change that?</li>
+                    <li>Are tenants receiving all the safety information they are entitled to &mdash; gas safety certificates, damp treatment plans, asbestos notifications &mdash; and do we have consistent evidence of that?</li>
+                    <li>When the Scottish Housing Regulator asks for assurance on safety compliance, what is our current answer and how much of it relies on paper that could be lost or incomplete?</li>
+                </ol>
+            </div>
+
+        </div><!-- /.theme-block-body -->
+    </div><!-- /.theme-block -->
+
+    <!-- Future themes -->
+    <div class="section-header" style="margin-top:1rem;">
+        <h2>Future Themes Under Consideration</h2>
+        <p>Topics to develop into full themes as the programme matures and more is known.</p>
+    </div>
+
+    <div class="themes-future">
+        <h3>Topics identified for future development</h3>
+        <p>These are areas where improvement work is anticipated but a full theme has not yet been scoped. Add to this list as conversations surface new areas.</p>
+        <span class="future-theme-tag">Tenant Communication Quality</span>
+        <span class="future-theme-tag">First-Time Fix Rate</span>
+        <span class="future-theme-tag">Void Property Turnaround</span>
+        <span class="future-theme-tag">Digital Inclusion &amp; Access</span>
+        <span class="future-theme-tag">Data Quality &amp; Deduplication</span>
+        <span class="future-theme-tag">Apprentice &amp; Early Career Digital Skills</span>
+        <span class="future-theme-tag">Environmental &amp; Fleet Efficiency</span>
+        <span class="future-theme-tag">Contractor Compliance Monitoring</span>
+        <span class="future-theme-tag">Complaints &amp; Learning Loops</span>
+        <span class="future-theme-tag">Mental Health &amp; Wellbeing in the Field</span>
+    </div>
+
+</main>
+</div><!-- /.page-wrapper -->
+
+<!-- Site Footer -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <strong>East Renfrewshire <span class="gold">Council</span></strong>
+            <span>Housing Digital Transformation</span>
+        </div>
+        <div class="footer-meta">
+            <p><strong>Programme:</strong> Housing Repairs Digital Transformation</p>
+            <p><strong>Role:</strong> Digital Transformation Lead</p>
+            <p><strong>William Ellis</strong></p>
+            <p style="margin-top:0.5rem; color: rgba(255,255,255,0.5);">East Renfrewshire Council &mdash; MAP Programme</p>
+        </div>
+        <div class="footer-disclaimer">
+            <p>A working reference portal for ERC&rsquo;s Housing Digital Transformation programme. Content drawn from ERC publications, Scottish Government strategy documents, and sector research.</p>
+            <p style="margin-top:0.5rem; color: rgba(255,255,255,0.5);">Information reflects the programme&rsquo;s current understanding and will be updated as delivery progresses.</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 William Ellis &mdash; ERC Housing Digital Transformation &mdash; All Rights Reserved
+    </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
