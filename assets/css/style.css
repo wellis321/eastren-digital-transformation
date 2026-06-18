@@ -160,6 +160,80 @@ p { margin-bottom: 1rem; }
     object-fit: contain;
 }
 
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.site-topbar a.topbar-signout,
+.site-topbar a.topbar-signout:link,
+.site-topbar a.topbar-signout:visited {
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 0.28rem 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.site-topbar a.topbar-signout:hover,
+.site-topbar a.topbar-signout:focus-visible {
+    color: #fff;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.24);
+    border-color: #fff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+.site-header a.header-signout,
+.site-header a.header-signout:link,
+.site-header a.header-signout:visited {
+    margin-left: auto;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.site-header a.header-signout:hover,
+.site-header a.header-signout:focus-visible {
+    color: #fff;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.28);
+    border-color: rgba(255, 255, 255, 0.75);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.mobile-nav-signout {
+    display: block;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: var(--erc-green-dark) !important;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--radius-sm);
+    text-align: center;
+}
+
+.mobile-nav-signout:hover {
+    color: var(--erc-green-dark) !important;
+    background: #fff;
+    text-decoration: none;
+}
+
 /* ----------------------------------------------------------
    Header / Navigation
    ---------------------------------------------------------- */
@@ -2373,61 +2447,4 @@ tbody tr:nth-child(even):hover {
     background: #eff8ff;
     border-color: var(--erc-accent);
     color: #1e293b;
-}
-
-.topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-left: auto;
-    flex-shrink: 0;
-}
-
-.topbar-signout {
-    color: #fff;
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-    padding: 0.28rem 0.65rem;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: var(--radius-sm);
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.topbar-signout:hover {
-    color: #fff;
-    text-decoration: none;
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.7);
-}
-
-.header-signout {
-    margin-left: auto;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.92);
-    text-decoration: none;
-    white-space: nowrap;
-    padding: 0.35rem 0.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: var(--radius-sm);
-    background: rgba(0, 0, 0, 0.12);
-}
-
-.header-signout:hover {
-    color: #fff;
-    text-decoration: none;
-    background: rgba(0, 0, 0, 0.22);
-}
-
-.mobile-nav-signout {
-    display: block;
-    margin-top: 0.75rem;
-    padding: 0.75rem 1rem;
-    font-weight: 600;
-    color: var(--erc-green-dark) !important;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: var(--radius-sm);
-    text-align: center;
 }

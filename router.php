@@ -77,7 +77,39 @@ $types = [
     'ico'  => 'image/x-icon',
     'txt'  => 'text/plain; charset=UTF-8',
     'pdf'  => 'application/pdf',
+    'mp4'  => 'video/mp4',
+    'webm' => 'video/webm',
+    'm4a'  => 'audio/mp4',
 ];
 header('Content-Type: ' . ($types[$ext] ?? 'application/octet-stream'));
+
+if ($ext === 'html') {
+    $html = file_get_contents($file);
+    if ($html !== false) {
+        $root = __DIR__;
+        $baseDir = dirname($file);
+        $html = preg_replace_callback(
+            '#\b(href|src)=(["\'])([^"\']*(?:assets/css/style\.css|assets/js/main\.js))\2#',
+            static function (array $m) use ($root, $baseDir): string {
+                $url = $m[3];
+                $assetPath = $baseDir . '/' . $url;
+                if (!is_file($assetPath) && str_starts_with($url, '/')) {
+                    $assetPath = $root . $url;
+                }
+                if (is_file($assetPath)) {
+                    $v = (string)filemtime($assetPath);
+                    if (!preg_match('/[?&]v=/', $url)) {
+                        $url .= (str_contains($url, '?') ? '&' : '?') . 'v=' . $v;
+                    }
+                }
+                return $m[1] . '=' . $m[2] . $url . $m[2];
+            },
+            $html
+        );
+        echo $html;
+        exit;
+    }
+}
+
 readfile($file);
 exit;
