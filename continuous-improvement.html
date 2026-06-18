@@ -562,7 +562,7 @@
         <div class="theme-block-header">
             <span class="theme-status-badge">Active &mdash; Ongoing</span>
             <h2>Data, Integration &amp; Contract Pricing</h2>
-            <p>The new system landscape has clear ownership: <strong>NEC Housing</strong> is the truth for properties and tenants, <strong>ROCC</strong> will be the truth for repairs, and a new <strong>contract portal</strong> will own supplier data. ERC does not need to migrate or re-own that data &mdash; those systems are authoritative. What ERC does own is the <strong>contract pricing data</strong> from Scotland Excel frameworks and Renfrew trade contracts, and the <strong>integration layer</strong> that connects these three systems. The data challenge is knowing exactly what crosses each boundary, in what format, how to keep it current, and ensuring that contract rates arrive in a structured, machine-readable form rather than spreadsheets and PDFs.</p>
+            <p>The new system landscape has clear ownership: <strong>NEC Housing</strong> is the truth for properties and tenants, <strong>ROCC</strong> is the truth for repairs and includes the contract and pricing module, and <strong>Integra</strong> is the finance system that job costs and invoicing flow into. There are two main integration boundaries to design carefully: NEC &harr; ROCC, and ROCC &harr; Integra. What ERC also needs to take control of is the <strong>contract pricing data</strong> from Scotland Excel frameworks and Renfrew trade contracts &mdash; ensuring it arrives in ROCC as structured, machine-readable data rather than spreadsheets and PDFs.</p>
         </div>
 
         <div class="theme-block-body">
@@ -606,16 +606,16 @@
             <div class="sub-topic">
                 <h4>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                    System Integration: NEC &harr; ROCC &harr; Contract Portal
+                    System Integration: NEC &harr; ROCC &harr; Integra
                 </h4>
-                <p>Three separate systems with three separate owners means the data architecture question is primarily about what crosses each boundary, in what format, and who is responsible for keeping it consistent. UPRN is the shared key that links all three &mdash; every data exchange must be built around it.</p>
+                <p>Two integration boundaries, designed well from the start, prevent years of manual workarounds. UPRN is the shared key between NEC and ROCC &mdash; every data exchange must be built around it. Integra receives the financial output of completed work.</p>
                 <ul>
                     <li><strong>NEC &rarr; ROCC:</strong> When a repair is raised, ROCC needs property details (UPRN, address, property type, tenure), the tenant reference for notification, and any property hazard flags &mdash; pulled live from NEC via API, not copied into a local table that can drift</li>
-                    <li><strong>Contract portal &rarr; ROCC:</strong> SOR codes and unit rates for job costing; when a rate changes in the contract portal, ROCC should receive an update automatically, not via a manually re-imported spreadsheet</li>
-                    <li><strong>ROCC &rarr; NEC:</strong> Repair history and job status written back to the tenant record in NEC so staff don&rsquo;t need to check two systems for a tenant&rsquo;s repairs history</li>
-                    <li>Every integration uses JSON over a documented API &mdash; no file drops, no shared network folders, no scheduled CSV exports between systems</li>
-                    <li>Each system publishes webhooks for state changes (job completed, property updated, rate revised) rather than requiring the consuming system to poll</li>
-                    <li>Define a data ownership matrix before build: for every data field that appears in more than one system, one system is the master and the others are consumers &mdash; never two systems both writing the same field independently</li>
+                    <li><strong>ROCC &rarr; NEC:</strong> Repair history and job status written back to the tenant record in NEC so staff don&rsquo;t need to check two systems for a tenant&rsquo;s repair history</li>
+                    <li><strong>ROCC &rarr; Integra:</strong> Completed job data (SOR codes, quantities, costs, operative, date) sent to Integra for invoicing and budget management &mdash; not re-keyed by someone manually entering job sheets into the finance system</li>
+                    <li><strong>Integra &rarr; ROCC:</strong> Budget codes, approved supplier list, and purchase order confirmations available in ROCC so operatives and supervisors have the financial context they need without switching systems</li>
+                    <li>Every integration uses JSON over a documented API &mdash; no file drops, no shared folders, no scheduled CSV exports between systems</li>
+                    <li>Define a data ownership matrix before build: for every field that appears in more than one system, one system is the master and the others are consumers &mdash; never two systems writing the same field independently</li>
                 </ul>
             </div>
 
@@ -715,7 +715,7 @@
             <div class="reflection-questions">
                 <h4>Questions to Keep Asking</h4>
                 <ol>
-                    <li>Have we defined the data ownership matrix? For every field that appears in NEC, ROCC, and the contract portal, which system is the master and which are consumers?</li>
+                    <li>Have we defined the data ownership matrix? For every field that appears in NEC, ROCC, and Integra, which system is the master and which are consumers?</li>
                     <li>What is the current state of Scotland Excel and Renfrew contract rate data? Where does it live, in what format, and who is responsible for keeping it current?</li>
                     <li>Which recurring spreadsheets carry contract or pricing data right now &mdash; who creates them, how often, and what decision they drive? Each one is a workflow to replace.</li>
                     <li>When Scotland Excel publishes a revised framework schedule, what is the current journey from publication to the rates being live in the system used for job costing? How many manual steps are involved?</li>
