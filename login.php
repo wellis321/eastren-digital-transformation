@@ -21,9 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $user = trim($_POST['username'] ?? '');
         $pass = $_POST['password'] ?? '';
-        if (attempt_login($user, $pass)) {
+        $result = attempt_login($user, $pass);
+        if ($result === true) {
             clear_attempts(client_ip());
             redirect(resolve_next_redirect($_GET['next'] ?? '', APP_URL . '/index.html'));
+        } elseif ($result === 'needs_activation') {
+            redirect(APP_URL . '/activate.php');
         } else {
             record_failed_attempt(client_ip());
             $reason = last_login_fail_reason();
@@ -118,7 +121,8 @@ $asisSiteUrl = defined('ASIS_SITE_URL') && ASIS_SITE_URL !== ''
             </div>
             <div class="auth-field">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" autocomplete="current-password" required>
+                <input type="password" id="password" name="password" autocomplete="current-password">
+                <p style="margin:.35rem 0 0; font-size:.8rem; color:#666;">New user? Leave this blank and click Sign in — we'll email you a code.</p>
             </div>
             <button type="submit" class="auth-btn auth-btn--primary">Sign in</button>
         </form>

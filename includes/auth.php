@@ -4,6 +4,8 @@ declare(strict_types=1);
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/mail.php';
+require_once __DIR__ . '/users.php';
 
 function is_logged_in(): bool
 {
@@ -54,9 +56,15 @@ function establish_session(array $user, array $entraRoles = []): void
     $_SESSION['entra_roles']     = $entraRoles;
 }
 
-function attempt_login(string $user, string $pass): bool
+/**
+ * Returns true on success, false on bad credentials, or 'needs_activation'
+ * when the account exists but has never had a password set.
+ *
+ * @return true|false|'needs_activation'
+ */
+function attempt_login(string $user, string $pass): bool|string
 {
-    $user = trim($user);
+    $user  = trim($user);
     $email = strtolower($user);
 
     $db   = db();
@@ -68,7 +76,20 @@ function attempt_login(string $user, string $pass): bool
          LIMIT 1'
     );
     $stmt->execute([$user, $email]);
-    $row  = $stmt->fetch();
+    $row = $stmt->fetch();
+
+    // Account exists but no password has been set — trigger activation flow
+    if ($row && empty($row['password_hash']) && ($row['auth_provider'] ?? 'local') === 'local') {
+        $rowEmail = (string)($row['email'] ?? '');
+        if ($rowEmail === '') {
+            $_SESSION['_last_login_fail'] = 'microsoft_only_no_local_password';
+            return false;
+        }
+        $code = create_password_setup_token((int)$row['id']);
+        send_activation_email($rowEmail, (string)($row['display_name'] ?: $row['username']), $code);
+        $_SESSION['activation_user_id'] = (int)$row['id'];
+        return 'needs_activation';
+    }
 
     $hash  = $row && !empty($row['password_hash'])
         ? $row['password_hash']
