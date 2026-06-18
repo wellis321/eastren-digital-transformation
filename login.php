@@ -42,6 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $flash = render_flash();
+
+$sorSiteUrl = defined('SOR_SITE_URL') && SOR_SITE_URL !== ''
+    ? SOR_SITE_URL
+    : 'https://papayawhip-hamster-802775.hostingersite.com';
+$asisSiteUrl = defined('ASIS_SITE_URL') && ASIS_SITE_URL !== ''
+    ? ASIS_SITE_URL
+    : 'https://slategray-cat-335719.hostingersite.com';
 ?>
 <!DOCTYPE html>
 <html lang="en-GB">
@@ -51,6 +58,16 @@ $flash = render_flash();
     <meta name="robots" content="noindex, nofollow">
     <title>Sign in — ERC Housing Digital Transformation</title>
     <link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
+    <style>
+        .auth-related-sites { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #d0d0d0; }
+        .auth-related-sites__label { margin: 0 0 0.65rem; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: #555; }
+        .auth-related-sites__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+        .auth-related-sites__link { display: block; padding: 0.65rem 0.75rem; border: 1px solid #d0d0d0; border-radius: 4px; background: #f5f5f5; text-decoration: none; color: inherit; }
+        .auth-related-sites__link:hover { border-color: #006A51; background: #fff; }
+        .auth-related-sites__name { display: block; font-size: 0.9rem; font-weight: 600; color: #005a44; }
+        .auth-related-sites__desc { display: block; margin-top: 0.15rem; font-size: 0.8rem; color: #555; }
+        .auth-related-sites__hint { margin: 0.75rem 0 0; font-size: 0.78rem; color: #555; }
+    </style>
 </head>
 <body class="auth-login-body">
 
@@ -110,13 +127,13 @@ $flash = render_flash();
             <p class="auth-related-sites__label">Other ERC tools</p>
             <ul class="auth-related-sites__list">
                 <li>
-                    <a href="<?= e(SOR_SITE_URL) ?>/" class="auth-related-sites__link">
+                    <a href="<?= e(rtrim($sorSiteUrl, '/')) ?>/" class="auth-related-sites__link">
                         <span class="auth-related-sites__name">SOR Management System</span>
                         <span class="auth-related-sites__desc">Schedule of Rates codes, trades and review</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= e(ASIS_SITE_URL) ?>/" class="auth-related-sites__link">
+                    <a href="<?= e(rtrim($asisSiteUrl, '/')) ?>/" class="auth-related-sites__link">
                         <span class="auth-related-sites__name">AS-IS process mapping</span>
                         <span class="auth-related-sites__desc">Swimlane process maps and systems library</span>
                     </a>
