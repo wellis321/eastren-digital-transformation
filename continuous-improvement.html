@@ -170,6 +170,117 @@
             border-radius: 2rem;
             margin: 0.2rem;
         }
+
+        /* ── Square corners ──────────────────────────────────────
+           This page follows GOV.UK-influenced restraint: no
+           rounded corners on bordered UI. Set radii to 0 here
+           so any new components added later inherit the rule.   */
+        .theme-block,
+        .theme-block-header,
+        .peer-card,
+        .reflection-questions,
+        .themes-future,
+        .ci-sidebar-inner,
+        .future-theme-tag,
+        .theme-status-badge { border-radius: 0 !important; }
+
+        /* ── Sidebar layout ──────────────────────────────────── */
+        .ci-layout {
+            display: grid;
+            grid-template-columns: 210px 1fr;
+            gap: 2.5rem;
+            align-items: start;
+            margin-top: 1.5rem;
+        }
+
+        .ci-sidebar {
+            position: sticky;
+            top: calc(56px + 1.5rem);
+            max-height: calc(100vh - 56px - 3rem);
+            overflow-y: auto;
+        }
+
+        .ci-sidebar-inner {
+            border: 1px solid var(--erc-border);
+            background: var(--erc-surface);
+        }
+
+        .ci-sidebar-section {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--erc-border);
+        }
+        .ci-sidebar-section:last-child { border-bottom: none; }
+
+        .ci-sidebar-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--erc-text-light);
+            margin: 0 0 0.6rem;
+        }
+
+        .ci-sidebar-nav { display: flex; flex-direction: column; }
+
+        .ci-sidebar-link {
+            display: block;
+            padding: 0.55rem 0 0.55rem 0.75rem;
+            font-size: 0.84rem;
+            color: var(--erc-text);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            transition: border-color 0.15s, color 0.15s, background 0.15s;
+            line-height: 1.35;
+        }
+        .ci-sidebar-link + .ci-sidebar-link {
+            border-top: 1px solid var(--erc-border);
+        }
+        .ci-sidebar-link:hover {
+            color: var(--erc-green);
+            border-left-color: var(--erc-green);
+            background: #f0f7f4;
+            text-decoration: none;
+        }
+
+        .ci-sidebar-num {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--erc-text-light);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 0.15rem;
+        }
+
+        .ci-sidebar-future {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .ci-sidebar-future-item {
+            font-size: 0.8rem;
+            color: var(--erc-text-light);
+            line-height: 1.35;
+            padding: 0.15rem 0;
+        }
+        .ci-sidebar-future-item::before {
+            content: '– ';
+            color: var(--erc-border);
+        }
+
+        @media (max-width: 920px) {
+            .ci-layout { grid-template-columns: 1fr; }
+            .ci-sidebar { position: static; max-height: none; }
+            .ci-sidebar-inner { display: flex; overflow-x: auto; }
+            .ci-sidebar-section {
+                min-width: 190px;
+                border-bottom: none;
+                border-right: 1px solid var(--erc-border);
+                flex-shrink: 0;
+            }
+            .ci-sidebar-section:last-child { border-right: none; }
+        }
     </style>
 </head>
 <body>
@@ -278,8 +389,46 @@
         <h2>Active Themes</h2>
     </div>
 
+    <div class="ci-layout">
+
+        <!-- Sidebar -->
+        <aside class="ci-sidebar">
+            <div class="ci-sidebar-inner">
+                <div class="ci-sidebar-section">
+                    <p class="ci-sidebar-label">Active Themes</p>
+                    <nav class="ci-sidebar-nav" aria-label="Theme navigation">
+                        <a href="#theme-safety" class="ci-sidebar-link">
+                            <span class="ci-sidebar-num">Theme 01</span>
+                            Staff &amp; Tenant Safety
+                        </a>
+                        <a href="#theme-data" class="ci-sidebar-link">
+                            <span class="ci-sidebar-num">Theme 02</span>
+                            Data Migration &amp; Standardisation
+                        </a>
+                    </nav>
+                </div>
+                <div class="ci-sidebar-section">
+                    <p class="ci-sidebar-label">Under Consideration</p>
+                    <div class="ci-sidebar-future">
+                        <span class="ci-sidebar-future-item">Tenant Communication Quality</span>
+                        <span class="ci-sidebar-future-item">First-Time Fix Rate</span>
+                        <span class="ci-sidebar-future-item">Void Property Turnaround</span>
+                        <span class="ci-sidebar-future-item">Digital Inclusion &amp; Access</span>
+                        <span class="ci-sidebar-future-item">Apprentice &amp; Early Career Digital Skills</span>
+                        <span class="ci-sidebar-future-item">Environmental &amp; Fleet Efficiency</span>
+                        <span class="ci-sidebar-future-item">Contractor Compliance Monitoring</span>
+                        <span class="ci-sidebar-future-item">Complaints &amp; Learning Loops</span>
+                        <span class="ci-sidebar-future-item">Mental Health &amp; Wellbeing in the Field</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <div class="ci-main">
+
     <!-- ── Theme 1: Staff & Tenant Safety ──────────────────────── -->
-    <div class="theme-block">
+    <div class="theme-block" id="theme-safety">
         <div class="theme-block-header">
             <span class="theme-status-badge">Active &mdash; Ongoing</span>
             <h2>Staff &amp; Tenant Safety</h2>
@@ -408,7 +557,7 @@
     </div><!-- /.theme-block -->
 
     <!-- ── Theme 2: Data Migration & Standardisation ──────────── -->
-    <div class="theme-block">
+    <div class="theme-block" id="theme-data">
         <div class="theme-block-header">
             <span class="theme-status-badge">Active &mdash; Ongoing</span>
             <h2>Data Migration &amp; Standardisation</h2>
@@ -577,25 +726,9 @@
         </div><!-- /.theme-block-body -->
     </div><!-- /.theme-block -->
 
-    <!-- Future themes -->
-    <div class="section-header" style="margin-top:1rem;">
-        <h2>Future Themes Under Consideration</h2>
-        <p>Topics to develop into full themes as the programme matures and more is known.</p>
-    </div>
+        </div><!-- /.ci-main -->
 
-    <div class="themes-future">
-        <h3>Topics identified for future development</h3>
-        <p>These are areas where improvement work is anticipated but a full theme has not yet been scoped. Add to this list as conversations surface new areas.</p>
-        <span class="future-theme-tag">Tenant Communication Quality</span>
-        <span class="future-theme-tag">First-Time Fix Rate</span>
-        <span class="future-theme-tag">Void Property Turnaround</span>
-        <span class="future-theme-tag">Digital Inclusion &amp; Access</span>
-        <span class="future-theme-tag">Apprentice &amp; Early Career Digital Skills</span>
-        <span class="future-theme-tag">Environmental &amp; Fleet Efficiency</span>
-        <span class="future-theme-tag">Contractor Compliance Monitoring</span>
-        <span class="future-theme-tag">Complaints &amp; Learning Loops</span>
-        <span class="future-theme-tag">Mental Health &amp; Wellbeing in the Field</span>
-    </div>
+    </div><!-- /.ci-layout -->
 
 </main>
 </div><!-- /.page-wrapper -->
