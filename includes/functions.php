@@ -83,3 +83,53 @@ function asset_url(string $path): string
     $v    = is_file($file) ? (string)filemtime($file) : '1';
     return APP_URL . $path . '?v=' . $v;
 }
+
+function enhance_static_html(string $html, string $baseDir): string
+{
+    $root = dirname(__DIR__);
+    $html = preg_replace_callback(
+        '#\b(href|src)=(["\'])([^"\']*(?:assets/css/style\.css|assets/js/main\.js))\2#',
+        static function (array $m) use ($root, $baseDir): string {
+            $url = $m[3];
+            $assetPath = $baseDir . '/' . $url;
+            if (!is_file($assetPath) && str_starts_with($url, '/')) {
+                $assetPath = $root . $url;
+            }
+            if (is_file($assetPath)) {
+                $v = (string)filemtime($assetPath);
+                if (!preg_match('/[?&]v=/', $url)) {
+                    $url .= (str_contains($url, '?') ? '&' : '?') . 'v=' . $v;
+                }
+            }
+            return $m[1] . '=' . $m[2] . $url . $m[2];
+        },
+        $html
+    );
+
+    if (stripos($html, 'critical-topbar-signout') === false) {
+        $criticalCss = '<style id="critical-topbar-signout">'
+            . '.site-topbar a.topbar-signout,.site-topbar a.topbar-signout:link,'
+            . '.site-topbar a.topbar-signout:visited,.site-topbar a.topbar-signout:active'
+            . '{color:#fff!important;text-decoration:none!important;font-size:.72rem;font-weight:600;'
+            . 'padding:.28rem .65rem;border:1px solid rgba(255,255,255,.55);border-radius:4px;'
+            . 'background:rgba(255,255,255,.14);white-space:nowrap}'
+            . '.site-topbar a.topbar-signout:hover{color:#fff!important;background:rgba(255,255,255,.24)!important}'
+            . '</style>';
+        $html = preg_replace('/<\/head>/i', $criticalCss . '</head>', $html, 1);
+    }
+
+    return $html;
+}
+
+function render_static_html(string $file): void
+{
+    $html = file_get_contents($file);
+    if ($html === false) {
+        http_response_code(500);
+        echo 'Could not load page';
+        exit;
+    }
+    header('Content-Type: text/html; charset=UTF-8');
+    echo enhance_static_html($html, dirname($file));
+    exit;
+}

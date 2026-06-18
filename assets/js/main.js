@@ -10,12 +10,26 @@
     // Sign out links (top bar fallback + mobile menu)
     // ----------------------------------------------------------
     (function ensureSignOutLinks() {
+        function styleTopbarSignOut(link) {
+            if (!link) return;
+            link.style.setProperty('color', '#fff', 'important');
+            link.style.textDecoration = 'none';
+            link.style.fontWeight = '600';
+            link.style.padding = '0.28rem 0.65rem';
+            link.style.border = '1px solid rgba(255,255,255,0.55)';
+            link.style.borderRadius = '4px';
+            link.style.background = 'rgba(255,255,255,0.14)';
+            link.style.whiteSpace = 'nowrap';
+        }
+
         var topbarSignOut = document.querySelector('.topbar-signout');
         var logoutHref = topbarSignOut
             ? topbarSignOut.getAttribute('href')
             : (window.location.pathname.indexOf('/plan/') !== -1 ? '../logout.php' : 'logout.php');
 
-        if (!topbarSignOut) {
+        if (topbarSignOut) {
+            styleTopbarSignOut(topbarSignOut);
+        } else {
             var topbar = document.querySelector('.site-topbar');
             var right = topbar && topbar.querySelector('.topbar-right');
             if (topbar && !right) {
@@ -28,6 +42,7 @@
                 topLink.href = logoutHref;
                 topLink.className = 'topbar-signout';
                 topLink.textContent = 'Sign out';
+                styleTopbarSignOut(topLink);
                 right.insertBefore(topLink, right.firstChild);
             }
         }
