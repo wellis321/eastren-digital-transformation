@@ -1,0 +1,14 @@
+{
+    "name": "erc/housing-digital-portal",
+    "description": "ERC Housing Digital Transformation reference portal",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "league/oauth2-client": "^2.7",
+        "thenetworg/oauth2-azure": "^2.2",
+        "firebase/php-jwt": "^7.0"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

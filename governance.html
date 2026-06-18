@@ -15,7 +15,10 @@
         <img src="assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
         <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
     </a>
-    <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    <div class="topbar-right">
+        <a href="logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
 </div>
 
 <!-- Site Header -->
@@ -28,6 +31,7 @@
                 <div class="nav-dropdown">
                     <a href="progress.html">Progress</a>
                     <a href="governance.html">Governance</a>
+                    <a href="group-comms.html">Group Communications</a>
                     <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
                     <a href="progress-report.html">Progress Report</a>
                     <a href="presentation.html">Programme Overview</a>
@@ -58,6 +62,7 @@
             <div class="mobile-nav-sub">
                 <a href="progress.html">Progress</a>
                 <a href="governance.html">Governance</a>
+                <a href="group-comms.html">Group Communications</a>
                 <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
                 <a href="progress-report.html">Progress Report</a>
                 <a href="presentation.html">Programme Overview</a>
@@ -120,61 +125,17 @@
         </div>
     </div>
 
-    <!-- Steering Group -->
-    <div class="section-header" style="margin-top:2.5rem;">
-        <h2>Steering Group</h2>
-        <p>Delivery oversight. Cross-functional working group.</p>
-    </div>
-
-    <div class="card" style="margin-bottom:1.5rem;">
-        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1rem;">
-            <div>
-                <h3 style="margin:0 0 0.25rem;">Steering Group</h3>
-                <p style="font-size:0.9rem; color:var(--color-muted, #6B7280); margin:0;">Delivery oversight — cross-functional working group</p>
-            </div>
-            <div style="text-align:right;">
-                <span class="badge badge-blue">Every 4 weeks</span>
-                <div style="margin-top:0.4rem; font-size:0.85rem; color:var(--color-muted, #6B7280);">First meeting: 14 July 2026</div>
-            </div>
-        </div>
-
-        <div class="callout info" style="margin-bottom:1.25rem;">
-            <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-            <div>
-                <p style="margin:0; font-size:0.9rem;">Reviews progress against the delivery plan, manages risks and issues, ensures workstreams stay coordinated, and surfaces decisions requiring Project Group escalation. Covers systems, finance, repairs, stores, customer services, HR and governance.</p>
-            </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:0.5rem;">
-            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Senior Housing Manager</div>
-            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Project Owner</div>
-            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Housing Services Manager (Repairs &amp; Property Maintenance)</div>
-            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Business Relationship Manager</div>
-            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Programme Manager</div>
-            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Programme Manager</div>
-            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Programme Manager</div>
-            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Project Manager</div>
-        </div>
-
-        <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
-            <span class="theme-tag">Upcoming: 14 Jul 2026</span>
-            <span class="theme-tag">11 Aug 2026</span>
-            <span class="theme-tag">8 Sep 2026</span>
-            <span class="theme-tag">6 Oct 2026</span>
-        </div>
-    </div>
-
     <!-- Project Group -->
-    <div class="section-header" style="margin-top:2rem;">
+    <div class="section-header" style="margin-top:2.5rem;">
         <h2>Project Group</h2>
-        <p>Strategic oversight.</p>
+        <p>Strategic governance — direction, decisions, and corporate alignment.</p>
     </div>
 
     <div class="card" style="margin-bottom:1.5rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1rem;">
             <div>
                 <h3 style="margin:0 0 0.25rem;">Project Group</h3>
-                <p style="font-size:0.9rem; color:var(--color-muted, #6B7280); margin:0;">Strategic oversight</p>
+                <p style="font-size:0.9rem; color:var(--color-muted, #6B7280); margin:0;">Strategic governance and corporate alignment</p>
             </div>
             <div style="text-align:right;">
                 <span class="badge badge-green">Every 4 weeks</span>
@@ -185,7 +146,17 @@
         <div class="callout info" style="margin-bottom:1.25rem;">
             <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
             <div>
-                <p style="margin:0; font-size:0.9rem;">Provides strategic direction, ensures programme alignment with corporate priorities, removes escalated blockers, and approves major changes to scope, timeline or approach.</p>
+                <strong style="font-size:0.88rem; display:block; margin-bottom:0.4rem;">Purpose</strong>
+                <p style="margin:0 0 0.75rem; font-size:0.9rem;">The Project Group is the primary governance body for the programme, chaired by the Project Owner. It provides strategic direction, ensures the programme remains aligned with corporate priorities, and holds accountability for delivery outcomes. It receives escalated risks and decisions from the Steering Group and approves major changes to scope, budget, or timeline. Membership spans the full breadth of services involved — repairs, finance, HR, ICT, procurement, business improvement, information governance, and community benefits.</p>
+                <strong style="font-size:0.88rem; display:block; margin-bottom:0.4rem;">Key responsibilities</strong>
+                <ul style="margin:0; padding-left:1.1rem; font-size:0.88rem; line-height:1.7;">
+                    <li>Provide strategic direction and hold accountability for programme outcomes</li>
+                    <li>Approve significant changes to scope, budget, or delivery approach</li>
+                    <li>Receive and resolve escalated risks, issues, and blockers</li>
+                    <li>Ensure alignment with corporate strategies, compliance requirements, and ERC priorities</li>
+                    <li>Support procurement decision-making and supplier engagement</li>
+                    <li>Champion the programme across their respective service areas</li>
+                </ul>
             </div>
         </div>
 
@@ -213,17 +184,70 @@
         </div>
     </div>
 
+    <!-- Steering Group -->
+    <div class="section-header" style="margin-top:2rem;">
+        <h2>Steering Group</h2>
+        <p>Cross-functional delivery oversight — keeps the programme on track and workstreams coordinated.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:1.5rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1rem;">
+            <div>
+                <h3 style="margin:0 0 0.25rem;">Steering Group</h3>
+                <p style="font-size:0.9rem; color:var(--color-muted, #6B7280); margin:0;">Cross-functional delivery oversight</p>
+            </div>
+            <div style="text-align:right;">
+                <span class="badge badge-blue">Every 4 weeks</span>
+                <div style="margin-top:0.4rem; font-size:0.85rem; color:var(--color-muted, #6B7280);">First meeting: 14 July 2026</div>
+            </div>
+        </div>
+
+        <div class="callout info" style="margin-bottom:1.25rem;">
+            <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+            <div>
+                <strong style="font-size:0.88rem; display:block; margin-bottom:0.4rem;">Purpose</strong>
+                <p style="margin:0 0 0.75rem; font-size:0.9rem;">The Steering Group is the cross-functional delivery body for the programme. It reviews progress against the delivery plan, manages risks and issues at a workstream level, and ensures coordination across all service areas — repairs, finance, stores, customer services, HR, systems, and governance. It is the first point of escalation before issues reach the Project Group.</p>
+                <strong style="font-size:0.88rem; display:block; margin-bottom:0.4rem;">Key responsibilities</strong>
+                <ul style="margin:0; padding-left:1.1rem; font-size:0.88rem; line-height:1.7;">
+                    <li>Review programme progress and delivery plan status every four weeks</li>
+                    <li>Identify, log, and manage risks and issues across all workstreams</li>
+                    <li>Coordinate activity across service areas to prevent gaps and duplication</li>
+                    <li>Surface decisions and blockers that require Project Group input</li>
+                    <li>Ensure procurement activity, system integration, and change readiness stay aligned</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:0.5rem;">
+            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Senior Housing Manager</div>
+            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Project Owner</div>
+            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Housing Services Manager (Repairs &amp; Property Maintenance)</div>
+            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Business Relationship Manager</div>
+            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Programme Manager</div>
+            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Programme Manager</div>
+            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Programme Manager</div>
+            <div style="padding:0.5rem 0.75rem; background:var(--color-surface, #F9FAFB); border-radius:var(--radius-sm, 4px); font-size:0.88rem;">Project Manager</div>
+        </div>
+
+        <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <span class="theme-tag">Upcoming: 14 Jul 2026</span>
+            <span class="theme-tag">11 Aug 2026</span>
+            <span class="theme-tag">8 Sep 2026</span>
+            <span class="theme-tag">6 Oct 2026</span>
+        </div>
+    </div>
+
     <!-- Technical Group -->
     <div class="section-header" style="margin-top:2rem;">
         <h2>Technical Group</h2>
-        <p>Technical delivery and operational readiness.</p>
+        <p>Operational and technical readiness — the frontline voice in shaping the solution.</p>
     </div>
 
     <div class="card" style="margin-bottom:1.5rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1rem;">
             <div>
                 <h3 style="margin:0 0 0.25rem;">Technical Group</h3>
-                <p style="font-size:0.9rem; color:var(--color-muted, #6B7280); margin:0;">Technical delivery and operational readiness</p>
+                <p style="font-size:0.9rem; color:var(--color-muted, #6B7280); margin:0;">Operational readiness and technical requirements</p>
             </div>
             <div style="text-align:right;">
                 <span class="badge badge-teal">Every 4 weeks</span>
@@ -234,7 +258,17 @@
         <div class="callout info" style="margin-bottom:1.25rem;">
             <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
             <div>
-                <p style="margin:0; font-size:0.9rem;">Ensures technical requirements are captured accurately, solutions are fit for purpose at an operational level, and teams are prepared for change. Brings together scheduling, stores, finance operations, ICT and systems expertise.</p>
+                <strong style="font-size:0.88rem; display:block; margin-bottom:0.4rem;">Purpose</strong>
+                <p style="margin:0 0 0.75rem; font-size:0.9rem;">The Technical Group brings together the people who use the systems day-to-day — scheduling staff, stores, finance operations, ICT, and systems specialists. Its purpose is to ensure that technical and operational requirements are captured accurately, that solutions are practical and fit for purpose at a frontline level, and that the teams most affected by change are engaged early and prepared. This group gives operational expertise a direct seat at the programme table.</p>
+                <strong style="font-size:0.88rem; display:block; margin-bottom:0.4rem;">Key responsibilities</strong>
+                <ul style="margin:0; padding-left:1.1rem; font-size:0.88rem; line-height:1.7;">
+                    <li>Review and validate technical and operational requirements</li>
+                    <li>Assess solutions from a frontline usability and practicality perspective</li>
+                    <li>Identify integration dependencies and system-level risks</li>
+                    <li>Represent the day-to-day operational experience in design and testing decisions</li>
+                    <li>Support change readiness and ensure teams are prepared before go-live</li>
+                    <li>Escalate operational concerns to the Steering Group</li>
+                </ul>
             </div>
         </div>
 

@@ -24,3 +24,6 @@ documents/
 
 # Local config
 website/config/database.php
+.env
+vendor/
+sql/seed_users.sql

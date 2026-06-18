@@ -20,13 +20,33 @@ This repo is set up for **GitHub Pages**. The site is pure static HTML — no bu
 4. Choose the **main** (or default) branch, folder **/ (root)**
 5. Save — the site will be at `https://<username>.github.io/<repo-name>/`
 
-### Local preview
+## Local preview (with authentication)
 
-Open `index.html` in a browser, or use a simple server:
+This portal uses the **same PHP session authentication as the SOR system** (`sor-system`): username/password against the shared `users` table in MySQL, with optional Microsoft Entra SSO.
+
+### Setup
+
+1. Copy `.env.example` to `.env` and set `APP_URL`, `DB_*` to match your sor-system database (same `sor_management` DB and users).
+2. Ensure the sor-system database is running and has users seeded (`sql/seed_users.sql` in sor-system).
+3. Optional Entra SSO: `composer install` and copy `ENTRA_*` settings from sor-system `.env`; add `http://localhost:8080/auth/microsoft/callback.php` as a redirect URI in Entra.
+4. Start the PHP server **with the router** (required for auth on static HTML pages):
+
+```bash
+cd "/Users/wellis/Desktop/Cursor/East Ren"
+php -S localhost:8080 router.php
+```
+
+Open `http://localhost:8080` — you will be prompted to sign in. Use the same username/password as sor-system.
+
+### GitHub Pages
+
+GitHub Pages serves static files only — **authentication does not apply** on GitHub Pages. Use the PHP server above for the protected working copy.
+
+### Legacy static preview (no auth)
 
 ```bash
 python3 -m http.server 8000
-# Open http://localhost:8000
+# Open http://localhost:8000 — no login required
 ```
 
 ### Editing

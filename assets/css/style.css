@@ -2219,3 +2219,168 @@ tbody tr:nth-child(even):hover {
     font-size: 0.92rem;
 }
 .tenant-channel-links li { margin: 0.25rem 0; }
+
+/* Auth login (shared with sor-system credentials) */
+.auth-login-body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--erc-bg);
+    font-family: var(--font-stack);
+    color: var(--erc-text);
+}
+
+.auth-login-topbar {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.85rem 1.25rem;
+    background: var(--erc-green);
+    color: #fff;
+    font-size: 0.85rem;
+}
+
+.auth-login-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 52px);
+    padding: 2rem 1rem;
+}
+
+.auth-login-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--erc-surface);
+    border: 1px solid var(--erc-border);
+    box-shadow: var(--shadow-md);
+    padding: 2rem 1.75rem;
+}
+
+.auth-login-header h1 {
+    margin: 0 0 0.35rem;
+    font-size: 1.5rem;
+    color: var(--erc-green-dark);
+}
+
+.auth-login-header p {
+    margin: 0 0 1.25rem;
+    color: var(--erc-text-light);
+    font-size: 0.92rem;
+}
+
+.auth-field {
+    margin-bottom: 0.85rem;
+}
+
+.auth-field label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.auth-field input {
+    width: 100%;
+    font: inherit;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid var(--erc-border);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
+.auth-btn {
+    display: block;
+    width: 100%;
+    font: inherit;
+    font-weight: 600;
+    text-align: center;
+    padding: 0.65rem 1rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.auth-btn--primary {
+    background: var(--erc-green);
+    color: #fff;
+    margin-top: 0.5rem;
+}
+
+.auth-btn--primary:hover {
+    background: var(--erc-green-dark);
+    color: #fff;
+}
+
+.auth-btn--microsoft {
+    background: #2f2f2f;
+    color: #fff;
+    margin-bottom: 0.25rem;
+}
+
+.auth-btn--microsoft:hover {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.auth-login-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1rem 0;
+    color: var(--erc-text-light);
+    font-size: 0.82rem;
+}
+
+.auth-login-divider::before,
+.auth-login-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--erc-border);
+}
+
+.flash {
+    padding: 0.65rem 0.85rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    border-left: 4px solid;
+}
+
+.flash-error {
+    background: #fef2f2;
+    border-color: #dc2626;
+    color: #991b1b;
+}
+
+.flash-success {
+    background: #ecfdf5;
+    border-color: #059669;
+    color: #065f46;
+}
+
+.flash-info {
+    background: #eff8ff;
+    border-color: var(--erc-accent);
+    color: #1e293b;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+}
+
+.topbar-signout {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.72rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.topbar-signout:hover {
+    color: #fff;
+    text-decoration: underline;
+}

@@ -1,0 +1,70 @@
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/auth.php';
+
+$uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+
+$publicPaths = [
+    '/login.php',
+    '/logout.php',
+    '/auth/microsoft/login.php',
+    '/auth/microsoft/callback.php',
+];
+
+if (preg_match('#^/(assets|robots\.txt)(/|$)#', $uri)) {
+    return false;
+}
+
+if (in_array($uri, $publicPaths, true) || str_starts_with($uri, '/auth/microsoft/')) {
+    return false;
+}
+
+if (!is_logged_in()) {
+    header('Location: ' . APP_URL . '/login.php?next=' . urlencode(login_next_url()));
+    exit;
+}
+
+if (str_ends_with($uri, '.php')) {
+    return false;
+}
+
+$file = __DIR__ . $uri;
+if ($uri === '/' || $uri === '') {
+    $file = __DIR__ . '/index.html';
+}
+
+if (is_dir($file)) {
+    $index = rtrim($file, '/') . '/index.html';
+    if (is_file($index)) {
+        $file = $index;
+    }
+}
+
+if (!is_file($file)) {
+    http_response_code(404);
+    header('Content-Type: text/plain; charset=UTF-8');
+    echo 'Not found';
+    return true;
+}
+
+$ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+$types = [
+    'html' => 'text/html; charset=UTF-8',
+    'css'  => 'text/css; charset=UTF-8',
+    'js'   => 'application/javascript; charset=UTF-8',
+    'json' => 'application/json; charset=UTF-8',
+    'svg'  => 'image/svg+xml',
+    'png'  => 'image/png',
+    'jpg'  => 'image/jpeg',
+    'jpeg' => 'image/jpeg',
+    'gif'  => 'image/gif',
+    'webp' => 'image/webp',
+    'ico'  => 'image/x-icon',
+    'txt'  => 'text/plain; charset=UTF-8',
+    'pdf'  => 'application/pdf',
+];
+header('Content-Type: ' . ($types[$ext] ?? 'application/octet-stream'));
+readfile($file);
+return true;
