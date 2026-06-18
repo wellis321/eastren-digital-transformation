@@ -36,7 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             redirect(resolve_next_redirect($_GET['next'] ?? '', APP_URL . '/index.html'));
         } else {
             record_failed_attempt(client_ip());
-            $error = 'Incorrect username or password.';
+            $reason = last_login_fail_reason();
+            if ($reason === 'microsoft_only_no_local_password') {
+                $error = 'This account uses Microsoft sign-in on the SOR system — local password login is not set. Use the same username with a password account, or enable Entra SSO on this portal.';
+            } elseif ($reason === 'user_not_found') {
+                $error = 'No matching user in the database. Try your email address if you sign in with that on SOR.';
+            } else {
+                $error = 'Incorrect username or password.';
+            }
             if ($userCount === 0) {
                 $error = 'No user accounts exist in this database yet. Add one in phpMyAdmin (see sql/seed-admin.example.sql).';
             }
@@ -81,6 +88,12 @@ $flash = render_flash();
         <?php endif; ?>
         <?php if ($error): ?>
             <div class="flash flash-error"><?= e($error) ?></div>
+            <p class="auth-login-hint" style="margin:0 0 1rem;font-size:0.82rem;color:#555;">
+                Connected to <code><?= e(connected_database_name()) ?></code>
+                (config: <code><?= e(DB_NAME) ?></code>) ·
+                <?= (int)$userCount ?> active user<?= $userCount === 1 ? '' : 's' ?>
+                <?php if (last_login_fail_reason()): ?> · last check: <code><?= e(last_login_fail_reason()) ?></code><?php endif; ?>
+            </p>
         <?php endif; ?>
 
         <?php if (entra_enabled()): ?>

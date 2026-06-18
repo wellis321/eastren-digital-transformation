@@ -26,25 +26,30 @@ if (file_exists($envFile)) {
         ) {
             $val = substr($val, 1, -1);
         }
-        if (!isset($_ENV[$key]) && !isset($_SERVER[$key])) {
-            putenv("$key=$val");
-            $_ENV[$key] = $val;
-        }
+        // .env file always wins (Hostinger may pre-populate empty $_ENV keys)
+        $_ENV[$key] = $val;
+        putenv($key . '=' . $val);
     }
 }
 
-define('APP_ENV', getenv('APP_ENV') ?: 'local');
-define('APP_URL', rtrim(getenv('APP_URL') ?: '', '/'));
+function env_val(string $key, string $default = ''): string
+{
+    $v = $_ENV[$key] ?? getenv($key);
+    return ($v !== false && $v !== null && $v !== '') ? (string)$v : $default;
+}
+
+define('APP_ENV', env_val('APP_ENV', 'local'));
+define('APP_URL', rtrim(env_val('APP_URL'), '/'));
 if (APP_URL === '' && PHP_SAPI !== 'cli') {
     http_response_code(500);
     exit('APP_URL is not set. Create a .env file — see HOSTINGER-DEPLOY.md.');
 }
-define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_PORT', getenv('DB_PORT') ?: '3306');
-define('DB_NAME', getenv('DB_NAME') ?: 'sor_management');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
-define('SESSION_SECRET', getenv('SESSION_SECRET') ?: 'changeme');
+define('DB_HOST', env_val('DB_HOST', 'localhost'));
+define('DB_PORT', env_val('DB_PORT', '3306'));
+define('DB_NAME', env_val('DB_NAME', 'sor_management'));
+define('DB_USER', env_val('DB_USER', 'root'));
+define('DB_PASS', env_val('DB_PASS'));
+define('SESSION_SECRET', env_val('SESSION_SECRET', 'changeme'));
 
 header('X-Frame-Options: DENY');
 header('X-Content-Type-Options: nosniff');
