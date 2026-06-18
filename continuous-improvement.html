@@ -403,7 +403,7 @@
                         </a>
                         <a href="#theme-data" class="ci-sidebar-link">
                             <span class="ci-sidebar-num">Theme 02</span>
-                            Data Migration &amp; Standardisation
+                            Data, Integration &amp; Contract Pricing
                         </a>
                     </nav>
                 </div>
@@ -560,8 +560,8 @@
     <div class="theme-block" id="theme-data">
         <div class="theme-block-header">
             <span class="theme-status-badge">Active &mdash; Ongoing</span>
-            <h2>Data Migration &amp; Standardisation</h2>
-            <p>Moving to a new system is not just a technical migration &mdash; it is an opportunity to fix every data quality problem the organisation has been living with for years. That only happens if we plan for it deliberately. Messy data migrated into a clean system is still messy data. The goal is a database layer that is as simple as possible, strongly typed, standardised at the point of entry, and integrated through APIs and JSON rather than spreadsheet file transfers.</p>
+            <h2>Data, Integration &amp; Contract Pricing</h2>
+            <p>The new system landscape has clear ownership: <strong>NEC Housing</strong> is the truth for properties and tenants, <strong>ROCC</strong> will be the truth for repairs, and a new <strong>contract portal</strong> will own supplier data. ERC does not need to migrate or re-own that data &mdash; those systems are authoritative. What ERC does own is the <strong>contract pricing data</strong> from Scotland Excel frameworks and Renfrew trade contracts, and the <strong>integration layer</strong> that connects these three systems. The data challenge is knowing exactly what crosses each boundary, in what format, how to keep it current, and ensuring that contract rates arrive in a structured, machine-readable form rather than spreadsheets and PDFs.</p>
         </div>
 
         <div class="theme-block-body">
@@ -604,32 +604,34 @@
             <!-- Sub-topic 3 -->
             <div class="sub-topic">
                 <h4>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                    Phone Number &amp; Contact Data Standardisation
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    System Integration: NEC &harr; ROCC &harr; Contract Portal
                 </h4>
-                <p>Phone numbers in most housing management systems are a mess: some start with 0141, some with +44141, some have spaces, some have brackets. Storing the canonical form in E.164 format and displaying it formatted is a one-time discipline that eliminates the problem permanently.</p>
+                <p>Three separate systems with three separate owners means the data architecture question is primarily about what crosses each boundary, in what format, and who is responsible for keeping it consistent. UPRN is the shared key that links all three &mdash; every data exchange must be built around it.</p>
                 <ul>
-                    <li>All phone numbers stored in E.164 format: <code>+441355XXXXXX</code> as <code>VARCHAR(20)</code> &mdash; validated at input, displayed in local format (<code>01355 XXXXXX</code>) to users</li>
-                    <li>Mobile and landline distinguished by type field, not inferred from the number</li>
-                    <li>Email addresses stored lowercase, validated against RFC 5322 at input, indexed for deduplication</li>
-                    <li>During migration: run existing phone number data through an OpenAI batch job to parse and normalise to E.164, with confidence score &mdash; flag low-confidence results for manual review</li>
-                    <li>No free-text &ldquo;other contact&rdquo; fields &mdash; structured contact type (emergency, next of kin, advocate) with its own phone/email fields</li>
+                    <li><strong>NEC &rarr; ROCC:</strong> When a repair is raised, ROCC needs property details (UPRN, address, property type, tenure), the tenant reference for notification, and any property hazard flags &mdash; pulled live from NEC via API, not copied into a local table that can drift</li>
+                    <li><strong>Contract portal &rarr; ROCC:</strong> SOR codes and unit rates for job costing; when a rate changes in the contract portal, ROCC should receive an update automatically, not via a manually re-imported spreadsheet</li>
+                    <li><strong>ROCC &rarr; NEC:</strong> Repair history and job status written back to the tenant record in NEC so staff don&rsquo;t need to check two systems for a tenant&rsquo;s repairs history</li>
+                    <li>Every integration uses JSON over a documented API &mdash; no file drops, no shared network folders, no scheduled CSV exports between systems</li>
+                    <li>Each system publishes webhooks for state changes (job completed, property updated, rate revised) rather than requiring the consuming system to poll</li>
+                    <li>Define a data ownership matrix before build: for every data field that appears in more than one system, one system is the master and the others are consumers &mdash; never two systems both writing the same field independently</li>
                 </ul>
             </div>
 
             <!-- Sub-topic 4 -->
             <div class="sub-topic">
                 <h4>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    Entity Data: Tenants, Staff, Stock, Suppliers &amp; Prices
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Contract Pricing Data: Scotland Excel &amp; Renfrew Trade Contracts
                 </h4>
-                <p>Each major entity in the system deserves its own data quality audit and standardisation pass before migration. These are not the same problem &mdash; they have different field shapes, different sources of truth, and different downstream systems that consume them.</p>
+                <p>This is the data ERC genuinely owns and must control. Scotland Excel framework rates and Renfrew trade contract schedules are the pricing basis for repairs and maintenance work. They currently arrive as spreadsheets and PDFs &mdash; documents designed for human reading, not machine ingestion. Bringing this data under proper version control and making it available as structured, queryable data is one of the highest-value data problems the programme can solve.</p>
                 <ul>
-                    <li><strong>Tenants:</strong> Tenancy reference as the primary identifier; dates of birth as <code>DATE</code> not text; correspondence preference as a typed ENUM; vulnerability flags as structured fields not free-text notes; deduplication on name + UPRN + date of birth combination before migration</li>
-                    <li><strong>Staff:</strong> Staff ID matched to HR system as the canonical source; role and trade as reference table lookups; certifications as structured records with expiry dates, not a notes field; operative app login linked to staff record not a separate credential</li>
-                    <li><strong>Stock / Materials:</strong> SOR code as primary key for schedule items; stock items with a defined unit of measure (<code>EA</code>, <code>M</code>, <code>M2</code>, <code>KG</code>) stored as ENUM; supplier part numbers as separate foreign records, not concatenated strings</li>
-                    <li><strong>Suppliers:</strong> Company registration number as canonical identifier; VAT number stored as <code>GB</code> prefix + 9-digit string, validated; payment terms as integer days not free text</li>
-                    <li><strong>Prices:</strong> All monetary values as <code>DECIMAL(10,2)</code> &mdash; never <code>FLOAT</code>; currency as ISO 4217 code (<code>GBP</code>); price lists versioned with effective date range so historical data is preserved and auditable</li>
+                    <li><strong>Scotland Excel frameworks:</strong> Rate schedules published by Scotland Excel for participating councils need to be ingested as structured data, not stored as spreadsheet files. Each SOR code, description, unit of measure, and unit rate is a database record, not a cell in a tab on a workbook</li>
+                    <li><strong>Renfrew trade contracts:</strong> ERC&rsquo;s participation in joint contracts with Renfrewshire and other authorities gives access to negotiated rates &mdash; these schedules need to be maintained as live data in the system so ROCC can use them for job costing without manual lookups</li>
+                    <li><strong>SOR code standardisation:</strong> SOR codes across different contracts may use different coding conventions; a mapping table is needed so ROCC can work with a consistent internal code regardless of which contract the rate comes from</li>
+                    <li><strong>Rate versioning:</strong> Contract rates change at renewal; the system must store the effective date range for each rate so historical jobs are costed against the rate that applied at the time &mdash; not silently updated to the current rate</li>
+                    <li><strong>Price data types:</strong> All monetary values stored as <code>DECIMAL(10,2)</code> &mdash; never <code>FLOAT</code>; unit of measure as a typed ENUM (<code>EA</code>, <code>M</code>, <code>M2</code>, <code>HR</code>); currency as ISO 4217 (<code>GBP</code>) even if it seems unnecessary now</li>
+                    <li><strong>Staff data (ERC-owned):</strong> Operative trade classification, certifications with expiry dates, and van/equipment assignments are ERC data &mdash; stored as structured records with typed fields, not managed in a spreadsheet or HR system notes field</li>
                 </ul>
             </div>
 
@@ -641,12 +643,12 @@
                 </h4>
                 <p>The OpenAI API &mdash; specifically Structured Outputs with a defined JSON Schema &mdash; is the most practical tool available for transforming legacy records that are too inconsistent to fix with deterministic rules alone. The key is treating AI as a preprocessing step that produces structured candidates for human confirmation, not as an autonomous data editor.</p>
                 <ul>
-                    <li>Use the OpenAI Batch API to process thousands of legacy records overnight: send a messy record, receive a structured JSON object with confidence score and explanation</li>
-                    <li>Define a JSON Schema for each entity before starting &mdash; the schema is the contract between the old and new system; Structured Outputs guarantees the AI returns valid JSON that matches it</li>
-                    <li>Address normalisation workflow: send legacy address string &rarr; receive <code>{ "uprn": 12345678, "confidence": 0.94, "matched_address": "12 High Street, Barrhead, G78 1AA" }</code> &rarr; flag anything below 0.85 for manual review</li>
-                    <li>Phone number normalisation: send a raw phone string &rarr; receive <code>{ "e164": "+441355810000", "type": "landline", "confidence": 0.99 }</code></li>
-                    <li>Duplicate tenant detection: batch-process pairs of records with similar name + postcode, receive a probability score and the fields that differ &mdash; route high-probability duplicates to a confirmation queue</li>
-                    <li>Migration audit log: every AI-suggested change is recorded with the original value, the suggested value, the confidence, and whether it was accepted or overridden by a human</li>
+                    <li>Use the OpenAI Batch API to process large contract schedules overnight: send a row from a Scotland Excel spreadsheet, receive a structured JSON object matching the internal SOR schema &mdash; with confidence score and any ambiguities flagged for review</li>
+                    <li>Define a JSON Schema for the SOR record before starting &mdash; Structured Outputs guarantees the AI returns valid JSON that matches it, making batch ingest safe to automate</li>
+                    <li>SOR code parsing: send a legacy or supplier-formatted code string &rarr; receive <code>{ "sor_code": "PL0042", "description": "Replace isolating valve", "unit": "EA", "confidence": 0.97 }</code> &rarr; flag anything below 0.9 for manual review</li>
+                    <li>Address normalisation (for any legacy records that still need it): send a free-text address string &rarr; receive <code>{ "uprn": 12345678, "confidence": 0.94, "matched_address": "12 High Street, Barrhead, G78 1AA" }</code></li>
+                    <li>Contract schedule comparison: use AI to diff two versions of a rate schedule and identify which SOR codes changed, were added, or were removed &mdash; surfaces the delta automatically rather than asking someone to compare two spreadsheets by eye</li>
+                    <li>Migration audit log: every AI-suggested change recorded with the original value, the suggested value, the confidence score, and whether it was accepted or overridden &mdash; this log is part of the compliance record</li>
                 </ul>
             </div>
 
@@ -675,12 +677,12 @@
                 </h4>
                 <p>Every spreadsheet that travels between systems or people via email is a data quality incident waiting to happen: it can be edited, forwarded to the wrong person, become the &ldquo;live&rdquo; version without anyone knowing, and is impossible to audit. The goal is to make the new system the authoritative source so that no one needs a spreadsheet because the data is always one click away.</p>
                 <ul>
-                    <li>Map all current spreadsheet-based workflows in the data audit: who sends what to whom, how often, and what decisions it drives &mdash; each one is a candidate for automation</li>
-                    <li>Self-service reports in the system replace &ldquo;could you send me the list of&hellip;&rdquo; emails &mdash; role-based access means each user sees the data relevant to them without an intermediary</li>
-                    <li>Price list updates sent from suppliers via API or structured CSV import with validation, not a shared Excel file on a Teams channel</li>
-                    <li>Contractor compliance data (certifications, insurance, accreditations) maintained in the supplier record and automatically flagged when expiring &mdash; not tracked in a spreadsheet by one person</li>
-                    <li>Power Automate or a lightweight job scheduler for any genuinely batch process: nightly reconciliation, weekly summary emails, monthly SLA reports &mdash; triggered automatically, not by someone remembering to run a query</li>
-                    <li>Change log on every record: who changed what and when &mdash; replaces the spreadsheet version-history question with a proper audit trail</li>
+                    <li>Map every spreadsheet that currently carries contract or pricing data: Scotland Excel schedules, Renfrew trade rates, materials price lists &mdash; each one is a workflow to replace with a structured import or API</li>
+                    <li>When Scotland Excel publishes a revised framework schedule, the process should be: download structured file &rarr; validate against schema &rarr; import to contract pricing table &rarr; diff against previous version &rarr; notify affected users. Not: download Excel &rarr; email around for comment &rarr; manually update a local copy</li>
+                    <li>Self-service reports in ROCC replace &ldquo;could you send me the list of&hellip;&rdquo; emails &mdash; role-based access means each user sees the data relevant to them without an intermediary</li>
+                    <li>Staff certification data (gas safe, NICEIC, asbestos awareness, etc.) tracked in the system with automated expiry alerts &mdash; not managed in a spreadsheet by one person who may be on leave when a certificate lapses</li>
+                    <li>Power Automate or a lightweight job scheduler for genuinely batch processes: nightly reconciliation between ROCC job costs and contract rates, weekly SLA summary, monthly Scotland Excel compliance reporting &mdash; triggered automatically</li>
+                    <li>Change log on every pricing record: who changed what, when, and from which contract &mdash; essential for audit when a job cost is queried months later</li>
                 </ul>
             </div>
 
@@ -712,14 +714,14 @@
             <div class="reflection-questions">
                 <h4>Questions to Keep Asking</h4>
                 <ol>
-                    <li>Have we done a data audit of the current system? What percentage of property records can be matched to a UPRN today?</li>
-                    <li>Where are phone numbers, addresses, and tenant details stored that are <em>not</em> in the main housing management system &mdash; and how do those copies get out of sync?</li>
-                    <li>Which recurring spreadsheets could we list right now &mdash; who creates them, how often, and what decision they drive? Each one is a workflow to automate.</li>
-                    <li>When a supplier updates their price list, what is the current journey from their end to it being live in our system? How many steps involve a human copying data from one place to another?</li>
-                    <li>If the new system goes live with the same data quality problems the current system has, what will the impact be in 12 months? Is the migration plan designed to prevent that?</li>
-                    <li>Which fields in the current system are free text that should be structured? Names used to mean different things over time are the hardest to fix after migration.</li>
-                    <li>Are we treating the JSON schema for each entity as a design document that the whole team agrees on before build starts &mdash; or as something that gets defined after the tables are built?</li>
-                    <li>What does the Scottish Housing Regulator require us to be able to demonstrate about data accuracy? Is our current system capable of producing that evidence?</li>
+                    <li>Have we defined the data ownership matrix? For every field that appears in NEC, ROCC, and the contract portal, which system is the master and which are consumers?</li>
+                    <li>What is the current state of Scotland Excel and Renfrew contract rate data? Where does it live, in what format, and who is responsible for keeping it current?</li>
+                    <li>Which recurring spreadsheets carry contract or pricing data right now &mdash; who creates them, how often, and what decision they drive? Each one is a workflow to replace.</li>
+                    <li>When Scotland Excel publishes a revised framework schedule, what is the current journey from publication to the rates being live in the system used for job costing? How many manual steps are involved?</li>
+                    <li>Are SOR codes consistent between Scotland Excel schedules and Renfrew trade contracts, or do we need a mapping layer? Has anyone compared them?</li>
+                    <li>What data does ROCC need from NEC every time a repair is raised, and is the NEC API capable of supplying it? Has this been confirmed with the NEC supplier, not just assumed?</li>
+                    <li>Are we treating the JSON schema for each integration boundary as a design document agreed before build starts &mdash; or something defined after the systems are built and then retrofitted?</li>
+                    <li>When a contract rate changes, how will historical jobs be protected from having their costs silently updated? Is rate versioning in the ROCC data model from day one?</li>
                 </ol>
             </div>
 
