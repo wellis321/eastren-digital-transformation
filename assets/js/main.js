@@ -7,7 +7,7 @@
     'use strict';
 
     // ----------------------------------------------------------
-    // Sign out links (top bar, header, mobile menu)
+    // Sign out links (top bar fallback + mobile menu)
     // ----------------------------------------------------------
     (function ensureSignOutLinks() {
         var topbarSignOut = document.querySelector('.topbar-signout');
@@ -29,20 +29,6 @@
                 topLink.className = 'topbar-signout';
                 topLink.textContent = 'Sign out';
                 right.insertBefore(topLink, right.firstChild);
-            }
-        }
-
-        var headerInner = document.querySelector('.header-inner');
-        if (headerInner && !headerInner.querySelector('.header-signout')) {
-            var headerLink = document.createElement('a');
-            headerLink.href = logoutHref;
-            headerLink.className = 'header-signout';
-            headerLink.textContent = 'Sign out';
-            var burger = headerInner.querySelector('.hamburger');
-            if (burger) {
-                headerInner.insertBefore(headerLink, burger);
-            } else {
-                headerInner.appendChild(headerLink);
             }
         }
 
