@@ -11,6 +11,18 @@ require_once __DIR__ . '/db.php';
  */
 function create_password_setup_token(int $userId): string
 {
+    // Reuse an existing valid token so re-entering username doesn't invalidate the email
+    $stmt = db()->prepare(
+        'SELECT token FROM password_setup_tokens
+          WHERE user_id = ? AND expires_at > NOW() AND used_at IS NULL
+          LIMIT 1'
+    );
+    $stmt->execute([$userId]);
+    $existing = $stmt->fetchColumn();
+    if ($existing !== false) {
+        return (string)$existing;
+    }
+
     db()->prepare('DELETE FROM password_setup_tokens WHERE user_id = ?')->execute([$userId]);
     $code    = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
     $expires = date('Y-m-d H:i:s', time() + 1800);

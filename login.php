@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             clear_attempts(client_ip());
             redirect(resolve_next_redirect($_GET['next'] ?? '', APP_URL . '/index.html'));
         } elseif ($result === 'needs_activation') {
+            flash('info', 'A sign-in code has been sent to your email address. Enter it on the next page to set your password.');
             redirect(APP_URL . '/activate.php');
         } else {
             record_failed_attempt(client_ip());

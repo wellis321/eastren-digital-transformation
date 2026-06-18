@@ -11,6 +11,7 @@ if (is_logged_in()) {
 
 $userId = (int)($_SESSION['activation_user_id'] ?? 0);
 if ($userId === 0) {
+    flash('info', 'Enter your username below with the password left blank — you\'ll be sent here to enter your code.');
     redirect(APP_URL . '/login.php');
 }
 
@@ -109,6 +110,7 @@ render:
             </p>
         </div>
 
+        <?= render_flash() ?>
         <?php if ($errors): ?>
             <div class="flash flash-error" style="margin-bottom:1rem;">
                 <?php foreach ($errors as $er): ?>
