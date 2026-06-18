@@ -12,6 +12,7 @@ $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $publicPaths = [
     '/login.php',
     '/logout.php',
+    '/activate.php',
     '/auth/microsoft/login.php',
     '/auth/microsoft/callback.php',
 ];
