@@ -1,0 +1,704 @@
+/* ==========================================================
+   ERC (East Renfrewshire Council) Digital Tools
+   Design System — v1.0
+   2026
+
+   HOW TO USE
+   ----------
+   Copy this file into any new project's CSS folder and link it
+   before your app-specific styles. Override only what differs.
+   The canonical source lives in the East Ren portal project.
+
+   PROJECTS USING THIS SYSTEM
+   ---------------------------
+   - East Ren Portal       /Users/wellis/Desktop/Cursor/East Ren
+   - SOR Management System /Users/wellis/Desktop/Cursor/sor-system
+   - AS-IS Process Mapping /Users/wellis/Desktop/Cursor/as-is
+
+   FONT SETUP
+   ----------
+   Include IBM Plex in <head> before this stylesheet:
+
+   For PHP apps — add these to <head> before the stylesheet:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
+   For static HTML sites — add this at the top of your .css file instead:
+   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap');
+
+   REQUIRED ASSETS
+   ---------------
+   /images/leaves.png (28×20px ERC leaf mark — copy from East Ren/assets/media/leaves.png)
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+   1. DESIGN TOKENS
+   ----------------------------------------------------------
+   These variables are the single source of truth for the
+   ERC brand. Never hard-code these values in component CSS.
+   ---------------------------------------------------------- */
+:root {
+    /* Brand colours */
+    --erc-green:        #006A51;   /* Primary — nav, accents, CTAs */
+    --erc-green-dark:   #005a44;   /* Darker — topbar, hover states, footer */
+    --erc-green-light:  #008062;   /* Lighter — active nav, selected states */
+    --erc-green-faint:  #ebf5ef;   /* Very light — hover backgrounds, active rows */
+
+    /* Semantic aliases */
+    --accent:           var(--erc-green);
+    --accent-dk:        var(--erc-green-dark);
+    --topbar-bg:        var(--erc-green-dark);
+    --header-bg:        var(--erc-green);
+    --footer-bg:        var(--erc-green-dark);
+    --footer-border:    var(--erc-green);
+
+    /* Content area */
+    --bg:               #f5f5f5;   /* Page background */
+    --surface:          #ffffff;   /* Cards, panels */
+    --text:             #1e1e1e;   /* Primary body text */
+    --muted:            #555555;   /* Secondary text, placeholders */
+    --border:           #d0d0d0;   /* Borders, dividers */
+
+    /* Status */
+    --success:          #2d7a3e;
+    --warning:          #D97706;
+    --danger:           #b91c1c;
+    --info:             #1e293b;
+
+    /* Typography */
+    --f-sans:           'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --f-serif:          'IBM Plex Serif', Georgia, serif;
+    --f-mono:           'IBM Plex Mono', 'Courier New', monospace;
+
+    /* Spacing scale (base 4px) */
+    --space-1:  0.25rem;   /*  4px */
+    --space-2:  0.5rem;    /*  8px */
+    --space-3:  0.75rem;   /* 12px */
+    --space-4:  1rem;      /* 16px */
+    --space-5:  1.25rem;   /* 20px */
+    --space-6:  1.5rem;    /* 24px */
+    --space-8:  2rem;      /* 32px */
+    --space-10: 2.5rem;    /* 40px */
+    --space-12: 3rem;      /* 48px */
+
+    /* Radii */
+    --r:        6px;       /* Default — inputs, buttons, badges */
+    --r-lg:     10px;      /* Cards, panels */
+    --r-xl:     14px;      /* Large modals, hero sections */
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.10);
+
+    /* Transitions */
+    --t:  0.15s ease;
+    --t-slow: 0.25s ease;
+
+    /* Layout */
+    --max-w:   1200px;     /* Standard content max-width */
+    --max-w-lg: 1400px;    /* Wide layouts */
+    --max-w-sm: 760px;     /* Narrow / text-heavy pages */
+}
+
+
+/* ----------------------------------------------------------
+   2. RESET & BASE
+   ---------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--f-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+img { max-width: 100%; height: auto; }
+
+a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: var(--accent-dk); }
+
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+}
+
+
+/* ----------------------------------------------------------
+   3. TOPBAR COMPONENT
+   ----------------------------------------------------------
+   The thin dark-green strip at the very top of every ERC app.
+   Identical across all projects — do not customise per-app.
+
+   Usage:
+   <div class="erc-topbar">
+       <div class="erc-topbar-left">
+           <img src="/images/leaves.png" alt="" class="erc-topbar-leaves" width="28" height="20">
+           <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+       </div>
+       <div class="erc-topbar-right">
+           <span class="erc-topbar-user">username</span>
+           <a href="/logout" class="erc-topbar-signout">Sign out</a>
+       </div>
+   </div>
+   ---------------------------------------------------------- */
+.erc-topbar {
+    background-color: var(--topbar-bg);
+    padding: 0.4rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.7);
+    gap: 1rem;
+}
+
+.erc-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: inherit;
+    text-decoration: none;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+.erc-topbar-left span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.erc-topbar-leaves {
+    width: 28px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+}
+
+.erc-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.erc-topbar-user {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 14rem;
+}
+
+.erc-topbar-signout,
+.erc-topbar-signout:link,
+.erc-topbar-signout:visited {
+    color: #fff !important;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    white-space: nowrap;
+    padding: 0.28rem 0.65rem;
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: var(--r);
+    background: rgba(255,255,255,0.14);
+    transition: background var(--t), border-color var(--t);
+}
+.erc-topbar-signout:hover {
+    background: rgba(255,255,255,0.24);
+    border-color: #fff;
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+
+/* ----------------------------------------------------------
+   4. SITE HEADER / NAV COMPONENT
+   ----------------------------------------------------------
+   The sticky green navigation bar below the topbar.
+   Each app customises the logo text and nav links.
+
+   Usage:
+   <header class="erc-header">
+       <div class="erc-header-inner">
+           <a href="/" class="erc-logo">
+               <span class="erc-logo-name">App Name</span>
+               <span class="erc-logo-subtitle">ERC Digital Tools</span>
+           </a>
+           <nav class="erc-nav" aria-label="Main navigation">
+               <a href="/">Home</a>
+               <a href="/section" aria-current="page">Section</a>
+           </nav>
+           <div class="erc-nav-actions">
+               <a href="/new" class="erc-nav-cta">+ New Item</a>
+           </div>
+           <button class="erc-hamburger" id="hamburger" aria-label="Toggle navigation"
+                   aria-expanded="false" aria-controls="mobile-nav">
+               <span></span><span></span><span></span>
+           </button>
+       </div>
+       <nav class="erc-mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+           <a href="/">Home</a>
+           <a href="/section">Section</a>
+       </nav>
+   </header>
+   ---------------------------------------------------------- */
+.erc-header {
+    background: var(--header-bg);
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.erc-header-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0.75rem 2rem;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+}
+
+/* Logo */
+.erc-logo {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    flex-shrink: 0;
+    gap: 0.15rem;
+    padding: 0.2rem 0;
+}
+.erc-logo:hover { text-decoration: none; }
+
+.erc-logo-name {
+    font-family: var(--f-sans);
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+}
+
+.erc-logo-subtitle {
+    font-family: var(--f-sans);
+    font-size: 10px;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.4;
+}
+
+/* Desktop nav */
+.erc-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    flex: 1;
+}
+
+.erc-nav a {
+    display: block;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    border-radius: var(--r);
+    transition: background var(--t), color var(--t);
+    white-space: nowrap;
+    text-decoration: none;
+}
+.erc-nav a:hover { background: rgba(255,255,255,0.12); color: #fff; text-decoration: none; }
+.erc-nav a[aria-current="page"] { background: var(--erc-green-light); color: #fff; font-weight: 600; }
+
+/* Nav actions (right side: CTA button, secondary links) */
+.erc-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.erc-nav-cta {
+    font-family: var(--f-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.18);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--r);
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: background var(--t), border-color var(--t);
+}
+.erc-nav-cta:hover {
+    background: rgba(255,255,255,0.28);
+    border-color: rgba(255,255,255,0.65);
+    color: white;
+    text-decoration: none;
+}
+
+.erc-nav-link-secondary {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    padding: 0.3rem 0.5rem;
+}
+.erc-nav-link-secondary:hover { color: white; text-decoration: none; }
+
+/* Hamburger (mobile toggle) */
+.erc-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    border-radius: var(--r);
+    margin-left: auto;
+}
+.erc-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all var(--t-slow);
+}
+.erc-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.erc-hamburger.open span:nth-child(2) { opacity: 0; }
+.erc-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile nav panel */
+.erc-mobile-nav {
+    display: none;
+    background: var(--topbar-bg);
+    padding: 1rem 2rem;
+    flex-direction: column;
+    gap: 0.25rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+.erc-mobile-nav.open {
+    display: flex;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.erc-mobile-nav a {
+    display: block;
+    padding: 0.6rem 0.75rem;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.9rem;
+    border-radius: var(--r);
+    text-decoration: none;
+    transition: background var(--t);
+}
+.erc-mobile-nav a:hover,
+.erc-mobile-nav a[aria-current="page"] { background: rgba(255,255,255,0.1); color: #fff; }
+.erc-mobile-nav-signout {
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 0.75rem !important;
+}
+
+/* Mobile breakpoint */
+@media (max-width: 768px) {
+    .erc-topbar { padding: 0.4rem 1rem; }
+    .erc-topbar-user { display: none; }
+    .erc-header-inner { padding: 0.6rem 1rem; }
+    .erc-nav, .erc-nav-actions { display: none; }
+    .erc-hamburger { display: flex; }
+}
+
+
+/* ----------------------------------------------------------
+   5. FOOTER COMPONENT
+   ----------------------------------------------------------
+   Usage:
+   <footer class="erc-footer">
+       <div class="erc-footer-inner">
+           <span class="erc-footer-brand">ERC Digital Tools</span>
+           <a href="https://..." class="erc-footer-link">SOR Management System</a>
+           <a href="https://..." class="erc-footer-link">ERC Portal</a>
+           <a href="https://..." class="erc-footer-link">AS-IS Process Mapping</a>
+       </div>
+   </footer>
+   ---------------------------------------------------------- */
+.erc-footer {
+    background: var(--footer-bg);
+    border-top: 2px solid var(--footer-border);
+    padding: 0.65rem 1.5rem;
+}
+.erc-footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.75rem;
+}
+.erc-footer-brand {
+    color: rgba(255,255,255,0.45);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.68rem;
+    margin-right: 0.25rem;
+}
+.erc-footer-link {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    padding: 0.15rem 0.45rem;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 3px;
+    transition: border-color var(--t), color var(--t);
+}
+.erc-footer-link:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.55);
+    text-decoration: none;
+}
+
+
+/* ----------------------------------------------------------
+   6. TYPOGRAPHY
+   ---------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--f-sans);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+}
+
+/* Display headings — use IBM Plex Serif for page titles */
+.display-heading {
+    font-family: var(--f-serif);
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.5vw, 1.875rem);
+    letter-spacing: -0.02em;
+}
+
+p { margin-bottom: 1rem; color: var(--muted); line-height: 1.6; }
+p:last-child { margin-bottom: 0; }
+
+code {
+    font-family: var(--f-mono);
+    font-size: 0.875em;
+    background: #e8f0eb;
+    color: var(--text);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--r);
+}
+
+
+/* ----------------------------------------------------------
+   7. SKIP LINK (Accessibility)
+   ---------------------------------------------------------- */
+.erc-skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0 0 var(--r) var(--r);
+    font-weight: 600;
+    z-index: 9999;
+    text-decoration: none;
+}
+.erc-skip-link:focus { top: 0; }
+
+
+/* ----------------------------------------------------------
+   8. LAYOUT UTILITIES
+   ---------------------------------------------------------- */
+.erc-wrap {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    flex: 1;
+}
+
+.erc-wrap-sm {
+    max-width: var(--max-w-sm);
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    flex: 1;
+}
+
+
+/* ----------------------------------------------------------
+   9. HAMBURGER JAVASCRIPT (inline in each project)
+   ----------------------------------------------------------
+   Copy into a <script> tag or .js file. Replace IDs as needed.
+
+   (function(){
+       var ham  = document.getElementById('erc-hamburger');
+       var mnav = document.getElementById('erc-mobile-nav');
+       if (!ham || !mnav) return;
+       ham.addEventListener('click', function(){
+           var open = mnav.classList.toggle('open');
+           ham.classList.toggle('open', open);
+           ham.setAttribute('aria-expanded', String(open));
+       });
+       document.addEventListener('click', function(e){
+           if (!ham.contains(e.target) && !mnav.contains(e.target)){
+               mnav.classList.remove('open');
+               ham.classList.remove('open');
+               ham.setAttribute('aria-expanded', 'false');
+           }
+       });
+   })();
+   ---------------------------------------------------------- */
+
+
+/* ----------------------------------------------------------
+   10. FLASH / ALERT MESSAGES
+   ---------------------------------------------------------- */
+.flash, .alert {
+    padding: 0.75rem 1rem;
+    border-radius: var(--r);
+    margin-bottom: 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+.flash-success { background: #e6f4eb; color: #1a5c2a; border: 1px solid #a8d5b5; }
+.flash-error   { background: #fce8e8; color: #7f1d1d; border: 1px solid #f5b0b0; }
+.flash-info    { background: #eef2f7; color: var(--text); border: 1px solid var(--border); }
+.flash-warning { background: #fef3cd; color: #7c4a03; border: 1px solid #fbd06a; }
+
+
+/* ----------------------------------------------------------
+   11. BUTTONS
+   ---------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    font-family: var(--f-sans);
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.55rem 1rem;
+    border-radius: var(--r);
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background var(--t), border-color var(--t), color var(--t);
+    white-space: nowrap;
+    line-height: 1;
+}
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-dk); color: white; text-decoration: none; }
+
+.btn-secondary {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text);
+}
+.btn-secondary:hover { background: var(--bg); border-color: #aaa; color: var(--text); text-decoration: none; }
+
+.btn-danger { background: var(--danger); border-color: var(--danger); color: white; }
+.btn-danger:hover { background: #9b1c1c; color: white; text-decoration: none; }
+
+.btn-sm { font-size: 0.8125rem; padding: 0.35rem 0.7rem; }
+.btn-lg { font-size: 1rem; padding: 0.75rem 1.5rem; }
+
+
+/* ----------------------------------------------------------
+   12. CARDS
+   ---------------------------------------------------------- */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--shadow-sm);
+}
+
+
+/* ----------------------------------------------------------
+   13. TABLES
+   ---------------------------------------------------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9375rem;
+}
+th {
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    background: var(--bg);
+}
+tr:last-child td { border-bottom: none; }
+
+
+/* ----------------------------------------------------------
+   14. FORMS
+   ---------------------------------------------------------- */
+label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.4rem;
+    color: var(--text);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+    font-family: var(--f-sans);
+    font-size: 1rem;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: var(--r);
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color var(--t);
+}
+input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+
+/* ----------------------------------------------------------
+   PRINT
+   ---------------------------------------------------------- */
+@media print {
+    .erc-topbar, .erc-header, .erc-footer { display: none !important; }
+    body { background: white; }
+}
