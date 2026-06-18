@@ -18,5 +18,6 @@ function auth_debug_log(string $location, string $message, array $data = [], str
     }
     $logFile = dirname(__DIR__) . '/.cursor/debug-1fd31c.log';
     @file_put_contents($logFile, $entry . "\n", FILE_APPEND | LOCK_EX);
+    @file_put_contents(dirname(__DIR__) . '/auth-login-debug.log', $entry . "\n", FILE_APPEND | LOCK_EX);
     // #endregion
 }

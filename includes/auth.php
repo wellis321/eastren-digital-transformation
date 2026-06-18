@@ -56,6 +56,8 @@ function establish_session(array $user, array $entraRoles = []): void
 
 function attempt_login(string $user, string $pass): bool
 {
+    require_once __DIR__ . '/debug-log.php';
+
     $db   = db();
     $stmt = $db->prepare(
         'SELECT id, username, password_hash, auth_provider, display_name, app_role
@@ -69,11 +71,41 @@ function attempt_login(string $user, string $pass): bool
         : '$2y$12$invalidsaltinvalidsaltinvalidsaltinvalidsaltinvalidsa';
     $valid = password_verify($pass, $hash);
 
+    $reason = 'bad_password';
+    if (!$row) {
+        $reason = 'user_not_found';
+    } elseif (empty($row['password_hash'])) {
+        $reason = 'microsoft_only_no_local_password';
+    } elseif ($valid) {
+        $reason = 'ok';
+    }
+
+    // #region agent log
+    auth_debug_log('auth.php:attempt_login', 'login attempt', [
+        'username' => $user,
+        'db_name' => DB_NAME,
+        'user_found' => (bool)$row,
+        'auth_provider' => $row['auth_provider'] ?? null,
+        'has_password_hash' => $row && !empty($row['password_hash']),
+        'password_ok' => $valid,
+        'reason' => $reason,
+    ], 'H-login');
+    // #endregion
+
     if ($row && $valid && !empty($row['password_hash'])) {
         establish_session($row);
         return true;
     }
     return false;
+}
+
+function active_users_count(): int
+{
+    try {
+        return (int)db()->query('SELECT COUNT(*) FROM users WHERE is_active = 1')->fetchColumn();
+    } catch (Throwable) {
+        return -1;
+    }
 }
 
 /**

@@ -6,6 +6,15 @@ require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/entra_config.php';
 
+$userCount = active_users_count();
+// #region agent log
+require_once __DIR__ . '/includes/debug-log.php';
+auth_debug_log('login.php:load', 'login page loaded', [
+    'db_name' => DB_NAME,
+    'active_users' => $userCount,
+], 'H-login');
+// #endregion
+
 if (is_logged_in()) {
     redirect(resolve_next_redirect($_GET['next'] ?? '', APP_URL . '/index.html'));
 }
@@ -25,6 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             record_failed_attempt(client_ip());
             $error = 'Incorrect username or password.';
+            if ($userCount === 0) {
+                $error = 'No user accounts exist in this database yet. Add one in phpMyAdmin (see sql/seed-admin.example.sql).';
+            }
         }
     }
 }
@@ -51,8 +63,15 @@ $flash = render_flash();
     <div class="auth-login-card">
         <div class="auth-login-header">
             <h1>Sign in</h1>
-            <p>Working reference portal — same credentials as the SOR system.</p>
+            <p>Sign in with your portal account. If you use the SOR system on the <strong>same database</strong>, the same username works here.</p>
         </div>
+
+        <?php if ($userCount === 0): ?>
+            <div class="flash flash-info">
+                <strong>Setup required:</strong> the <code>users</code> table in <code><?= e(DB_NAME) ?></code> has no accounts yet.
+                Run <code>sql/auth-tables.sql</code> then <code>sql/seed-admin.example.sql</code> in phpMyAdmin, or point <code>.env</code> at the sor-system database if users already exist there.
+            </div>
+        <?php endif; ?>
 
         <?php if ($flash): ?>
             <?= $flash ?>
