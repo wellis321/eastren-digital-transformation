@@ -47,7 +47,7 @@
     const theme = THEME_LABELS[row.theme] || row.theme || '—';
     const note = row.text || row.note;
     const source = row.href
-      ? `<a href="${esc(row.href)}" target="_blank" rel="noopener noreferrer">Source</a>`
+      ? `<a href="${esc(row.href)}" target="_blank" rel="noopener noreferrer" class="source-btn">Source <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`
       : '—';
     const authority = includeAuthority
       ? `<td class="benchmarks-authority"><strong>${esc(row.council || row.organisation)}</strong></td>`
@@ -147,7 +147,7 @@
         signalsMount.innerHTML = `<ul class="benchmarks-signals">${england.signals
           .map(
             (s) =>
-              `<li><strong>${esc(s.organisation)}</strong> — ${esc(s.text)} <a href="${esc(s.href)}" target="_blank" rel="noopener noreferrer">More</a></li>`
+              `<li><strong>${esc(s.organisation)}</strong> — ${esc(s.text)} <a href="${esc(s.href)}" target="_blank" rel="noopener noreferrer" class="source-btn">More <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a></li>`
           )
           .join('')}</ul>`;
       }

@@ -2246,6 +2246,27 @@ tbody tr:nth-child(even):hover {
 }
 .benchmarks-signals li { margin: 0.45rem 0; }
 
+.source-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--erc-green);
+    border: 1px solid var(--erc-green);
+    border-radius: 3px;
+    padding: 0.2rem 0.55rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+    line-height: 1.4;
+}
+.source-btn:hover {
+    background: var(--erc-green);
+    color: #fff;
+    text-decoration: none;
+}
+
 .tenant-channel-links {
     margin: 0;
     padding-left: 1.1rem;

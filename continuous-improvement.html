@@ -436,18 +436,26 @@
                             <span class="ci-sidebar-num">Theme 05</span>
                             Tenant Engagement
                         </a>
+                        <a href="#theme-accessibility" class="ci-sidebar-link">
+                            <span class="ci-sidebar-num">Theme 06</span>
+                            Accessibility
+                        </a>
+                        <a href="#theme-communications" class="ci-sidebar-link">
+                            <span class="ci-sidebar-num">Theme 07</span>
+                            Communications
+                        </a>
                     </nav>
                 </div>
                 <div class="ci-sidebar-section">
                     <p class="ci-sidebar-label">Under Consideration</p>
                     <div class="ci-sidebar-future">
                         <span class="ci-sidebar-future-item">First-Time Fix Rate</span>
-                        <span class="ci-sidebar-future-item">Digital Inclusion &amp; Access</span>
-                        <span class="ci-sidebar-future-item">Apprentice &amp; Early Career Digital Skills</span>
+                        <span class="ci-sidebar-future-item">Reporting &amp; Performance Insight</span>
+                        <span class="ci-sidebar-future-item">Documentation, Training &amp; Knowledge Base</span>
+                        <span class="ci-sidebar-future-item">Trauma-Informed Practice</span>
                         <span class="ci-sidebar-future-item">Environmental &amp; Fleet Efficiency</span>
                         <span class="ci-sidebar-future-item">Contractor Compliance Monitoring</span>
                         <span class="ci-sidebar-future-item">Complaints &amp; Learning Loops</span>
-                        <span class="ci-sidebar-future-item">Mental Health &amp; Wellbeing in the Field</span>
                     </div>
                 </div>
             </div>
@@ -1025,6 +1033,201 @@
                     <li>Are we making engagement genuinely accessible to tenants who are elderly, disabled, speak English as a second language, or are digitally excluded? Or are we designing engagement for the easiest people to reach?</li>
                     <li>Who in the organisation is accountable for tenant engagement on this programme, and do they have enough time and resource to do it properly?</li>
                     <li>Is the tenant scrutiny panel being given real data and real influence, or is it a consultation exercise with a predetermined outcome?</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.theme-block -->
+
+
+    <!-- ── Theme 6: Accessibility ───────────────────────────────── -->
+    <div class="theme-block" id="theme-accessibility">
+        <div class="theme-block-header">
+            <span class="theme-status-badge">Active &mdash; Keep High on Agenda</span>
+            <h2>Accessibility</h2>
+            <p>Getting as many tenants as possible onto the repairs portal, and making it as easy as possible to use once they are there, is not a design nicety &mdash; it is the core measure of whether the digital transformation has worked. A portal that works well for confident digital users but fails everyone else has not achieved channel shift; it has just served the people who would have managed anyway. Accessibility needs to be built in from the start, tested with real people throughout, and treated as a continuous responsibility, not a one-off compliance check.</p>
+        </div>
+        <div class="theme-block-body">
+            <p class="theme-subsection-label">Improvement Areas</p>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    WCAG 2.1 AA as the Minimum, Not the Target
+                </h4>
+                <p>WCAG 2.1 AA is the legal requirement for public sector digital services in the UK under the Public Sector Bodies Accessibility Regulations 2018. It is the floor, not the ceiling. Meeting it means the portal can be used by people with a wide range of disabilities &mdash; but meeting it on paper is not the same as it actually working well for real people.</p>
+                <ul>
+                    <li>Accessibility statement published on the portal from day one &mdash; legally required, and a signal to tenants that it has been considered</li>
+                    <li>Automated accessibility testing built into the development process (Axe, Lighthouse) to catch common issues before they reach production</li>
+                    <li>Manual testing with a screen reader (NVDA, VoiceOver) at every significant release &mdash; automated tools catch around 30% of issues; manual testing catches the rest</li>
+                    <li>Colour contrast ratio of at least 4.5:1 for all body text; 3:1 for large text and UI components &mdash; checked with a tool, not estimated visually</li>
+                    <li>All interactive elements reachable and operable by keyboard alone; visible focus indicators on every focusable element</li>
+                    <li>WCAG 2.2 as the target for new build: it adds improvements specifically for mobile and cognitive accessibility that are directly relevant to housing portal users</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Designing for ERC&rsquo;s Actual Tenant Population
+                </h4>
+                <p>ERC has 3,141 housing tenants with a wide range of ages, abilities, and digital confidence levels. The portal should be designed for the full range, not the digitally confident middle. The people most likely to find it hard to use are also often the people with the greatest need for a well-functioning repairs service.</p>
+                <ul>
+                    <li>Large, clear touch targets on mobile &mdash; minimum 44&times;44px for all interactive elements; bigger where possible</li>
+                    <li>Plain English throughout: no jargon, no abbreviations without explanation, reading level appropriate for a broad general audience</li>
+                    <li>Error messages that explain what went wrong and exactly how to fix it &mdash; not &ldquo;invalid input&rdquo;</li>
+                    <li>No time limits on forms without a way to extend them &mdash; tenants should not lose a partially completed repair report because they were slow</li>
+                    <li>Don&rsquo;t rely on colour alone to convey information &mdash; every status, alert, or category differentiated by shape, text, or pattern as well</li>
+                    <li>Tested with tenants who are elderly, have low digital confidence, use assistive technology, or have cognitive or physical disabilities &mdash; not just with staff members who know what they&rsquo;re looking for</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    Mobile-First
+                </h4>
+                <p>A significant proportion of tenants will access the repairs portal on a mobile phone, often on a mobile data connection rather than broadband. The portal must work well on a small screen with a touch interface before it is considered for desktop.</p>
+                <ul>
+                    <li>Mobile-first design: every screen designed at 375px width first, then scaled up &mdash; not a desktop design squeezed onto a phone</li>
+                    <li>Performance budget: pages should load in under 3 seconds on a 4G mobile connection &mdash; large images, heavy scripts, and unnecessary third-party loads are a barrier to access</li>
+                    <li>Forms optimised for touch: appropriate input types (<code>tel</code>, <code>email</code>, <code>date</code>) so mobile keyboards match the required input</li>
+                    <li>No features that require hover states, right-click, or other non-touch interactions</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    Monitoring, Measuring &amp; Improving
+                </h4>
+                <p>Accessibility is not a project that ends at go-live. New features introduce new barriers; user needs change; standards evolve. The organisation needs a lightweight ongoing practice for monitoring and addressing accessibility issues.</p>
+                <ul>
+                    <li>Accessibility issues reported by tenants treated with the same urgency as functional bugs &mdash; not deferred to a future sprint as &ldquo;nice to have&rdquo;</li>
+                    <li>Accessibility audit by an independent specialist at least once per year &mdash; internal teams develop blind spots; an external eye catches what familiarity misses</li>
+                    <li>Channel uptake tracked by device type and connection speed &mdash; if mobile usage is low, that is a signal worth investigating, not just noting</li>
+                    <li>Feedback mechanism on the portal for tenants to report accessibility barriers directly &mdash; the people experiencing problems are the best source of information about what to fix</li>
+                </ul>
+            </div>
+
+            <p class="theme-subsection-label">How Do Others Approach This?</p>
+
+            <div class="peer-card">
+                <strong>GOV.UK Design System</strong>
+                <p>The GOV.UK Design System is built around accessibility from the ground up and is tested with assistive technology users before any component is published. Its approach &mdash; accessible by default, inclusive of all users, simple enough that it can&rsquo;t easily be made inaccessible &mdash; is the reference standard for public sector digital services in the UK. ERC&rsquo;s tenant portal should aspire to the same standard of accessible design, not just compliance.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Scottish Government &mdash; Public Sector Bodies Accessibility Regulations</strong>
+                <p>The regulations require all public sector website content published after September 2018 to meet WCAG 2.1 AA and to publish an accessibility statement. Non-compliance can be reported to the Cabinet Office. For ERC, the tenant portal is the highest-risk surface: it will be used by the broadest and most diverse group of people, including those with the least digital confidence and the greatest accessibility needs.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Midlothian Council &mdash; tenant portal accessibility</strong>
+                <p>Midlothian carried out structured usability testing with tenants aged 65+ before launching their tenant portal. They found that the main barriers were not technical accessibility failures but plain language and task design issues &mdash; tenants did not know what &ldquo;report a repair&rdquo; meant as a menu label, and struggled with repair category selection. The lesson: meet the technical standard <em>and</em> test with real people, because they are different problems.</p>
+            </div>
+
+            <div class="reflection-questions">
+                <h4>Questions to Keep Asking</h4>
+                <ol>
+                    <li>Have we tested the portal with tenants who have disabilities, low digital confidence, or are elderly? Not staff &mdash; tenants?</li>
+                    <li>Does every interactive element on the portal work with a keyboard alone, without a mouse?</li>
+                    <li>What is the reading level of our error messages, notifications, and repair category labels? Have we checked?</li>
+                    <li>What proportion of tenants are accessing the portal on mobile? If it is lower than we expected, what might be causing that?</li>
+                    <li>When a tenant reports an accessibility barrier, what is the process for it being fixed? Does that process exist yet?</li>
+                    <li>Is the accessibility statement on the portal accurate, up to date, and written in language a tenant can understand?</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.theme-block -->
+
+    <!-- ── Theme 7: Communications ───────────────────────────────── -->
+    <div class="theme-block" id="theme-communications">
+        <div class="theme-block-header">
+            <span class="theme-status-badge">Active &mdash; Ongoing</span>
+            <h2>Communications</h2>
+            <p>The digital transformation programme will only succeed if the people it affects understand what is changing, why it is changing, and what it means for them. This applies to tenants, housing staff, operatives, managers, elected members, and peer organisations. Good communications are planned, honest, timely, and tailored to the audience &mdash; not generic announcements issued when something goes wrong or when someone asks. This theme covers both the programme&rsquo;s own communications and the communications systems the new technology will deliver.</p>
+        </div>
+        <div class="theme-block-body">
+            <p class="theme-subsection-label">Improvement Areas</p>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Programme Communications
+                </h4>
+                <p>Stakeholders who do not understand what the programme is doing, or who hear about changes for the first time when they happen, become resistors. A proactive communications plan, running throughout the programme, prevents this. It does not need to be elaborate &mdash; it needs to be consistent.</p>
+                <ul>
+                    <li>A simple communications calendar: what will be communicated, to whom, by what channel, and when &mdash; reviewed monthly and updated as the programme progresses</li>
+                    <li>Progress updates to elected members and senior management that are honest about challenges as well as achievements &mdash; surprises at board level damage trust more than setbacks do</li>
+                    <li>Regular updates to housing staff before changes are made to their working practices, not after &mdash; staff who find out about changes through rumour become anxious and resistant</li>
+                    <li>A simple &ldquo;what has changed this month&rdquo; note for all affected teams at every significant programme milestone</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Staff Change Communications
+                </h4>
+                <p>For staff, communication is part of change management. The ADKAR model (Awareness, Desire, Knowledge, Ability, Reinforcement) starts with awareness &mdash; staff cannot want to change, learn to change, or be reinforced for changing if they do not know what is changing and why. Communications to staff should answer the questions they will actually have, not the ones that are easiest to write about.</p>
+                <ul>
+                    <li>Role-specific communications: what does this change mean for a housing officer, an operative, a supervisor, a manager? Each group gets the version relevant to them</li>
+                    <li>Honest answers to &ldquo;will this change my job?&rdquo; &mdash; if the answer is yes, say so clearly and explain the support available; avoid corporate vagueness that staff see through immediately</li>
+                    <li>Two-way channels: staff should have a way to ask questions and get answers, not just receive information &mdash; team briefings, Q&A sessions, a named contact</li>
+                    <li>Digital Champions as a communications channel as well as a training channel &mdash; they carry messages from the programme into their teams and bring questions back</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    Tenant-Facing System Communications
+                </h4>
+                <p>The messages tenants receive from the system &mdash; appointment confirmations, repair updates, satisfaction requests, service change notices &mdash; are communications. They carry the organisation&rsquo;s voice and shape tenants&rsquo; impression of the service. They deserve the same care as any other communications, and they should be reviewed and approved by someone who thinks about language and tone, not just generated automatically and never looked at again.</p>
+                <ul>
+                    <li>All system-generated messages reviewed for plain English, tone, and accuracy before go-live &mdash; and reviewed again after the first month of operation when real usage reveals what tenants find confusing</li>
+                    <li>Consistent tone across all tenant-facing communications: warm, clear, and direct &mdash; not corporate, not over-casual</li>
+                    <li>A named channel for tenants to ask questions about digital services &mdash; not just a generic feedback form</li>
+                    <li>Major service changes communicated to tenants proactively and in advance: a letter or SMS before the portal launches, not just a &ldquo;we have a new website&rdquo; banner</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    External &amp; Peer Communications
+                </h4>
+                <p>ERC&rsquo;s housing digital transformation is one of the more ambitious programmes in Scottish local government housing. Sharing what works, what doesn&rsquo;t, and what has been learned contributes to the wider sector and builds ERC&rsquo;s reputation as a thoughtful, forward-looking housing authority.</p>
+                <ul>
+                    <li>Contributions to Scotland Excel, COSLA, and Chartered Institute of Housing events and publications as the programme matures</li>
+                    <li>Engagement with the Scottish Housing Regulator&rsquo;s good practice network &mdash; peer learning is a two-way relationship</li>
+                    <li>Annual Assurance Statement communications: the narrative around what the programme has achieved in safety, compliance, and tenant outcomes should be clear, evidenced, and written for the regulator, not just assembled from whatever data is available</li>
+                    <li>Social media and local communications (if appropriate) that give the wider community a sense of how their housing service is improving &mdash; builds public trust and political support</li>
+                </ul>
+            </div>
+
+            <p class="theme-subsection-label">How Do Others Approach This?</p>
+
+            <div class="peer-card">
+                <strong>PROSCI ADKAR &mdash; Awareness as the foundation</strong>
+                <p>ADKAR research consistently shows that the most common failure in change programmes is inadequate awareness communications early in the process. Staff and stakeholders who do not understand why change is happening default to assuming the worst. The investment in explaining the &ldquo;why&rdquo; before the &ldquo;what&rdquo; is consistently the highest-return communications activity in any digital transformation programme.</p>
+            </div>
+            <div class="peer-card">
+                <strong>GDS &mdash; Communications for public digital services</strong>
+                <p>GDS guidance on writing for government digital services emphasises: write for the user, not for the organisation; use the words your users use, not the words your internal processes use; test what you write with real users. For ERC, this means testing repair category names, notification wording, and error messages with tenants before launch &mdash; not assuming staff understand what tenants will find clear.</p>
+            </div>
+            <div class="peer-card">
+                <strong>North Ayrshire Council &mdash; digital launch communications</strong>
+                <p>North Ayrshire ran a structured communications campaign ahead of their tenant portal launch: letter to every tenant household three weeks before, follow-up SMS one week before, and a Digital Champion in every local office to help tenants register in the first fortnight. Channel adoption in month one was significantly higher than their modelled target. They attribute the faster uptake primarily to the pre-launch awareness campaign rather than the quality of the portal itself.</p>
+            </div>
+
+            <div class="reflection-questions">
+                <h4>Questions to Keep Asking</h4>
+                <ol>
+                    <li>Is there a communications plan for the programme? Does it have specific actions, owners, and dates, or is it just a list of intentions?</li>
+                    <li>When did housing staff last receive a clear, honest update about what is changing in their working practices and when?</li>
+                    <li>Have the system-generated messages tenants will receive been reviewed by anyone outside the project team? Have any been tested with tenants?</li>
+                    <li>How will tenants find out the portal exists before it launches? Is that communications plan in place, or will it be worked out after go-live?</li>
+                    <li>Is there a two-way channel for staff questions about the new systems, or are communications one-directional?</li>
+                    <li>What is ERC sharing with peer organisations and the sector about this programme? Is the organisation being as generous with its learning as it hopes others will be with theirs?</li>
                 </ol>
             </div>
         </div>
