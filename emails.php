@@ -1,0 +1,562 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/permissions.php';
+require_admin();
+?>
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Email Templates | ERC Housing Digital Transformation</title>
+    <link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
+    <style>
+        .comms-message {
+            white-space: pre-wrap;
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #1e1e1e;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-left: 3px solid #006A51;
+            padding: 1.25rem 1.5rem;
+            margin: 0;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: #006A51;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 0.25rem 0.7rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+        }
+        .copy-btn:hover { background: #005a44; }
+        .copy-btn.copied { background: #1a7f64; }
+        .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.2rem 0.6rem;
+            background: #fef3c7;
+            color: #78350f;
+            border: 1px solid #fde68a;
+        }
+        .group-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #555;
+            margin-bottom: 0.3rem;
+        }
+        .dot-green { width:8px; height:8px; border-radius:50%; background:#006A51; display:inline-block; }
+        .dot-blue  { width:8px; height:8px; border-radius:50%; background:#1e3a5f; display:inline-block; }
+        .dot-teal  { width:8px; height:8px; border-radius:50%; background:#0e7490; display:inline-block; }
+        .dot-amber { width:8px; height:8px; border-radius:50%; background:#d97706; display:inline-block; }
+    </style>
+</head>
+<body>
+
+<div class="site-topbar">
+    <a href="index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="<?= e(asset_url('/assets/media/leaves.png')) ?>" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="logout.php" class="topbar-signout">Sign out</a>
+    </div>
+</div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="presentation.html">Programme Overview</a>
+            <a href="continuous-improvement.html">Themes</a>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Programme <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="progress.html">Progress</a>
+                    <a href="progress-report.html">Progress Report</a>
+                    <a href="governance.html">Governance</a>
+                    <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="history.html">ERC Digital History</a>
+                    <a href="scotland-policy.html">Scotland's Policy</a>
+                    <a href="digital-direction.html">Digital Direction</a>
+                    <a href="best-practice.html">Best Practice</a>
+                    <a href="group-comms.html">Group Communications</a>
+                    <a href="sector.html">Sector Comparisons</a>
+                    <a href="peer-benchmarks.html">Peer Benchmarks (costs)</a>
+                    <a href="reports.html">Reports</a>
+                    <a href="resources.html">Resources</a>
+                </div>
+            </div>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+        <a href="index.html">Home</a>
+        <a href="presentation.html">Programme Overview</a>
+        <a href="continuous-improvement.html">Themes</a>
+        <a href="logout.php" class="mobile-nav-signout">Sign out</a>
+    </nav>
+</header>
+
+<div class="page-wrapper">
+<main class="main-content" id="main">
+
+    <section class="hero" style="margin-top:1.5rem;">
+        <div class="hero-eyebrow">Admin only</div>
+        <h1>Email Templates</h1>
+        <p>Ready-to-send email drafts for the programme. Click <strong>Copy</strong> on any message to copy the full text to your clipboard. Fill in the bracketed placeholders before sending.</p>
+    </section>
+
+    <div class="callout highlight" style="margin-top:1.5rem; margin-bottom:2rem;">
+        <div class="callout-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div>
+            <h4>Admin access only</h4>
+            <p style="margin:0;">These templates are only visible to administrator accounts. Do not share links to this page with non-admin users.</p>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION: PORTAL INTRODUCTION -->
+    <!-- ============================================================ -->
+    <div class="section-header" style="margin-top:1rem;">
+        <h2>Portal Introduction</h2>
+        <p>For sending to Project Board members to introduce the programme portal.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+                <div class="group-label"><span class="dot-amber"></span>Project Board</div>
+                <h3 style="margin:0 0 0.2rem;">Introducing the Programme Portal &amp; Outcomes</h3>
+                <p style="font-size:0.85rem; color:var(--color-muted, #6B7280); margin:0;">Send to Project Board members &mdash; attach the outcomes PDF</p>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <button class="copy-btn" onclick="copyMessage(this)" aria-label="Copy message to clipboard">Copy</button>
+            <div class="comms-message">Subject: Housing Digital Transformation — programme portal introduction
+
+Dear [Board members / names],
+
+I wanted to introduce you to the Housing Digital Transformation programme portal, which is where I'll be keeping progress, outcomes, and reference material as the programme develops.
+
+Accessing the site
+
+The portal is at: <?= rtrim(APP_URL, '/') ?>
+
+
+You each have a username — which I'll share with you separately. When you visit for the first time:
+
+1. Enter your username
+2. Leave the password field blank
+3. Click Sign in
+4. You'll receive a code by email — enter that to set your password
+
+After that first step it works as a normal login.
+
+What's on the site
+
+The portal covers the full programme — context, delivery plan, governance, and outcomes. The two most relevant sections for board members are:
+
+— Programme Overview: the structured presentation of the programme, including target outcomes and the 20-month delivery plan
+— Progress: updated as the programme moves forward
+
+Outcomes PDF
+
+I've attached the outcomes document to this email. You can also download it directly from the Programme Overview page on the site at any time.
+
+Please let me know if you have any difficulty accessing the portal or if you'd like to talk through any part of the programme.
+
+Best regards,
+
+William Ellis
+Project Manager (Housing Digital Transformation)
+East Renfrewshire Council</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION: GOVERNANCE GROUP INTRODUCTIONS -->
+    <!-- ============================================================ -->
+    <div class="section-header" style="margin-top:2.5rem;">
+        <h2>Governance Group Introductions</h2>
+        <p>Step 1 &mdash; for people who haven't been briefed yet. Send before the meeting invitation.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+                <div class="group-label"><span class="dot-green"></span>Project Group</div>
+                <h3 style="margin:0 0 0.2rem;">Introduction to the Programme &amp; Your Role</h3>
+                <p style="font-size:0.85rem; color:var(--color-muted, #6B7280); margin:0;">For members who haven't been briefed yet</p>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <button class="copy-btn" onclick="copyMessage(this)" aria-label="Copy message to clipboard">Copy</button>
+            <div class="comms-message">Hi [NAME],
+
+I wanted to get in touch to introduce myself and let you know about a programme I'm leading — and to ask for your involvement in it.
+
+I'm William Ellis, Project Manager (Housing Digital Transformation). I joined ERC earlier this year to lead the digital transformation of the Housing Repairs service.
+
+The background is this: the repairs service runs on Servitor, a legacy system that'll be unsupported from 2027. That gives us a fixed window to replace it — but rather than just swap one system for another, we're treating it as a chance to fundamentally redesign how the service is delivered. The programme will bring in mobile working for operatives and trades, replace Servitor with a modern platform, and connect the repairs service properly to the Council's core corporate systems. The goal is a service that's faster, more transparent, and a lot less reliant on spreadsheets and manual workarounds — better for tenants, and better for the people who run it.
+
+I'd like to invite you to join the Project Group for this programme. It's the main governance body — it meets every four weeks, chaired by the Project Owner, and its job is to keep us aligned with corporate priorities, make the decisions that need senior input, and act as the escalation point when things can't be resolved at a working level. Given your role and what you cover, your involvement matters — both for the decisions the group will need to make and for making sure the right parts of the organisation are genuinely behind this.
+
+I'll be in touch shortly with an invitation to our first meeting. In the meantime, feel free to get in touch if you'd like to know more.
+
+Thanks,
+
+William Ellis
+Project Manager (Housing Digital Transformation)
+Housing Repairs Digital Transformation Programme
+East Renfrewshire Council</div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+                <div class="group-label"><span class="dot-blue"></span>Steering Group</div>
+                <h3 style="margin:0 0 0.2rem;">Introduction to the Programme &amp; Your Role</h3>
+                <p style="font-size:0.85rem; color:var(--color-muted, #6B7280); margin:0;">For members who haven't been briefed yet</p>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <button class="copy-btn" onclick="copyMessage(this)" aria-label="Copy message to clipboard">Copy</button>
+            <div class="comms-message">Hi [NAME],
+
+I wanted to get in touch to introduce myself and give you a bit of background on a programme I'm leading — and to invite you to be part of it.
+
+I'm William Ellis, Project Manager (Housing Digital Transformation). I joined ERC earlier this year to lead the digital transformation of the Housing Repairs service.
+
+The repairs service currently runs on Servitor — a legacy system that'll be unsupported from 2027. We're using that deadline to do something more meaningful than a straight swap: we're redesigning how the service is delivered. That means mobile working for operatives and trades, a modern platform to replace Servitor, and proper integration with the Council's core corporate systems. The aim is a repairs service that's faster, more transparent, and a lot less reliant on manual processes and spreadsheets — better for tenants and the teams who deliver it.
+
+I'd like to invite you to join the Steering Group. It meets every four weeks and is the working engine of the programme's governance — reviewing progress, coordinating across service areas, and making sure risks and issues are dealt with before they become blockers. It sits between the project team and senior leadership, and brings together people who are closest to the parts of the service this programme touches.
+
+Your input will be really valuable here. I'll follow up soon with an invite to our first meeting, but please don't hesitate to get in touch before then if you have any questions.
+
+Thanks,
+
+William Ellis
+Project Manager (Housing Digital Transformation)
+Housing Repairs Digital Transformation Programme
+East Renfrewshire Council</div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+                <div class="group-label"><span class="dot-teal"></span>Technical Group</div>
+                <h3 style="margin:0 0 0.2rem;">Introduction to the Programme &amp; Your Role</h3>
+                <p style="font-size:0.85rem; color:var(--color-muted, #6B7280); margin:0;">For members who haven't been briefed yet</p>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <button class="copy-btn" onclick="copyMessage(this)" aria-label="Copy message to clipboard">Copy</button>
+            <div class="comms-message">Hi [NAME],
+
+I wanted to get in touch to introduce myself and let you know about some work that's going to directly affect how you and your team work day-to-day — and where I'd really value your involvement.
+
+I'm William Ellis, Project Manager (Housing Digital Transformation). I joined ERC earlier this year to lead the digital transformation of the Housing Repairs service.
+
+The repairs service runs on Servitor — a legacy system that'll be unsupported from 2027. We're replacing it, but more than that, we're using it as a chance to properly redesign how the service is delivered. That means mobile working for operatives, better stock and job management, smarter scheduling, and systems that actually talk to each other rather than relying on spreadsheets and manual workarounds. I've already spent a lot of time with teams across repairs, stores, customer services, and business support, and what they've told me about what doesn't work and what they need has been really valuable. That kind of knowledge is what shapes a good solution.
+
+I'd like to invite you to join the Technical Group. It meets every four weeks and brings together the people who actually use the systems — to make sure that what we design and build works at an operational level. It's not a technical IT group. It's where frontline experience meets the design process. You don't need any project or digital background for this. What matters is that you know how the service works, what the problems are, and what better would look like. That's the knowledge that's hardest to get right without you in the room.
+
+I'll be in touch soon with the details of our first meeting. Feel free to get in touch in the meantime if you'd like to know more.
+
+Looking forward to working with you,
+
+William Ellis
+Project Manager (Housing Digital Transformation)
+Housing Repairs Digital Transformation Programme
+East Renfrewshire Council</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION: SHORT INTRODUCTIONS (ALREADY KNOW YOU) -->
+    <!-- ============================================================ -->
+    <div class="section-header" style="margin-top:2.5rem;">
+        <h2>Governance Group Introductions &mdash; Short Version</h2>
+        <p>For people already familiar with the programme and with you. Skip the background, get straight to the ask.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+                <div class="group-label"><span class="dot-green"></span>Project Group</div>
+                <h3 style="margin:0 0 0.2rem;">Invitation to Join the Project Group</h3>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <button class="copy-btn" onclick="copyMessage(this)" aria-label="Copy message to clipboard">Copy</button>
+            <div class="comms-message">Hi [NAME],
+
+As the programme moves into its governance phase, I'd like to invite you to join the Project Group.
+
+It meets every four weeks, chaired by the Project Owner, and its job is to keep us aligned with corporate priorities, make the calls that need senior input, and act as the escalation point when things need to go above working level. Given your role and what you cover, having you in the room will matter — both for the decisions the group needs to make and for making sure the right parts of the organisation are genuinely behind this.
+
+I'll follow up soon with an invite to our first meeting. Let me know if you have any questions in the meantime.
+
+Thanks,
+
+William Ellis
+Project Manager (Housing Digital Transformation)
+Housing Repairs Digital Transformation Programme
+East Renfrewshire Council</div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+                <div class="group-label"><span class="dot-blue"></span>Steering Group</div>
+                <h3 style="margin:0 0 0.2rem;">Invitation to Join the Steering Group</h3>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <button class="copy-btn" onclick="copyMessage(this)" aria-label="Copy message to clipboard">Copy</button>
+            <div class="comms-message">Hi [NAME],
+
+As the programme moves into its governance phase, I wanted to get in touch and invite you to join the Steering Group.
+
+It meets every four weeks and is the working group that keeps things moving — reviewing progress, coordinating across service areas, and making sure risks and issues are dealt with before they become blockers. It sits between the project team and senior leadership, and I want it to be made up of people who really understand the areas we're working in.
+
+You know this ground well, and having you involved will make a real difference.
+
+I'll follow up shortly with an invite to our first meeting. Let me know if you have any questions before then.
+
+Thanks,
+
+William Ellis
+Project Manager (Housing Digital Transformation)
+Housing Repairs Digital Transformation Programme
+East Renfrewshire Council</div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+                <div class="group-label"><span class="dot-teal"></span>Technical Group</div>
+                <h3 style="margin:0 0 0.2rem;">Invitation to Join the Technical Group</h3>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <button class="copy-btn" onclick="copyMessage(this)" aria-label="Copy message to clipboard">Copy</button>
+            <div class="comms-message">Hi [NAME],
+
+As the programme moves into its governance phase, I'd like to invite you to join the Technical Group.
+
+It meets every four weeks and brings together the people who use the systems day-to-day — to make sure that what we design and build actually works at an operational level. It's not a technical IT group. It's where frontline knowledge shapes the decisions, and it's one of the most important groups we have.
+
+Given everything you know about how things work, having you as part of this will make a real difference.
+
+I'll follow up soon with the meeting details.
+
+Thanks,
+
+William Ellis
+Project Manager (Housing Digital Transformation)
+Housing Repairs Digital Transformation Programme
+East Renfrewshire Council</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION: MEETING INVITATIONS -->
+    <!-- ============================================================ -->
+    <div class="section-header" style="margin-top:2.5rem;">
+        <h2>First Meeting Invitations</h2>
+        <p>Send once people have the introductory context. Confirms the date, purpose, and agenda.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+                <div class="group-label"><span class="dot-teal"></span>Technical Group</div>
+                <h3 style="margin:0 0 0.2rem;">First Meeting Invitation</h3>
+                <p style="font-size:0.85rem; color:var(--color-muted, #6B7280); margin:0;">Monday 13 July 2026</p>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <button class="copy-btn" onclick="copyMessage(this)" aria-label="Copy message to clipboard">Copy</button>
+            <div class="comms-message">Hi all,
+
+Just wanted to get in touch ahead of our first Technical Group meeting — Monday 13 July 2026 at [TIME] via [TEAMS LINK / LOCATION].
+
+By now you'll have had a bit of background on the programme and what this group is for, but in short: you're here because you know how the service works day-to-day, and that's exactly what we need to get this right. The Technical Group exists to make sure that what we design and build actually works at an operational level — and your input directly shapes what we deliver.
+
+At our first meeting we'll:
+— Introduce the group properly and agree how we'll work together
+— Run through where the programme currently is
+— Agree what we'll cover each month going forward
+— Pick up any early operational priorities you want to raise
+
+After that we'll meet every four weeks: 10 August, 7 September, and 5 October 2026.
+
+If the date doesn't work, let me know and I'll see what I can do. A calendar invite will follow.
+
+Looking forward to it.
+
+William Ellis
+Project Manager (Housing Digital Transformation)
+Housing Repairs Digital Transformation Programme
+East Renfrewshire Council</div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+                <div class="group-label"><span class="dot-blue"></span>Steering Group</div>
+                <h3 style="margin:0 0 0.2rem;">First Meeting Invitation</h3>
+                <p style="font-size:0.85rem; color:var(--color-muted, #6B7280); margin:0;">Tuesday 14 July 2026</p>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <button class="copy-btn" onclick="copyMessage(this)" aria-label="Copy message to clipboard">Copy</button>
+            <div class="comms-message">Hi all,
+
+Just a note to confirm our first Steering Group meeting — Tuesday 14 July 2026 at [TIME] via [TEAMS LINK / LOCATION].
+
+The Steering Group is the working core of the programme's governance. Your job is to review progress, keep things coordinated across service areas, and make sure risks and issues are dealt with before they need to go upward. We've got a good mix of people from across all the areas the programme touches, and that breadth will be important.
+
+At our first meeting we'll:
+— Set the context and agree how we work together
+— Walk through the current programme status and delivery plan
+— Identify any risks or issues already on the radar
+— Confirm responsibilities across workstreams
+
+After that, every four weeks: 11 August, 8 September, and 6 October 2026.
+
+Flag any conflicts with the date and I'll do my best to sort it. Calendar invite to follow.
+
+Thanks — looking forward to getting started.
+
+William Ellis
+Project Manager (Housing Digital Transformation)
+Housing Repairs Digital Transformation Programme
+East Renfrewshire Council</div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+                <div class="group-label"><span class="dot-green"></span>Project Group</div>
+                <h3 style="margin:0 0 0.2rem;">First Meeting Invitation</h3>
+                <p style="font-size:0.85rem; color:var(--color-muted, #6B7280); margin:0;">Wednesday 22 July 2026</p>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <button class="copy-btn" onclick="copyMessage(this)" aria-label="Copy message to clipboard">Copy</button>
+            <div class="comms-message">Hi all,
+
+Just wanted to confirm our first Project Group meeting — Wednesday 22 July 2026 at [TIME] via [TEAMS LINK / LOCATION].
+
+The Project Group is the main governance body for the programme — it's where the strategic decisions get made, priorities get set, and anything that needs senior input gets resolved. This is a significant programme and having the right people in the room matters.
+
+At our first meeting we'll:
+— Introduce the group and confirm roles and responsibilities
+— Walk through the programme overview, objectives, and delivery plan
+— Look at how the three governance groups work together
+— Pick up any early risks or priorities that need attention at this level
+
+After that, every four weeks: 19 August, 16 September, and 14 October 2026.
+
+A briefing pack — including the programme overview and Memorandum of Understanding — will be shared ahead of the meeting.
+
+Let me know if you have any questions. Calendar invite to follow.
+
+Thanks,
+
+William Ellis
+Project Manager (Housing Digital Transformation)
+Housing Repairs Digital Transformation Programme
+East Renfrewshire Council</div>
+        </div>
+    </div>
+
+</main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <strong>East Renfrewshire <span class="gold">Council</span></strong>
+            <span>Housing Digital Transformation</span>
+        </div>
+        <div class="footer-meta">
+            <p><strong>Programme:</strong> Housing Repairs Digital Transformation</p>
+            <p><strong>Role:</strong> Project Manager (Housing Digital Transformation)</p>
+            <p><strong>William Ellis</strong></p>
+        </div>
+        <div class="footer-disclaimer">
+            <p>Admin-only page. Email templates for use by the programme manager.</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 William Ellis &mdash; ERC Housing Digital Transformation
+    </div>
+</footer>
+
+<script src="<?= e(asset_url('/assets/js/main.js')) ?>"></script>
+<script>
+function copyMessage(btn) {
+    const messageEl = btn.nextElementSibling;
+    const text = messageEl.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    }).catch(() => {
+        const range = document.createRange();
+        range.selectNodeContents(messageEl);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    });
+}
+</script>
+</body>
+</html>
