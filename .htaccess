@@ -1,9 +1,30 @@
 Options -Indexes
 
+# Only index.php at / — do not fall through to index.html (bypasses auth)
+DirectoryIndex index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # If the site lives in a subfolder, uncomment:
+    # RewriteBase /
+
     RewriteRule ^sql/        - [F,L]
     RewriteRule ^includes/   - [F,L]
+
+    # Public paths — no auth router
+    RewriteRule ^assets/     - [L]
+    RewriteRule ^robots\.txt$ - [L]
+    RewriteRule ^login\.php$  - [L]
+    RewriteRule ^logout\.php$ - [L]
+    RewriteRule ^auth/         - [L]
+    RewriteRule ^index\.php$  - [L]
+
+    # Hostinger/LiteSpeed serves existing .html as static unless we rewrite explicitly
+    RewriteRule \.html$ router.php [L,QSA,NC]
+
+    # Root and all other paths
+    RewriteRule ^ router.php [L]
 </IfModule>
 
 <Files ".env">

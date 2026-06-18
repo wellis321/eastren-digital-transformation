@@ -23,7 +23,8 @@ This is a **document research workspace** — not a software codebase. It contai
 | `documents/modernising-through-strategic-innovation.txt` | MAP programme and innovation |
 | `documents/Citizen Engagement and Service Co-Design in East Renfrewshire.txt` | Citizen engagement impact |
 | `documents/ERC_Digital_Strategy.pdf` / `.pptx` | Source strategy documents (if added) |
-| `documents/East Renfrewshire Digital Transformation Progress and Strategy - Table 1.csv` | Structured progress data |
+
+**Excluded:** `documents/progress/` — internal draft progress files; not used by the site.
 
 ## Core Strategy Themes
 
@@ -65,6 +66,6 @@ python3 -m http.server 8000
 
 - `documents/strategic-notes.md` is the authoritative consolidated reference — start here for an overview
 - Most `documents/*.txt` files are thematic deep-dives extracted from the same source material; expect overlapping content
-- The `.csv` file contains structured progress/status data suitable for tables or analysis
+- **`documents/progress/` is out of scope** — draft programme progress files (CSV, MOU, briefing docs). Do not read, integrate, or reference these when working on the portal.
 - PDF/PPTX are the original source documents; prefer the `.txt`/`.md` files for text extraction tasks
 - `documents/east-ren-digi-plans.txt` exists in the directory but is not yet listed in the key documents table above

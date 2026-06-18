@@ -28,6 +28,10 @@ if (file_exists($envFile)) {
 
 define('APP_ENV', getenv('APP_ENV') ?: 'local');
 define('APP_URL', rtrim(getenv('APP_URL') ?: '', '/'));
+if (APP_URL === '' && PHP_SAPI !== 'cli') {
+    http_response_code(500);
+    exit('APP_URL is not set. Create a .env file — see HOSTINGER-DEPLOY.md.');
+}
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_PORT', getenv('DB_PORT') ?: '3306');
 define('DB_NAME', getenv('DB_NAME') ?: 'sor_management');

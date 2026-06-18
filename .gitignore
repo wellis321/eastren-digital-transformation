@@ -10,6 +10,8 @@
 
 # All documents folder — internal working files, not served by the site
 documents/
+# Programme progress working files (draft CSV, MOU, briefing docs) — do not use in site
+documents/progress/
 
 # Sensitive files — CVs, cover letters, council documents, personal records
 *.pdf

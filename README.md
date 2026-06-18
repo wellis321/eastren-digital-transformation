@@ -40,7 +40,18 @@ Open `http://localhost:8080` — you will be prompted to sign in. Use the same u
 
 ### GitHub Pages
 
-GitHub Pages serves static files only — **authentication does not apply** on GitHub Pages. Use the PHP server above for the protected working copy.
+GitHub Pages serves static files only — **authentication does not apply** on GitHub Pages. Use PHP hosting (local or Hostinger) for the protected portal.
+
+### Hostinger (production with login)
+
+See **[HOSTINGER-DEPLOY.md](HOSTINGER-DEPLOY.md)** for full steps. Summary:
+
+1. Upload PHP auth files (`includes/`, `login.php`, `router.php`, `index.php`, `.htaccess`, etc.) — not just HTML.
+2. Create `.env` on the server with `APP_URL=https://your-domain.hostingersite.com` and MySQL credentials.
+3. Run `sql/auth-tables.sql` in phpMyAdmin and add a user (or use the same database as sor-system).
+4. Clear Hostinger cache after deploy.
+
+Without `.htaccess` + `router.php` + `.env`, the site stays public (as at [aqua-quetzal-992173.hostingersite.com](https://aqua-quetzal-992173.hostingersite.com/index.html)).
 
 ### Legacy static preview (no auth)
 
