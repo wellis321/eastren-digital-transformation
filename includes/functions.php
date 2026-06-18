@@ -87,6 +87,14 @@ function asset_url(string $path): string
 function enhance_static_html(string $html, string $baseDir): string
 {
     $root = dirname(__DIR__);
+
+    $html = preg_replace(
+        '/\s*<nav class="breadcrumb" aria-label="Breadcrumb">.*?<\/nav>\s*/is',
+        "\n",
+        $html
+    );
+    $html = preg_replace('/\s*<!--\s*Breadcrumb\s*-->\s*/i', "\n", $html);
+
     $html = preg_replace_callback(
         '#\b(href|src)=(["\'])([^"\']*(?:assets/css/style\.css|assets/js/main\.js))\2#',
         static function (array $m) use ($root, $baseDir): string {
@@ -106,8 +114,9 @@ function enhance_static_html(string $html, string $baseDir): string
         $html
     );
 
-    if (stripos($html, 'critical-topbar-signout') === false) {
-        $criticalCss = '<style id="critical-topbar-signout">'
+    if (stripos($html, 'critical-portal-ui') === false) {
+        $criticalCss = '<style id="critical-portal-ui">'
+            . '.breadcrumb{display:none!important}'
             . '.site-topbar a.topbar-signout,.site-topbar a.topbar-signout:link,'
             . '.site-topbar a.topbar-signout:visited,.site-topbar a.topbar-signout:active'
             . '{color:#fff!important;text-decoration:none!important;font-size:.72rem;font-weight:600;'
