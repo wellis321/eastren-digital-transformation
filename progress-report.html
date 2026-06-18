@@ -311,6 +311,25 @@
                 page-break-inside: avoid;
             }
 
+            #section-groups p,
+            #section-groups li,
+            #section-groups ol,
+            #section-groups ul {
+                font-size: 0.75rem !important;
+                line-height: 1.45 !important;
+            }
+
+            #section-groups h3 {
+                font-size: 0.88rem !important;
+                margin-bottom: 0.15rem !important;
+            }
+
+            #section-groups > div {
+                padding-top: 0.55rem !important;
+                padding-bottom: 0.55rem !important;
+                margin-bottom: 0.55rem !important;
+            }
+
             .report-team {
                 page-break-inside: avoid;
             }
@@ -569,7 +588,7 @@
     </div>
 
     <!-- 5. Outcomes and Assets -->
-    <div class="report-section">
+    <div class="report-section" style="page-break-after: avoid;">
         <div class="report-section-heading"><span>5</span> Outcomes &amp; Assets to Date</div>
         <div class="report-cols-3">
             <div>
@@ -609,7 +628,7 @@
     </div>
 
     <!-- 6. Meeting Groups -->
-    <div class="report-section">
+    <div class="report-section" id="section-groups">
         <div class="report-section-heading"><span>6</span> Meeting Groups &amp; Governance</div>
         <p style="font-size:0.85rem; color:var(--erc-text-light); margin:0 0 1rem;">Three groups have been established, each with a distinct remit and membership. All meet every four weeks. First cycle begins July 2026.</p>
 
