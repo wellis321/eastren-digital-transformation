@@ -84,7 +84,6 @@ $asisSiteUrl = defined('ASIS_SITE_URL') && ASIS_SITE_URL !== ''
     <div class="auth-login-card">
         <div class="auth-login-header">
             <h1>Sign in</h1>
-            <p>Sign in with your portal account. If you use the SOR system on the <strong>same database</strong>, the same username works here.</p>
         </div>
 
         <?php if ($userCount === 0): ?>
