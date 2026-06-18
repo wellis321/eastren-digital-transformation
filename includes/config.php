@@ -19,6 +19,13 @@ if (file_exists($envFile)) {
         [$key, $val] = explode('=', $line, 2);
         $key = trim($key);
         $val = trim($val);
+        // Allow quoted values — required when password contains # or spaces
+        if (
+            (str_starts_with($val, '"') && str_ends_with($val, '"'))
+            || (str_starts_with($val, "'") && str_ends_with($val, "'"))
+        ) {
+            $val = substr($val, 1, -1);
+        }
         if (!isset($_ENV[$key]) && !isset($_SERVER[$key])) {
             putenv("$key=$val");
             $_ENV[$key] = $val;

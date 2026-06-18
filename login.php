@@ -24,7 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!csrf_verify()) {
         $error = 'Invalid form submission. Please try again.';
     } elseif (is_rate_limited(client_ip())) {
-        $error = 'Too many failed attempts. Please wait 15 minutes and try again.';
+        $error = 'Too many failed attempts. Please wait 15 minutes, or ask an administrator to run: DELETE FROM login_attempts; in phpMyAdmin.';
+        // #region agent log
+        auth_debug_log('login.php:rate-limited', 'login blocked by rate limit', ['ip' => client_ip()], 'H-rate');
+        // #endregion
     } else {
         $user = trim($_POST['username'] ?? '');
         $pass = $_POST['password'] ?? '';
@@ -50,12 +53,12 @@ $flash = render_flash();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Sign in — ERC Housing Digital Transformation</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
 </head>
 <body class="auth-login-body">
 
 <div class="auth-login-topbar">
-    <img src="assets/media/leaves.png" alt="" class="topbar-leaves" width="28" height="20">
+    <img src="<?= e(asset_url('/assets/media/leaves.png')) ?>" alt="" class="topbar-leaves" width="28" height="20">
     <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
 </div>
 

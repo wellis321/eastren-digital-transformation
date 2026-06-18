@@ -48,13 +48,18 @@ APP_ENV=production
 APP_URL=https://aqua-quetzal-992173.hostingersite.com
 DB_HOST=localhost
 DB_PORT=3306
-DB_NAME=u248320297_eastren
-DB_USER=u248320297_eastren
-DB_PASS=your_db_password_from_hpanel
+DB_NAME=u248320297_sor_management
+DB_USER=u248320297_sor_management
+DB_PASS="your_password_here"
 SESSION_SECRET=use_a_long_random_string_here
 ```
 
-On Hostinger the **database name and username are often the same** (`u248320297_eastren`). Use the password you set when creating the MySQL user in hPanel.
+**Important:**
+- No trailing slash on `APP_URL` (optional — code trims it, but avoid it).
+- Wrap `DB_PASS` in **double quotes** if it contains `#`, `>`, or spaces.
+- Set `APP_ENV=production` so session cookies work correctly on HTTPS.
+- Use the **same database** as sor-system if you want the same usernames/passwords.
+- After failed login attempts during setup, run `sql/clear-login-attempts.sql` in phpMyAdmin.
 
 ## 4. Clear cache
 

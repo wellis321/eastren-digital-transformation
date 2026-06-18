@@ -50,7 +50,6 @@ function render_flash(): string
     return $out;
 }
 
-/** Accept full APP_URL paths or site-relative paths for post-login redirect. */
 function resolve_next_redirect(string $next, string $fallback): string
 {
     if ($next === '') {
@@ -75,4 +74,12 @@ function login_next_url(): string
         return APP_URL . $uri;
     }
     return APP_URL . '/index.html';
+}
+
+function asset_url(string $path): string
+{
+    $path = '/' . ltrim($path, '/');
+    $file = dirname(__DIR__) . $path;
+    $v    = is_file($file) ? (string)filemtime($file) : '1';
+    return APP_URL . $path . '?v=' . $v;
 }
