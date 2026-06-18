@@ -15,9 +15,10 @@ DirectoryIndex index.php
     # Public paths — no auth router
     RewriteRule ^assets/     - [L]
     RewriteRule ^robots\.txt$ - [L]
-    RewriteRule ^login\.php$  - [L]
-    RewriteRule ^logout\.php$ - [L]
-    RewriteRule ^auth/         - [L]
+    RewriteRule ^login\.php$    - [L]
+    RewriteRule ^logout\.php$   - [L]
+    RewriteRule ^activate\.php$ - [L]
+    RewriteRule ^auth/          - [L]
     RewriteRule ^index\.php$  - [L]
 
     # Hostinger/LiteSpeed serves existing .html as static unless we rewrite explicitly
