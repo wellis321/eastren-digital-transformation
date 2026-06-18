@@ -9,7 +9,28 @@ if (is_logged_in()) {
     redirect(resolve_next_redirect('', APP_URL . '/index.html'));
 }
 
-$userId = (int)($_SESSION['activation_user_id'] ?? 0);
+$userId        = (int)($_SESSION['activation_user_id'] ?? 0);
+$prefilledCode = '';
+
+// Accept direct link from email: activate.php?uid=X&token=XXXXXX
+if ($userId === 0) {
+    $urlUid   = (int)($_GET['uid'] ?? 0);
+    $urlToken = preg_replace('/\D/', '', trim($_GET['token'] ?? ''));
+    if ($urlUid > 0 && strlen($urlToken) === 6) {
+        $chk = db()->prepare(
+            'SELECT id FROM password_setup_tokens
+              WHERE user_id = ? AND token = ? AND expires_at > NOW() AND used_at IS NULL
+              LIMIT 1'
+        );
+        $chk->execute([$urlUid, $urlToken]);
+        if ($chk->fetch()) {
+            $userId        = $urlUid;
+            $_SESSION['activation_user_id'] = $userId;
+            $prefilledCode = $urlToken;
+        }
+    }
+}
+
 if ($userId === 0) {
     flash('info', 'Enter your username below with the password left blank — you\'ll be sent here to enter your code.');
     redirect(APP_URL . '/login.php');
@@ -128,14 +149,17 @@ render:
                        inputmode="numeric" pattern="\d{6}" maxlength="6"
                        placeholder="e.g. 482 031"
                        autocomplete="one-time-code"
-                       required autofocus
+                       value="<?= e($prefilledCode) ?>"
+                       <?= $prefilledCode !== '' ? 'readonly' : 'autofocus' ?>
+                       required
                        style="letter-spacing:.2em; font-size:1.25rem; text-align:center;">
             </div>
 
             <div class="auth-field">
                 <label for="password">New password</label>
                 <input type="password" id="password" name="password"
-                       minlength="8" required autocomplete="new-password">
+                       minlength="8" required autocomplete="new-password"
+                       <?= $prefilledCode !== '' ? 'autofocus' : '' ?>>
                 <p style="margin:.35rem 0 0; font-size:.8rem; color:#666;">Minimum 8 characters.</p>
             </div>
 

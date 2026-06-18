@@ -7,11 +7,12 @@ declare(strict_types=1);
  * In local dev (APP_ENV=local) the code is also written to the PHP error log
  * so you can test without a working mail relay.
  */
-function send_activation_email(string $to, string $name, string $code): void
+function send_activation_email(string $to, string $name, string $code, int $userId): void
 {
-    $fromAddr = getenv('MAIL_FROM') ?: ('noreply@' . ($_SERVER['HTTP_HOST'] ?? 'localhost'));
-    $siteName = 'ERC Housing Digital Transformation';
-    $loginUrl = APP_URL . '/login.php';
+    $fromAddr    = getenv('MAIL_FROM') ?: ('noreply@' . ($_SERVER['HTTP_HOST'] ?? 'localhost'));
+    $siteName    = 'ERC Housing Digital Transformation';
+    $activateUrl = APP_URL . '/activate.php?uid=' . $userId . '&token=' . urlencode($code);
+    $loginUrl    = APP_URL . '/login.php';
 
     $subject = 'Your portal access code';
     $body    = "Hi {$name},\r\n\r\n"
@@ -19,12 +20,10 @@ function send_activation_email(string $to, string $name, string $code): void
              . "Your one-time access code is:\r\n\r\n"
              . "    {$code}\r\n\r\n"
              . "This code expires in 30 minutes.\r\n\r\n"
-             . "To activate your account:\r\n"
-             . "  1. Go to {$loginUrl}\r\n"
-             . "  2. Enter your username\r\n"
-             . "  3. Leave the password blank and click Sign in\r\n"
-             . "  4. Enter the code above when prompted\r\n"
-             . "  5. Choose a password\r\n\r\n"
+             . "Click the link below to go straight to the activation page:\r\n"
+             . "{$activateUrl}\r\n\r\n"
+             . "If the link doesn't work, go to {$loginUrl}, enter your username\r\n"
+             . "with the password left blank, and you'll be taken to the activation page.\r\n\r\n"
              . "If you did not expect this email, please ignore it.\r\n\r\n"
              . "-- {$siteName}";
 

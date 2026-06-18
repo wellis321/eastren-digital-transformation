@@ -86,7 +86,7 @@ function attempt_login(string $user, string $pass): bool|string
             return false;
         }
         $code = create_password_setup_token((int)$row['id']);
-        send_activation_email($rowEmail, (string)($row['display_name'] ?: $row['username']), $code);
+        send_activation_email($rowEmail, (string)($row['display_name'] ?: $row['username']), $code, (int)$row['id']);
         $_SESSION['activation_user_id'] = (int)$row['id'];
         return 'needs_activation';
     }
