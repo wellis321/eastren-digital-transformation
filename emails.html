@@ -71,6 +71,46 @@
         .dot-blue  { width:8px; height:8px; border-radius:50%; background:#1e3a5f; display:inline-block; }
         .dot-teal  { width:8px; height:8px; border-radius:50%; background:#0e7490; display:inline-block; }
         .dot-amber { width:8px; height:8px; border-radius:50%; background:#d97706; display:inline-block; }
+
+        /* ── Sidebar layout ──────────────────────────────────── */
+        .gc-layout {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            align-items: start;
+            margin-top: 1.5rem;
+        }
+        .gc-sidebar {
+            position: sticky;
+            top: calc(56px + 1.5rem);
+            max-height: calc(100vh - 56px - 3rem);
+            overflow-y: auto;
+        }
+        .gc-sidebar-inner { border: 1px solid var(--erc-border, #d0d0d0); background: #fff; }
+        .gc-sidebar-section { padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--erc-border, #d0d0d0); }
+        .gc-sidebar-section:last-child { border-bottom: none; }
+        .gc-sidebar-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #6B7280; margin: 0 0 0.5rem; }
+        .gc-sidebar-nav { display: flex; flex-direction: column; }
+        .gc-sidebar-link {
+            display: block;
+            padding: 0.45rem 0 0.45rem 0.65rem;
+            font-size: 0.82rem;
+            color: #333;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            transition: border-color 0.15s, color 0.15s, background 0.15s;
+            line-height: 1.3;
+        }
+        .gc-sidebar-link + .gc-sidebar-link { border-top: 1px solid #f0f0f0; }
+        .gc-sidebar-link:hover { color: var(--erc-green, #006A51); border-left-color: var(--erc-green, #006A51); background: #f0f7f4; text-decoration: none; }
+        .gc-sidebar-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 0.35rem; vertical-align: middle; }
+        @media (max-width: 900px) {
+            .gc-layout { grid-template-columns: 1fr; }
+            .gc-sidebar { position: static; max-height: none; }
+            .gc-sidebar-inner { display: flex; overflow-x: auto; }
+            .gc-sidebar-section { min-width: 170px; border-bottom: none; border-right: 1px solid var(--erc-border, #d0d0d0); flex-shrink: 0; }
+            .gc-sidebar-section:last-child { border-right: none; }
+        }
     </style>
 </head>
 <body>
@@ -107,7 +147,7 @@
                     <a href="scotland-policy.html">Scotland's Policy</a>
                     <a href="digital-direction.html">Digital Direction</a>
                     <a href="best-practice.html">Best Practice</a>
-                    <a href="group-comms.html">Group Communications</a>
+                    <a href="emails.html">Emails</a>
                     <a href="sector.html">Sector Comparisons</a>
                     <a href="peer-benchmarks.html">Peer Benchmarks (costs)</a>
                     <a href="reports.html">Reports</a>
@@ -147,15 +187,54 @@
     </div>
 
 
+
+    <div class="gc-layout">
+
+        <aside class="gc-sidebar">
+            <div class="gc-sidebar-inner">
+                <div class="gc-sidebar-section">
+                    <p class="gc-sidebar-label">Portal</p>
+                    <nav class="gc-sidebar-nav">
+                        <a href="#email-portal" class="gc-sidebar-link"><span class="gc-sidebar-dot" style="background:#d97706;"></span>Board Introduction</a>
+                    </nav>
+                </div>
+                <div class="gc-sidebar-section">
+                    <p class="gc-sidebar-label">Group Introductions</p>
+                    <nav class="gc-sidebar-nav">
+                        <a href="#email-intro-project" class="gc-sidebar-link"><span class="gc-sidebar-dot" style="background:#006A51;"></span>Project Group</a>
+                        <a href="#email-intro-steering" class="gc-sidebar-link"><span class="gc-sidebar-dot" style="background:#1e3a5f;"></span>Steering Group</a>
+                        <a href="#email-intro-technical" class="gc-sidebar-link"><span class="gc-sidebar-dot" style="background:#0e7490;"></span>Technical Group</a>
+                    </nav>
+                </div>
+                <div class="gc-sidebar-section">
+                    <p class="gc-sidebar-label">Short Version</p>
+                    <nav class="gc-sidebar-nav">
+                        <a href="#email-short-project" class="gc-sidebar-link"><span class="gc-sidebar-dot" style="background:#006A51;"></span>Project Group</a>
+                        <a href="#email-short-steering" class="gc-sidebar-link"><span class="gc-sidebar-dot" style="background:#1e3a5f;"></span>Steering Group</a>
+                        <a href="#email-short-technical" class="gc-sidebar-link"><span class="gc-sidebar-dot" style="background:#0e7490;"></span>Technical Group</a>
+                    </nav>
+                </div>
+                <div class="gc-sidebar-section">
+                    <p class="gc-sidebar-label">Meeting Invites</p>
+                    <nav class="gc-sidebar-nav">
+                        <a href="#email-meet-technical" class="gc-sidebar-link"><span class="gc-sidebar-dot" style="background:#0e7490;"></span>Technical <span style="color:#aaa;font-size:0.75rem;">13 Jul</span></a>
+                        <a href="#email-meet-steering" class="gc-sidebar-link"><span class="gc-sidebar-dot" style="background:#1e3a5f;"></span>Steering <span style="color:#aaa;font-size:0.75rem;">14 Jul</span></a>
+                        <a href="#email-meet-project" class="gc-sidebar-link"><span class="gc-sidebar-dot" style="background:#006A51;"></span>Project <span style="color:#aaa;font-size:0.75rem;">22 Jul</span></a>
+                    </nav>
+                </div>
+            </div>
+        </aside>
+
+        <div class="gc-main">
     <!-- ============================================================ -->
     <!-- SECTION: PORTAL INTRODUCTION -->
     <!-- ============================================================ -->
-    <div class="section-header" style="margin-top:1rem;">
+    <div class="section-header" id="portal-intro" style="margin-top:0;">
         <h2>Portal Introduction</h2>
         <p>For sending to Project Board members to introduce the programme portal.</p>
     </div>
 
-    <div class="card" style="margin-bottom:2rem;">
+    <div class="card" id="email-portal" style="margin-bottom:2rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
                 <div class="group-label"><span class="dot-amber"></span>Project Board</div>
@@ -210,12 +289,12 @@ East Renfrewshire Council</div>
     <!-- ============================================================ -->
     <!-- SECTION: GOVERNANCE GROUP INTRODUCTIONS -->
     <!-- ============================================================ -->
-    <div class="section-header" style="margin-top:2.5rem;">
+    <div class="section-header" id="group-intros" style="margin-top:2rem;">
         <h2>Governance Group Introductions</h2>
         <p>Step 1 &mdash; for people who haven't been briefed yet. Send before the meeting invitation.</p>
     </div>
 
-    <div class="card" style="margin-bottom:2rem;">
+    <div class="card" id="email-intro-project" style="margin-bottom:2rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
                 <div class="group-label"><span class="dot-green"></span>Project Group</div>
@@ -246,7 +325,7 @@ East Renfrewshire Council</div>
         </div>
     </div>
 
-    <div class="card" style="margin-bottom:2rem;">
+    <div class="card" id="email-intro-steering" style="margin-bottom:2rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
                 <div class="group-label"><span class="dot-blue"></span>Steering Group</div>
@@ -277,7 +356,7 @@ East Renfrewshire Council</div>
         </div>
     </div>
 
-    <div class="card" style="margin-bottom:2rem;">
+    <div class="card" id="email-intro-technical" style="margin-bottom:2rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
                 <div class="group-label"><span class="dot-teal"></span>Technical Group</div>
@@ -312,12 +391,12 @@ East Renfrewshire Council</div>
     <!-- ============================================================ -->
     <!-- SECTION: SHORT INTRODUCTIONS (ALREADY KNOW YOU) -->
     <!-- ============================================================ -->
-    <div class="section-header" style="margin-top:2.5rem;">
+    <div class="section-header" id="group-intros-short" style="margin-top:2rem;">
         <h2>Governance Group Introductions &mdash; Short Version</h2>
         <p>For people already familiar with the programme and with you. Skip the background, get straight to the ask.</p>
     </div>
 
-    <div class="card" style="margin-bottom:2rem;">
+    <div class="card" id="email-short-project" style="margin-bottom:2rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
                 <div class="group-label"><span class="dot-green"></span>Project Group</div>
@@ -343,7 +422,7 @@ East Renfrewshire Council</div>
         </div>
     </div>
 
-    <div class="card" style="margin-bottom:2rem;">
+    <div class="card" id="email-short-steering" style="margin-bottom:2rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
                 <div class="group-label"><span class="dot-blue"></span>Steering Group</div>
@@ -371,7 +450,7 @@ East Renfrewshire Council</div>
         </div>
     </div>
 
-    <div class="card" style="margin-bottom:2rem;">
+    <div class="card" id="email-short-technical" style="margin-bottom:2rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
                 <div class="group-label"><span class="dot-teal"></span>Technical Group</div>
@@ -403,12 +482,12 @@ East Renfrewshire Council</div>
     <!-- ============================================================ -->
     <!-- SECTION: MEETING INVITATIONS -->
     <!-- ============================================================ -->
-    <div class="section-header" style="margin-top:2.5rem;">
+    <div class="section-header" id="meeting-invites" style="margin-top:2rem;">
         <h2>First Meeting Invitations</h2>
         <p>Send once people have the introductory context. Confirms the date, purpose, and agenda.</p>
     </div>
 
-    <div class="card" style="margin-bottom:2rem;">
+    <div class="card" id="email-meet-technical" style="margin-bottom:2rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
                 <div class="group-label"><span class="dot-teal"></span>Technical Group</div>
@@ -443,7 +522,7 @@ East Renfrewshire Council</div>
         </div>
     </div>
 
-    <div class="card" style="margin-bottom:2rem;">
+    <div class="card" id="email-meet-steering" style="margin-bottom:2rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
                 <div class="group-label"><span class="dot-blue"></span>Steering Group</div>
@@ -478,7 +557,7 @@ East Renfrewshire Council</div>
         </div>
     </div>
 
-    <div class="card" style="margin-bottom:2rem;">
+    <div class="card" id="email-meet-project" style="margin-bottom:2rem;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
             <div>
                 <div class="group-label"><span class="dot-green"></span>Project Group</div>
@@ -514,6 +593,9 @@ Housing Repairs Digital Transformation Programme
 East Renfrewshire Council</div>
         </div>
     </div>
+
+        </div><!-- /.gc-main -->
+    </div><!-- /.gc-layout -->
 
 </main>
 </div>
