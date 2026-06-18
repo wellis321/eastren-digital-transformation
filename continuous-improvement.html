@@ -281,6 +281,25 @@
             }
             .ci-sidebar-section:last-child { border-right: none; }
         }
+
+        /* Priority theme variant */
+        .theme-status-badge--priority {
+            background: #fef3c7;
+            color: #78350f;
+            border-color: #fde68a;
+        }
+        .theme-status-badge--priority::before { background: #d97706; }
+
+        .theme-block--priority .theme-block-header {
+            background: #1e293b;
+        }
+
+        .ci-sidebar-link--priority {
+            color: var(--erc-blue);
+            font-weight: 600;
+        }
+        .ci-sidebar-link--priority .ci-sidebar-num { color: #d97706; }
+        .ci-sidebar-link--priority:hover { border-left-color: #d97706; background: #fffbeb; }
     </style>
 </head>
 <body>
@@ -405,14 +424,24 @@
                             <span class="ci-sidebar-num">Theme 02</span>
                             Data, Integration &amp; Contract Pricing
                         </a>
+                        <a href="#theme-voids" class="ci-sidebar-link">
+                            <span class="ci-sidebar-num">Theme 03</span>
+                            Void Turnover
+                        </a>
+                        <a href="#theme-stock" class="ci-sidebar-link">
+                            <span class="ci-sidebar-num">Theme 04</span>
+                            Stock Management
+                        </a>
+                        <a href="#theme-tenants" class="ci-sidebar-link ci-sidebar-link--priority">
+                            <span class="ci-sidebar-num">Theme 05</span>
+                            Tenant Engagement
+                        </a>
                     </nav>
                 </div>
                 <div class="ci-sidebar-section">
                     <p class="ci-sidebar-label">Under Consideration</p>
                     <div class="ci-sidebar-future">
-                        <span class="ci-sidebar-future-item">Tenant Communication Quality</span>
                         <span class="ci-sidebar-future-item">First-Time Fix Rate</span>
-                        <span class="ci-sidebar-future-item">Void Property Turnaround</span>
                         <span class="ci-sidebar-future-item">Digital Inclusion &amp; Access</span>
                         <span class="ci-sidebar-future-item">Apprentice &amp; Early Career Digital Skills</span>
                         <span class="ci-sidebar-future-item">Environmental &amp; Fleet Efficiency</span>
@@ -727,6 +756,278 @@
             </div>
 
         </div><!-- /.theme-block-body -->
+    </div><!-- /.theme-block -->
+
+
+    <!-- ── Theme 3: Void Turnover Improvements ──────────────────── -->
+    <div class="theme-block" id="theme-voids">
+        <div class="theme-block-header">
+            <span class="theme-status-badge">Active &mdash; Ongoing</span>
+            <h2>Void Turnover Improvements</h2>
+            <p>Every day a property sits empty has a direct financial cost and means a household on the waiting list goes without a home. Void turnaround time is one of the most visible performance indicators in Scottish housing &mdash; measured against the Scottish Housing Charter, watched by the regulator, and felt acutely by applicants. Digital transformation can reduce turnaround time by removing the friction between each stage of the void process: inspection, works ordering, completion, and re-let.</p>
+        </div>
+        <div class="theme-block-body">
+            <p class="theme-subsection-label">Improvement Areas</p>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Digital Void Inspection
+                </h4>
+                <p>The void inspection is the starting point for everything that follows. Done on a paper form, the information sits in someone&rsquo;s hand or in-tray before it reaches the people who need it. Done digitally on a mobile device, it is available to the repairs team the moment the inspector submits.</p>
+                <ul>
+                    <li>Mobile inspection form completed on site &mdash; room-by-room condition grading, photos attached directly to the property record</li>
+                    <li>Inspection result immediately visible in ROCC, eliminating the delay between inspection and works scheduling</li>
+                    <li>Standard defect codes used consistently across all void inspections so data can be aggregated and patterns identified</li>
+                    <li>Photos timestamped and geotagged &mdash; useful for insurance, disputes, and condition benchmarking over time</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Automatic Works Scheduling
+                </h4>
+                <p>The biggest delay in most void processes is the gap between inspection and works being scheduled. This should be near-zero &mdash; inspection findings map directly to ROCC works orders without a manual handoff.</p>
+                <ul>
+                    <li>Inspection defect codes map to standard SOR works items in ROCC &mdash; the inspection generates a draft works schedule automatically</li>
+                    <li>Works prioritised by category: statutory (gas, electrical safety) first, then cosmetic</li>
+                    <li>Works schedule visible to the allocations team in NEC so re-let planning can begin in parallel with works, not after</li>
+                    <li>Completion sign-off by the operative triggers a notification to the allocations team that the property is ready</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    Void KPI Visibility
+                </h4>
+                <p>If managers can only see void performance at month-end, problems that developed in week one are only visible in week five. Real-time visibility changes that.</p>
+                <ul>
+                    <li>Live void dashboard: number of current voids, days at each stage, flag for any void exceeding target turnaround</li>
+                    <li>Average void turnaround shown against the Scottish Housing Charter indicator and the previous year &mdash; trend visible at a glance</li>
+                    <li>Early warning when a void is approaching the target without works being completed &mdash; intervention before the breach, not a report afterwards</li>
+                    <li>Void cost calculated automatically from ROCC job costs &mdash; rent loss and works cost visible together</li>
+                </ul>
+            </div>
+
+            <p class="theme-subsection-label">How Do Others Approach This?</p>
+
+            <div class="peer-card">
+                <strong>Scottish Housing Regulator &mdash; Charter Indicator 8</strong>
+                <p>The SHR measures void management under Charter Indicator 8: the average number of calendar days taken to re-let properties. ERC&rsquo;s performance is published annually and compared against Scottish averages. Digital inspection and automatic works scheduling are cited in multiple ARC submissions by higher-performing landlords as the primary driver of turnaround improvement.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Wheatley Housing Group</strong>
+                <p>Wheatley use a mobile void inspection app that integrates directly with their repairs scheduling system. Inspection to first trade on site in under 24 hours for standard voids is their operational target. They attribute this to eliminating the paper-based handoff between the inspector and the works scheduler entirely.</p>
+            </div>
+            <div class="peer-card">
+                <strong>North Lanarkshire Council</strong>
+                <p>Moved to digital void inspections with automatic SOR schedule generation in their ROCC implementation. Reported a reduction in average void turnaround from 28 days to 19 days in the first year, primarily through removing the delay between inspection completion and works ordering.</p>
+            </div>
+
+            <div class="reflection-questions">
+                <h4>Questions to Keep Asking</h4>
+                <ol>
+                    <li>What is our current average void turnaround time and how does it compare to the Scottish Housing Charter average? Where do we sit in the national picture?</li>
+                    <li>At which stage does a void most commonly get delayed &mdash; inspection, works scheduling, works completion, or sign-off? Do we actually know, or are we guessing?</li>
+                    <li>How long currently passes between an inspection being completed and a works order being raised? Who is responsible for that handoff?</li>
+                    <li>Can the allocations team in NEC see the current status of void works in real time, or do they have to ask someone?</li>
+                    <li>How many void properties are currently being tracked in a spreadsheet or on a whiteboard rather than in a system?</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.theme-block -->
+
+    <!-- ── Theme 4: Stock Management Improvements ────────────────── -->
+    <div class="theme-block" id="theme-stock">
+        <div class="theme-block-header">
+            <span class="theme-status-badge">Active &mdash; Ongoing</span>
+            <h2>Stock Management Improvements</h2>
+            <p>Stock management operates at two levels that are often treated separately but are deeply connected: the condition and lifecycle of the housing stock itself (the properties), and the operational materials and parts needed to maintain it. Weak data at either level drives reactive, expensive decisions. Good data at both enables planned, efficient maintenance and a clearer picture of the organisation&rsquo;s long-term capital obligations.</p>
+        </div>
+        <div class="theme-block-body">
+            <p class="theme-subsection-label">Improvement Areas</p>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Housing Stock Condition
+                </h4>
+                <p>Knowing the condition of every property in the stock is the foundation of planned maintenance. Without it, the organisation is always reacting. With it, expenditure can be forecast, programmes can be planned, and the Scottish Housing Quality Standard can be demonstrated systematically.</p>
+                <ul>
+                    <li>Digital condition surveys completed on mobile, with photos and standardised element grades linked directly to the property UPRN</li>
+                    <li>Component-level asset register: each property&rsquo;s boiler, windows, roof, kitchen, and bathroom recorded with installation date and expected replacement year</li>
+                    <li>Survey data feeds directly into a planned maintenance programme &mdash; components approaching end of life automatically appear in the forward works plan</li>
+                    <li>SHQS (Scottish Housing Quality Standard) compliance status calculated from survey data, not assembled manually from multiple spreadsheets</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    Van Stock &amp; Materials Management
+                </h4>
+                <p>Operatives carrying the wrong stock, or not enough of what they need, drives repeat visits and increases cost per job. Van stock management is a practical, high-impact area where digital tools can make an immediate difference to first-time fix rates.</p>
+                <ul>
+                    <li>Van stock recorded digitally: what each operative is carrying, consumed automatically when a job is completed and a part is used</li>
+                    <li>Low stock alerts sent to the operative and supervisor before the operative runs out &mdash; not after a job is left incomplete</li>
+                    <li>Replenishment request raised through the app, not via a phone call to the depot</li>
+                    <li>Stock usage data analysed to optimise what each van carries by trade, season, and area &mdash; reducing unnecessary carrying costs and emergency runs</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+                    Reactive vs Planned Maintenance Balance
+                </h4>
+                <p>A housing organisation spending most of its maintenance budget on reactive repairs is in a cycle it cannot easily break. Every pound spent on planned maintenance based on good stock condition data prevents several pounds of reactive spend. This is well evidenced across the sector and worth tracking explicitly.</p>
+                <ul>
+                    <li>Track the reactive/planned split in ROCC by value and by job count &mdash; visible to management monthly</li>
+                    <li>Set a target trajectory: where should the reactive/planned ratio be in 1, 3, and 5 years?</li>
+                    <li>Link stock condition survey data to the repairs history for each property &mdash; identify properties generating disproportionate reactive spend as candidates for planned investment</li>
+                    <li>Use Scotland Excel framework contracts to plan and procure bulk replacement programmes efficiently</li>
+                </ul>
+            </div>
+
+            <p class="theme-subsection-label">How Do Others Approach This?</p>
+
+            <div class="peer-card">
+                <strong>Aberdeenshire Council</strong>
+                <p>Completed a full stock condition survey programme linked to their housing management system, enabling them to produce a 30-year capital expenditure forecast and demonstrate SHQS compliance systematically. They report that the survey data also significantly improved their ability to plan void works because known component conditions could be factored in before the property became empty.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Mears Group (operating for multiple Scottish councils)</strong>
+                <p>Mears use digital van stock management integrated with their job management system. Parts consumed on a job are deducted from van stock automatically at job completion. The system generates replenishment orders nightly based on usage patterns and upcoming scheduled work, reducing emergency procurement by a reported 35%.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Wheatley Housing Group</strong>
+                <p>Wheatley track their reactive/planned maintenance ratio as a board-level KPI and set an annual improvement target. Their move from roughly 70% reactive / 30% planned to closer to 50/50 over five years is attributed to investment in stock condition data and the planned maintenance programmes it enabled, rather than to any single technology.</p>
+            </div>
+
+            <div class="reflection-questions">
+                <h4>Questions to Keep Asking</h4>
+                <ol>
+                    <li>Do we have a complete, up-to-date component-level asset register for all properties? If not, what would it take to create one?</li>
+                    <li>What is our current reactive/planned maintenance ratio by value? Is it improving year on year?</li>
+                    <li>How does an operative know what stock they have on the van before they leave the depot in the morning?</li>
+                    <li>Which properties are generating the most reactive repairs? Are those properties candidates for planned investment?</li>
+                    <li>Are we able to demonstrate SHQS compliance for every property from system data, or does someone have to assemble evidence manually?</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.theme-block -->
+
+    <!-- ── Theme 5: Tenant Engagement & Communication ────────────── -->
+    <div class="theme-block theme-block--priority" id="theme-tenants">
+        <div class="theme-block-header">
+            <span class="theme-status-badge theme-status-badge--priority">Priority &mdash; Requires Active Effort</span>
+            <h2>Tenant Engagement &amp; Communication</h2>
+            <p>Tenant engagement is the hardest thing to do well and the most important. Past experience in the organisation shows that meaningful, sustained engagement is genuinely difficult to achieve. But the insight it generates is qualitatively different from any other source &mdash; tenants know what it is actually like to live in a property, report a repair, wait for it to be done, and deal with the outcomes when it goes wrong. Every improvement shaped by genuine tenant feedback lands better, lasts longer, and builds more trust than one that doesn&rsquo;t. This theme should be treated as more active and more urgent than the others precisely because it is harder and has been underinvested before.</p>
+        </div>
+        <div class="theme-block-body">
+
+            <div class="callout highlight" style="margin-bottom:1.5rem;">
+                <div class="callout-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <div>
+                    <h4>Why This Theme Is Different</h4>
+                    <p style="margin:0;">Tenant input defines what quality actually means across the whole programme &mdash; not what we think it means from behind a desk. The goal is not to collect feedback and file it. It is to close the loop visibly, so tenants can see that their input changed something. That is what builds the trust that makes future engagement possible.</p>
+                </div>
+            </div>
+
+            <p class="theme-subsection-label">Improvement Areas</p>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Repairs Satisfaction &amp; Post-Job Feedback
+                </h4>
+                <p>The moment a repair is completed is the highest-quality moment to ask for feedback. The experience is fresh, the outcome is clear, and the tenant has a concrete basis for a response. This feedback is also the most directly actionable &mdash; it identifies specific operatives, job types, and processes that are working well or not.</p>
+                <ul>
+                    <li>Automated satisfaction request sent by SMS or portal notification immediately after job completion &mdash; not a quarterly survey</li>
+                    <li>Short, specific questions: did the operative arrive in the time slot given? Was the repair completed in one visit? Was the property left clean?</li>
+                    <li>Low scores trigger a follow-up call from a supervisor within 48 hours &mdash; not a logged statistic</li>
+                    <li>Satisfaction data visible by operative, trade, and job type so patterns can be identified and addressed</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    Proactive Communication
+                </h4>
+                <p>The most common reason tenants contact the housing service is to chase the status of something they have already reported. Every one of those calls or messages is a failure of proactive communication, and it costs staff time as well as tenant goodwill. The new system should make &ldquo;where is my repair?&rdquo; an unnecessary question.</p>
+                <ul>
+                    <li>Automated status updates at every meaningful stage: repair logged, appointment booked, operative on the way, job completed</li>
+                    <li>Appointment reminders sent the day before and the morning of &mdash; reducing missed appointments which are a significant cost</li>
+                    <li>If a repair is delayed, the tenant is told proactively with a revised timescale &mdash; not left to wonder</li>
+                    <li>Communication by the tenant&rsquo;s preferred channel (SMS, portal, email) stored in NEC as a preference &mdash; not defaulted to one channel for everyone</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Scrutiny, Co-design &amp; Closing the Loop
+                </h4>
+                <p>Tenant scrutiny &mdash; where tenants independently review and challenge how services are delivered &mdash; is a requirement of the Scottish Social Housing Charter and, done well, is one of the most powerful tools for service improvement. Co-design goes further: tenants shape what is built before it is built. Both require genuine commitment from the organisation, not a consultation exercise.</p>
+                <ul>
+                    <li>Involve tenants in the design of the repairs portal and notification system before build &mdash; not as testers of a finished product</li>
+                    <li>Tenant scrutiny panel given access to real performance data (satisfaction scores, void turnaround, first-time fix rate) so their reviews are based on evidence</li>
+                    <li>Every formal engagement produces a &ldquo;you said, we did&rdquo; response published on the tenant portal &mdash; the most important step in building credibility for future engagement</li>
+                    <li>Engagement accessible to all tenants, including those who are elderly, digitally excluded, or have communication support needs &mdash; not defaulting to online surveys that exclude the people most likely to have the strongest views</li>
+                </ul>
+            </div>
+
+            <div class="sub-topic">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Understanding What Tenants Are Telling Us
+                </h4>
+                <p>Feedback arrives in many forms: satisfaction scores, complaint records, repair descriptions, portal messages, scrutiny panel notes, phone call logs. Individually they are fragments. Analysed together they reveal patterns that no single channel would surface alone.</p>
+                <ul>
+                    <li>Use OpenAI to analyse unstructured feedback text at scale &mdash; identifying recurring themes, sentiment patterns, and service areas generating the most dissatisfaction</li>
+                    <li>Complaints data analysed alongside satisfaction scores &mdash; properties, trades, or processes generating both low satisfaction and high complaints are the priority</li>
+                    <li>Analysis shared with the tenant scrutiny panel as part of their evidence pack &mdash; not just held internally</li>
+                    <li>Feedback from digitally excluded tenants (phone, face-to-face) captured and coded to the same schema so it is not systematically absent from the analysis</li>
+                </ul>
+            </div>
+
+            <p class="theme-subsection-label">How Do Others Approach This?</p>
+
+            <div class="peer-card">
+                <strong>Scottish Social Housing Charter &mdash; Outcome 3</strong>
+                <p>The Charter requires landlords to demonstrate that they actively seek and act on tenants&rsquo; views, and that tenants find it easy to participate in decisions about services. The ARS (Annual Return on the Charter) measures tenant satisfaction with repairs, landlord communication, and the landlord&rsquo;s response to their views. ERC&rsquo;s published scores and trajectory are part of the public record.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Wheatley Housing Group &mdash; Tenant Scrutiny</strong>
+                <p>Wheatley&rsquo;s tenant scrutiny panels are given access to live performance dashboards and commission their own service reviews. Scrutiny recommendations are tracked through to implementation and the outcome reported back to the panel. They cite the credibility of the &ldquo;you said, we did&rdquo; cycle as the primary reason tenant participation rates have increased year on year.</p>
+            </div>
+            <div class="peer-card">
+                <strong>Sovereign Network Group (England)</strong>
+                <p>After historically low engagement rates, Sovereign redesigned their approach around the question &ldquo;what stopped people engaging last time?&rdquo; rather than &ldquo;how do we get more responses to our survey?&rdquo;. The answer from tenants was: surveys feel like they go nowhere; we never hear what changed as a result. They rebuilt their feedback process around the visible closing of the loop and saw participation rates more than double within 18 months.</p>
+            </div>
+            <div class="peer-card">
+                <strong>East Renfrewshire Council &mdash; Own Experience</strong>
+                <p>ERC has run tenant engagement exercises before with mixed results. The lessons from those experiences are assets &mdash; what worked, what didn&rsquo;t, what tenants said, where participation dropped off. These should be the starting point for designing the engagement approach for this programme, not set aside in favour of a generic engagement plan.</p>
+            </div>
+
+            <div class="reflection-questions">
+                <h4>Questions to Keep Asking</h4>
+                <ol>
+                    <li>What did past tenant engagement tell us that we didn&rsquo;t already know? What did we do with it?</li>
+                    <li>What stopped tenants engaging last time? What is specifically different about this programme&rsquo;s approach?</li>
+                    <li>How will tenants know that their feedback changed something? What is the &ldquo;you said, we did&rdquo; mechanism?</li>
+                    <li>What do tenants most want to know about their repair, and at which points? Have we asked them, or are we guessing?</li>
+                    <li>Are we making engagement genuinely accessible to tenants who are elderly, disabled, speak English as a second language, or are digitally excluded? Or are we designing engagement for the easiest people to reach?</li>
+                    <li>Who in the organisation is accountable for tenant engagement on this programme, and do they have enough time and resource to do it properly?</li>
+                    <li>Is the tenant scrutiny panel being given real data and real influence, or is it a consultation exercise with a predetermined outcome?</li>
+                </ol>
+            </div>
+        </div>
     </div><!-- /.theme-block -->
 
         </div><!-- /.ci-main -->
