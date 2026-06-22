@@ -12,20 +12,21 @@ DirectoryIndex index.php
     RewriteRule ^sql/        - [F,L]
     RewriteRule ^includes/   - [F,L]
 
-    # Public paths — no auth router
+    # Assets and robots.txt served directly
     RewriteRule ^assets/     - [L]
     RewriteRule ^robots\.txt$ - [L]
-    RewriteRule ^login\.php$    - [L]
-    RewriteRule ^logout\.php$   - [L]
-    RewriteRule ^activate\.php$ - [L]
-    RewriteRule ^auth/          - [L]
-    RewriteRule ^index\.php$  - [L]
 
-    # Hostinger/LiteSpeed serves existing .html as static unless we rewrite explicitly
-    RewriteRule \.html$ router.php [L,QSA,NC]
+    # Block direct access to router.php
+    RewriteRule ^router\.php$ - [F,L]
 
-    # Root and all other paths
-    RewriteRule ^ router.php [L]
+    # PHP files must execute via the native PHP handler — do NOT route through router.php.
+    # Per-file [L] rules (login.php, logout.php, etc.) caused Hostinger/LiteSpeed to serve
+    # PHP files via the static handler, which downloads them instead of executing them.
+    RewriteCond %{REQUEST_URI} \.php$ [NC]
+    RewriteRule ^ - [L]
+
+    # All other paths (including .html) go through the auth router
+    RewriteRule ^ router.php [L,QSA]
 </IfModule>
 
 <Files ".env">

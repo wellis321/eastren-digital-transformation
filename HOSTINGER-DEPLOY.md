@@ -76,6 +76,16 @@ SESSION_SECRET=use_a_long_random_string_here
 
 ## Troubleshooting
 
+**logout.php / login.php downloads instead of running**
+
+This is a Hostinger/LiteSpeed issue. The old `.htaccess` used per-file `RewriteRule ^logout\.php$ - [L]` rules, which caused LiteSpeed to serve PHP files via the static file handler (download) instead of the PHP interpreter. The current `.htaccess` uses a single blanket condition (`RewriteCond %{REQUEST_URI} \.php$`) which avoids this. If you see a download: re-upload `.htaccess` and clear hPanel cache.
+
+**Site skips login and goes straight to home page**
+
+Two possible causes — fix both:
+1. `.htaccess` not uploaded or not applied (see below). Without it, `.html` files bypass `router.php` and are served with no auth check.
+2. User already has a session from the SOR system (both sites share the `sor_session` cookie on the same Hostinger host). This is intentional SSO, but can surprise users who expect separate logins.
+
 **Still no login page**
 
 - Confirm `router.php`, `login.php`, and `includes/` are uploaded.
