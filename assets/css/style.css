@@ -2479,3 +2479,150 @@ tbody tr:nth-child(even):hover {
     border-color: var(--erc-accent);
     color: #1e293b;
 }
+
+/* Feedback widget (matches AS-IS app pattern) */
+.feedback-toggle {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    z-index: 900;
+    background: var(--erc-green);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    user-select: none;
+}
+
+.feedback-toggle:hover {
+    background: var(--erc-green-dark);
+}
+
+.feedback-panel {
+    position: fixed;
+    bottom: 4rem;
+    right: 1.25rem;
+    z-index: 901;
+    width: min(320px, calc(100vw - 2rem));
+    background: var(--erc-surface);
+    border: 1px solid var(--erc-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 1.1rem 1.2rem;
+    font-family: inherit;
+}
+
+.feedback-panel__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.feedback-panel__title {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--erc-green-dark);
+}
+
+.feedback-panel__intro {
+    margin: 0.35rem 0 0;
+    font-size: 0.8rem;
+    color: var(--erc-text-light);
+    line-height: 1.45;
+}
+
+.feedback-panel__close {
+    background: var(--erc-bg);
+    border: 1px solid var(--erc-border);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--erc-text-light);
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.feedback-panel__close:hover {
+    background: var(--erc-border);
+    color: var(--erc-text);
+}
+
+.feedback-field {
+    margin-bottom: 0.65rem;
+}
+
+.feedback-field label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.feedback-field select,
+.feedback-field textarea {
+    width: 100%;
+    font: inherit;
+    font-size: 0.85rem;
+    border: 1px solid var(--erc-border);
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.6rem;
+    box-sizing: border-box;
+}
+
+.feedback-field textarea {
+    resize: vertical;
+    min-height: 5.5rem;
+}
+
+.feedback-submit {
+    width: 100%;
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.55rem 1rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--erc-green);
+    color: #fff;
+    cursor: pointer;
+}
+
+.feedback-submit:hover {
+    background: var(--erc-green-dark);
+}
+
+.feedback-thanks {
+    margin: 0.5rem 0 0;
+    font-size: 0.8rem;
+    color: var(--erc-success);
+    text-align: center;
+}
+
+.feedback-panel__admin {
+    margin: 0.65rem 0 0;
+    font-size: 0.78rem;
+    text-align: center;
+}
+
+.feedback-panel__admin a {
+    color: var(--erc-green);
+}
+
+@media print {
+    .feedback-toggle,
+    .feedback-panel {
+        display: none !important;
+    }
+}

@@ -151,6 +151,14 @@ function enhance_static_html(string $html, string $baseDir): string
         }
     }
 
+    if (!empty($_SESSION['admin_logged_in']) && stripos($html, 'id="feedback-toggle"') === false) {
+        require_once __DIR__ . '/feedback.php';
+        $widget = feedback_widget_html();
+        if ($widget !== '') {
+            $html = preg_replace('/<\/body>/i', $widget . "\n</body>", $html, 1);
+        }
+    }
+
     return $html;
 }
 
