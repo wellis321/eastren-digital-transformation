@@ -1055,6 +1055,14 @@ thead th {
     white-space: nowrap;
 }
 
+thead th.th-compare-caution {
+    color: #FCD34D;
+}
+
+thead th.th-compare-positive {
+    color: #86EFAC;
+}
+
 tbody td {
     padding: 0.85rem 1rem;
     border-bottom: 1px solid var(--erc-border);
