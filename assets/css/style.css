@@ -897,6 +897,26 @@ p { margin-bottom: 1rem; }
     margin: 2.5rem 0;
 }
 
+.phase-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--erc-blue);
+    background: var(--erc-surface);
+    border: 1px solid var(--erc-border);
+    border-left: 4px solid var(--erc-green);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+}
+
+.phase-heading svg {
+    color: var(--erc-green);
+    flex-shrink: 0;
+}
+
 /* ----------------------------------------------------------
    Key Themes / Tag Bar
    ---------------------------------------------------------- */
