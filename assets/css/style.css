@@ -864,6 +864,13 @@ p { margin-bottom: 1rem; }
     color: #1f2937;
 }
 
+.callout.plain {
+    background: var(--erc-surface);
+    border: 1px solid var(--erc-border);
+    border-radius: var(--radius-md);
+    color: #1f2937;
+}
+
 .callout h4 {
     margin-bottom: 0.4rem;
     color: inherit;
