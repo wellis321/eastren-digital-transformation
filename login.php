@@ -53,6 +53,9 @@ $sorSiteUrl = defined('SOR_SITE_URL') && SOR_SITE_URL !== ''
 $asisSiteUrl = defined('ASIS_SITE_URL') && ASIS_SITE_URL !== ''
     ? ASIS_SITE_URL
     : 'https://slategray-cat-335719.hostingersite.com';
+$metricsSiteUrl = defined('METRICS_SITE_URL') && METRICS_SITE_URL !== ''
+    ? METRICS_SITE_URL
+    : 'https://dodgerblue-wombat-806788.hostingersite.com';
 ?>
 <!DOCTYPE html>
 <html lang="en-GB">
@@ -142,8 +145,14 @@ $asisSiteUrl = defined('ASIS_SITE_URL') && ASIS_SITE_URL !== ''
                         <span class="auth-related-sites__desc">Swimlane process maps and systems library</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= e(rtrim($metricsSiteUrl, '/')) ?>/" class="auth-related-sites__link">
+                        <span class="auth-related-sites__name">Housing Metrics</span>
+                        <span class="auth-related-sites__desc">Scottish Housing Regulator Charter performance dashboard</span>
+                    </a>
+                </li>
             </ul>
-            <p class="auth-related-sites__hint">Same username and password when all three use the shared database.</p>
+            <p class="auth-related-sites__hint">Same username and password when all four use the shared database.</p>
         </nav>
     </div>
 </main>

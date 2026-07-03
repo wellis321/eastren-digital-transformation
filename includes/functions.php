@@ -137,15 +137,17 @@ function enhance_static_html(string $html, string $baseDir): string
 
     // Inject related-tools links into the page footer
     if (stripos($html, 'footer-tools-strip') === false) {
-        $sorUrl  = defined('SOR_SITE_URL')  ? htmlspecialchars(SOR_SITE_URL,  ENT_QUOTES, 'UTF-8') : '';
-        $asisUrl = defined('ASIS_SITE_URL') ? htmlspecialchars(ASIS_SITE_URL, ENT_QUOTES, 'UTF-8') : '';
-        $ercUrl  = defined('APP_URL')       ? htmlspecialchars(APP_URL,        ENT_QUOTES, 'UTF-8') : '';
+        $sorUrl     = defined('SOR_SITE_URL')     ? htmlspecialchars(SOR_SITE_URL,     ENT_QUOTES, 'UTF-8') : '';
+        $asisUrl    = defined('ASIS_SITE_URL')    ? htmlspecialchars(ASIS_SITE_URL,    ENT_QUOTES, 'UTF-8') : '';
+        $ercUrl     = defined('APP_URL')          ? htmlspecialchars(APP_URL,          ENT_QUOTES, 'UTF-8') : '';
+        $metricsUrl = defined('METRICS_SITE_URL') ? htmlspecialchars(METRICS_SITE_URL, ENT_QUOTES, 'UTF-8') : '';
         if ($sorUrl !== '' && $asisUrl !== '') {
             $strip = "\n" . '<div class="footer-tools-strip">'
                 . '<span class="ft-label">ERC Digital Tools</span>'
                 . '<a href="' . $sorUrl  . '/">SOR Management System</a>'
                 . '<a href="' . $ercUrl  . '/">ERC Portal</a>'
                 . '<a href="' . $asisUrl . '/">AS-IS Process Mapping</a>'
+                . ($metricsUrl !== '' ? '<a href="' . $metricsUrl . '/">Housing Metrics</a>' : '')
                 . '</div>';
             $html = preg_replace('/<\/footer>/i', $strip . "\n</footer>", $html, 1);
         }

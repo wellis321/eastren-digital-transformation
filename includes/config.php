@@ -52,6 +52,7 @@ define('DB_PASS', env_val('DB_PASS'));
 define('SESSION_SECRET', env_val('SESSION_SECRET', 'changeme'));
 define('SOR_SITE_URL', rtrim(env_val('SOR_SITE_URL', 'https://papayawhip-hamster-802775.hostingersite.com'), '/'));
 define('ASIS_SITE_URL', rtrim(env_val('ASIS_SITE_URL', 'https://slategray-cat-335719.hostingersite.com'), '/'));
+define('METRICS_SITE_URL', rtrim(env_val('METRICS_SITE_URL', 'https://dodgerblue-wombat-806788.hostingersite.com'), '/'));
 
 header('X-Frame-Options: DENY');
 header('X-Content-Type-Options: nosniff');
