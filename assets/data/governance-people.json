@@ -1,0 +1,590 @@
+{
+  "meta": {
+    "note": "Names and roles only \u2014 no emails. Source CSVs under documents/people/lists/ (gitignored).",
+    "lastReviewed": "2026-06-16",
+    "groups": {
+      "project-board": {
+        "label": "Project Board",
+        "blurb": "Senior movers and shakers who hold purse strings and can unlock time and decisions.",
+        "sort": 1
+      },
+      "steering-group": {
+        "label": "Steering Group",
+        "blurb": "Service-wide knowledge across the parts of the operation \u2014 informs the Project Board.",
+        "sort": 2
+      },
+      "technical-group": {
+        "label": "Technical Group",
+        "blurb": "IT, systems, data and related depth \u2014 called when the detail matters, without boring everyone else.",
+        "sort": 3
+      },
+      "business-group": {
+        "label": "Business Group",
+        "blurb": "Expertise on tap (e.g. Social Care, planners). Contactable people for as-needed support over the year.",
+        "sort": 4
+      }
+    }
+  },
+  "people": [
+    {
+      "id": "adrian-lilly",
+      "name": "Adrian Lilly",
+      "role": "Joiner",
+      "groups": []
+    },
+    {
+      "id": "alan-scott",
+      "name": "Alan Scott",
+      "role": "Programme Manager - Business Systems & Processes",
+      "groups": [
+        "project-board"
+      ]
+    },
+    {
+      "id": "alison-banks",
+      "name": "Alison Banks",
+      "role": "Housing IT Systems Lead Officer and Product Owner",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "andrew-buchanan",
+      "name": "Andrew Buchanan",
+      "role": "Housing Services Manager (Repairs & Property Maintenance)",
+      "groups": [
+        "project-board"
+      ]
+    },
+    {
+      "id": "audrey-bauld",
+      "name": "Audrey Bauld",
+      "role": "Customer Services Officer",
+      "groups": []
+    },
+    {
+      "id": "beth-woods",
+      "name": "Beth Woods",
+      "role": "Finance & Business Support Assistant",
+      "groups": []
+    },
+    {
+      "id": "brandon-mcconnell",
+      "name": "Brandon McConnell",
+      "role": "Apprentice Plumber",
+      "groups": []
+    },
+    {
+      "id": "calum-millar",
+      "name": "Calum Millar",
+      "role": "Project Support Officer (Repairs)",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "carole-campbell",
+      "name": "Carole Campbell",
+      "role": "Repairs Delivery Technical Assistant",
+      "groups": []
+    },
+    {
+      "id": "catrina-edgar",
+      "name": "Catrina Edgar",
+      "role": "Finance and Business Support Assistant",
+      "groups": []
+    },
+    {
+      "id": "chloe-waugh",
+      "name": "Chloe Waugh",
+      "role": "Finance & Business Support Assistant",
+      "groups": []
+    },
+    {
+      "id": "christopher-dunne",
+      "name": "Christopher Dunne",
+      "role": "Senior Storekeeper",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "daryl-armstrong",
+      "name": "Daryl Armstrong",
+      "role": "Building & Civil Engineers",
+      "groups": []
+    },
+    {
+      "id": "david-nesbitt",
+      "name": "David Nesbitt",
+      "role": "Electrician",
+      "groups": []
+    },
+    {
+      "id": "david-saleh",
+      "name": "David Saleh",
+      "role": "Programme Manager",
+      "groups": [
+        "project-board"
+      ]
+    },
+    {
+      "id": "debbie-hill",
+      "name": "Debbie Hill",
+      "role": "Chief Procurement Officer",
+      "groups": []
+    },
+    {
+      "id": "deborah-hone",
+      "name": "Deborah Hone",
+      "role": "Repairs Team Scheduling Officer",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "derek-walker",
+      "name": "Derek Walker",
+      "role": "Senior Ict Officer",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "diane-brown",
+      "name": "Diane Brown",
+      "role": "Senior Accountant",
+      "groups": []
+    },
+    {
+      "id": "donald-boyd",
+      "name": "Donald Boyd",
+      "role": "Senior Finance & Business Support Assistant",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "eddie-hawes",
+      "name": "Eddie Hawes",
+      "role": "Maintenance Officer",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "graeme-murdoch",
+      "name": "Graeme Murdoch",
+      "role": "Technical Officer",
+      "groups": []
+    },
+    {
+      "id": "graeme-whyte",
+      "name": "Graeme Whyte",
+      "role": "Labourer / Driver",
+      "groups": []
+    },
+    {
+      "id": "grahame-brisco",
+      "name": "Grahame Brisco",
+      "role": "Joiner",
+      "groups": []
+    },
+    {
+      "id": "hendry-rannachan",
+      "name": "Hendry Rannachan",
+      "role": "Labourer / Driver",
+      "groups": []
+    },
+    {
+      "id": "ian-wellbelove",
+      "name": "Ian Wellbelove",
+      "role": "Consultant",
+      "groups": [
+        "project-board"
+      ]
+    },
+    {
+      "id": "isobel-stewart",
+      "name": "Isobel Stewart",
+      "role": "Customer Services Officer",
+      "groups": []
+    },
+    {
+      "id": "james-dyer",
+      "name": "James Dyer",
+      "role": "Assistant Repairs Delivery Manage",
+      "groups": []
+    },
+    {
+      "id": "james-keegans",
+      "name": "James Keegans",
+      "role": "Electrician",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "jason-murphy",
+      "name": "Jason Murphy",
+      "role": "Senior Business Systems Developer",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "jim-mclaughlin",
+      "name": "Jim McLaughlin",
+      "role": "Senior Officer (business Improvement)",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "joanne-dock",
+      "name": "Joanne Dock",
+      "role": "Systems Development Officer (Housing)",
+      "groups": []
+    },
+    {
+      "id": "joanne-reid",
+      "name": "Joanne Reid",
+      "role": "Senior Finance & Business Support Assistant",
+      "groups": []
+    },
+    {
+      "id": "john-mowatt",
+      "name": "John Mowatt",
+      "role": "Joiner",
+      "groups": []
+    },
+    {
+      "id": "jordan-shaw",
+      "name": "Jordan Shaw",
+      "role": "Plumber",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "kaden-lambie",
+      "name": "Kaden Lambie",
+      "role": "Apprentice Electrician",
+      "groups": []
+    },
+    {
+      "id": "kenneth-logan",
+      "name": "Kenneth Logan",
+      "role": "Joiner",
+      "groups": []
+    },
+    {
+      "id": "kevin-brown",
+      "name": "Kevin Brown",
+      "role": "Painter",
+      "groups": []
+    },
+    {
+      "id": "kevin-gronan",
+      "name": "Kevin Gronan",
+      "role": "Maintenance Officer",
+      "groups": []
+    },
+    {
+      "id": "kieran-mccall",
+      "name": "Kieran McCall",
+      "role": "Electrician",
+      "groups": []
+    },
+    {
+      "id": "laura-glassford",
+      "name": "Laura Glassford",
+      "role": "Product Owner - Finance Change",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "laura-mcaleese",
+      "name": "Laura McAleese",
+      "role": "Project Support Officer",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "leianne-campbell",
+      "name": "Leianne Campbell",
+      "role": "Temporary Repairs Delivery Technical Officer",
+      "groups": []
+    },
+    {
+      "id": "lesley-mcilreavy",
+      "name": "Lesley McIlreavy",
+      "role": "Repairs Team Administration Officer",
+      "groups": []
+    },
+    {
+      "id": "lisa-burrett",
+      "name": "Lisa Burrett",
+      "role": "Lead Officer (strat Imp & Bus Supp)",
+      "groups": [
+        "project-board",
+        "steering-group"
+      ]
+    },
+    {
+      "id": "lorna-wallace",
+      "name": "Lorna Wallace",
+      "role": "Assistant Economic Development Manager",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "lorraine-berry",
+      "name": "Lorraine Berry",
+      "role": "Team Leader",
+      "groups": [
+        "steering-group",
+        "technical-group"
+      ]
+    },
+    {
+      "id": "louise-carr",
+      "name": "Louise Carr",
+      "role": "Systems Developer (GIS)",
+      "groups": []
+    },
+    {
+      "id": "mary-harvey-welsh",
+      "name": "Mary Harvey-Welsh",
+      "role": "Category Manager",
+      "groups": []
+    },
+    {
+      "id": "michelle-blair",
+      "name": "Michelle Blair",
+      "role": "Chief Auditor",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "nathan-keenan",
+      "name": "Nathan Keenan",
+      "role": "Apprentice Electrician",
+      "groups": []
+    },
+    {
+      "id": "neil-hutchison",
+      "name": "Neil Hutchison",
+      "role": "Plumber",
+      "groups": []
+    },
+    {
+      "id": "neil-spence",
+      "name": "Neil Spence",
+      "role": "Audit Technician",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "nikki-adam",
+      "name": "Nikki Adam",
+      "role": "Senior Officer (Purchasing & Contract Management)",
+      "groups": [
+        "steering-group",
+        "technical-group"
+      ]
+    },
+    {
+      "id": "paul-gilfeather",
+      "name": "Paul Gilfeather",
+      "role": "Building & Civil Engineers",
+      "groups": []
+    },
+    {
+      "id": "paul-landman",
+      "name": "Paul Landman",
+      "role": "Senior Business Intelligence Officer",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "peter-mackey",
+      "name": "Peter Mackey",
+      "role": "Apprentice Plumber",
+      "groups": []
+    },
+    {
+      "id": "peter-watson",
+      "name": "Peter Watson",
+      "role": "Joiner",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "rachel-forbes",
+      "name": "Rachel Forbes",
+      "role": "Communications Officer",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "richard-downes",
+      "name": "Richard Downes",
+      "role": "Systems Development Officer (Housing)",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "ricky-taylor",
+      "name": "Ricky Taylor",
+      "role": "Business Relationship Manager",
+      "groups": [
+        "project-board",
+        "technical-group"
+      ]
+    },
+    {
+      "id": "robert-lang",
+      "name": "Robert Lang",
+      "role": "Repairs Delivery Technical Officer",
+      "groups": []
+    },
+    {
+      "id": "robert-mcguire",
+      "name": "Robert McGuire",
+      "role": "Temporary Assistant Repairs Delivery Manager",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "robert-mcmahon",
+      "name": "Robert McMahon",
+      "role": "Joiner",
+      "groups": []
+    },
+    {
+      "id": "robin-mcilroy",
+      "name": "Robin McIlroy",
+      "role": "Building & Civil Engineers",
+      "groups": []
+    },
+    {
+      "id": "rognvald-joiner",
+      "name": "Rognvald Joiner",
+      "role": "Senior Ict Officer",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "rose-johnston",
+      "name": "Rose Johnston",
+      "role": "Information Governance Manager",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "ryan-cannon",
+      "name": "Ryan Cannon",
+      "role": "Repairs Delivery Technical Assistant",
+      "groups": []
+    },
+    {
+      "id": "sahar-morshed",
+      "name": "Sahar Morshed",
+      "role": "Finance and Business Support Assistant",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "scott-graham",
+      "name": "Scott Graham",
+      "role": "Storekeeper",
+      "groups": []
+    },
+    {
+      "id": "scott-shand",
+      "name": "Scott Shand",
+      "role": "Technical Officer",
+      "groups": []
+    },
+    {
+      "id": "steven-mollison",
+      "name": "Steven Mollison",
+      "role": "Labourer / Driver",
+      "groups": []
+    },
+    {
+      "id": "susan-docherty",
+      "name": "Susan Docherty",
+      "role": "Systems Development Officer",
+      "groups": []
+    },
+    {
+      "id": "suzanne-conlin",
+      "name": "Suzanne Conlin",
+      "role": "Senior Housing Manager",
+      "groups": [
+        "project-board"
+      ]
+    },
+    {
+      "id": "suzanne-nelson",
+      "name": "Suzanne Nelson",
+      "role": "Product Owner (HR & Payroll Systems)",
+      "groups": [
+        "steering-group"
+      ]
+    },
+    {
+      "id": "tam-mooney",
+      "name": "Tam Mooney",
+      "role": "Joiner",
+      "groups": []
+    },
+    {
+      "id": "tracey-watt",
+      "name": "Tracey Watt",
+      "role": "Supported Accomodation Officer",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "waheed-hassan",
+      "name": "Waheed Hassan",
+      "role": "Repairs Delivery Technical Officer - Factoring",
+      "groups": [
+        "technical-group"
+      ]
+    },
+    {
+      "id": "william-ellis",
+      "name": "William Ellis",
+      "role": "Project Manager (Housing Digital Transformation)",
+      "groups": [
+        "project-board",
+        "steering-group",
+        "technical-group"
+      ]
+    },
+    {
+      "id": "william-mcshane",
+      "name": "William McShane",
+      "role": "Painter",
+      "groups": []
+    }
+  ]
+}

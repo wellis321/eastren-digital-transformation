@@ -153,11 +153,29 @@ function enhance_static_html(string $html, string $baseDir): string
         }
     }
 
-    if (!empty($_SESSION['admin_logged_in']) && stripos($html, 'id="feedback-toggle"') === false) {
-        require_once __DIR__ . '/feedback.php';
-        $widget = feedback_widget_html();
-        if ($widget !== '') {
-            $html = preg_replace('/<\/body>/i', $widget . "\n</body>", $html, 1);
+    if (!empty($_SESSION['admin_logged_in'])) {
+        if (stripos($html, 'name="csrf-token"') === false) {
+            $meta = '<meta name="csrf-token" content="' . e(csrf_token()) . '">';
+            $html = preg_replace('/<\/head>/i', $meta . "\n</head>", $html, 1) ?? $html;
+        }
+        // Governance: people awaiting Yes/Maybe/No assessment
+        if (stripos($html, 'gov-notify-banner') === false) {
+            try {
+                require_once __DIR__ . '/governance_membership.php';
+                $banner = governance_banner_html();
+                if ($banner !== '') {
+                    $html = preg_replace('/<body([^>]*)>/i', '<body$1>' . "\n" . $banner, $html, 1) ?? $html;
+                }
+            } catch (Throwable) {
+                // DB may be unavailable in some local contexts
+            }
+        }
+        if (stripos($html, 'id="feedback-toggle"') === false) {
+            require_once __DIR__ . '/feedback.php';
+            $widget = feedback_widget_html();
+            if ($widget !== '') {
+                $html = preg_replace('/<\/body>/i', $widget . "\n</body>", $html, 1) ?? $html;
+            }
         }
     }
 
