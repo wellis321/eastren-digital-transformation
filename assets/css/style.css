@@ -3193,22 +3193,11 @@ tbody tr:nth-child(even):hover {
 .gov-group-head {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    gap: 0.45rem;
+    align-items: flex-start;
+    gap: 0.35rem;
     margin-bottom: 0.75rem;
     padding-bottom: 0.75rem;
     border-bottom: 1px solid var(--erc-border);
-}
-.gov-group-head-top {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 0.75rem 1rem;
-}
-.gov-group-head-text {
-    flex: 1 1 12rem;
-    min-width: 0;
 }
 .gov-group-blurb {
     margin: 0;
@@ -3218,18 +3207,19 @@ tbody tr:nth-child(even):hover {
     color: var(--erc-text-light);
 }
 .gov-group-kicker {
-    margin: 0 0 0.2rem;
+    margin: 0;
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--erc-text-light);
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.4rem;
 }
 .gov-group-title {
-    margin: 0 0 0.3rem;
+    margin: 0;
     font-size: clamp(1.25rem, 2.5vw, 1.55rem);
     line-height: 1.2;
     color: var(--erc-green-dark);
@@ -3275,8 +3265,28 @@ tbody tr:nth-child(even):hover {
     color: #7f1d1d;
     background: rgba(185, 28, 28, 0.08);
 }
+.gov-group-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.85rem;
+    width: 100%;
+    margin-top: 0.15rem;
+}
 .gov-status-row {
-    margin-top: 0.55rem;
+    margin: 0;
+}
+.gov-status-control {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.55rem;
+    margin: 0;
+}
+.gov-status-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--erc-text);
 }
 .gov-status-control select {
     font: inherit;
@@ -3285,6 +3295,7 @@ tbody tr:nth-child(even):hover {
     border: 1px solid var(--erc-border);
     background: #fff;
     color: var(--erc-text);
+    min-width: 11rem;
     max-width: 16rem;
 }
 .gov-group-panel--inactive {
@@ -3316,7 +3327,7 @@ tbody tr:nth-child(even):hover {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    align-items: flex-start;
+    align-items: center;
 }
 .gov-roster {
     list-style: none;

@@ -762,7 +762,6 @@
         `<button type="button" class="gov-btn gov-btn--muted" data-action="delete-group" data-group="${esc(groupId)}">Delete group</button>`
       );
     }
-    const toolsHtml = tools.length ? `<div class="gov-group-tools">${tools.join('')}</div>` : '';
     const status = meta.status || 'development';
     const statusClass = `gov-status-badge gov-status-badge--${esc(status)}`;
     const statusBadge = `<span class="${statusClass}">${esc(statusLabel(status))}</span>`;
@@ -770,19 +769,22 @@
     const dissolvedClass = status === 'dissolved' || status === 'inactive' ? ` gov-group-panel--${status}` : '';
     const customBadge =
       meta.isCore === false ? '<span class="gov-group-badge">Custom</span>' : '';
-    const statusControl = canSetGroupStatus
-      ? `<label class="gov-status-control">
-          <span class="visually-hidden">Lifecycle status for ${esc(meta.label || groupId)}</span>
-          <select data-action="set-status" data-group="${esc(groupId)}" title="Group lifecycle status (admin only)">
-            ${Object.entries(groupStatusLabels)
-              .map(
-                ([id, label]) =>
-                  `<option value="${esc(id)}"${id === status ? ' selected' : ''}>${esc(label)}</option>`
-              )
-              .join('')}
-          </select>
-        </label>`
-      : statusBadge;
+    const statusRow = canSetGroupStatus
+      ? `<div class="gov-status-row">
+          <label class="gov-status-control">
+            <span class="gov-status-label">Group status</span>
+            <select data-action="set-status" data-group="${esc(groupId)}" title="Lifecycle status for this group">
+              ${Object.entries(groupStatusLabels)
+                .map(
+                  ([id, label]) =>
+                    `<option value="${esc(id)}"${id === status ? ' selected' : ''}>${esc(label)}</option>`
+                )
+                .join('')}
+            </select>
+          </label>
+        </div>`
+      : '';
+    const toolsHtml = tools.length ? `<div class="gov-group-tools">${tools.join('')}</div>` : '';
     const listHtml =
       members.length || pendingAdds.length
         ? `<h3 class="gov-assess-heading">Assess &amp; place</h3><ul class="gov-person-list">${rows}${tentativeRows}</ul>`
@@ -790,15 +792,13 @@
 
     return `<section class="gov-group-panel${customClass}${dissolvedClass}" id="${esc(groupId)}">
       <header class="gov-group-head">
-        <div class="gov-group-head-top">
-          <div class="gov-group-head-text">
-            <p class="gov-group-kicker">${esc(countLabel)}${esc(suggestNote)}${customBadge}${canSetGroupStatus ? '' : statusBadge}</p>
-            <h2 class="gov-group-title">${esc(meta.label || groupId)}</h2>
-          </div>
+        <p class="gov-group-kicker">${esc(countLabel)}${esc(suggestNote)}${customBadge}${statusBadge}</p>
+        <h2 class="gov-group-title">${esc(meta.label || groupId)}</h2>
+        ${meta.blurb ? `<p class="gov-group-blurb">${esc(meta.blurb)}</p>` : ''}
+        <div class="gov-group-actions">
+          ${statusRow}
           ${toolsHtml}
         </div>
-        ${meta.blurb ? `<p class="gov-group-blurb">${esc(meta.blurb)}</p>` : ''}
-        ${canSetGroupStatus ? `<div class="gov-status-row">${statusControl}</div>` : ''}
       </header>
       ${renderRoster(groupId, members)}
       ${empty}
