@@ -1241,34 +1241,54 @@
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       pagebreak: { mode: ['css', 'legacy'], avoid: ['.gov-pdf-group-head', 'tr'] },
     };
-    return html2pdf()
-      .set(opt)
-      .from(root.querySelector('.gov-pdf-doc'))
-      .save()
-      .finally(() => {
-        root.hidden = true;
-        root.innerHTML = '';
-      });
+    const target = root.querySelector('.gov-pdf-doc');
+    if (!target) {
+      root.hidden = true;
+      root.innerHTML = '';
+      return Promise.reject(new Error('PDF document could not be built'));
+    }
+    // html2pdf 0.10.x uses an es6-promise build that breaks on .finally() —
+    // wrap .save() in a native Promise and clean up in then/catch only.
+    return new Promise((resolve, reject) => {
+      html2pdf()
+        .set(opt)
+        .from(target)
+        .save()
+        .then(() => {
+          root.hidden = true;
+          root.innerHTML = '';
+          resolve();
+        })
+        .catch((err) => {
+          root.hidden = true;
+          root.innerHTML = '';
+          reject(err);
+        });
+    });
   };
 
   const exportPdf = () => {
     const btn = document.getElementById('gov-export-pdf');
+    const resetBtn = () => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Export PDF';
+      }
+    };
     if (btn) {
       btn.disabled = true;
       btn.textContent = 'Generating PDF…';
     }
     setStatus('Generating PDF…');
     runPdfExport(buildPdfHtml(), `governance-membership-${exportStamp()}.pdf`)
-      .then(() => setStatus('PDF exported'))
+      .then(() => {
+        setStatus('PDF exported');
+        resetBtn();
+      })
       .catch((err) => {
         console.error(err);
         setStatus(err.message || 'PDF export failed — try again', true);
-      })
-      .finally(() => {
-        if (btn) {
-          btn.disabled = false;
-          btn.textContent = 'Export PDF';
-        }
+        resetBtn();
       });
   };
 
@@ -1438,12 +1458,16 @@
       }),
       `governance-membership-as-of-${stamp}.pdf`
     )
-      .then(() => setStatus('Snapshot PDF exported'))
+      .then(() => {
+        setStatus('Snapshot PDF exported');
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Export PDF';
+        }
+      })
       .catch((err) => {
         console.error(err);
         setStatus(err.message || 'PDF export failed — try again', true);
-      })
-      .finally(() => {
         if (btn) {
           btn.disabled = false;
           btn.textContent = 'Export PDF';
