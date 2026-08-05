@@ -54,6 +54,7 @@
                     <a href="progress-report.html">Progress Report</a>
                     <a href="governance.html">Governance</a>
                     <a href="governance-membership.html">Membership tool</a>
+                    <a href="governance-membership-guide.html">About the membership tool</a>
                     <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
                 </div>
             </div>
@@ -104,6 +105,7 @@
                 <a href="progress-report.html">Progress Report</a>
                 <a href="governance.html">Governance</a>
                 <a href="governance-membership.html">Membership tool</a>
+                <a href="governance-membership-guide.html">About the membership tool</a>
                 <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
             </div>
         </div>
@@ -124,111 +126,162 @@
 </header>
 
 <div class="page-wrapper">
-<main class="main-content" id="main">
+<main class="main-content wide" id="main">
 
-        <section class="hero" style="margin-top:1.5rem;">
+    <section class="hero" style="margin-top:1.5rem;">
         <div class="hero-eyebrow">Programme Governance</div>
         <h1>Membership tool</h1>
         <p>Who sits where — scan each group’s name list first, then mark your opinion. One Yes / Maybe / No per person per group; tallies are shared.</p>
         <div class="hero-meta">
             <div class="hero-meta-item"><strong>Related:</strong>&nbsp;<a href="governance.html">Governance overview</a></div>
+            <div class="hero-meta-item"><strong>Full guide:</strong>&nbsp;<a href="governance-membership-guide.html">About this tool</a></div>
         </div>
     </section>
 
-    <nav class="gov-jump gov-jump--sticky" aria-label="Jump to group">
-        <p class="gov-jump-label">Groups</p>
-        <div class="gov-jump-links" id="gov-jump-links">
-            <a href="#awaiting">Awaiting</a>
-            <a href="#project-board">Project Board</a>
-            <a href="#steering-group">Steering Group</a>
-            <a href="#technical-group">Technical Group</a>
-            <a href="#business-group">Business Group</a>
-            <a href="#pool">Unassigned</a>
-        </div>
-    </nav>
+    <div class="gov-layout">
+        <aside class="gov-sidebar" aria-label="Guidance and actions">
+            <div class="gov-sidebar-jump" role="navigation" aria-label="Quick actions">
+                <a class="gov-sidebar-jump-btn" href="#add-person">Add someone</a>
+                <a class="gov-sidebar-jump-btn" href="#create-group">Add a group</a>
+                <a class="gov-sidebar-jump-btn" href="#group-history">History</a>
+            </div>
 
-    <div class="gov-toolbar" style="margin-top:0.75rem;">
-        <p class="gov-toolbar-note" id="gov-status" role="status">Loading…</p>
-        <div class="gov-toolbar-actions">
-            <button type="button" class="gov-btn" id="gov-export-pdf">Export PDF</button>
-            <button type="button" class="gov-btn" id="gov-export-csv">Export Excel / CSV</button>
-            <button type="button" class="gov-btn gov-btn--muted" id="gov-export">Export JSON</button>
-            <button type="button" class="gov-btn gov-btn--muted" id="gov-reset-all">Clear my marks</button>
+            <section class="gov-sidebar-card" id="how-to-use">
+                <h2 class="gov-sidebar-title">How to use this tool</h2>
+                <ol class="gov-setup-list">
+                    <li><strong>Scan the roster</strong> under each group heading — that is the quick “who’s on this list” view.</li>
+                    <li><strong>Your mark</strong> — Yes / Maybe / No is your opinion only; one mark per person per group.</li>
+                    <li><strong>Tallies</strong> — counts of Yes / Maybe / No are shared; individual marks stay private.</li>
+                    <li><strong>Wrong list?</strong> — open <em>Place on another group</em>: confirmers change the live list; others send a suggestion that stays tentative until accepted.</li>
+                    <li><strong>× Remove</strong> — confirmers remove from the live list; others suggest a removal (person stays until accepted).</li>
+                    <li><strong>New group</strong> — confirmers create a custom list below, then place people onto it.</li>
+                    <li><strong>History</strong> — membership changes are saved automatically. Open History for past compositions; use <em>Milestones</em> or <em>Show older</em> when the timeline grows; filter a snapshot by status or search a name; <em>Export PDF</em> on the selected card.</li>
+                    <li><strong>Group status</strong> — each list can be In development, Active / stable, Inactive, or Dissolved (confirmers only).</li>
+                </ol>
+                <h3 class="gov-setup-sub">Please remember</h3>
+                <ul class="gov-setup-list">
+                    <li>If a yellow banner appears at the top of the site, open this page and give each new person your own Yes, Maybe, or No for their group.</li>
+                    <li>When you use <em>Add someone</em> below, enter their name and job title only — do not put in email addresses or other personal details.</li>
+                    <li>This list helps us compare views; the Project Manager / Project Owner still confirms who attends meetings.</li>
+                    <li><a href="governance-membership-guide.html">Full guide to this tool</a> — features, history, exports, privacy, permissions, and how to suggest improvements.</li>
+                </ul>
+            </section>
+
+            <section class="gov-sidebar-card gov-sidebar-card--invert" id="add-person">
+                <h2 class="gov-sidebar-title">Add someone</h2>
+                <p class="gov-section-lede">Name + job on a list; others get a banner until they mark.</p>
+                <div class="gov-add-form gov-add-form--stack">
+                    <label>
+                        <span>Name</span>
+                        <input type="text" id="gov-new-name" autocomplete="name" maxlength="200" placeholder="e.g. Jane Smith">
+                    </label>
+                    <label>
+                        <span>Job / role</span>
+                        <input type="text" id="gov-new-role" maxlength="300" placeholder="e.g. Social Work Team Manager">
+                    </label>
+                    <label>
+                        <span>Group</span>
+                        <select id="gov-new-group">
+                            <option value="project-board">Project Board</option>
+                            <option value="steering-group">Steering Group</option>
+                            <option value="technical-group">Technical Group</option>
+                            <option value="business-group" selected>Business Group</option>
+                        </select>
+                    </label>
+                    <button type="button" class="gov-btn" id="gov-add-person">Add to list</button>
+                </div>
+            </section>
+
+            <section class="gov-sidebar-card gov-sidebar-card--invert" id="create-group">
+                <h2 class="gov-sidebar-title">Create a new group</h2>
+                <p class="gov-section-lede">For a working set beyond Board, Steering, Technical, or Business.</p>
+                <div class="gov-add-form gov-add-form--stack">
+                    <label>
+                        <span>Group name</span>
+                        <input type="text" id="gov-new-group-label" maxlength="200" placeholder="e.g. Voids working set">
+                    </label>
+                    <label>
+                        <span>Short purpose (optional)</span>
+                        <input type="text" id="gov-new-group-blurb" maxlength="500" placeholder="Why this group exists">
+                    </label>
+                    <button type="button" class="gov-btn" id="gov-create-group">Create group</button>
+                </div>
+            </section>
+        </aside>
+
+        <div class="gov-layout-main">
+            <nav class="gov-jump gov-jump--sticky" id="gov-jump" aria-label="Jump to group">
+                <p class="gov-jump-label">Groups</p>
+                <div class="gov-jump-links" id="gov-jump-links">
+                    <a href="#awaiting">Awaiting</a>
+                    <a href="#project-board">Project Board</a>
+                    <a href="#steering-group">Steering Group</a>
+                    <a href="#technical-group">Technical Group</a>
+                    <a href="#business-group">Business Group</a>
+                    <a href="#pool">Unassigned</a>
+                </div>
+            </nav>
+
+            <div class="gov-toolbar" id="gov-exports" style="margin-top:0.75rem;">
+                <p class="gov-toolbar-note" id="gov-status" role="status">Loading…</p>
+                <div class="gov-toolbar-actions">
+                    <button type="button" class="gov-btn" id="gov-export-pdf">Export PDF</button>
+                    <button type="button" class="gov-btn" id="gov-export-csv">Export Excel / CSV</button>
+                    <button type="button" class="gov-btn gov-btn--muted" id="gov-export">Export JSON</button>
+                    <button type="button" class="gov-btn gov-btn--muted" id="gov-reset-all">Clear my marks</button>
+                </div>
+            </div>
+            <div id="gov-pdf-root" class="gov-pdf-root" hidden aria-hidden="true"></div>
+
+            <section class="gov-awaiting-panel" id="awaiting">
+                <div class="gov-awaiting-row">
+                    <h2 class="gov-section-title">Awaiting your assessment</h2>
+                    <p class="gov-section-lede">New additions you have not yet marked.</p>
+                    <div id="gov-awaiting-body" class="gov-awaiting-body"></div>
+                </div>
+            </section>
+
+            <div id="gov-groups" class="gov-groups"></div>
+
+            <section class="gov-pool" id="pool">
+                <h2 class="gov-section-title">Unassigned pool</h2>
+                <p class="gov-section-lede">People not yet on any group — add them where they fit.</p>
+                <div id="gov-pool-body"></div>
+            </section>
+
+            <section class="gov-history-panel" id="group-history">
+                <div class="gov-history-head">
+                    <div>
+                        <h2 class="gov-section-title">Group history</h2>
+                        <p class="gov-section-lede">
+                            Continuous timeline of who sat on each group. Changes are recorded automatically;
+                            use a checkpoint to pin a milestone. The list loads in pages — use <strong>Milestones</strong>
+                            or <strong>Show older</strong> when the timeline grows. Open an entry to focus by status
+                            (e.g. Active / stable only), search a name, or export that snapshot as PDF.
+                        </p>
+                    </div>
+                    <button type="button" class="gov-btn" id="gov-history-checkpoint">Save checkpoint</button>
+                </div>
+                <div class="gov-history-layout">
+                    <div class="gov-history-list-wrap">
+                        <div class="gov-history-list-head">
+                            <p class="gov-jump-label">Timeline</p>
+                            <div class="gov-history-filters" role="group" aria-label="Filter timeline">
+                                <button type="button" class="gov-history-filter is-active" data-history-filter="all">All</button>
+                                <button type="button" class="gov-history-filter" data-history-filter="milestones">Milestones</button>
+                            </div>
+                        </div>
+                        <p class="gov-history-count" id="gov-history-count" hidden></p>
+                        <ul class="gov-history-list" id="gov-history-list" aria-label="Membership snapshots"></ul>
+                        <button type="button" class="gov-btn gov-btn--muted gov-history-more" id="gov-history-more" hidden>Show older</button>
+                    </div>
+                    <div class="gov-history-view" id="gov-history-view" aria-live="polite">
+                        <p class="gov-history-empty">Select a point on the timeline to see the groups as they were then.</p>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
-    <div id="gov-pdf-root" class="gov-pdf-root" hidden aria-hidden="true"></div>
-
-    <section class="gov-awaiting-panel" id="awaiting">
-        <h2 class="gov-section-title">Awaiting your assessment</h2>
-        <p class="gov-section-lede">New additions you have not yet marked.</p>
-        <div id="gov-awaiting-body"></div>
-    </section>
-
-    <div id="gov-groups" class="gov-groups"></div>
-
-    <section class="gov-pool" id="pool">
-        <h2 class="gov-section-title">Unassigned pool</h2>
-        <p class="gov-section-lede">People not yet on any group — add them where they fit.</p>
-        <div id="gov-pool-body"></div>
-    </section>
-
-    <details class="gov-setup" id="how-to-use">
-        <summary>How to use this tool</summary>
-        <ol class="gov-setup-list">
-            <li><strong>Scan the roster</strong> under each group heading — that is the quick “who’s on this list” view.</li>
-            <li><strong>Your mark</strong> — Yes / Maybe / No is your opinion only; one mark per person per group.</li>
-            <li><strong>Tallies</strong> — hover counts to see who marked what (names only).</li>
-            <li><strong>Wrong list?</strong> — open <em>Place on another group</em> on a row: <em>Also on</em> keeps them here; <em>Move to</em> switches them.</li>
-            <li><strong>New group</strong> — create a custom list below, then move people onto it.</li>
-        </ol>
-        <h3 class="gov-setup-sub">What we expect</h3>
-        <ul class="gov-setup-list">
-            <li>Assess new names when you see the banner.</li>
-            <li>Name and role only — no emails or sensitive personal data.</li>
-            <li>Final membership for meetings sits with the Project Manager / Project Owner.</li>
-        </ul>
-    </details>
-
-    <details class="gov-setup" id="add-person">
-        <summary>Add someone to a group</summary>
-        <p class="gov-section-lede">Name + job on a list; others get a banner until they mark.</p>
-        <div class="gov-add-form">
-            <label>
-                <span>Name</span>
-                <input type="text" id="gov-new-name" autocomplete="name" maxlength="200" placeholder="e.g. Jane Smith">
-            </label>
-            <label>
-                <span>Job / role</span>
-                <input type="text" id="gov-new-role" maxlength="300" placeholder="e.g. Social Work Team Manager">
-            </label>
-            <label>
-                <span>Group</span>
-                <select id="gov-new-group">
-                    <option value="project-board">Project Board</option>
-                    <option value="steering-group">Steering Group</option>
-                    <option value="technical-group">Technical Group</option>
-                    <option value="business-group" selected>Business Group</option>
-                </select>
-            </label>
-            <button type="button" class="gov-btn" id="gov-add-person">Add to list</button>
-        </div>
-    </details>
-
-    <details class="gov-setup" id="create-group">
-        <summary>Create a new group</summary>
-        <p class="gov-section-lede">For a working set beyond Board, Steering, Technical, or Business.</p>
-        <div class="gov-add-form">
-            <label>
-                <span>Group name</span>
-                <input type="text" id="gov-new-group-label" maxlength="200" placeholder="e.g. Voids working set">
-            </label>
-            <label>
-                <span>Short purpose (optional)</span>
-                <input type="text" id="gov-new-group-blurb" maxlength="500" placeholder="Why this group exists">
-            </label>
-            <button type="button" class="gov-btn" id="gov-create-group">Create group</button>
-        </div>
-    </details>
 
 </main>
 </div><!-- /.page-wrapper -->

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>About the membership tool | ERC Housing Digital Transformation</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="site-topbar">
+    <a href="index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<!-- Site Header -->
+<header class="site-header">
+    <div class="header-inner">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="presentation.html">Programme Overview</a>
+            <a href="continuous-improvement.html">Themes</a>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Tenant Engagement <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="tenant-engagement.html">Why It Matters</a>
+                    <a href="satsd.html">Scottish Approach to Service Design</a>
+                    <a href="engagement-methods.html">Our Engagement Plan</a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Voids <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="voids.html">Why It Matters</a>
+                    <a href="voids-sector-practice.html">What Others Are Doing</a>
+                    <a href="voids-challenges.html">The Challenges</a>
+                    <a href="voids-best-practice.html">What Works &amp; What Doesn&#039;t</a>
+                    <a href="voids-resources.html">Resources</a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Programme <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="progress.html">Progress</a>
+                    <a href="progress-report.html">Progress Report</a>
+                    <a href="governance.html">Governance</a>
+                    <a href="governance-membership.html">Membership tool</a>
+                    <a href="governance-membership-guide.html">About the membership tool</a>
+                    <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="history.html">ERC Digital History</a>
+                    <a href="scotland-policy.html">Scotland&#039;s Policy</a>
+                    <a href="digital-direction.html">Digital Direction</a>
+                    <a href="best-practice.html">Best Practice</a>
+                    <a href="sector.html">Sector Comparisons</a>
+                    <a href="peer-benchmarks.html">Peer Benchmarks (costs)</a>
+                    <a href="reports.html">Reports</a>
+                    <a href="resources.html">Resources</a>
+                </div>
+            </div>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+        <a href="index.html">Home</a>
+        <a href="presentation.html">Programme Overview</a>
+        <a href="continuous-improvement.html">Themes</a>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Tenant Engagement <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="tenant-engagement.html">Why It Matters</a>
+                <a href="satsd.html">Scottish Approach to Service Design</a>
+                <a href="engagement-methods.html">Our Engagement Plan</a>
+            </div>
+        </div>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Voids <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="voids.html">Why It Matters</a>
+                <a href="voids-sector-practice.html">What Others Are Doing</a>
+                <a href="voids-challenges.html">The Challenges</a>
+                <a href="voids-best-practice.html">What Works &amp; What Doesn&#039;t</a>
+                <a href="voids-resources.html">Resources</a>
+            </div>
+        </div>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Programme <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="progress.html">Progress</a>
+                <a href="progress-report.html">Progress Report</a>
+                <a href="governance.html">Governance</a>
+                <a href="governance-membership.html">Membership tool</a>
+                <a href="governance-membership-guide.html">About the membership tool</a>
+                <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
+            </div>
+        </div>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="history.html">ERC Digital History</a>
+                <a href="scotland-policy.html">Scotland&#039;s Policy</a>
+                <a href="digital-direction.html">Digital Direction</a>
+                <a href="best-practice.html">Best Practice</a>
+                <a href="sector.html">Sector Comparisons</a>
+                <a href="peer-benchmarks.html">Peer Benchmarks (costs)</a>
+                <a href="reports.html">Reports</a>
+                <a href="resources.html">Resources</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="page-wrapper">
+<main class="main-content" id="main">
+
+    <section class="hero" style="margin-top:1.5rem;">
+        <div class="hero-eyebrow">Programme Governance</div>
+        <h1>About the membership tool</h1>
+        <p>
+            A working reference for shaping who sits on each governance group — comparing views fairly,
+            suggesting then confirming list changes, keeping a manageable timeline of composition,
+            and exporting clean lists (including point-in-time PDFs) when needed.
+            This page explains every part of the tool so colleagues can use it confidently and suggest improvements.
+        </p>
+        <div class="hero-meta">
+            <div class="hero-meta-item"><strong>Open the tool:</strong>&nbsp;<a href="governance-membership.html">Membership tool</a></div>
+            <div class="hero-meta-item"><strong>Related:</strong>&nbsp;<a href="governance.html">Governance overview</a></div>
+        </div>
+    </section>
+
+    <div class="callout info" style="margin-top:1.5rem;">
+        <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div>
+            <h4>What this tool is for</h4>
+            <p style="margin:0;">
+                Formal meeting packs and decisions still live in SharePoint and with the Project Manager / Project Owner.
+                This portal tool is the <strong>shared working list</strong>: who people think belongs on each group,
+                how strong that consensus is, and how membership has changed over time — without turning opinions into a public vote trail.
+            </p>
+        </div>
+    </div>
+
+    <nav class="gov-guide-toc" aria-label="On this page">
+        <p class="gov-jump-label">On this page</p>
+        <ol>
+            <li><a href="#why">Why it exists</a></li>
+            <li><a href="#layout">What you see on the page</a></li>
+            <li><a href="#opinions">Your marks and tallies</a></li>
+            <li><a href="#membership">Moving people and building lists</a></li>
+            <li><a href="#groups">Core groups, custom groups, and status</a></li>
+            <li><a href="#awaiting-section">Awaiting assessment and the site banner</a></li>
+            <li><a href="#history">Group history and checkpoints</a></li>
+            <li><a href="#exports">Exports (PDF, CSV, JSON)</a></li>
+            <li><a href="#privacy">Privacy and data rules</a></li>
+            <li><a href="#permissions">Who can do what</a></li>
+            <li><a href="#not">What this tool is not</a></li>
+            <li><a href="#next">Where this could go next</a></li>
+            <li><a href="#improve">Suggest an improvement</a></li>
+        </ol>
+    </nav>
+
+    <div class="section-header" id="why" style="margin-top:2.25rem;">
+        <h2>Why it exists</h2>
+        <p>Membership for Board, Steering, Technical, Business, and any extra working sets is still being formed.</p>
+    </div>
+    <p>
+        Different people bring different knowledge of roles and remits. Rather than one person drafting lists in isolation,
+        the tool lets signed-in colleagues mark <em>Yes</em>, <em>Maybe</em>, or <em>No</em> for each person on each group.
+        Shared tallies show where views align or diverge. The Project Manager / Project Owner still confirms who actually attends.
+    </p>
+    <p>
+        As groups move from forming to stable — and later as people join, leave, or change roles — the tool keeps a
+        continuous history so you can look back and see exactly who was on each list at a point in time.
+    </p>
+
+    <div class="section-header" id="layout" style="margin-top:2.25rem;">
+        <h2>What you see on the page</h2>
+        <p>The membership tool is a two-column workbench on wider screens. <a href="governance-membership.html">Open the tool</a>.</p>
+    </div>
+    <div class="two-col" style="gap:1.25rem;">
+        <div class="callout plain">
+            <div>
+                <h4>Left sidebar</h4>
+                <ul style="margin:0.4rem 0 0; padding-left:1.1rem; font-size:0.92rem; line-height:1.65;">
+                    <li><strong>Quick jumps</strong> — <a href="governance-membership.html#add-person">Add someone</a>, <a href="governance-membership.html#create-group">Add a group</a>, <a href="governance-membership.html#group-history">History</a></li>
+                    <li><strong>How to use</strong> — <a href="governance-membership.html#how-to-use">short reminder list</a> (this guide is the full version)</li>
+                    <li><strong>Add someone</strong> — <a href="governance-membership.html#add-person">name + job title + starting group</a></li>
+                    <li><strong>Create a new group</strong> — <a href="governance-membership.html#create-group">custom working set</a> beyond the core four</li>
+                </ul>
+            </div>
+        </div>
+        <div class="callout plain">
+            <div>
+                <h4>Main column</h4>
+                <ul style="margin:0.4rem 0 0; padding-left:1.1rem; font-size:0.92rem; line-height:1.65;">
+                    <li><strong>Groups jump bar</strong> — <a href="governance-membership.html#gov-jump">Awaiting, each group, Unassigned, History</a></li>
+                    <li><strong>Toolbar</strong> — <a href="governance-membership.html#gov-exports">Export PDF / CSV / JSON and Clear my marks</a></li>
+                    <li><strong>Awaiting your assessment</strong> — <a href="governance-membership.html#awaiting">people you have not marked yet</a></li>
+                    <li><strong>Group panels</strong> — <a href="governance-membership.html#gov-groups">roster chips, then assess &amp; place rows</a></li>
+                    <li><strong>Unassigned pool</strong> — <a href="governance-membership.html#pool">people not yet on any group</a></li>
+                    <li><strong>Group history</strong> — <a href="governance-membership.html#group-history">paged timeline</a> (Milestones, status focus, name search, snapshot PDF)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-header" id="opinions" style="margin-top:2.25rem;">
+        <h2>Your marks and tallies</h2>
+        <p>Each signed-in person has their own Yes / Maybe / No for each person on each group. Try it on any <a href="governance-membership.html#gov-groups">group panel</a>.</p>
+    </div>
+    <ul style="line-height:1.7;">
+        <li><strong>Your mark</strong> is private. The API and exports do not list who voted what — only you see your own buttons as selected.</li>
+        <li><strong>Tallies</strong> are shared: counts of Yes, Maybe, and No for that person on that list. That is how the room compares views without exposing individuals.</li>
+        <li><strong>One mark per person per group</strong> — changing your mind overwrites your previous mark for that pair.</li>
+        <li><strong><a href="governance-membership.html#gov-reset-all">Clear my marks</a></strong> (toolbar or per group) removes only <em>your</em> opinions. Other people’s marks and the membership lists stay put.</li>
+        <li>Within a group, people with more Yes tend to float higher in the assess list (with manual order as a tie-break).</li>
+    </ul>
+
+    <div class="section-header" id="membership" style="margin-top:2.25rem;">
+        <h2>Moving people and building lists</h2>
+        <p>Membership (who is on which list) is shared. Opinions sit on top of that. List changes follow <strong>suggest → confirm</strong> unless you are a membership confirmer.</p>
+    </div>
+    <ul style="line-height:1.7;">
+        <li><strong>Roster</strong> under each <a href="governance-membership.html#gov-groups">group heading</a> is the quick “who’s on this list” scan — chip links jump to the assess row. Tentative suggestions appear with distinct badges / dashed chips until accepted.</li>
+        <li><strong>Also on / Move to</strong> — under <em>Place on another group</em> (or <em>Suggest place…</em> if you are not a confirmer). Multi-membership is allowed for “also on”.</li>
+        <li><strong>× Remove</strong> — confirmers remove from this group immediately; everyone else sends a <em>suggested removal</em> (the person stays on the list, struck through, until Accept / Reject).</li>
+        <li><strong>Accept / Reject</strong> — confirmers decide on pending suggestions; the proposer can withdraw their own suggestion.</li>
+        <li><strong><a href="governance-membership.html#pool">Unassigned pool</a></strong> — people with no group yet; use Add (or suggest Add) to place them.</li>
+        <li><strong><a href="governance-membership.html#add-person">Add someone</a></strong> — creates a person with name and job title only, places them on a group, and flags them for assessment by others. Prefer name and role only — no emails.</li>
+    </ul>
+
+    <div class="section-header" id="groups" style="margin-top:2.25rem;">
+        <h2>Core groups, custom groups, and status</h2>
+        <p>Not every list is at the same stage of life.</p>
+    </div>
+    <p>
+        The four <strong>core</strong> groups are always present:
+        <a href="governance-membership.html#project-board">Project Board</a>,
+        <a href="governance-membership.html#steering-group">Steering Group</a>,
+        <a href="governance-membership.html#technical-group">Technical Group</a>, and
+        <a href="governance-membership.html#business-group">Business Group</a>.
+        You can also <strong><a href="governance-membership.html#create-group">create a custom group</a></strong> for a temporary or specialist working set. Custom groups can be deleted;
+        the core four cannot.
+    </p>
+    <p>Each group has a <strong>lifecycle status</strong> (independent of the others) — set on the group panel in the tool (membership confirmers only):</p>
+    <ul style="line-height:1.7;">
+        <li><span class="gov-status-badge gov-status-badge--development">In development</span> — still being shaped (default for new groups)</li>
+        <li><span class="gov-status-badge gov-status-badge--active">Active / stable</span> — formed and expected to hold steady, with joiners/leavers over time</li>
+        <li><span class="gov-status-badge gov-status-badge--inactive">Inactive</span> — paused or not currently meeting</li>
+        <li><span class="gov-status-badge gov-status-badge--dissolved">Dissolved</span> — closed; kept for history rather than day-to-day use</li>
+    </ul>
+    <p>
+        Status badges are visible to everyone. Changing status is <strong>confirmer only</strong>
+        (so the programme’s view of which lists are live stays deliberate). Status changes are recorded in history.
+        See an example on the <a href="governance-membership.html#project-board">Project Board panel</a>.
+    </p>
+
+    <div class="section-header" id="awaiting-section" style="margin-top:2.25rem;">
+        <h2>Awaiting assessment and the site banner</h2>
+        <p>When someone is newly added or placed on a group, others are asked to mark them. Open <a href="governance-membership.html#awaiting">Awaiting your assessment</a> in the tool.</p>
+    </div>
+    <ul style="line-height:1.7;">
+        <li>That placement is flagged as needing assessment.</li>
+        <li>Until <em>you</em> give a Yes / Maybe / No for that person on that group, they show <strong>Your mark needed</strong> on their row and appear under <a href="governance-membership.html#awaiting">Awaiting your assessment</a>.</li>
+        <li>A yellow <strong>site banner</strong> can appear on other portal pages while you still have people waiting — so assessment does not get forgotten.</li>
+        <li>Once you mark them, they drop off your awaiting list (other people may still need to mark them separately).</li>
+    </ul>
+
+    <div class="section-header" id="history" style="margin-top:2.25rem;">
+        <h2>Group history and checkpoints</h2>
+        <p>A continuous timeline of membership composition — not of private opinions. Built to stay usable as the log grows. Open <a href="governance-membership.html#group-history">Group history</a> in the tool.</p>
+    </div>
+    <ul style="line-height:1.7;">
+        <li>Every meaningful membership change (add/move/remove person, create/delete group, reorder save, status change) can write a <strong>JSON snapshot</strong> of who sat where, with name and role as they were then.</li>
+        <li>Identical consecutive snapshots are skipped so the timeline stays readable.</li>
+        <li>The first time history is empty, a <strong>starting baseline</strong> is pinned automatically.</li>
+        <li><strong><a href="governance-membership.html#gov-history-checkpoint">Save checkpoint</a></strong> pins a milestone even if the lists have not changed — useful when a group is formally confirmed.</li>
+        <li>Click any timeline entry to see a read-only view of all groups at that moment (including their status if recorded).</li>
+        <li>The timeline does not dump every row at once: it loads in pages (with a count and <strong>Show older</strong>), and <strong>Milestones</strong> filters to checkpoints and the starting baseline so hundreds of routine changes stay manageable.</li>
+        <li>Focus the open snapshot by <strong>lifecycle status</strong> (e.g. Active / stable only) or <strong>search</strong> by person or group name — the view and the snapshot PDF follow that focus.</li>
+        <li>From a selected snapshot card (“As of … · reason · by …”), <strong>Export PDF</strong> produces the same formal membership document as the live export, dated to that point in time.</li>
+    </ul>
+
+    <div class="section-header" id="exports" style="margin-top:2.25rem;">
+        <h2>Exports (PDF, CSV, JSON)</h2>
+        <p>For packs, spreadsheets, and backups — without leaking private marks. Controls live in the <a href="governance-membership.html#gov-exports">toolbar</a>.</p>
+    </div>
+    <ul style="line-height:1.7;">
+        <li><strong><a href="governance-membership.html#gov-export-pdf">Export PDF</a></strong> — formal “as of” membership document: name, role, and other groups; suitable for meeting packs. The same style is available from any history snapshot card (respecting status / search focus).</li>
+        <li><strong><a href="governance-membership.html#gov-export-csv">Export Excel / CSV</a></strong> — tabular membership for Excel or SharePoint lists. Tallies may appear as counts; who marked what does not.</li>
+        <li><strong><a href="governance-membership.html#gov-export">Export JSON</a></strong> — machine-readable dump of the current working state for reference or analysis. The live database remains the source of truth (there is no import back into the tool).</li>
+    </ul>
+
+    <div class="section-header" id="privacy" style="margin-top:2.25rem;">
+        <h2>Privacy and data rules</h2>
+        <p>Deliberately light personal data — enough for coordination, nothing more.</p>
+    </div>
+    <ul style="line-height:1.7;">
+        <li>Record <strong>name and job title / role only</strong>. Do not enter email addresses, phone numbers, or other personal details.</li>
+        <li>Individual Yes / Maybe / No marks are <strong>not shared by name</strong> in the UI, API responses for tallies, or exports.</li>
+        <li>History stores composition (and group status), not who thought what.</li>
+        <li>The portal is an internal working site (<code>noindex</code>) — not a public directory of staff.</li>
+    </ul>
+
+    <div class="section-header" id="permissions" style="margin-top:2.25rem;">
+        <h2>Who can do what</h2>
+        <p>You must be signed in through the portal to use the tool.</p>
+    </div>
+    <div class="callout plain">
+        <div>
+            <ul style="margin:0; padding-left:1.1rem; font-size:0.92rem; line-height:1.7;">
+                <li><strong>Signed-in users</strong> — mark Yes / Maybe / No; see tallies; clear their own marks; export live lists; browse history (paged / Milestones); focus a snapshot by status or search; export a snapshot PDF; <em>suggest</em> add / move / remove (tentative until confirmed); withdraw their own suggestions.</li>
+                <li><strong>Membership confirmers</strong> (administrators today) — everything above, plus Accept / Reject suggestions, make live add / move / remove changes, create or delete custom groups, set lifecycle status, and save checkpoints.</li>
+                <li><strong>Not signed in</strong> — the tool will not load live data; sign in via the PHP portal.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section-header" id="not" style="margin-top:2.25rem;">
+        <h2>What this tool is not</h2>
+    </div>
+    <ul style="line-height:1.7;">
+        <li>Not a substitute for the <a href="governance.html">Governance overview</a> (remits, cadence, and how groups relate).</li>
+        <li>Not a place for confidential HR or personal case information.</li>
+        <li>Not a voting system that binds the programme — tallies inform shaping; confirmation sits elsewhere.</li>
+    </ul>
+
+    <div class="section-header" id="next" style="margin-top:2.25rem;">
+        <h2>Where this could go next</h2>
+        <p>Captured as a direction of travel — not built yet.</p>
+    </div>
+    <div class="callout info">
+        <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div>
+            <h4>A membership tool any project manager could use</h4>
+            <p style="margin:0;">
+                Today this instance is fixed to Housing Digital Transformation governance.
+                The same pattern — named people, opinions with private marks and shared tallies,
+                group lifecycle status, and a continuous membership history — would be powerful
+                as a <strong>multi-project</strong> tool across the council (or beyond).
+            </p>
+        </div>
+    </div>
+    <p>In that shape, a project manager would:</p>
+    <ul style="line-height:1.7;">
+        <li><strong>Name their project</strong> — each project is a separate workspace, not a shared single list.</li>
+        <li><strong>Define teams / groups inside it</strong> — Board, Steering, workstreams, or whatever the remits need; labels are project-owned.</li>
+        <li><strong>Give each group its own purpose</strong> — remit, memorandum, or short purpose text that can differ even when two projects use the same group name.</li>
+        <li><strong>Reuse people across projects</strong> — the same person can sit on “Steering” in Project A and Project B with different roles, marks, and history in each.</li>
+        <li><strong>Keep history and status per project</strong> — forming → active → inactive / dissolved stays local to that project’s groups.</li>
+    </ul>
+    <p>
+        The point is reuse of the <em>method</em>, not one global membership directory:
+        many projects, many teams, possibly the same names and people, but different remits,
+        purposes, and timelines. Building that is a later piece of work; this page exists so the idea is written down
+        and open to challenge or refinement.
+    </p>
+
+    <div class="callout plain" style="margin-top:1.25rem;">
+        <div>
+            <h4>What is already live vs still to come</h4>
+            <ul style="margin:0; padding-left:1.1rem; font-size:0.92rem; line-height:1.7;">
+                <li><strong>Live now</strong> — suggest → confirm for add / move / remove; tentative styling; Accept / Reject / withdraw; group lifecycle status; paged history with Milestones; snapshot status focus and name search; checkpoint pins; PDF from the live list or from a history snapshot.</li>
+                <li><strong>Still to come</strong> — allocate the Project Owner (e.g. Lisa) or other <em>group administrators</em> as confirmers for particular lists, without handing them every group; multi-project workspaces (above).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section-header" id="improve" style="margin-top:2.25rem;">
+        <h2>Suggest an improvement</h2>
+        <p>This tool will keep evolving as groups form and settle — including multi-project workspaces and wider confirmer allocation above.</p>
+    </div>
+    <div class="callout success">
+        <div class="callout-icon" aria-hidden="true">✓</div>
+        <div>
+            <h4>Ideas welcome</h4>
+            <p style="margin:0;">
+                If something is unclear, missing, or could work better, use the
+                <a href="#feedback-toggle">Feedback</a> form in the bottom-right of this page
+                (choose <em>Suggestion</em>). Concrete examples help most: what you were trying to do,
+                what happened, and what you expected.
+            </p>
+        </div>
+    </div>
+
+    <p style="margin:2rem 0 1rem;">
+        <a class="gov-btn" href="governance-membership.html">Open the membership tool</a>
+        &nbsp;
+        <a href="governance.html">Back to governance overview</a>
+    </p>
+
+</main>
+</div><!-- /.page-wrapper -->
+
+<!-- Site Footer -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <strong>East Renfrewshire <span class="gold">Council</span></strong>
+            <span>Housing Digital Transformation</span>
+            <span style="margin-top:0.5rem; color: rgba(255,255,255,0.5); font-size:0.75rem;">About the membership tool</span>
+        </div>
+
+        <div class="footer-meta">
+            <p><strong>Programme:</strong> Housing Repairs Digital Transformation</p>
+            <p><strong>Role:</strong> Project Manager (Housing Digital Transformation)</p>
+            <p><strong>William Ellis</strong></p>
+            <p style="margin-top:0.5rem; color: rgba(255,255,255,0.5);">East Renfrewshire Council &mdash; MAP Programme</p>
+        </div>
+
+        <div class="footer-disclaimer">
+            <p>A working reference portal for ERC's Housing Digital Transformation programme. Content drawn from ERC publications, Scottish Government strategy documents, and sector research.</p>
+            <p style="margin-top:0.5rem; color: rgba(255,255,255,0.5);">Information reflects the programme's current understanding and will be updated as delivery progresses.</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        &copy; 2026 William Ellis &mdash; ERC Housing Digital Transformation &mdash; All Rights Reserved
+    </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -5,22 +5,22 @@
     "groups": {
       "project-board": {
         "label": "Project Board",
-        "blurb": "Senior movers and shakers who hold purse strings and can unlock time and decisions.",
+        "blurb": "The Project Board provides senior oversight of the Housing Digital Transformation programme. It is responsible for strategic direction, prioritisation, and decisions on investment, resources, and escalation.",
         "sort": 1
       },
       "steering-group": {
         "label": "Steering Group",
-        "blurb": "Service-wide knowledge across the parts of the operation \u2014 informs the Project Board.",
+        "blurb": "The Steering Group brings together service leadership to review progress, surface operational issues, and advise the Project Board so that decisions are informed by service-wide knowledge.",
         "sort": 2
       },
       "technical-group": {
         "label": "Technical Group",
-        "blurb": "IT, systems, data and related depth \u2014 called when the detail matters, without boring everyone else.",
+        "blurb": "The Technical Group provides specialist advice on information technology, systems architecture, and data. It meets as required when technical detail is needed to support design or delivery decisions.",
         "sort": 3
       },
       "business-group": {
         "label": "Business Group",
-        "blurb": "Expertise on tap (e.g. Social Care, planners). Contactable people for as-needed support over the year.",
+        "blurb": "The Business Group draws on specialist expertise from across the Council. It meets as required to inform business requirements and the impact of change on services.",
         "sort": 4
       }
     }

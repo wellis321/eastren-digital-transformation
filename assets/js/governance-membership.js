@@ -41,10 +41,42 @@
   let canEdit = true;
   let canVote = true;
   let canShape = true;
+  let canPropose = true;
+  let canSetGroupStatus = false;
+  let proposals = [];
+  let groupStatusLabels = {
+    development: 'In development',
+    active: 'Active / stable',
+    inactive: 'Inactive',
+    dissolved: 'Dissolved',
+  };
   let currentUser = { id: 0, label: '' };
   let dbInitialized = false;
   let saveTimer = null;
   let dirty = false;
+  let historyEntries = [];
+  let selectedHistoryId = null;
+  let historyFilter = 'all';
+  let historyTotal = 0;
+  let historyHasMore = false;
+  let historyLoading = false;
+  const HISTORY_PAGE_SIZE = 25;
+  let selectedHistoryEntry = null;
+  let snapshotStatusFilter = 'all';
+  let snapshotSearchQuery = '';
+
+  const HISTORY_REASONS = {
+    membership_save: 'Membership updated',
+    membership_remove: 'Person removed',
+    place_add: 'Also placed on a group',
+    place_move: 'Moved between groups',
+    add_person: 'Person added',
+    create_group: 'Group created',
+    delete_group: 'Group deleted',
+    checkpoint: 'Checkpoint',
+    baseline: 'Starting baseline',
+    group_status: 'Group status changed',
+  };
 
   const setStatus = (msg, isError) => {
     if (!statusEl) return;
@@ -80,14 +112,13 @@
   const getTally = (personId, groupId) => {
     const t = tallies?.[personId]?.[groupId];
     if (!t || typeof t !== 'object') {
-      return { yes: 0, maybe: 0, no: 0, total: 0, voters: [] };
+      return { yes: 0, maybe: 0, no: 0, total: 0 };
     }
     return {
       yes: Number(t.yes) || 0,
       maybe: Number(t.maybe) || 0,
       no: Number(t.no) || 0,
       total: Number(t.total) || 0,
-      voters: Array.isArray(t.voters) ? t.voters : [],
     };
   };
 
@@ -149,6 +180,12 @@
     canEdit = bundle.canEdit !== false;
     canVote = bundle.canVote !== false;
     canShape = bundle.canShape !== false;
+    canPropose = bundle.canPropose !== false;
+    canSetGroupStatus = !!bundle.canSetGroupStatus;
+    proposals = Array.isArray(bundle.proposals) ? bundle.proposals : [];
+    if (bundle.groupStatuses && typeof bundle.groupStatuses === 'object' && !Array.isArray(bundle.groupStatuses)) {
+      groupStatusLabels = bundle.groupStatuses;
+    }
     currentUser = bundle.currentUser || currentUser;
     dbInitialized = !!bundle.dbInitialized || Object.keys(state.membership).length > 0;
   };
@@ -196,6 +233,7 @@
         dirty = false;
         setStatus('Membership saved');
         render();
+        refreshHistoryQuiet();
       })
       .catch((err) => {
         setStatus(err.message || 'Save failed', true);
@@ -221,21 +259,16 @@
     // Optimistic tally adjust for current user only
     if (!tallies[personId]) tallies[personId] = {};
     if (!tallies[personId][groupId]) {
-      tallies[personId][groupId] = { yes: 0, maybe: 0, no: 0, total: 0, voters: [] };
+      tallies[personId][groupId] = { yes: 0, maybe: 0, no: 0, total: 0 };
     }
     const t = tallies[personId][groupId];
-    t.voters = Array.isArray(t.voters) ? t.voters.slice() : [];
-    const label = currentUser.label || 'You';
-    const uid = currentUser.id;
     if (prev !== 'unset') {
       t[prev] = Math.max(0, (Number(t[prev]) || 0) - 1);
       t.total = Math.max(0, (Number(t.total) || 0) - 1);
-      t.voters = t.voters.filter((v) => v.userId !== uid);
     }
     if (vote !== 'unset') {
       t[vote] = (Number(t[vote]) || 0) + 1;
       t.total = (Number(t.total) || 0) + 1;
-      t.voters.push({ userId: uid, name: label, vote });
     }
 
     needsAssessment = needsAssessment.filter(
@@ -264,36 +297,59 @@
   };
 
   const placePerson = (personId, toGroupId, mode, fromGroupId) => {
-    if (!canShape) {
-      setStatus('Sign in to move people between groups', true);
-      return;
-    }
     if (!toGroupId) {
       setStatus('Choose a target group first', true);
       return;
     }
-    setStatus(mode === 'move' ? 'Moving…' : 'Adding to group…');
+    if (canShape) {
+      setStatus(mode === 'move' ? 'Moving…' : 'Adding to group…');
+      postJson({
+        action: 'place_person',
+        personId,
+        toGroupId,
+        mode,
+        fromGroupId: mode === 'move' ? fromGroupId : null,
+      })
+        .then((data) => {
+          if (data.state) applyBundle(data.state);
+          dirty = false;
+          const label = groupMeta[toGroupId]?.label || toGroupId;
+          setStatus(
+            mode === 'move'
+              ? `Moved to ${label} — others will be asked to assess them there`
+              : `Also added to ${label} — others will be asked to assess them there`
+          );
+          render();
+          const panel = document.getElementById(toGroupId);
+          if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          refreshHistoryQuiet();
+        })
+        .catch((err) => setStatus(err.message || 'Could not update group membership', true));
+      return;
+    }
+    if (!canPropose) {
+      setStatus('Sign in to suggest a membership change', true);
+      return;
+    }
+    setStatus('Sending suggestion…');
     postJson({
-      action: 'place_person',
+      action: 'propose',
       personId,
-      toGroupId,
-      mode,
+      groupId: toGroupId,
+      proposalAction: mode === 'move' ? 'move' : 'add',
       fromGroupId: mode === 'move' ? fromGroupId : null,
     })
       .then((data) => {
         if (data.state) applyBundle(data.state);
         dirty = false;
-        const label = groupMeta[toGroupId]?.label || toGroupId;
         setStatus(
           mode === 'move'
-            ? `Moved to ${label} — others will be asked to assess them there`
-            : `Also added to ${label} — others will be asked to assess them there`
+            ? 'Move suggested — shown as tentative until a confirmer accepts'
+            : 'Add suggested — shown as tentative until a confirmer accepts'
         );
         render();
-        const panel = document.getElementById(toGroupId);
-        if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
       })
-      .catch((err) => setStatus(err.message || 'Could not update group membership', true));
+      .catch((err) => setStatus(err.message || 'Could not send suggestion', true));
   };
 
   const addToGroup = (personId, groupId) => {
@@ -301,26 +357,37 @@
   };
 
   const removeFromGroup = (personId, groupId) => {
-    if (!canShape) return;
-    const person = personById(personId);
-    if (!person) return;
-    state.membership[personId] = groupsFor(person).filter((g) => g !== groupId);
-    dbInitialized = true;
-    if (Array.isArray(state.order[groupId])) {
-      state.order[groupId] = state.order[groupId].filter((id) => id !== personId);
+    if (canShape) {
+      setStatus('Removing…');
+      postJson({ action: 'remove_person', personId, groupId })
+        .then((data) => {
+          if (data.state) applyBundle(data.state);
+          dirty = false;
+          setStatus('Removed from group');
+          render();
+          refreshHistoryQuiet();
+        })
+        .catch((err) => setStatus(err.message || 'Could not remove', true));
+      return;
     }
-    if (myVotes[personId]) {
-      delete myVotes[personId][groupId];
-      if (!Object.keys(myVotes[personId]).length) delete myVotes[personId];
+    if (!canPropose) {
+      setStatus('Sign in to suggest a removal', true);
+      return;
     }
-    if (tallies[personId]) {
-      delete tallies[personId][groupId];
-    }
-    needsAssessment = needsAssessment.filter(
-      (n) => !(n.personId === personId && n.groupId === groupId)
-    );
-    render();
-    persistSoon();
+    setStatus('Sending removal suggestion…');
+    postJson({
+      action: 'propose',
+      personId,
+      groupId,
+      proposalAction: 'remove',
+    })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        dirty = false;
+        setStatus('Removal suggested — person stays on the list until a confirmer accepts');
+        render();
+      })
+      .catch((err) => setStatus(err.message || 'Could not send suggestion', true));
   };
 
   const addNewPerson = () => {
@@ -350,6 +417,7 @@
         render();
         const panel = document.getElementById(groupId);
         if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        refreshHistoryQuiet();
       })
       .catch((err) => setStatus(err.message || 'Could not add person', true));
   };
@@ -381,8 +449,32 @@
           const panel = document.getElementById(id);
           if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+        refreshHistoryQuiet();
       })
       .catch((err) => setStatus(err.message || 'Could not create group', true));
+  };
+
+  const statusLabel = (status) =>
+    groupStatusLabels[status] || groupStatusLabels.development || 'In development';
+
+  const setGroupStatus = (groupId, status) => {
+    if (!canSetGroupStatus) {
+      setStatus('Only an administrator can change group status', true);
+      return;
+    }
+    if (!groupId || !status) return;
+    const prev = groupMeta[groupId]?.status || 'development';
+    if (prev === status) return;
+    setStatus('Updating group status…');
+    postJson({ action: 'set_group_status', groupId, status })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        dirty = false;
+        setStatus(`Status set to ${statusLabel(status)}`);
+        render();
+        refreshHistoryQuiet();
+      })
+      .catch((err) => setStatus(err.message || 'Could not update status', true));
   };
 
   const deleteGroup = (groupId) => {
@@ -406,6 +498,7 @@
         dirty = false;
         setStatus(`Deleted “${meta.label}”`);
         render();
+        refreshHistoryQuiet();
       })
       .catch((err) => setStatus(err.message || 'Could not delete group', true));
   };
@@ -425,22 +518,94 @@
       .join('');
   };
 
+  const proposalsForGroup = (groupId) => proposals.filter((p) => p.groupId === groupId);
+
+  const proposalForPersonGroup = (personId, groupId) => {
+    const direct = proposals.find((p) => p.personId === personId && p.groupId === groupId);
+    if (direct) return direct;
+    return (
+      proposals.find(
+        (p) => p.action === 'move' && p.personId === personId && p.fromGroupId === groupId
+      ) || null
+    );
+  };
+
+  const decideProposal = (proposalId, decision) => {
+    if (!canShape) {
+      setStatus('Only a membership confirmer can accept or reject suggestions', true);
+      return;
+    }
+    setStatus(decision === 'accept' ? 'Accepting…' : 'Rejecting…');
+    postJson({ action: 'decide_proposal', proposalId, decision })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        dirty = false;
+        setStatus(decision === 'accept' ? 'Suggestion accepted' : 'Suggestion rejected');
+        render();
+        refreshHistoryQuiet();
+      })
+      .catch((err) => setStatus(err.message || 'Could not update suggestion', true));
+  };
+
+  const withdrawProposal = (proposalId) => {
+    setStatus('Withdrawing suggestion…');
+    postJson({ action: 'withdraw_proposal', proposalId })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        dirty = false;
+        setStatus('Suggestion withdrawn');
+        render();
+      })
+      .catch((err) => setStatus(err.message || 'Could not withdraw', true));
+  };
+
+  const renderProposalActions = (prop) => {
+    if (!prop) return '';
+    const mine = currentUser.id && prop.proposedByUserId === currentUser.id;
+    if (canShape) {
+      return `<div class="gov-proposal-actions">
+        <button type="button" class="gov-btn" data-action="accept-proposal" data-proposal-id="${prop.id}">Accept</button>
+        <button type="button" class="gov-btn gov-btn--muted" data-action="reject-proposal" data-proposal-id="${prop.id}">Reject</button>
+      </div>`;
+    }
+    if (mine || canShape) {
+      return `<div class="gov-proposal-actions">
+        <button type="button" class="gov-btn gov-btn--muted" data-action="withdraw-proposal" data-proposal-id="${prop.id}">Withdraw</button>
+      </div>`;
+    }
+    return '';
+  };
+
+  const proposalActionLabel = (prop, viewingGroupId) => {
+    if (prop.action === 'remove') return 'Suggested removal';
+    if (prop.action === 'move') {
+      if (viewingGroupId && prop.fromGroupId === viewingGroupId) {
+        return `Suggested move to ${prop.groupLabel || prop.groupId}`;
+      }
+      return `Suggested move from ${prop.fromGroupLabel || prop.fromGroupId || 'another group'}`;
+    }
+    return 'Suggested addition';
+  };
+
   const renderPlaceControls = (person, groupId) => {
-    if (!canShape) return '';
+    if (!canShape && !canPropose) return '';
     const opts = otherGroupOptions(person.id, groupId);
     if (!opts) {
       return `<details class="gov-place-details"><summary>Place on another group</summary><p class="gov-place-note">Already on every group</p></details>`;
     }
+    const alsoLabel = canShape ? 'Also on' : 'Suggest also on';
+    const moveLabel = canShape ? 'Move to' : 'Suggest move';
+    const summary = canShape ? 'Place on another group' : 'Suggest place on another group';
     return `<details class="gov-place-details">
-      <summary>Place on another group</summary>
+      <summary>${summary}</summary>
       <div class="gov-place">
         <label class="visually-hidden" for="place-${esc(person.id)}-${esc(groupId)}">Place ${esc(person.name)} on another group</label>
         <select id="place-${esc(person.id)}-${esc(groupId)}" data-place-select="${esc(person.id)}" data-from-group="${esc(groupId)}">
           <option value="">Choose group…</option>
           ${opts}
         </select>
-        <button type="button" class="gov-btn gov-btn--muted" data-action="also-on" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Keep on this list and also add to the chosen group">Also on</button>
-        <button type="button" class="gov-btn gov-btn--muted" data-action="move-to" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Remove from this list and put on the chosen group">Move to</button>
+        <button type="button" class="gov-btn gov-btn--muted" data-action="also-on" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="${canShape ? 'Keep on this list and also add to the chosen group' : 'Suggest adding them to another group (needs confirmation)'}">${alsoLabel}</button>
+        <button type="button" class="gov-btn gov-btn--muted" data-action="move-to" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="${canShape ? 'Remove from this list and put on the chosen group' : 'Suggest moving them (needs confirmation)'}">${moveLabel}</button>
       </div>
     </details>`;
   };
@@ -450,18 +615,7 @@
     if (!t.total) {
       return `<span class="gov-tally-compact gov-tally-compact--empty" title="No opinions yet">—</span>`;
     }
-    const byVote = { yes: [], maybe: [], no: [] };
-    t.voters.forEach((v) => {
-      if (byVote[v.vote]) byVote[v.vote].push(v.name || 'Someone');
-    });
-    const tip = [
-      byVote.yes.length ? `Yes: ${byVote.yes.join(', ')}` : '',
-      byVote.maybe.length ? `Maybe: ${byVote.maybe.join(', ')}` : '',
-      byVote.no.length ? `No: ${byVote.no.join(', ')}` : '',
-    ]
-      .filter(Boolean)
-      .join(' · ');
-    return `<span class="gov-tally-compact" title="${esc(tip)}">
+    return `<span class="gov-tally-compact" title="${t.yes} Yes · ${t.maybe} Maybe · ${t.no} No">
       <span class="gov-tally-compact__yes">${t.yes}Y</span>
       <span class="gov-tally-compact__maybe">${t.maybe}~</span>
       <span class="gov-tally-compact__no">${t.no}N</span>
@@ -472,7 +626,13 @@
     const vote = getMyVote(person.id, groupId);
     const voteDisabled = canVote ? '' : ' disabled';
     const awaiting = needsKey(person.id, groupId)
-      ? '<span class="gov-mark-needed">Needs you</span>'
+      ? '<span class="gov-mark-needed" title="You have not yet given Yes, Maybe, or No for this person on this group">Your mark needed</span>'
+      : '';
+    const prop = proposalForPersonGroup(person.id, groupId);
+    const tentativeRemove =
+      prop && (prop.action === 'remove' || (prop.action === 'move' && prop.fromGroupId === groupId));
+    const tentativeBadge = prop
+      ? `<span class="gov-tentative-badge" title="Suggested by ${esc(prop.proposedBy)}">${esc(proposalActionLabel(prop, groupId))}</span>`
       : '';
     const otherLists = groupsFor(person)
       .filter((g) => g !== groupId)
@@ -481,21 +641,27 @@
       otherLists.length > 0
         ? `<span class="gov-also-on">Also: ${esc(otherLists.join(', '))}</span>`
         : '';
-    const removeBtn = canShape
-      ? `<button type="button" class="gov-icon-btn gov-icon-btn--danger" data-action="remove" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Remove from this group" aria-label="Remove from group">×</button>`
-      : '';
+    let removeBtn = '';
+    if (canShape) {
+      removeBtn = `<button type="button" class="gov-icon-btn gov-icon-btn--danger" data-action="remove" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Remove from this group" aria-label="Remove from group">×</button>`;
+    } else if (canPropose && !tentativeRemove) {
+      removeBtn = `<button type="button" class="gov-icon-btn gov-icon-btn--danger" data-action="remove" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Suggest removal (needs confirmation)" aria-label="Suggest removal">×</button>`;
+    }
     const rowId = `member-${esc(groupId)}-${esc(person.id)}`;
-    return `<li class="gov-person-row" id="${rowId}" data-id="${esc(person.id)}" data-vote="${esc(vote)}">
+    const rowClass = tentativeRemove ? ' gov-person-row--tentative-remove' : '';
+    return `<li class="gov-person-row${rowClass}" id="${rowId}" data-id="${esc(person.id)}" data-vote="${esc(vote)}">
       <div class="gov-person-main">
         <div class="gov-person-icons" aria-hidden="true">${voteIcon(vote)}</div>
         <div class="gov-person-text">
           <div class="gov-person-line">
             <strong class="gov-person-name">${esc(person.name)}</strong>
             ${awaiting}
+            ${tentativeBadge}
             ${renderTallyCompact(person.id, groupId)}
           </div>
           <span class="gov-person-role">${esc(person.role || 'Role not recorded')}</span>
           ${alsoOn}
+          ${prop ? `<p class="gov-proposal-meta">Suggested by ${esc(prop.proposedBy)}</p>${renderProposalActions(prop)}` : ''}
           ${renderPlaceControls(person, groupId)}
         </div>
       </div>
@@ -511,39 +677,80 @@
     </li>`;
   };
 
+  const renderTentativeAddRow = (prop) => {
+    return `<li class="gov-person-row gov-person-row--tentative-add" id="proposal-${prop.id}">
+      <div class="gov-person-main">
+        <div class="gov-person-icons" aria-hidden="true"><span class="gov-vote-icon gov-vote-icon--unset" title="Tentative">?</span></div>
+        <div class="gov-person-text">
+          <div class="gov-person-line">
+            <strong class="gov-person-name">${esc(prop.personName)}</strong>
+            <span class="gov-tentative-badge">${esc(proposalActionLabel(prop))}</span>
+          </div>
+          <span class="gov-person-role">${esc(prop.personRole || 'Role not recorded')}</span>
+          <p class="gov-proposal-meta">Suggested by ${esc(prop.proposedBy)} — not on the live list until accepted</p>
+          ${renderProposalActions(prop)}
+        </div>
+      </div>
+    </li>`;
+  };
+
   const renderRoster = (groupId, peopleList) => {
-    if (!peopleList.length) return '';
-    return `<ul class="gov-roster" aria-label="Members at a glance">
-      ${peopleList
-        .map((p) => {
-          const vote = getMyVote(p.id, groupId);
-          const pending = needsKey(p.id, groupId) ? ' gov-roster-chip--pending' : '';
-          const voteClass =
-            vote === 'yes'
-              ? ' gov-roster-chip--yes'
-              : vote === 'maybe'
-                ? ' gov-roster-chip--maybe'
-                : vote === 'no'
-                  ? ' gov-roster-chip--no'
-                  : '';
-          return `<li><a class="gov-roster-chip${voteClass}${pending}" href="#member-${esc(groupId)}-${esc(p.id)}">${esc(p.name)}</a></li>`;
-        })
-        .join('')}
-    </ul>`;
+    const pendingAdds = proposalsForGroup(groupId).filter((p) => p.action === 'add' || p.action === 'move');
+    if (!peopleList.length && !pendingAdds.length) return '';
+    const memberChips = peopleList
+      .map((p) => {
+        const vote = getMyVote(p.id, groupId);
+        const pending = needsKey(p.id, groupId) ? ' gov-roster-chip--pending' : '';
+        const prop = proposalForPersonGroup(p.id, groupId);
+        const tentative =
+          prop &&
+          (prop.action === 'remove' || (prop.action === 'move' && prop.fromGroupId === groupId))
+            ? ' gov-roster-chip--tentative-remove'
+            : '';
+        const voteClass =
+          vote === 'yes'
+            ? ' gov-roster-chip--yes'
+            : vote === 'maybe'
+              ? ' gov-roster-chip--maybe'
+              : vote === 'no'
+                ? ' gov-roster-chip--no'
+                : '';
+        return `<li><a class="gov-roster-chip${voteClass}${pending}${tentative}" href="#member-${esc(groupId)}-${esc(p.id)}">${esc(p.name)}</a></li>`;
+      })
+      .join('');
+    const addChips = pendingAdds
+      .map(
+        (p) =>
+          `<li><a class="gov-roster-chip gov-roster-chip--tentative-add" href="#proposal-${p.id}">${esc(p.personName)} (suggested)</a></li>`
+      )
+      .join('');
+    return `<ul class="gov-roster" aria-label="Members at a glance">${memberChips}${addChips}</ul>`;
   };
 
   const renderGroup = (groupId) => {
-    const meta = groupMeta[groupId] || { label: groupId, blurb: '', isCore: true };
+    const meta = groupMeta[groupId] || {
+      label: groupId,
+      blurb: '',
+      isCore: true,
+      status: 'development',
+    };
     ensureOrder(groupId);
     const ids = state.order[groupId] || sortedIdsForGroup(groupId);
     state.order[groupId] = ids;
     const members = ids.map((id) => personById(id)).filter(Boolean);
+    const groupProps = proposalsForGroup(groupId);
+    const pendingAdds = groupProps.filter((p) => p.action === 'add' || p.action === 'move');
     const rows = members.map((p) => renderRow(p, groupId)).join('');
+    const tentativeRows = pendingAdds.map(renderTentativeAddRow).join('');
     const count = members.length;
-    const countLabel = count === 1 ? '1 person' : `${count} people`;
-    const empty = !ids.length
-      ? `<p class="gov-empty">No members yet — add someone, move them here, or use the unassigned pool.</p>`
+    const suggestNote = pendingAdds.length
+      ? ` · ${pendingAdds.length} suggested`
       : '';
+    const countLabel = count === 1 ? '1 person' : `${count} people`;
+    const empty =
+      !ids.length && !pendingAdds.length
+        ? `<p class="gov-empty">No members yet — add someone, move them here, or use the unassigned pool.</p>`
+        : '';
     const tools = [];
     if (canVote) {
       tools.push(
@@ -556,29 +763,53 @@
       );
     }
     const toolsHtml = tools.length ? `<div class="gov-group-tools">${tools.join('')}</div>` : '';
+    const status = meta.status || 'development';
+    const statusClass = `gov-status-badge gov-status-badge--${esc(status)}`;
+    const statusBadge = `<span class="${statusClass}">${esc(statusLabel(status))}</span>`;
     const customClass = meta.isCore === false ? ' gov-group-panel--custom' : '';
+    const dissolvedClass = status === 'dissolved' || status === 'inactive' ? ` gov-group-panel--${status}` : '';
     const customBadge =
       meta.isCore === false ? '<span class="gov-group-badge">Custom</span>' : '';
+    const statusControl = canSetGroupStatus
+      ? `<label class="gov-status-control">
+          <span class="visually-hidden">Lifecycle status for ${esc(meta.label || groupId)}</span>
+          <select data-action="set-status" data-group="${esc(groupId)}" title="Group lifecycle status (admin only)">
+            ${Object.entries(groupStatusLabels)
+              .map(
+                ([id, label]) =>
+                  `<option value="${esc(id)}"${id === status ? ' selected' : ''}>${esc(label)}</option>`
+              )
+              .join('')}
+          </select>
+        </label>`
+      : statusBadge;
+    const listHtml =
+      members.length || pendingAdds.length
+        ? `<h3 class="gov-assess-heading">Assess &amp; place</h3><ul class="gov-person-list">${rows}${tentativeRows}</ul>`
+        : '';
 
-    return `<section class="gov-group-panel${customClass}" id="${esc(groupId)}">
+    return `<section class="gov-group-panel${customClass}${dissolvedClass}" id="${esc(groupId)}">
       <header class="gov-group-head">
-        <div class="gov-group-head-text">
-          <p class="gov-group-kicker">${esc(countLabel)}${customBadge}</p>
-          <h2 class="gov-group-title">${esc(meta.label || groupId)}</h2>
-          <p class="gov-group-blurb">${esc(meta.blurb || '')}</p>
+        <div class="gov-group-head-top">
+          <div class="gov-group-head-text">
+            <p class="gov-group-kicker">${esc(countLabel)}${esc(suggestNote)}${customBadge}${canSetGroupStatus ? '' : statusBadge}</p>
+            <h2 class="gov-group-title">${esc(meta.label || groupId)}</h2>
+          </div>
+          ${toolsHtml}
         </div>
-        ${toolsHtml}
+        ${meta.blurb ? `<p class="gov-group-blurb">${esc(meta.blurb)}</p>` : ''}
+        ${canSetGroupStatus ? `<div class="gov-status-row">${statusControl}</div>` : ''}
       </header>
       ${renderRoster(groupId, members)}
       ${empty}
-      ${members.length ? `<h3 class="gov-assess-heading">Assess &amp; place</h3><ul class="gov-person-list">${rows}</ul>` : ''}
+      ${listHtml}
     </section>`;
   };
 
   const renderAwaiting = () => {
     if (!awaitingEl) return;
     if (!needsAssessment.length) {
-      awaitingEl.innerHTML = `<p class="gov-empty">You have no new people left to assess.</p>`;
+      awaitingEl.innerHTML = `<span class="gov-awaiting-status">You have no new people left to assess.</span>`;
       return;
     }
     awaitingEl.innerHTML = `<ul class="gov-awaiting-list">${needsAssessment
@@ -603,9 +834,19 @@
       `<a href="#awaiting">${awaitingLabel}</a>`,
       ...groupOrder.map((g) => {
         const n = membersForGroup(g).length;
-        return `<a href="#${esc(g)}">${esc(groupMeta[g]?.label || g)} <span class="gov-jump-count">${n}</span></a>`;
+        const st = groupMeta[g]?.status || 'development';
+        const stShort =
+          st === 'active'
+            ? 'Active'
+            : st === 'inactive'
+              ? 'Inactive'
+              : st === 'dissolved'
+                ? 'Dissolved'
+                : 'Dev';
+        return `<a href="#${esc(g)}">${esc(groupMeta[g]?.label || g)} <span class="gov-jump-count">${n}</span> <span class="gov-jump-status gov-jump-status--${esc(st)}">${stShort}</span></a>`;
       }),
       `<a href="#pool">Unassigned <span class="gov-jump-count">${poolCount}</span></a>`,
+      `<a href="#group-history">History</a>`,
     ];
     jumpEl.innerHTML = links.join('');
   };
@@ -634,13 +875,13 @@
       .join('');
     poolEl.innerHTML = `<ul class="gov-pool-list">${list
       .map((p) => {
-        const add = canShape
-          ? `<div class="gov-pool-add">
+    const add = canShape || canPropose
+      ? `<div class="gov-pool-add">
             <label class="visually-hidden" for="add-${esc(p.id)}">Add ${esc(p.name)} to group</label>
             <select id="add-${esc(p.id)}" data-add-select="${esc(p.id)}">${groupOpts}</select>
-            <button type="button" class="gov-btn" data-action="add" data-id="${esc(p.id)}">Add</button>
+            <button type="button" class="gov-btn" data-action="add" data-id="${esc(p.id)}">${canShape ? 'Add' : 'Suggest add'}</button>
           </div>`
-          : '';
+      : '';
         return `<li class="gov-pool-row">
           <div>
             <strong>${esc(p.name)}</strong>
@@ -703,6 +944,9 @@
     if (action === 'remove') removeFromGroup(id, group);
     if (action === 'reset-group') resetGroupMarks(group);
     if (action === 'delete-group') deleteGroup(group);
+    if (action === 'accept-proposal') decideProposal(Number(btn.getAttribute('data-proposal-id')), 'accept');
+    if (action === 'reject-proposal') decideProposal(Number(btn.getAttribute('data-proposal-id')), 'reject');
+    if (action === 'withdraw-proposal') withdrawProposal(Number(btn.getAttribute('data-proposal-id')));
     if (action === 'also-on' || action === 'move-to') {
       const select = groupsEl.querySelector(
         `select[data-place-select="${CSS.escape(id)}"][data-from-group="${CSS.escape(group)}"]`
@@ -712,9 +956,15 @@
     }
   });
 
+  groupsEl.addEventListener('change', (e) => {
+    const select = e.target.closest('select[data-action="set-status"]');
+    if (!select) return;
+    setGroupStatus(select.getAttribute('data-group'), select.value);
+  });
+
   document.getElementById('gov-pool-body')?.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-action="add"]');
-    if (!btn || !canShape) return;
+    if (!btn || (!canShape && !canPropose)) return;
     const id = btn.getAttribute('data-id');
     const select = document.querySelector(`[data-add-select="${CSS.escape(id)}"]`);
     if (select) addToGroup(id, select.value);
@@ -797,9 +1047,6 @@
           total: t.total,
           myVote: getMyVote(id, groupId),
           alsoOn: other,
-          voters: t.voters
-            .map((v) => `${v.name} (${v.vote})`)
-            .join('; '),
         });
       });
     });
@@ -818,7 +1065,6 @@
       'Total opinions',
       'My mark',
       'Also on',
-      'Who marked',
     ];
     const lines = [headers.map(csvEscape).join(',')];
     rows.forEach((r) => {
@@ -833,7 +1079,6 @@
           r.total,
           r.myVote === 'unset' ? '' : r.myVote,
           r.alsoOn,
-          r.voters,
         ]
           .map(csvEscape)
           .join(',')
@@ -876,29 +1121,29 @@
     return `As of the ${ordinal(day)} of ${month} ${year}`;
   };
 
-  const buildPdfHtml = () => {
-    const asOf = formatAsOfDate();
-    const sections = groupOrder
-      .map((groupId) => {
-        const meta = groupMeta[groupId] || { label: groupId, blurb: '' };
-        ensureOrder(groupId);
-        const ids = state.order[groupId] || sortedIdsForGroup(groupId);
-        const members = ids.map((id) => personById(id)).filter(Boolean);
-        const bodyRows = members
-          .map((p) => {
-            const also = groupsFor(p)
-              .filter((g) => g !== groupId)
-              .map((g) => groupMeta[g]?.label || g)
-              .join(', ');
-            return `<tr>
-              <td class="gov-pdf-name">${esc(p.name)}</td>
-              <td>${esc(p.role || '—')}</td>
-              <td class="gov-pdf-also">${also ? esc(also) : '—'}</td>
-            </tr>`;
-          })
-          .join('');
-        const table = members.length
-          ? `<table class="gov-pdf-table">
+  const buildPdfHtml = (options = {}) => {
+    const snapshotGroups = Array.isArray(options.groups) ? options.groups : null;
+    const asOf =
+      options.asOfLabel ||
+      formatAsOfDate(options.asOfDate instanceof Date ? options.asOfDate : new Date());
+    const subtitle = options.subtitle ? `<p class="gov-pdf-meta">${esc(options.subtitle)}</p>` : '';
+
+    let sections = '';
+    if (snapshotGroups) {
+      sections = snapshotGroups
+        .map((g) => {
+          const members = Array.isArray(g.members) ? g.members : [];
+          const bodyRows = members
+            .map(
+              (m) => `<tr>
+              <td class="gov-pdf-name">${esc(m.name)}</td>
+              <td>${esc(m.role || '—')}</td>
+              <td class="gov-pdf-also">—</td>
+            </tr>`
+            )
+            .join('');
+          const table = members.length
+            ? `<table class="gov-pdf-table">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -908,8 +1153,55 @@
               </thead>
               <tbody>${bodyRows}</tbody>
             </table>`
-          : `<p class="gov-pdf-empty">No members on this list.</p>`;
-        return `<section class="gov-pdf-group">
+            : `<p class="gov-pdf-empty">No members on this list.</p>`;
+          const blurb =
+            g.blurb ||
+            pdfFormalBlurb(g.id, { label: g.label || g.id, blurb: g.blurb || '' });
+          return `<section class="gov-pdf-group">
+          <header class="gov-pdf-group-head">
+            <p class="gov-pdf-kicker">${members.length} ${members.length === 1 ? 'person' : 'people'}${
+              g.status ? ` · ${esc(statusLabel(g.status))}` : ''
+            }</p>
+            <h2>${esc(g.label || g.id)}</h2>
+            <p class="gov-pdf-blurb">${esc(blurb)}</p>
+          </header>
+          ${table}
+        </section>`;
+        })
+        .join('');
+    } else {
+      sections = groupOrder
+        .map((groupId) => {
+          const meta = groupMeta[groupId] || { label: groupId, blurb: '' };
+          ensureOrder(groupId);
+          const ids = state.order[groupId] || sortedIdsForGroup(groupId);
+          const members = ids.map((id) => personById(id)).filter(Boolean);
+          const bodyRows = members
+            .map((p) => {
+              const also = groupsFor(p)
+                .filter((g) => g !== groupId)
+                .map((g) => groupMeta[g]?.label || g)
+                .join(', ');
+              return `<tr>
+              <td class="gov-pdf-name">${esc(p.name)}</td>
+              <td>${esc(p.role || '—')}</td>
+              <td class="gov-pdf-also">${also ? esc(also) : '—'}</td>
+            </tr>`;
+            })
+            .join('');
+          const table = members.length
+            ? `<table class="gov-pdf-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Also on</th>
+                </tr>
+              </thead>
+              <tbody>${bodyRows}</tbody>
+            </table>`
+            : `<p class="gov-pdf-empty">No members on this list.</p>`;
+          return `<section class="gov-pdf-group">
           <header class="gov-pdf-group-head">
             <p class="gov-pdf-kicker">${members.length} ${members.length === 1 ? 'person' : 'people'}</p>
             <h2>${esc(meta.label || groupId)}</h2>
@@ -917,64 +1209,66 @@
           </header>
           ${table}
         </section>`;
-      })
-      .join('');
+        })
+        .join('');
+    }
 
     return `<div class="gov-pdf-doc">
       <header class="gov-pdf-cover">
         <p class="gov-pdf-eyebrow">East Renfrewshire Council — Housing Digital Transformation</p>
         <h1>Governance membership</h1>
         <p class="gov-pdf-meta">${esc(asOf)}</p>
+        ${subtitle}
       </header>
       ${sections}
-      <footer class="gov-pdf-foot">Working list only — final membership sits with the Project Manager / Project Owner.</footer>
+      <footer class="gov-pdf-foot">Point-in-time working list from the membership tool.</footer>
     </div>`;
   };
 
-  const exportPdf = () => {
+  const runPdfExport = (html, filename) => {
     const root = document.getElementById('gov-pdf-root');
-    const btn = document.getElementById('gov-export-pdf');
-    if (!root) return;
+    if (!root) return Promise.reject(new Error('PDF root missing'));
     if (typeof html2pdf === 'undefined') {
-      setStatus('PDF library did not load — check your network, then try again', true);
-      return;
+      return Promise.reject(new Error('PDF library did not load — check your network, then try again'));
     }
-    root.innerHTML = buildPdfHtml();
+    root.innerHTML = html;
     root.hidden = false;
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = 'Generating PDF…';
-    }
-    setStatus('Generating PDF…');
     const opt = {
       margin: [12, 12, 14, 12],
-      filename: `governance-membership-${exportStamp()}.pdf`,
+      filename,
       image: { type: 'jpeg', quality: 0.95 },
       html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff' },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       pagebreak: { mode: ['css', 'legacy'], avoid: ['.gov-pdf-group-head', 'tr'] },
     };
-    html2pdf()
+    return html2pdf()
       .set(opt)
       .from(root.querySelector('.gov-pdf-doc'))
       .save()
-      .then(() => {
+      .finally(() => {
         root.hidden = true;
         root.innerHTML = '';
-        if (btn) {
-          btn.disabled = false;
-          btn.textContent = 'Export PDF';
-        }
-        setStatus('PDF exported');
-      })
+      });
+  };
+
+  const exportPdf = () => {
+    const btn = document.getElementById('gov-export-pdf');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Generating PDF…';
+    }
+    setStatus('Generating PDF…');
+    runPdfExport(buildPdfHtml(), `governance-membership-${exportStamp()}.pdf`)
+      .then(() => setStatus('PDF exported'))
       .catch((err) => {
         console.error(err);
-        root.hidden = true;
+        setStatus(err.message || 'PDF export failed — try again', true);
+      })
+      .finally(() => {
         if (btn) {
           btn.disabled = false;
           btn.textContent = 'Export PDF';
         }
-        setStatus('PDF export failed — try again', true);
       });
   };
 
@@ -1001,6 +1295,376 @@
       .catch((err) => setStatus(err.message || 'Could not clear marks', true));
   });
 
+  const formatHistoryWhen = (iso) => {
+    const d = new Date(String(iso).replace(' ', 'T'));
+    if (Number.isNaN(d.getTime())) return String(iso);
+    return d.toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  const reasonLabel = (reason) => HISTORY_REASONS[reason] || reason || 'Change';
+
+  const updateHistoryChrome = () => {
+    const countEl = document.getElementById('gov-history-count');
+    const moreBtn = document.getElementById('gov-history-more');
+    if (countEl) {
+      if (historyTotal < 1) {
+        countEl.hidden = true;
+        countEl.textContent = '';
+      } else {
+        countEl.hidden = false;
+        const shown = historyEntries.length;
+        const noun = historyTotal === 1 ? 'entry' : 'entries';
+        countEl.textContent =
+          shown < historyTotal
+            ? `Showing ${shown} of ${historyTotal} ${noun}`
+            : `${historyTotal} ${noun}`;
+      }
+    }
+    if (moreBtn) {
+      moreBtn.hidden = !historyHasMore;
+      moreBtn.disabled = historyLoading || !historyHasMore;
+      moreBtn.textContent = historyLoading ? 'Loading…' : 'Show older';
+    }
+    document.querySelectorAll('[data-history-filter]').forEach((btn) => {
+      const on = btn.getAttribute('data-history-filter') === historyFilter;
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  };
+
+  const renderHistoryList = () => {
+    const listEl = document.getElementById('gov-history-list');
+    if (!listEl) return;
+    updateHistoryChrome();
+    if (!historyEntries.length) {
+      listEl.innerHTML =
+        historyFilter === 'milestones'
+          ? '<li class="gov-history-empty-item">No checkpoints yet. Save a checkpoint to pin a milestone.</li>'
+          : '<li class="gov-history-empty-item">No snapshots yet. Membership changes will appear here automatically.</li>';
+      return;
+    }
+    listEl.innerHTML = historyEntries
+      .map((h) => {
+        const active = selectedHistoryId === h.id ? ' is-active' : '';
+        const by = h.capturedBy ? ` · ${esc(h.capturedBy)}` : '';
+        return `<li>
+          <button type="button" class="gov-history-item${active}" data-history-id="${h.id}">
+            <span class="gov-history-when">${esc(formatHistoryWhen(h.capturedAt))}</span>
+            <span class="gov-history-reason">${esc(reasonLabel(h.reason))}${by}</span>
+          </button>
+        </li>`;
+      })
+      .join('');
+  };
+
+  const SNAPSHOT_STATUS_FILTERS = [
+    { id: 'all', label: 'All statuses' },
+    { id: 'active', label: 'Active / stable' },
+    { id: 'development', label: 'In development' },
+    { id: 'inactive', label: 'Inactive' },
+    { id: 'dissolved', label: 'Dissolved' },
+  ];
+
+  const snapshotGroupMatches = (g) => {
+    const status = g.status || 'development';
+    if (snapshotStatusFilter !== 'all' && status !== snapshotStatusFilter) {
+      return false;
+    }
+    const q = snapshotSearchQuery.trim().toLowerCase();
+    if (!q) return true;
+    const hay = [
+      g.label || '',
+      g.id || '',
+      g.blurb || '',
+      ...((Array.isArray(g.members) ? g.members : []).flatMap((m) => [m.name || '', m.role || ''])),
+    ]
+      .join(' ')
+      .toLowerCase();
+    return hay.includes(q);
+  };
+
+  const filteredSnapshotGroups = (entry) => {
+    const groups = Array.isArray(entry?.snapshot?.groups) ? entry.snapshot.groups : [];
+    return groups.filter(snapshotGroupMatches);
+  };
+
+  const snapshotFilterNote = (entry) => {
+    const total = Array.isArray(entry?.snapshot?.groups) ? entry.snapshot.groups.length : 0;
+    const shown = filteredSnapshotGroups(entry).length;
+    const bits = [];
+    if (snapshotStatusFilter !== 'all') {
+      bits.push(statusLabel(snapshotStatusFilter));
+    }
+    if (snapshotSearchQuery.trim()) {
+      bits.push(`“${snapshotSearchQuery.trim()}”`);
+    }
+    if (!bits.length) return '';
+    return `Focus: ${bits.join(' · ')} (${shown} of ${total} groups)`;
+  };
+
+  const exportHistoryPdf = (entry) => {
+    if (!entry?.snapshot) {
+      setStatus('Load a snapshot before exporting', true);
+      return;
+    }
+    const when = formatHistoryWhen(entry.capturedAt);
+    const by = entry.capturedBy ? ` by ${entry.capturedBy}` : '';
+    const reason = reasonLabel(entry.reason);
+    const asOfDate = new Date(String(entry.capturedAt).replace(' ', 'T'));
+    const asOfLabel = Number.isNaN(asOfDate.getTime())
+      ? `As of ${when}`
+      : formatAsOfDate(asOfDate);
+    const focus = snapshotFilterNote(entry);
+    const subtitle = [`Snapshot · ${when}${by} · ${reason}`, focus].filter(Boolean).join(' · ');
+    const stamp = String(entry.capturedAt).slice(0, 10).replace(/[^0-9-]/g, '') || exportStamp();
+    const btn = document.getElementById('gov-history-export-pdf');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Generating PDF…';
+    }
+    setStatus('Generating snapshot PDF…');
+    runPdfExport(
+      buildPdfHtml({
+        groups: filteredSnapshotGroups(entry),
+        asOfLabel,
+        subtitle,
+        asOfDate,
+      }),
+      `governance-membership-as-of-${stamp}.pdf`
+    )
+      .then(() => setStatus('Snapshot PDF exported'))
+      .catch((err) => {
+        console.error(err);
+        setStatus(err.message || 'PDF export failed — try again', true);
+      })
+      .finally(() => {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Export PDF';
+        }
+      });
+  };
+
+  const renderHistorySnapshot = (entry) => {
+    const viewEl = document.getElementById('gov-history-view');
+    if (!viewEl) return;
+    selectedHistoryEntry = entry;
+    const allGroups = Array.isArray(entry?.snapshot?.groups) ? entry.snapshot.groups : [];
+    const groups = filteredSnapshotGroups(entry);
+    const when = formatHistoryWhen(entry.capturedAt);
+    const by = entry.capturedBy ? ` by ${esc(entry.capturedBy)}` : '';
+    const statusButtons = SNAPSHOT_STATUS_FILTERS.map((opt) => {
+      const on = snapshotStatusFilter === opt.id ? ' is-active' : '';
+      return `<button type="button" class="gov-history-filter${on}" data-snapshot-status="${esc(opt.id)}" aria-pressed="${
+        snapshotStatusFilter === opt.id ? 'true' : 'false'
+      }">${esc(opt.label)}</button>`;
+    }).join('');
+    const blocks = groups
+      .map((g) => {
+        const members = Array.isArray(g.members) ? g.members : [];
+        const rows = members.length
+          ? `<ul class="gov-history-members">${members
+              .map(
+                (m) =>
+                  `<li><strong>${esc(m.name)}</strong><span class="gov-person-role">${esc(m.role || 'Role not recorded')}</span></li>`
+              )
+              .join('')}</ul>`
+          : `<p class="gov-empty">No members at this time.</p>`;
+        return `<article class="gov-history-group">
+          <h3 class="gov-history-group-title">${esc(g.label || g.id)} <span class="gov-jump-count">${members.length}</span>${
+            g.status
+              ? ` <span class="gov-status-badge gov-status-badge--${esc(g.status)}">${esc(statusLabel(g.status))}</span>`
+              : ''
+          }</h3>
+          ${g.blurb ? `<p class="gov-section-lede">${esc(g.blurb)}</p>` : ''}
+          ${rows}
+        </article>`;
+      })
+      .join('');
+    let emptyMsg = 'No groups in this snapshot.';
+    if (allGroups.length && !groups.length) {
+      emptyMsg = 'No groups match this status / search focus. Clear the filters to see the full snapshot.';
+    }
+    const focusHint = snapshotFilterNote(entry);
+    viewEl.innerHTML = `<div class="gov-history-snapshot">
+      <div class="gov-history-snapshot-toolbar">
+        <p class="gov-history-snapshot-meta"><strong>As of ${esc(when)}</strong>${by} · ${esc(reasonLabel(entry.reason))}</p>
+        <button type="button" class="gov-btn gov-btn--muted" id="gov-history-export-pdf">Export PDF</button>
+      </div>
+      <div class="gov-history-snapshot-focus">
+        <div class="gov-history-filters" role="group" aria-label="Focus groups by status">
+          ${statusButtons}
+        </div>
+        <label class="gov-history-search">
+          <span class="visually-hidden">Search this snapshot</span>
+          <input type="search" id="gov-history-snapshot-search" placeholder="Search name or group…" value="${esc(
+            snapshotSearchQuery
+          )}" autocomplete="off">
+        </label>
+      </div>
+      ${focusHint ? `<p class="gov-history-focus-note">${esc(focusHint)}</p>` : ''}
+      ${blocks || `<p class="gov-empty">${esc(emptyMsg)}</p>`}
+    </div>`;
+    document.getElementById('gov-history-export-pdf')?.addEventListener('click', () => {
+      exportHistoryPdf(entry);
+    });
+    viewEl.querySelectorAll('[data-snapshot-status]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const next = btn.getAttribute('data-snapshot-status') || 'all';
+        if (next === snapshotStatusFilter) return;
+        snapshotStatusFilter = next;
+        renderHistorySnapshot(entry);
+      });
+    });
+    const searchEl = document.getElementById('gov-history-snapshot-search');
+    searchEl?.addEventListener('input', () => {
+      snapshotSearchQuery = searchEl.value || '';
+      renderHistorySnapshot(entry);
+      const again = document.getElementById('gov-history-snapshot-search');
+      if (again) {
+        again.focus();
+        const len = again.value.length;
+        again.setSelectionRange(len, len);
+      }
+    });
+  };
+
+  const applyHistoryPage = (data, { append = false } = {}) => {
+    const items = Array.isArray(data.history) ? data.history : [];
+    historyEntries = append ? historyEntries.concat(items) : items;
+    historyTotal = typeof data.total === 'number' ? data.total : historyEntries.length;
+    historyHasMore = Boolean(data.hasMore);
+    if (typeof data.filter === 'string' && data.filter) {
+      historyFilter = data.filter;
+    }
+    renderHistoryList();
+    const checkpointBtn = document.getElementById('gov-history-checkpoint');
+    if (checkpointBtn) checkpointBtn.disabled = !canShape;
+  };
+
+  const loadHistoryList = ({ append = false } = {}) => {
+    if (historyLoading) return Promise.resolve();
+    historyLoading = true;
+    updateHistoryChrome();
+    const offset = append ? historyEntries.length : 0;
+    const url = `${API_URL}?history=1&limit=${HISTORY_PAGE_SIZE}&offset=${offset}&filter=${encodeURIComponent(historyFilter)}`;
+    return fetch(url, { credentials: 'same-origin' })
+      .then(async (r) => {
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.error || 'Could not load history');
+        return data;
+      })
+      .then((data) => {
+        applyHistoryPage(data, { append });
+      })
+      .finally(() => {
+        historyLoading = false;
+        updateHistoryChrome();
+      });
+  };
+
+  const setHistoryFilter = (filter) => {
+    if (filter !== 'all' && filter !== 'milestones') return;
+    if (filter === historyFilter) return;
+    historyFilter = filter;
+    selectedHistoryId = null;
+    selectedHistoryEntry = null;
+    snapshotStatusFilter = 'all';
+    snapshotSearchQuery = '';
+    const viewEl = document.getElementById('gov-history-view');
+    if (viewEl) {
+      viewEl.innerHTML =
+        '<p class="gov-history-empty">Select a point on the timeline to see the groups as they were then.</p>';
+    }
+    loadHistoryList({ append: false }).catch((err) =>
+      setStatus(err.message || 'Could not load history', true)
+    );
+  };
+
+  const openHistoryEntry = (id) => {
+    selectedHistoryId = id;
+    renderHistoryList();
+    const viewEl = document.getElementById('gov-history-view');
+    if (viewEl) viewEl.innerHTML = '<p class="gov-history-empty">Loading…</p>';
+    fetch(`${API_URL}?historyId=${encodeURIComponent(id)}`, { credentials: 'same-origin' })
+      .then(async (r) => {
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.error || 'Could not load snapshot');
+        return data;
+      })
+      .then((entry) => {
+        renderHistorySnapshot(entry);
+      })
+      .catch((err) => {
+        selectedHistoryEntry = null;
+        if (viewEl) {
+          viewEl.innerHTML = `<p class="gov-history-empty">${esc(err.message || 'Could not load snapshot')}</p>`;
+        }
+      });
+  };
+
+  document.getElementById('gov-history-list')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-history-id]');
+    if (!btn) return;
+    const id = Number(btn.getAttribute('data-history-id'));
+    if (id) openHistoryEntry(id);
+  });
+
+  document.querySelector('.gov-history-filters')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-history-filter]');
+    if (!btn) return;
+    setHistoryFilter(btn.getAttribute('data-history-filter'));
+  });
+
+  document.getElementById('gov-history-more')?.addEventListener('click', () => {
+    if (!historyHasMore || historyLoading) return;
+    loadHistoryList({ append: true }).catch((err) =>
+      setStatus(err.message || 'Could not load older history', true)
+    );
+  });
+
+  document.getElementById('gov-history-checkpoint')?.addEventListener('click', () => {
+    if (!canShape) {
+      setStatus('Sign in to save a checkpoint', true);
+      return;
+    }
+    setStatus('Saving checkpoint…');
+    postJson({ action: 'capture_checkpoint' })
+      .then((data) => {
+        historyFilter = 'all';
+        applyHistoryPage(
+          {
+            history: Array.isArray(data.history) ? data.history : historyEntries,
+            total: typeof data.total === 'number' ? data.total : undefined,
+            hasMore: Boolean(data.hasMore),
+            filter: 'all',
+          },
+          { append: false }
+        );
+        // Prefer a full refresh so totals/filters stay accurate after a new row.
+        return loadHistoryList({ append: false }).then(() => data);
+      })
+      .then((data) => {
+        if (data.captured?.id) {
+          openHistoryEntry(data.captured.id);
+          setStatus('Checkpoint saved');
+        } else {
+          setStatus('Checkpoint saved');
+        }
+      })
+      .catch((err) => setStatus(err.message || 'Could not save checkpoint', true));
+  });
+
+  const refreshHistoryQuiet = () => {
+    loadHistoryList({ append: false }).catch(() => {});
+  };
+
   fetch(API_URL, { credentials: 'same-origin' })
     .then(async (r) => {
       if (r.status === 401) {
@@ -1013,6 +1677,9 @@
     .then((bundle) => {
       applyBundle(bundle);
       render();
+      return loadHistoryList();
+    })
+    .then(() => {
       if (location.hash) {
         const el = document.querySelector(location.hash);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });

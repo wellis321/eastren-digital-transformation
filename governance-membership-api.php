@@ -18,6 +18,32 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 try {
     if ($method === 'GET') {
+        $historyId = isset($_GET['historyId']) ? (int)$_GET['historyId'] : 0;
+        if ($historyId > 0) {
+            $row = governance_get_history($historyId);
+            if ($row === null) {
+                http_response_code(404);
+                echo json_encode(['error' => 'History entry not found']);
+                exit;
+            }
+            echo json_encode($row);
+            exit;
+        }
+        if (isset($_GET['history'])) {
+            $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 25;
+            $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
+            $filter = isset($_GET['filter']) ? (string)$_GET['filter'] : 'all';
+            $page = governance_list_history($limit, $offset, $filter);
+            echo json_encode([
+                'history' => $page['items'],
+                'total' => $page['total'],
+                'limit' => $page['limit'],
+                'offset' => $page['offset'],
+                'filter' => $page['filter'],
+                'hasMore' => ($page['offset'] + count($page['items'])) < $page['total'],
+            ]);
+            exit;
+        }
         echo json_encode(governance_load_bundle());
         exit;
     }
@@ -62,6 +88,44 @@ try {
         exit;
     }
 
+    if ($action === 'propose') {
+        $proposed = governance_propose(
+            (string)($payload['personId'] ?? ''),
+            (string)($payload['groupId'] ?? ''),
+            (string)($payload['proposalAction'] ?? $payload['mode'] ?? ''),
+            $user,
+            isset($payload['fromGroupId']) ? (string)$payload['fromGroupId'] : null
+        );
+        echo json_encode(['ok' => true, 'proposed' => $proposed, 'state' => governance_load_bundle()]);
+        exit;
+    }
+
+    if ($action === 'decide_proposal') {
+        $decided = governance_decide_proposal(
+            (int)($payload['proposalId'] ?? 0),
+            (string)($payload['decision'] ?? ''),
+            $user
+        );
+        echo json_encode(['ok' => true, 'decided' => $decided, 'state' => governance_load_bundle()]);
+        exit;
+    }
+
+    if ($action === 'withdraw_proposal') {
+        governance_withdraw_proposal((int)($payload['proposalId'] ?? 0), $user);
+        echo json_encode(['ok' => true, 'state' => governance_load_bundle()]);
+        exit;
+    }
+
+    if ($action === 'remove_person') {
+        governance_remove_person_from_group(
+            (string)($payload['personId'] ?? ''),
+            (string)($payload['groupId'] ?? ''),
+            $user
+        );
+        echo json_encode(['ok' => true, 'state' => governance_load_bundle()]);
+        exit;
+    }
+
     if ($action === 'place_person') {
         $placed = governance_place_person(
             (string)($payload['personId'] ?? ''),
@@ -85,7 +149,7 @@ try {
     }
 
     if ($action === 'delete_group') {
-        governance_delete_group((string)($payload['groupId'] ?? ''));
+        governance_delete_group((string)($payload['groupId'] ?? ''), $user);
         echo json_encode(['ok' => true, 'state' => governance_load_bundle()]);
         exit;
     }
@@ -105,10 +169,45 @@ try {
         exit;
     }
 
+    if ($action === 'set_group_status') {
+        $updated = governance_set_group_status(
+            (string)($payload['groupId'] ?? ''),
+            (string)($payload['status'] ?? ''),
+            $user
+        );
+        echo json_encode([
+            'ok' => true,
+            'updated' => $updated,
+            'state' => governance_load_bundle(),
+        ]);
+        exit;
+    }
+
+    if ($action === 'capture_checkpoint') {
+        if (!governance_can_shape()) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Only a membership confirmer can save a checkpoint']);
+            exit;
+        }
+        $captured = governance_capture_history('checkpoint', $user, true);
+        $page = governance_list_history(25, 0, 'all');
+        echo json_encode([
+            'ok' => true,
+            'captured' => $captured,
+            'history' => $page['items'],
+            'total' => $page['total'],
+            'limit' => $page['limit'],
+            'offset' => $page['offset'],
+            'filter' => $page['filter'],
+            'hasMore' => count($page['items']) < $page['total'],
+        ]);
+        exit;
+    }
+
     // Default: membership / order save — does not overwrite others' votes
     if (!governance_can_shape()) {
         http_response_code(403);
-        echo json_encode(['error' => 'Sign in to change membership lists']);
+        echo json_encode(['error' => 'Only a membership confirmer can change membership lists']);
         exit;
     }
     governance_save_state($payload, $user);
@@ -121,5 +220,5 @@ try {
     echo json_encode(['error' => $e->getMessage()]);
 } catch (Throwable $e) {
     http_response_code(500);
-    echo json_encode(['error' => 'Server error saving membership']);
+    echo json_encode(['error' => 'Server error']);
 }
