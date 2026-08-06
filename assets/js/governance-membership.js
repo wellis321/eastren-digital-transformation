@@ -1919,83 +1919,237 @@
     </div>`;
   };
 
-  const runPdfExport = (html, filename) => {
-    const root = document.getElementById('gov-pdf-root');
-    if (!root) return Promise.reject(new Error('PDF root missing'));
-    if (typeof html2pdf === 'undefined') {
-      return Promise.reject(new Error('PDF library did not load — check your network, then try again'));
+  // A4 portrait, matches the jsPDF options below.
+  const PDF_PAGE_W_MM = 210;
+  const PDF_PAGE_H_MM = 297;
+  const PDF_MARGIN_MM = { top: 12, right: 12, bottom: 14, left: 12 };
+  const PDF_CONTENT_W_MM = PDF_PAGE_W_MM - PDF_MARGIN_MM.left - PDF_MARGIN_MM.right;
+  const PDF_CONTENT_H_MM = PDF_PAGE_H_MM - PDF_MARGIN_MM.top - PDF_MARGIN_MM.bottom;
+
+  // Capture options for a section rendered ALONE inside #gov-pdf-root (see
+  // captureIsolatedSection below). Explicit x/y/width/height pin the crop to
+  // exactly the rendered wrapper — relying on html2canvas's default crop (the
+  // element's live bounding rect) broke once a section sat partway down a
+  // shared multi-section document: capture is isolation-based instead.
+  const html2canvasOptsForWrapper = (wrapper) => ({
+    scale: 1.5,
+    useCORS: true,
+    logging: false,
+    backgroundColor: '#ffffff',
+    scrollX: 0,
+    scrollY: 0,
+    x: 0,
+    y: 0,
+    width: wrapper.scrollWidth,
+    height: wrapper.scrollHeight,
+    windowWidth: wrapper.scrollWidth || 720,
+    windowHeight: wrapper.scrollHeight || 200,
+    onclone: (clonedDoc) => {
+      const clonedRoot = clonedDoc.getElementById('gov-pdf-root');
+      if (clonedRoot) {
+        // Keep the export root at the viewport origin in the clone — html2canvas
+        // with scrollX/Y:0 clips the left edge when the live node sits inside the
+        // sidebar-offset .gov-layout-main column.
+        clonedRoot.style.position = 'fixed';
+        clonedRoot.style.left = '0';
+        clonedRoot.style.top = '0';
+        clonedRoot.style.right = 'auto';
+        clonedRoot.style.bottom = 'auto';
+        clonedRoot.style.opacity = '1';
+        clonedRoot.style.zIndex = '2147483646';
+        clonedRoot.style.pointerEvents = 'none';
+        clonedRoot.removeAttribute('hidden');
+      }
+    },
+  });
+
+  // Renders just one section's markup into #gov-pdf-root (replacing whatever
+  // was there) and waits a frame for layout, so every capture starts from a
+  // clean (0,0) origin instead of an offset partway down a shared document.
+  const isolateSectionInRoot = async (root, sectionOuterHtml) => {
+    root.innerHTML = `<div class="gov-pdf-doc">${sectionOuterHtml}</div>`;
+    root.hidden = false;
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    return root.querySelector('.gov-pdf-doc');
+  };
+
+  const captureSectionCanvas = async (root, sectionOuterHtml) => {
+    const wrapper = await isolateSectionInRoot(root, sectionOuterHtml);
+    return html2pdf()
+      .set({ html2canvas: html2canvasOptsForWrapper(wrapper) })
+      .from(wrapper)
+      .toCanvas()
+      .get('canvas');
+  };
+
+  // Don't start a section's content within less than this much room at the
+  // bottom of a page — otherwise its heading can end up stranded alone with
+  // the table starting on the next page.
+  const MIN_SECTION_START_MM = 30;
+
+  // Places a canvas starting at cursorYmm on the CURRENT page, continuing
+  // straight on from whatever's already there (cover, or a previous group) —
+  // only breaking to a fresh page when there isn't enough room left, or the
+  // canvas is taller than one page and needs to keep spilling onto more of
+  // them. Returns the Y (mm) immediately below the content just placed, i.e.
+  // the cursor for whatever gets placed next.
+  const placeCanvasFlowing = (pdf, canvas, cursorYmm) => {
+    const pxPerMm = canvas.width / PDF_CONTENT_W_MM;
+    const fullPageHeightPx = Math.max(1, Math.floor(PDF_CONTENT_H_MM * pxPerMm));
+
+    let y = cursorYmm;
+    let availableMm = PDF_PAGE_H_MM - PDF_MARGIN_MM.bottom - y;
+    if (availableMm < MIN_SECTION_START_MM) {
+      pdf.addPage();
+      y = PDF_MARGIN_MM.top;
+      availableMm = PDF_CONTENT_H_MM;
     }
+
+    let sliceY = 0;
+    let sliceIndex = 0;
+    let lastImgHmm = 0;
+    let lastPlaceYmm = y;
+    while (sliceY < canvas.height) {
+      const budgetPx = sliceIndex === 0 ? Math.max(1, Math.floor(availableMm * pxPerMm)) : fullPageHeightPx;
+      const sliceHeightPx = Math.min(budgetPx, canvas.height - sliceY);
+      const sliceCanvas = document.createElement('canvas');
+      sliceCanvas.width = canvas.width;
+      sliceCanvas.height = sliceHeightPx;
+      sliceCanvas
+        .getContext('2d')
+        .drawImage(canvas, 0, sliceY, canvas.width, sliceHeightPx, 0, 0, canvas.width, sliceHeightPx);
+      const imgHmm = sliceHeightPx / pxPerMm;
+      const placeYmm = sliceIndex === 0 ? y : PDF_MARGIN_MM.top;
+      if (sliceIndex > 0) pdf.addPage();
+      pdf.addImage(
+        sliceCanvas.toDataURL('image/jpeg', 0.95),
+        'JPEG',
+        PDF_MARGIN_MM.left,
+        placeYmm,
+        PDF_CONTENT_W_MM,
+        imgHmm
+      );
+      lastImgHmm = imgHmm;
+      lastPlaceYmm = placeYmm;
+      sliceY += sliceHeightPx;
+      sliceIndex += 1;
+    }
+    return lastPlaceYmm + lastImgHmm;
+  };
+
+  // jsPDF itself isn't exposed globally by the bundle (it's a webpack-internal
+  // module reference) — the only supported way to get an instance is through
+  // html2pdf's own Worker chain. Bootstrapping through .toPdf() on the cover's
+  // already-captured canvas both gets us that instance AND places page 1,
+  // using html2pdf's own per-canvas placement math — which for a single short
+  // canvas (no internal page break needed) is the exact same margin/width
+  // formula placeCanvasFlowing uses, so the two stay in sync.
+  const bootstrapPdfWithCanvas = (canvas, opt) => html2pdf().set(opt).from(canvas).toPdf().get('pdf');
+
+  const runPdfExport = async (html, filename) => {
+    const root = document.getElementById('gov-pdf-root');
+    if (!root) throw new Error('PDF root missing');
+    if (typeof html2pdf === 'undefined') {
+      throw new Error('PDF library did not load — check your network, then try again');
+    }
+
     const scrollX = window.scrollX || window.pageXOffset || 0;
     const scrollY = window.scrollY || window.pageYOffset || 0;
     // html2canvas blanks the top of pages when the window is scrolled; reset first.
     window.scrollTo(0, 0);
 
-    root.innerHTML = html;
-    root.hidden = false;
-    const target = root.querySelector('.gov-pdf-doc');
-    if (!target) {
+    // Park the capture root on <body> at the viewport origin. While it lives inside
+    // .gov-layout-main (sidebar column), absolute left:0 is still offset in the
+    // viewport and html2canvas (scrollX/Y:0) slices off the left of every page.
+    const pdfRootHome = root.parentElement;
+    const pdfRootNext = root.nextSibling;
+    document.body.appendChild(root);
+    root.style.position = 'fixed';
+    root.style.left = '0';
+    root.style.top = '0';
+    root.style.right = 'auto';
+    root.style.bottom = 'auto';
+    root.style.zIndex = '2147483646';
+    root.style.opacity = '1';
+    root.style.pointerEvents = 'none';
+
+    const restorePdfRoot = () => {
       root.hidden = true;
       root.innerHTML = '';
+      root.style.position = '';
+      root.style.left = '';
+      root.style.top = '';
+      root.style.right = '';
+      root.style.bottom = '';
+      root.style.zIndex = '';
+      root.style.opacity = '';
+      root.style.pointerEvents = '';
+      if (pdfRootHome) {
+        pdfRootHome.insertBefore(root, pdfRootNext);
+      }
       window.scrollTo(scrollX, scrollY);
-      return Promise.reject(new Error('PDF document could not be built'));
-    }
-
-    const opt = {
-      margin: [12, 12, 14, 12],
-      filename,
-      image: { type: 'jpeg', quality: 0.95 },
-      html2canvas: {
-        scale: 1.5,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-        scrollX: 0,
-        scrollY: 0,
-        x: 0,
-        y: 0,
-        width: target.scrollWidth,
-        height: target.scrollHeight,
-        windowWidth: target.scrollWidth || 720,
-        windowHeight: target.scrollHeight || 1000,
-        onclone: (clonedDoc) => {
-          const clonedRoot = clonedDoc.getElementById('gov-pdf-root');
-          if (clonedRoot) {
-            // Keep position:absolute/left:0/top:0 from the stylesheet — that's what
-            // target.scrollWidth (below) was measured against. Forcing position:static
-            // here drops the root into normal flow inside the narrower, sidebar-offset
-            // .gov-layout-main column, so the capture ends up clipped and undersized.
-            clonedRoot.style.opacity = '1';
-            clonedRoot.style.zIndex = '1';
-            clonedRoot.removeAttribute('hidden');
-          }
-        },
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      // Start each group on a new page. Do NOT use avoid/inside — that parks
-      // large tables at the foot with a blank band above.
-      pagebreak: { mode: ['css'], before: '.gov-pdf-group' },
     };
 
-    // html2pdf 0.10.x uses an es6-promise build that breaks on .finally() —
-    // wrap .save() in a native Promise and clean up in then/catch only.
-    return new Promise((resolve, reject) => {
-      html2pdf()
-        .set(opt)
-        .from(target)
-        .save()
-        .then(() => {
-          root.hidden = true;
-          root.innerHTML = '';
-          window.scrollTo(scrollX, scrollY);
-          resolve();
-        })
-        .catch((err) => {
-          root.hidden = true;
-          root.innerHTML = '';
-          window.scrollTo(scrollX, scrollY);
-          reject(err);
-        });
-    });
+    try {
+      // Parse the document off-DOM to split it into independent section markup
+      // strings. Each section is then rendered into #gov-pdf-root ALONE (one at a
+      // time, replacing the previous section) and captured from that clean slate —
+      // capturing sections in place inside one shared, all-sections-at-once
+      // document made every capture's crop rect depend on that section's offset
+      // partway down the page, which is what clipped content sideways.
+      const parser = document.createElement('div');
+      parser.innerHTML = html;
+      const doc = parser.querySelector('.gov-pdf-doc');
+      if (!doc) throw new Error('PDF document could not be built');
+      const cover = doc.querySelector('.gov-pdf-cover');
+      const groups = Array.from(doc.querySelectorAll('.gov-pdf-group'));
+      const sections = [cover, ...groups].filter(Boolean);
+      if (!sections.length) throw new Error('PDF document could not be built');
+
+      const [firstSection, ...restSections] = sections;
+      const coverCanvas = await captureSectionCanvas(root, firstSection.outerHTML);
+      const pdf = await bootstrapPdfWithCanvas(coverCanvas, {
+        margin: [PDF_MARGIN_MM.top, PDF_MARGIN_MM.right, PDF_MARGIN_MM.bottom, PDF_MARGIN_MM.left],
+        image: { type: 'jpeg', quality: 0.95 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      });
+
+      // Groups now flow straight on from the cover instead of each forcing a
+      // fresh page — short groups no longer leave most of a page blank. Track
+      // where the cover's own content (placed by html2pdf itself, above)
+      // actually ended so the first group knows where it can continue from.
+      const coverPxPerMm = coverCanvas.width / PDF_CONTENT_W_MM;
+      let cursorYmm = PDF_MARGIN_MM.top + coverCanvas.height / coverPxPerMm;
+      if (pdf.internal.getNumberOfPages() > 1) {
+        // Cover spilled onto extra pages on its own (unexpectedly tall) —
+        // treat as if the page is full so the next section starts fresh.
+        cursorYmm = PDF_PAGE_H_MM;
+      }
+
+      for (const section of restSections) {
+        const canvas = await captureSectionCanvas(root, section.outerHTML);
+        cursorYmm = placeCanvasFlowing(pdf, canvas, cursorYmm);
+      }
+
+      // Footer as real text rather than another captured section — it's one
+      // line, and vector text avoids yet another canvas/page-break edge case.
+      const footerText = 'Point-in-time working list from the membership tool.';
+      const footerNeededMm = 10;
+      let footerY = cursorYmm + 6;
+      if (footerY + footerNeededMm > PDF_PAGE_H_MM - PDF_MARGIN_MM.bottom) {
+        pdf.addPage();
+        footerY = PDF_MARGIN_MM.top;
+      }
+      pdf.setDrawColor(209, 213, 219);
+      pdf.line(PDF_MARGIN_MM.left, footerY, PDF_PAGE_W_MM - PDF_MARGIN_MM.right, footerY);
+      pdf.setFontSize(8);
+      pdf.setTextColor(107, 114, 128);
+      pdf.text(footerText, PDF_MARGIN_MM.left, footerY + 4);
+
+      pdf.save(filename);
+    } finally {
+      restorePdfRoot();
+    }
   };
 
   const exportPdf = () => {

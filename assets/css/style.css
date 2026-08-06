@@ -4066,6 +4066,12 @@ tbody tr:nth-child(even):hover {
 }
 .gov-pdf-table {
     width: 100%;
+    /* Fixed layout + explicit column widths (below) so column sizing never
+       depends on content-based auto-layout math — html2canvas's own table
+       layout emulation doesn't match a real browser's closely enough, and
+       under auto layout it can paint the table wider than the box its canvas
+       was sized to, silently clipping the right-hand columns off the page. */
+    table-layout: fixed;
     border-collapse: collapse;
     font-size: 8.5pt;
 }
@@ -4075,6 +4081,20 @@ tbody tr:nth-child(even):hover {
     padding: 1.4mm 1.8mm;
     text-align: left;
     vertical-align: top;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+.gov-pdf-table th:nth-child(1),
+.gov-pdf-table td:nth-child(1) {
+    width: 22%;
+}
+.gov-pdf-table th:nth-child(2),
+.gov-pdf-table td:nth-child(2) {
+    width: 48%;
+}
+.gov-pdf-table th:nth-child(3),
+.gov-pdf-table td:nth-child(3) {
+    width: 30%;
 }
 .gov-pdf-table th {
     background: #006a51;
