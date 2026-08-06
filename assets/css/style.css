@@ -3719,15 +3719,18 @@ tbody tr:nth-child(even):hover {
     border-top: 0;
 }
 
-/* PDF export document (rendered off-screen for html2pdf) */
+/* PDF export document (html2pdf / html2canvas source) */
 .gov-pdf-root {
-    position: fixed;
-    left: -12000px;
+    position: absolute;
+    left: 0;
     top: 0;
     width: 190mm;
     background: #fff;
     color: #1a1a1a;
     z-index: -1;
+    /* Must stay paint-visible: opacity:0 / off-screen fixed breaks page slices */
+    opacity: 1;
+    pointer-events: none;
 }
 .gov-pdf-root[hidden] {
     display: none !important;
@@ -3767,7 +3770,6 @@ tbody tr:nth-child(even):hover {
     margin: 0 0 7mm;
     padding: 0 0 5mm;
     border-bottom: 1px solid #d1d5db;
-    page-break-inside: avoid;
 }
 .gov-pdf-group-head {
     margin-bottom: 2.5mm;

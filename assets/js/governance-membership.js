@@ -1231,22 +1231,51 @@
     if (typeof html2pdf === 'undefined') {
       return Promise.reject(new Error('PDF library did not load — check your network, then try again'));
     }
+    const scrollX = window.scrollX || window.pageXOffset || 0;
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    // html2canvas blanks the top of pages when the window is scrolled; reset first.
+    window.scrollTo(0, 0);
+
     root.innerHTML = html;
     root.hidden = false;
-    const opt = {
-      margin: [12, 12, 14, 12],
-      filename,
-      image: { type: 'jpeg', quality: 0.95 },
-      html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff' },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css', 'legacy'], avoid: ['.gov-pdf-group-head', 'tr'] },
-    };
     const target = root.querySelector('.gov-pdf-doc');
     if (!target) {
       root.hidden = true;
       root.innerHTML = '';
+      window.scrollTo(scrollX, scrollY);
       return Promise.reject(new Error('PDF document could not be built'));
     }
+
+    const opt = {
+      margin: [12, 12, 14, 12],
+      filename,
+      image: { type: 'jpeg', quality: 0.95 },
+      html2canvas: {
+        scale: 1.5,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: target.scrollWidth || 720,
+        onclone: (clonedDoc) => {
+          const clonedRoot = clonedDoc.getElementById('gov-pdf-root');
+          if (clonedRoot) {
+            clonedRoot.style.opacity = '1';
+            clonedRoot.style.position = 'static';
+            clonedRoot.style.left = 'auto';
+            clonedRoot.style.top = 'auto';
+            clonedRoot.style.zIndex = '1';
+            clonedRoot.removeAttribute('hidden');
+          }
+        },
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      // Empty modes = even canvas slices only. Avoid/css pagebreaks insert spacers
+      // that park the next section at the foot of the page (Chrome and Firefox).
+      pagebreak: { mode: [] },
+    };
+
     // html2pdf 0.10.x uses an es6-promise build that breaks on .finally() —
     // wrap .save() in a native Promise and clean up in then/catch only.
     return new Promise((resolve, reject) => {
@@ -1257,11 +1286,13 @@
         .then(() => {
           root.hidden = true;
           root.innerHTML = '';
+          window.scrollTo(scrollX, scrollY);
           resolve();
         })
         .catch((err) => {
           root.hidden = true;
           root.innerHTML = '';
+          window.scrollTo(scrollX, scrollY);
           reject(err);
         });
     });
