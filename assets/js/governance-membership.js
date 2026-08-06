@@ -98,8 +98,9 @@
     baseline: 'Starting baseline',
     group_status: 'Group status changed',
     restore: 'Restored from history',
-    reseed_unassigned: 'Reapplied seed list placements',
+    reseed_unassigned: 'Rebuilt membership from seed list',
     reapply_seed: 'Reapplied seed list placements',
+    rebuild_seed: 'Rebuilt membership from seed list',
   };
 
   const setStatus = (msg, isError) => {
@@ -1867,42 +1868,52 @@
     const btn = document.getElementById('gov-history-reseed');
     if (!canConfirmMembership) {
       const msg =
-        'Only a membership confirmer (admin) can reapply seed lists. Sign in as Lisa or William, or ask them to click this button.';
+        'Only a membership confirmer (admin) can rebuild lists from the seed file. Sign in as Lisa or William.';
       setHistoryActionStatus(msg, true);
       window.alert(msg);
       return;
     }
     const ok = window.confirm(
-      'Reapply Board / Steering / Technical placements from the seed people list?\n\nMissing people are put back onto those groups. Extra live placements (e.g. Business Group) are kept.'
+      'Rebuild membership from the seed people file?\n\n' +
+        'This resets Board / Steering / Technical (and other seed placements) to the original list.\n' +
+        'People who are only in the seed as unassigned stay in the pool.\n' +
+        'Custom people not in the seed file keep their places.\n\n' +
+        'Continue?'
     );
     if (!ok) {
-      setHistoryActionStatus('Reapply cancelled.');
+      setHistoryActionStatus('Rebuild cancelled.');
       return;
     }
-    setHistoryActionStatus('Reapplying seed lists…');
+    setHistoryActionStatus('Rebuilding lists from seed file…');
     if (btn) btn.disabled = true;
     postJson({ action: 'reseed_unassigned' })
       .then((data) => {
         if (data.state) applyBundle(data.state);
         dirty = false;
-        const n = data.reseeded?.restoredPeople ?? 0;
-        const pairs = data.reseeded?.insertedPairs ?? 0;
+        const r = data.reseeded || {};
+        const inserted = r.insertedPairs ?? 0;
+        const people = r.restoredPeople ?? 0;
+        const total = r.membershipTotal ?? 0;
+        const seedPairs = r.seedPairs ?? 0;
         const msg =
-          pairs > 0
-            ? `Restored ${n} people (${pairs} placements) from the seed list. Check Board / Steering / Technical above.`
-            : 'Seed lists already match the database — nothing missing to restore. If a group still looks empty, hard-refresh the page (or Restore a history snapshot).';
-        setHistoryActionStatus(msg);
+          inserted > 0
+            ? `Rebuilt from seed: ${people} people, ${inserted} placements (seed had ${seedPairs}). Membership rows now: ${total}. Check Board (8) / Steering (17) / Technical (18) above.`
+            : `Rebuild reported 0 placements. Seed pairs available: ${seedPairs}. Groups: ${(r.allowedGroups || []).join(', ') || 'none'}.`;
+        setHistoryActionStatus(msg, inserted < 1);
         window.alert(msg);
         render();
         refreshHistoryQuiet();
+        // Jump to Project Board so the result is visible
+        const board = document.getElementById('project-board');
+        if (board) board.scrollIntoView({ behavior: 'smooth', block: 'start' });
       })
       .catch((err) => {
-        const msg = err.message || 'Could not reapply seed lists';
+        const msg = err.message || 'Could not rebuild lists from seed';
         setHistoryActionStatus(msg, true);
         window.alert(msg);
       })
       .finally(() => {
-        if (btn) btn.disabled = !canConfirmMembership;
+        if (btn) btn.disabled = false;
       });
   };
 
@@ -2107,8 +2118,8 @@
     if (reseedBtn) {
       reseedBtn.disabled = false;
       reseedBtn.title = canConfirmMembership
-        ? 'Put back any missing Board / Steering / Technical placements from the seed people list'
-        : 'Sign in as a membership confirmer to reapply seed lists';
+        ? 'Rebuild Board / Steering / Technical from the seed people file'
+        : 'Sign in as a membership confirmer to rebuild lists from seed';
     }
   };
 

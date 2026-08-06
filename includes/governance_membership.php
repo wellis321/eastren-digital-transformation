@@ -775,7 +775,7 @@ function governance_reseed_unassigned_from_seed(string $updatedBy): array
     if (!governance_can_confirm_membership()) {
         throw new RuntimeException('Only a membership confirmer can reseed unassigned people from the seed list');
     }
-    return governance_reapply_seed_placements($updatedBy, false);
+    return governance_rebuild_membership_from_seed($updatedBy);
 }
 
 /**
@@ -783,12 +783,20 @@ function governance_reseed_unassigned_from_seed(string $updatedBy): array
  * Does not remove people from lists (keeps live extras such as Business Group placements).
  * When $unassignedOnly is true, only people with zero current membership rows are considered.
  *
- * @return array{restoredPeople:int,insertedPairs:int}
+ * @return array{restoredPeople:int,insertedPairs:int,seedPairs:int,allowedGroups:list<string>}
  */
 function governance_reapply_seed_placements(string $updatedBy, bool $unassignedOnly = false): array
 {
     governance_ensure_table();
     $allowed = governance_group_ids();
+    $seedPairs = 0;
+    foreach (governance_seed_people() as $p) {
+        foreach ($p['groups'] as $gid) {
+            if (in_array((string)$gid, $allowed, true)) {
+                $seedPairs++;
+            }
+        }
+    }
 
     $currentPairs = [];
     $peopleWithAny = [];
@@ -808,48 +816,34 @@ function governance_reapply_seed_placements(string $updatedBy, bool $unassignedO
     );
     $peopleRestored = 0;
     $pairs = 0;
-    $startedTx = false;
-    try {
-        if (!$pdo->inTransaction()) {
-            $pdo->beginTransaction();
-            $startedTx = true;
+    // Avoid multi-statement transactions on shared hosts — commit each insert.
+    foreach (governance_seed_people() as $p) {
+        $pid = (string)$p['id'];
+        if ($unassignedOnly && isset($peopleWithAny[$pid])) {
+            continue;
         }
-        foreach (governance_seed_people() as $p) {
-            $pid = (string)$p['id'];
-            if ($unassignedOnly && isset($peopleWithAny[$pid])) {
+        $groups = is_array($p['groups'] ?? null) ? $p['groups'] : [];
+        $added = 0;
+        $sort = 0;
+        foreach ($groups as $gid) {
+            $gid = (string)$gid;
+            if ($gid === '' || !in_array($gid, $allowed, true)) {
                 continue;
             }
-            $groups = is_array($p['groups'] ?? null) ? $p['groups'] : [];
-            $added = 0;
-            $sort = 0;
-            foreach ($groups as $gid) {
-                $gid = (string)$gid;
-                if ($gid === '' || !in_array($gid, $allowed, true)) {
-                    continue;
-                }
-                $key = $pid . '|' . $gid;
-                if (isset($currentPairs[$key])) {
-                    $sort++;
-                    continue;
-                }
-                $ins->execute([$pid, $gid, $sort, $updatedBy]);
-                $currentPairs[$key] = true;
-                $pairs++;
-                $added++;
+            $key = $pid . '|' . $gid;
+            if (isset($currentPairs[$key])) {
                 $sort++;
+                continue;
             }
-            if ($added > 0) {
-                $peopleRestored++;
-            }
+            $ins->execute([$pid, $gid, $sort, $updatedBy]);
+            $currentPairs[$key] = true;
+            $pairs++;
+            $added++;
+            $sort++;
         }
-        if ($startedTx && $pdo->inTransaction()) {
-            $pdo->commit();
+        if ($added > 0) {
+            $peopleRestored++;
         }
-    } catch (Throwable $e) {
-        if ($startedTx && $pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
-        throw $e;
     }
 
     if ($pairs > 0) {
@@ -860,7 +854,107 @@ function governance_reapply_seed_placements(string $updatedBy, bool $unassignedO
         }
     }
 
-    return ['restoredPeople' => $peopleRestored, 'insertedPairs' => $pairs];
+    return [
+        'restoredPeople' => $peopleRestored,
+        'insertedPairs' => $pairs,
+        'seedPairs' => $seedPairs,
+        'allowedGroups' => array_values($allowed),
+        'membershipTotal' => governance_membership_pair_count(),
+    ];
+}
+
+/**
+ * Hard rebuild: replace membership for every seed person with exactly their seed groups.
+ * Custom people (not in the seed file) keep their placements. Use when lists are emptied.
+ *
+ * @return array{
+ *   restoredPeople:int,
+ *   insertedPairs:int,
+ *   removedPairs:int,
+ *   seedPairs:int,
+ *   allowedGroups:list<string>,
+ *   membershipTotal:int
+ * }
+ */
+function governance_rebuild_membership_from_seed(string $updatedBy): array
+{
+    if (!governance_can_confirm_membership()) {
+        throw new RuntimeException('Only a membership confirmer can rebuild membership from the seed list');
+    }
+    governance_ensure_table();
+    governance_seed_core_groups();
+    $allowed = governance_group_ids();
+    if ($allowed === []) {
+        throw new RuntimeException('No groups are available — cannot rebuild membership');
+    }
+
+    $seedPeople = governance_seed_people();
+    $seedIds = [];
+    $seedPairsPlan = [];
+    foreach ($seedPeople as $p) {
+        $pid = (string)$p['id'];
+        $seedIds[$pid] = true;
+        $sort = 0;
+        foreach ($p['groups'] as $gid) {
+            $gid = (string)$gid;
+            if ($gid === '' || !in_array($gid, $allowed, true)) {
+                continue;
+            }
+            $seedPairsPlan[] = [$pid, $gid, $sort];
+            $sort++;
+        }
+    }
+    if ($seedPairsPlan === []) {
+        throw new RuntimeException(
+            'Seed file has no group placements to apply (check assets/data/governance-people.json on the server)'
+        );
+    }
+
+    $pdo = db();
+    $removed = 0;
+    // Remove existing placements for seed people only (keeps pure custom people).
+    $ids = array_keys($seedIds);
+    foreach (array_chunk($ids, 50) as $chunk) {
+        $placeholders = implode(',', array_fill(0, count($chunk), '?'));
+        $stmt = $pdo->prepare("DELETE FROM governance_membership WHERE person_id IN ($placeholders)");
+        $stmt->execute($chunk);
+        $removed += $stmt->rowCount();
+    }
+
+    $ins = $pdo->prepare(
+        'INSERT INTO governance_membership
+          (person_id, group_id, vote, sort_order, needs_assessment, updated_by, updated_at)
+         VALUES (?, ?, \'unset\', ?, 0, ?, NOW())'
+    );
+    $inserted = 0;
+    $people = [];
+    foreach ($seedPairsPlan as [$pid, $gid, $sort]) {
+        $ins->execute([$pid, $gid, $sort, $updatedBy]);
+        $inserted++;
+        $people[$pid] = true;
+    }
+
+    try {
+        governance_capture_history('rebuild_seed', $updatedBy, true);
+    } catch (Throwable) {
+        // best-effort
+    }
+
+    $total = governance_membership_pair_count();
+    if ($total < count($seedPairsPlan)) {
+        throw new RuntimeException(
+            "Rebuild wrote $inserted pairs but membership table only has $total — database write may have failed"
+        );
+    }
+
+    return [
+        'restoredPeople' => count($people),
+        'insertedPairs' => $inserted,
+        'removedPairs' => $removed,
+        'seedPairs' => count($seedPairsPlan),
+        'allowedGroups' => array_values($allowed),
+        'membershipTotal' => $total,
+    ];
 }
 
 /**

@@ -283,13 +283,8 @@ try {
     }
 
     if ($action === 'reseed_unassigned') {
-        // Re-apply any missing seed person↔group pairs (does not remove live extras).
-        if (!governance_can_confirm_membership()) {
-            http_response_code(403);
-            echo json_encode(['error' => 'Only a membership confirmer can reapply seed placements']);
-            exit;
-        }
-        $result = governance_reapply_seed_placements($user, false);
+        // Hard rebuild from seed file — fixes emptied Board / Steering / Technical lists.
+        $result = governance_rebuild_membership_from_seed($user);
         echo json_encode([
             'ok' => true,
             'reseeded' => $result,
