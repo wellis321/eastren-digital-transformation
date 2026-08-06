@@ -282,7 +282,7 @@
         <p>A continuous timeline of membership composition — not of private opinions. Built to stay usable as the log grows. Open <a href="governance-membership.html#group-history">Group history</a> in the tool.</p>
     </div>
     <ul style="line-height:1.7;">
-        <li>Every meaningful membership change (add/move/remove person, create/delete group, reorder save, status change) can write a <strong>JSON snapshot</strong> of who sat where, with name and role as they were then.</li>
+        <li>Every meaningful membership or person-type change (add/move/remove person, create/delete group, reorder save, status change, create/rename/delete types, assign types) writes a <strong>JSON snapshot</strong> of who sat where, the person-types catalogue, and each person’s types — with name and role as they were then.</li>
         <li>Identical consecutive snapshots are skipped so the timeline stays readable.</li>
         <li>The first time history is empty, a <strong>starting baseline</strong> is pinned automatically.</li>
         <li><strong><a href="governance-membership.html#gov-history-checkpoint">Save checkpoint</a></strong> pins a milestone even if the lists have not changed — useful when a group is formally confirmed.</li>
@@ -290,7 +290,7 @@
         <li>The timeline does not dump every row at once: it loads in pages (with a count and <strong>Show older</strong>), and <strong>Milestones</strong> filters to checkpoints and the starting baseline so hundreds of routine changes stay manageable.</li>
         <li>Focus the open snapshot by <strong>lifecycle status</strong> (e.g. Active / stable only) or <strong>search</strong> by person or group name — the view and the snapshot PDF follow that focus.</li>
         <li>From a selected snapshot card (“As of … · reason · by …”), <strong>Export PDF</strong> produces the same formal membership document as the live export, dated to that point in time.</li>
-        <li><strong>Restore this composition</strong> (confirmers) replaces the live lists with that snapshot — use after a mistaken change. <strong>Reseed unassigned</strong> restores seed-file groups only for people who currently have no placement.</li>
+        <li><strong>Restore this composition</strong> (confirmers) replaces the live lists with that snapshot — and, for newer snapshots, also restores person types and who had which type, plus group status. Older timeline entries that only stored group membership still restore lists only. Use after a mistaken change. <strong>Rebuild lists from seed</strong> resets seed placements from the people file if needed.</li>
     </ul>
 
     <div class="section-header" id="exports" style="margin-top:2.25rem;">

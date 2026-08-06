@@ -528,6 +528,12 @@ function governance_create_attribute(string $label, string $createdBy): array
          VALUES (?, ?, 0, ?, ?, NOW())'
     )->execute([$attrId, $label, $maxSort + 10, $createdBy]);
 
+    try {
+        governance_capture_history('attribute_create', $createdBy);
+    } catch (Throwable $e) {
+        // Attribute saved; history is best-effort.
+    }
+
     return [
         'id' => $attrId,
         'label' => $label,
@@ -564,6 +570,12 @@ function governance_rename_attribute(string $attrId, string $label, string $upda
     }
 
     db()->prepare('UPDATE governance_attributes SET label = ? WHERE attr_id = ?')->execute([$label, $attrId]);
+
+    try {
+        governance_capture_history('attribute_rename', $updatedBy);
+    } catch (Throwable $e) {
+        // Rename saved; history is best-effort.
+    }
 
     return [
         'id' => $attrId,
@@ -619,6 +631,12 @@ function governance_delete_attribute(string $attrId, string $updatedBy = ''): vo
     } catch (Throwable $e) {
         $pdo->rollBack();
         throw $e;
+    }
+
+    try {
+        governance_capture_history('attribute_delete', $updatedBy !== '' ? $updatedBy : (string)($_SESSION['admin_user'] ?? 'user'));
+    } catch (Throwable $e) {
+        // Delete saved; history is best-effort.
     }
 }
 
@@ -971,9 +989,12 @@ function governance_rebuild_membership_from_seed(string $updatedBy): array
 }
 
 /**
- * Replace live membership with a history snapshot (confirmers only).
+ * Replace live membership (and, when present in the snapshot, person types / tags /
+ * group status) from a history entry. Confirmers only.
  *
- * @return array{historyId:int,insertedPairs:int}
+ * Older snapshots that only contain groups still restore membership as before.
+ *
+ * @return array{historyId:int,insertedPairs:int,restoredAttributes:bool,restoredPeopleTags:bool}
  */
 function governance_restore_from_history(int $historyId, string $updatedBy, bool $force = false): array
 {
@@ -984,13 +1005,15 @@ function governance_restore_from_history(int $historyId, string $updatedBy, bool
     if ($entry === null) {
         throw new InvalidArgumentException('History entry not found');
     }
-    $groups = $entry['snapshot']['groups'] ?? null;
+    $snapshot = $entry['snapshot'];
+    $groups = $snapshot['groups'] ?? null;
     if (!is_array($groups)) {
         throw new InvalidArgumentException('History snapshot is missing groups');
     }
 
     $allowed = governance_group_ids();
     $rows = [];
+    $statusByGroup = [];
     foreach ($groups as $g) {
         if (!is_array($g)) {
             continue;
@@ -998,6 +1021,9 @@ function governance_restore_from_history(int $historyId, string $updatedBy, bool
         $gid = (string)($g['id'] ?? '');
         if ($gid === '' || !in_array($gid, $allowed, true)) {
             continue;
+        }
+        if (isset($g['status'])) {
+            $statusByGroup[$gid] = governance_normalize_group_status((string)$g['status']);
         }
         $members = is_array($g['members'] ?? null) ? $g['members'] : [];
         $sort = 0;
@@ -1030,6 +1056,9 @@ function governance_restore_from_history(int $historyId, string $updatedBy, bool
         );
     }
 
+    $hasAttributes = is_array($snapshot['attributes'] ?? null) && count($snapshot['attributes']) > 0;
+    $hasPeople = is_array($snapshot['people'] ?? null) && count($snapshot['people']) > 0;
+
     $pdo = db();
     $existingNeeds = [];
     foreach ($pdo->query('SELECT person_id, group_id, needs_assessment FROM governance_membership')->fetchAll() as $row) {
@@ -1038,12 +1067,12 @@ function governance_restore_from_history(int $historyId, string $updatedBy, bool
 
     $pdo->beginTransaction();
     try {
-        $keepKeys = array_keys($rows);
-        $delVote = $pdo->prepare('DELETE FROM governance_votes WHERE person_id = ? AND group_id = ?');
         foreach ($pdo->query('SELECT person_id, group_id FROM governance_membership')->fetchAll() as $pair) {
             $key = $pair['person_id'] . '|' . $pair['group_id'];
             if (!isset($rows[$key])) {
-                $delVote->execute([(string)$pair['person_id'], (string)$pair['group_id']]);
+                $pdo->prepare(
+                    'DELETE FROM governance_votes WHERE person_id = ? AND group_id = ?'
+                )->execute([(string)$pair['person_id'], (string)$pair['group_id']]);
             }
         }
 
@@ -1058,6 +1087,111 @@ function governance_restore_from_history(int $historyId, string $updatedBy, bool
             $needs = !empty($existingNeeds[$key]) ? 1 : 0;
             $ins->execute([$pid, $gid, (int)$sort, $needs, $updatedBy]);
         }
+
+        foreach ($statusByGroup as $gid => $status) {
+            $pdo->prepare('UPDATE governance_groups SET status = ? WHERE group_id = ?')
+                ->execute([$status, $gid]);
+        }
+
+        if ($hasAttributes) {
+            $desired = [];
+            foreach ($snapshot['attributes'] as $a) {
+                if (!is_array($a)) {
+                    continue;
+                }
+                $aid = strtolower(trim((string)($a['id'] ?? '')));
+                $label = trim((string)($a['label'] ?? ''));
+                if ($aid === '' || $label === '') {
+                    continue;
+                }
+                $desired[$aid] = [
+                    'label' => substr($label, 0, 200),
+                    'isSeed' => !empty($a['isSeed']) ? 1 : 0,
+                    'sort' => (int)($a['sort'] ?? 100),
+                ];
+            }
+
+            $upsertAttr = $pdo->prepare(
+                'INSERT INTO governance_attributes (attr_id, label, is_seed, sort_order, created_by, created_at)
+                 VALUES (?, ?, ?, ?, ?, NOW())
+                 ON DUPLICATE KEY UPDATE
+                   label = VALUES(label),
+                   is_seed = VALUES(is_seed),
+                   sort_order = VALUES(sort_order)'
+            );
+            foreach ($desired as $aid => $meta) {
+                $upsertAttr->execute([$aid, $meta['label'], $meta['isSeed'], $meta['sort'], $updatedBy]);
+            }
+
+            $existingAttrs = $pdo->query('SELECT attr_id FROM governance_attributes')->fetchAll(PDO::FETCH_COLUMN);
+            $delAttr = $pdo->prepare('DELETE FROM governance_attributes WHERE attr_id = ?');
+            foreach ($existingAttrs as $aid) {
+                $aid = (string)$aid;
+                if (!isset($desired[$aid])) {
+                    $delAttr->execute([$aid]);
+                }
+            }
+        }
+
+        if ($hasPeople) {
+            $allowedTags = [];
+            if ($hasAttributes) {
+                foreach ($snapshot['attributes'] as $a) {
+                    if (!is_array($a)) {
+                        continue;
+                    }
+                    $aid = strtolower(trim((string)($a['id'] ?? '')));
+                    if ($aid !== '') {
+                        $allowedTags[$aid] = true;
+                    }
+                }
+            } else {
+                foreach (governance_attribute_labels() as $aid => $_label) {
+                    $allowedTags[$aid] = true;
+                }
+            }
+
+            $upsertPerson = $pdo->prepare(
+                'INSERT INTO governance_people (person_id, name, role, tags_json, created_by, created_at)
+                 VALUES (?, ?, ?, ?, ?, NOW())
+                 ON DUPLICATE KEY UPDATE
+                   name = VALUES(name),
+                   role = IF(VALUES(role) = \'\', role, VALUES(role)),
+                   tags_json = VALUES(tags_json)'
+            );
+
+            foreach ($snapshot['people'] as $p) {
+                if (!is_array($p)) {
+                    continue;
+                }
+                $pid = trim((string)($p['id'] ?? ''));
+                $name = trim((string)($p['name'] ?? ''));
+                if ($pid === '' || $name === '') {
+                    continue;
+                }
+                $role = trim((string)($p['role'] ?? ''));
+                $tags = [];
+                $seen = [];
+                if (is_array($p['tags'] ?? null)) {
+                    foreach ($p['tags'] as $t) {
+                        $tid = strtolower(trim((string)$t));
+                        if ($tid === '' || !isset($allowedTags[$tid]) || isset($seen[$tid])) {
+                            continue;
+                        }
+                        $seen[$tid] = true;
+                        $tags[] = $tid;
+                    }
+                }
+                $upsertPerson->execute([
+                    $pid,
+                    substr($name, 0, 200),
+                    substr($role, 0, 300),
+                    json_encode($tags, JSON_UNESCAPED_UNICODE),
+                    $updatedBy,
+                ]);
+            }
+        }
+
         $pdo->commit();
     } catch (Throwable $e) {
         $pdo->rollBack();
@@ -1066,7 +1200,12 @@ function governance_restore_from_history(int $historyId, string $updatedBy, bool
 
     governance_capture_history('restore', $updatedBy, true);
 
-    return ['historyId' => $historyId, 'insertedPairs' => $newCount];
+    return [
+        'historyId' => $historyId,
+        'insertedPairs' => $newCount,
+        'restoredAttributes' => $hasAttributes,
+        'restoredPeopleTags' => $hasPeople,
+    ];
 }
 
 function governance_load_bundle(): array
@@ -2117,14 +2256,25 @@ function governance_set_person_tags(string $personId, $tags, string $updatedBy):
            tags_json = VALUES(tags_json)'
     )->execute([$personId, $name, $role, json_encode($normalized, JSON_UNESCAPED_UNICODE), $updatedBy]);
 
+    try {
+        governance_capture_history('person_tags', $updatedBy);
+    } catch (Throwable $e) {
+        // Tags saved; history is best-effort.
+    }
+
     return ['personId' => $personId, 'tags' => $normalized];
 }
 
 /**
- * Build a membership-only snapshot (groups + who sat where, with name/role at that moment).
- * Votes are omitted so history stays about composition, not private opinions.
+ * Build a composition snapshot: groups + who sat where, person types catalogue,
+ * and each person's types. Votes / private reasons are omitted on purpose.
  *
- * @return array{groups: list<array{id:string,label:string,blurb:string,isCore:bool,members:list<array{id:string,name:string,role:string}>}>}
+ * @return array{
+ *   version:int,
+ *   groups: list<array{id:string,label:string,blurb:string,isCore:bool,status?:string,members:list<array{id:string,name:string,role:string}>}>,
+ *   attributes: list<array{id:string,label:string,isSeed:bool,sort:int}>,
+ *   people: list<array{id:string,name:string,role:string,tags:list<string>}>
+ * }
  */
 function governance_build_membership_snapshot(): array
 {
@@ -2138,10 +2288,21 @@ function governance_build_membership_snapshot(): array
         if (isset($byId[$p['id']])) {
             $byId[$p['id']]['name'] = $p['name'];
             $byId[$p['id']]['role'] = $p['role'] !== '' ? $p['role'] : ($byId[$p['id']]['role'] ?? '');
+            if (!empty($p['tagsOverride'])) {
+                $byId[$p['id']]['tags'] = $p['tags'];
+            }
         } else {
+            unset($p['tagsOverride']);
             $byId[$p['id']] = $p;
         }
     }
+    foreach ($byId as &$personRow) {
+        unset($personRow['tagsOverride']);
+        if (!isset($personRow['tags']) || !is_array($personRow['tags'])) {
+            $personRow['tags'] = [];
+        }
+    }
+    unset($personRow);
 
     $membersByGroup = [];
     $stmt = db()->query(
@@ -2173,7 +2334,6 @@ function governance_build_membership_snapshot(): array
             'members' => $membersByGroup[$gid] ?? [],
         ];
     }
-    // Include orphan membership groups not in meta (safety)
     foreach ($membersByGroup as $gid => $members) {
         if (isset($meta[$gid])) {
             continue;
@@ -2188,7 +2348,39 @@ function governance_build_membership_snapshot(): array
         ];
     }
 
-    return ['groups' => $groups];
+    $attributes = [];
+    foreach (governance_attribute_meta() as $id => $a) {
+        $attributes[] = [
+            'id' => $id,
+            'label' => (string)($a['label'] ?? $id),
+            'isSeed' => !empty($a['isSeed']),
+            'sort' => (int)($a['sort'] ?? 100),
+        ];
+    }
+
+    $people = [];
+    foreach ($byId as $p) {
+        $people[] = [
+            'id' => (string)$p['id'],
+            'name' => (string)$p['name'],
+            'role' => (string)($p['role'] ?? ''),
+            'tags' => array_values(array_filter(
+                is_array($p['tags'] ?? null) ? $p['tags'] : [],
+                static fn ($t) => is_string($t) && $t !== ''
+            )),
+        ];
+    }
+    usort(
+        $people,
+        static fn ($a, $b) => strcasecmp($a['name'], $b['name'])
+    );
+
+    return [
+        'version' => 2,
+        'groups' => $groups,
+        'attributes' => $attributes,
+        'people' => $people,
+    ];
 }
 
 /**

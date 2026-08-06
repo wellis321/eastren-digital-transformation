@@ -399,6 +399,14 @@ try {
         in_array('champion', $foundPerson['tags'] ?? [], true)
     );
 
+    $snap = governance_build_membership_snapshot();
+    assert_true('snapshot version 2', ($snap['version'] ?? 0) === 2);
+    assert_true('snapshot has attributes', is_array($snap['attributes'] ?? null) && count($snap['attributes']) >= 10);
+    assert_true('snapshot has people', is_array($snap['people'] ?? null) && count($snap['people']) >= 1);
+    $cap = governance_capture_history('checkpoint', 'test-admin', true);
+    assert_true('checkpoint id for attr restore', ($cap['id'] ?? 0) > 0);
+    $preRenameLabel = (string)(governance_attribute_meta()[$attr['id']]['label'] ?? '');
+
     $renamed = governance_rename_attribute($attr['id'], 'Renamed Change Agent', 'test-admin');
     assert_true('rename attribute', ($renamed['label'] ?? '') === 'Renamed Change Agent');
 
@@ -414,6 +422,31 @@ try {
     governance_delete_attribute($attr['id'], 'test-admin');
     $createdAttrIds = array_values(array_filter($createdAttrIds, static fn ($id) => $id !== $attr['id']));
     assert_true('custom attr deleted from catalog', !isset(governance_attribute_meta()[$attr['id']]));
+
+    $restored = governance_restore_from_history((int)$cap['id'], 'test-admin');
+    assert_true('restore reports attributes', !empty($restored['restoredAttributes']));
+    assert_true('restore reports people tags', !empty($restored['restoredPeopleTags']));
+    assert_true('custom attr restored from history', isset(governance_attribute_meta()[$attr['id']]));
+    assert_true(
+        'restored attr label is pre-rename',
+        (governance_attribute_meta()[$attr['id']]['label'] ?? '') === $preRenameLabel
+    );
+    $bRest = governance_load_bundle();
+    $foundAgain = null;
+    foreach ($bRest['people'] as $p) {
+        if (($p['id'] ?? '') === $added['personId']) {
+            $foundAgain = $p;
+            break;
+        }
+    }
+    assert_true(
+        'person tags restored from history',
+        is_array($foundAgain['tags'] ?? null) && in_array($attr['id'], $foundAgain['tags'], true)
+    );
+
+    governance_delete_attribute($attr['id'], 'test-admin');
+    $createdAttrIds = array_values(array_filter($createdAttrIds, static fn ($id) => $id !== $attr['id']));
+    assert_true('custom attr cleaned after restore test', !isset(governance_attribute_meta()[$attr['id']]));
 
     // ------------------------------------------------------------------
     // F. Votes (optional notes — private by default on set_vote, shareable)
