@@ -645,6 +645,30 @@
       .catch((err) => setStatus(err.message || 'Could not send suggestion', true));
   };
 
+  // Case/whitespace-insensitive lookup — catches "Alan Scott" vs "alan scott " duplicates.
+  const findDuplicateName = (value, existingNames) => {
+    const needle = value.trim().toLowerCase();
+    if (!needle) return null;
+    return existingNames.find((n) => n.trim().toLowerCase() === needle) || null;
+  };
+
+  // Live-warn under a name field as the user types, so duplicates get caught before
+  // they hit "Add" — the confirm() in each create function is the second, final check.
+  const wireDuplicateWarning = (inputId, warnId, getExistingNames, describeMatch) => {
+    const input = document.getElementById(inputId);
+    const warn = document.getElementById(warnId);
+    if (!input || !warn) return;
+    input.addEventListener('input', () => {
+      const match = findDuplicateName(input.value, getExistingNames());
+      if (match) {
+        warn.textContent = describeMatch(match);
+        warn.hidden = false;
+      } else {
+        warn.hidden = true;
+      }
+    });
+  };
+
   const addNewPerson = () => {
     if (!canShape) return;
     const nameInput = document.getElementById('gov-new-name');
@@ -655,6 +679,18 @@
     const groupId = groupSelect?.value || '';
     if (!name || !role || !groupId) {
       setStatus('Enter a name, job role, and group before adding', true);
+      return;
+    }
+    const dupe = findDuplicateName(name, people.map((p) => p.name));
+    if (
+      dupe &&
+      !confirm(
+        `A person named “${dupe}” already exists. Adding “${name}” will create a second, separate ` +
+          `entry — their votes, reasons, and person types won't carry over.\n\n` +
+          `If this is the same person, choose Cancel and use “Also on” from their existing card instead.\n\n` +
+          `Add “${name}” as a new, separate person anyway?`
+      )
+    ) {
       return;
     }
     setStatus('Adding person…');
@@ -668,6 +704,8 @@
         if (data.state) applyBundle(data.state);
         if (nameInput) nameInput.value = '';
         if (roleInput) roleInput.value = '';
+        const nameDupeWarn = document.getElementById('gov-new-name-dupe');
+        if (nameDupeWarn) nameDupeWarn.hidden = true;
         setStatus('Added — each signed-in user is asked for their own Yes / Maybe / No');
         render();
         const panel = document.getElementById(groupId);
@@ -687,6 +725,10 @@
       setStatus('Enter a name for the new group', true);
       return;
     }
+    const dupe = findDuplicateName(label, Object.values(groupMeta).map((g) => g.label));
+    if (dupe && !confirm(`A group named “${dupe}” already exists. Create “${label}” as a separate group anyway?`)) {
+      return;
+    }
     setStatus('Creating group…');
     postJson({
       action: 'create_group',
@@ -697,6 +739,8 @@
         if (data.state) applyBundle(data.state);
         if (labelInput) labelInput.value = '';
         if (blurbInput) blurbInput.value = '';
+        const labelDupeWarn = document.getElementById('gov-new-group-label-dupe');
+        if (labelDupeWarn) labelDupeWarn.hidden = true;
         const id = data.created?.groupId;
         setStatus(`Created “${data.created?.label || label}” — add people with Also on / Move to`);
         render();
@@ -1309,11 +1353,17 @@
       setStatus('Enter a name for the new person type', true);
       return;
     }
+    const dupe = findDuplicateName(label, Object.values(attributeMeta).map((a) => a.label));
+    if (dupe && !confirm(`A person type named “${dupe}” already exists. Create “${label}” as a separate type anyway?`)) {
+      return;
+    }
     setStatus('Creating person type…');
     postJson({ action: 'create_attribute', label })
       .then((data) => {
         if (data.state) applyBundle(data.state);
         if (labelInput) labelInput.value = '';
+        const attrDupeWarn = document.getElementById('gov-new-attr-label-dupe');
+        if (attrDupeWarn) attrDupeWarn.hidden = true;
         setStatus(`Created type “${data.created?.label || label}” — assign it on people with Edit types`);
         render();
       })
@@ -1596,6 +1646,25 @@
     if (action === 'rename-attr') renameAttribute(attrId);
     if (action === 'delete-attr') deleteAttribute(attrId);
   });
+
+  wireDuplicateWarning(
+    'gov-new-name',
+    'gov-new-name-dupe',
+    () => people.map((p) => p.name),
+    (match) => `⚠ “${match}” already exists. Use “Also on” from their existing card to add them to another group instead of creating a duplicate.`
+  );
+  wireDuplicateWarning(
+    'gov-new-group-label',
+    'gov-new-group-label-dupe',
+    () => Object.values(groupMeta).map((g) => g.label),
+    (match) => `⚠ A group named “${match}” already exists.`
+  );
+  wireDuplicateWarning(
+    'gov-new-attr-label',
+    'gov-new-attr-label-dupe',
+    () => Object.values(attributeMeta).map((a) => a.label),
+    (match) => `⚠ A person type named “${match}” already exists.`
+  );
 
   document.getElementById('gov-export')?.addEventListener('click', () => {
     const blob = new Blob(

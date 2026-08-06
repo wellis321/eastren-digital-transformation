@@ -3920,6 +3920,18 @@ tbody tr:nth-child(even):hover {
     gap: 0.65rem 0.75rem;
     align-items: end;
 }
+.gov-dupe-warning {
+    grid-column: 1 / -1;
+    margin: -0.3rem 0 0;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #7a3e00;
+    background: #fff7e6;
+    border: 1px solid #d97706;
+    border-radius: var(--radius-sm);
+}
 .gov-add-form label {
     display: flex;
     flex-direction: column;
