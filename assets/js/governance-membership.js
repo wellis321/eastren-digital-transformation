@@ -1951,14 +1951,20 @@
         backgroundColor: '#ffffff',
         scrollX: 0,
         scrollY: 0,
+        x: 0,
+        y: 0,
+        width: target.scrollWidth,
+        height: target.scrollHeight,
         windowWidth: target.scrollWidth || 720,
+        windowHeight: target.scrollHeight || 1000,
         onclone: (clonedDoc) => {
           const clonedRoot = clonedDoc.getElementById('gov-pdf-root');
           if (clonedRoot) {
+            // Keep position:absolute/left:0/top:0 from the stylesheet — that's what
+            // target.scrollWidth (below) was measured against. Forcing position:static
+            // here drops the root into normal flow inside the narrower, sidebar-offset
+            // .gov-layout-main column, so the capture ends up clipped and undersized.
             clonedRoot.style.opacity = '1';
-            clonedRoot.style.position = 'static';
-            clonedRoot.style.left = 'auto';
-            clonedRoot.style.top = 'auto';
             clonedRoot.style.zIndex = '1';
             clonedRoot.removeAttribute('hidden');
           }
