@@ -19,6 +19,17 @@ CREATE TABLE IF NOT EXISTS governance_people (
   person_id   VARCHAR(120) NOT NULL PRIMARY KEY,
   name        VARCHAR(200) NOT NULL,
   role        VARCHAR(300) NOT NULL DEFAULT '',
+  tags_json   TEXT         NULL,
+  created_by  VARCHAR(120) NOT NULL DEFAULT '',
+  created_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Person types (Champion, Decider, custom types). Seeded on first use from JSON defaults.
+CREATE TABLE IF NOT EXISTS governance_attributes (
+  attr_id     VARCHAR(80)  NOT NULL PRIMARY KEY,
+  label       VARCHAR(200) NOT NULL,
+  is_seed     TINYINT(1)   NOT NULL DEFAULT 0,
+  sort_order  INT          NOT NULL DEFAULT 100,
   created_by  VARCHAR(120) NOT NULL DEFAULT '',
   created_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

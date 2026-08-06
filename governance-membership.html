@@ -143,6 +143,7 @@
             <div class="gov-sidebar-jump" role="navigation" aria-label="Quick actions">
                 <a class="gov-sidebar-jump-btn" href="#add-person">Add someone</a>
                 <a class="gov-sidebar-jump-btn" href="#create-group">Add a group</a>
+                <a class="gov-sidebar-jump-btn" href="#manage-attributes">Person types</a>
                 <a class="gov-sidebar-jump-btn" href="#group-history">History</a>
             </div>
 
@@ -150,27 +151,28 @@
                 <h2 class="gov-sidebar-title">How to use this tool</h2>
                 <ol class="gov-setup-list">
                     <li><strong>Scan the roster</strong> under each group heading — that is the quick “who’s on this list” view.</li>
-                    <li><strong>Your mark</strong> — Yes / Maybe / No is your opinion only; one mark per person per group.</li>
+                    <li><strong>Filter by type</strong> — use the chips under Groups (Champion, Decider, Key stakeholder, and so on) to show only people with those attributes.</li>
+                    <li><strong>Your mark</strong> (optional) — Yes / Maybe / No is your private opinion on a person for a group. It is not required when someone is moved.</li>
                     <li><strong>Private reason</strong> — optional note under your mark explaining why (only you see it).</li>
                     <li><strong>Tallies</strong> — counts of Yes / Maybe / No are shared; individual marks stay private.</li>
-                    <li><strong>Wrong list?</strong> — open <em>Place on another group</em>: confirmers change the live list; others send a suggestion that stays tentative until accepted.</li>
+                    <li><strong>Wrong list?</strong> — open <em>Place on another group</em>: Lisa / William (confirmers) change the live list; everyone else sends a suggestion that stays tentative until accepted.</li>
                     <li><strong>× Remove</strong> — confirmers remove from the live list; others suggest a removal (person stays until accepted).</li>
                     <li><strong>New group</strong> — confirmers create a custom list below, then place people onto it.</li>
+                    <li><strong>Person types</strong> — create types under <em>Person types</em>; assign them on each person. Built-in types can be renamed but not deleted.</li>
                     <li><strong>History</strong> — membership changes are saved automatically. Open History for past compositions; use <em>Milestones</em> or <em>Show older</em> when the timeline grows; filter a snapshot by status or search a name; <em>Export PDF</em> on the selected card.</li>
-                    <li><strong>Group status</strong> — each list can be In development, Active / stable, Inactive, or Dissolved (confirmers only).</li>
+                    <li><strong>Group status</strong> — confirmers can mark a list Active / stable or In development (and change it again later). That does not stop anyone else suggesting moves.</li>
                 </ol>
                 <h3 class="gov-setup-sub">Please remember</h3>
                 <ul class="gov-setup-list">
-                    <li>If a yellow banner appears at the top of the site, open this page and give each new person your own Yes, Maybe, or No for their group.</li>
                     <li>When you use <em>Add someone</em> below, enter their name and job title only — do not put in email addresses or other personal details.</li>
-                    <li>This list helps us compare views; the Project Manager / Project Owner still confirms who attends meetings.</li>
+                    <li>Most people make suggestions; Lisa and William confirm the live membership lists and group status.</li>
                     <li><a href="governance-membership-guide.html">Full guide to this tool</a> — features, history, exports, privacy, permissions, and how to suggest improvements.</li>
                 </ul>
             </section>
 
             <section class="gov-sidebar-card gov-sidebar-card--invert" id="add-person">
                 <h2 class="gov-sidebar-title">Add someone</h2>
-                <p class="gov-section-lede">Name + job on a list; others get a banner until they mark.</p>
+                <p class="gov-section-lede">Name + job on a list. Confirmers place them live; others’ adds still need confirmation.</p>
                 <div class="gov-add-form gov-add-form--stack">
                     <label>
                         <span>Name</span>
@@ -208,13 +210,25 @@
                     <button type="button" class="gov-btn" id="gov-create-group">Create group</button>
                 </div>
             </section>
+
+            <section class="gov-sidebar-card gov-sidebar-card--invert" id="manage-attributes">
+                <h2 class="gov-sidebar-title">Person types</h2>
+                <p class="gov-section-lede">Champion, Decider, Key stakeholder, and any types you add (e.g. Change agent). Assign them on each person in the lists.</p>
+                <div id="gov-attr-manage-list" class="gov-attr-manage-list" aria-live="polite"></div>
+                <div class="gov-add-form gov-add-form--stack" style="margin-top:0.85rem;">
+                    <label>
+                        <span>New type name</span>
+                        <input type="text" id="gov-new-attr-label" maxlength="200" placeholder="e.g. Change agent">
+                    </label>
+                    <button type="button" class="gov-btn" id="gov-create-attr">Create type</button>
+                </div>
+            </section>
         </aside>
 
         <div class="gov-layout-main">
             <nav class="gov-jump gov-jump--sticky" id="gov-jump" aria-label="Jump to group">
                 <p class="gov-jump-label">Groups</p>
                 <div class="gov-jump-links" id="gov-jump-links">
-                    <a href="#awaiting">Awaiting</a>
                     <a href="#project-board">Project Board</a>
                     <a href="#steering-group">Steering Group</a>
                     <a href="#technical-group">Technical Group</a>
@@ -222,6 +236,13 @@
                     <a href="#pool">Unassigned</a>
                 </div>
             </nav>
+
+            <div class="gov-attr-filter" id="gov-attr-filter" hidden>
+                <p class="gov-jump-label">Filter by person type</p>
+                <p class="gov-attr-filter-lede">From the stakeholder list — Champion, Decider, Key / Primary / Secondary, and similar. Select one or more to narrow every group and the pool.</p>
+                <div class="gov-attr-filter-chips" id="gov-attr-filter-chips" role="group" aria-label="Person type filters"></div>
+                <p class="gov-attr-filter-status" id="gov-attr-filter-status" hidden></p>
+            </div>
 
             <div class="gov-toolbar" id="gov-exports" style="margin-top:0.75rem;">
                 <p class="gov-toolbar-note" id="gov-status" role="status">Loading…</p>
@@ -233,14 +254,6 @@
                 </div>
             </div>
             <div id="gov-pdf-root" class="gov-pdf-root" hidden aria-hidden="true"></div>
-
-            <section class="gov-awaiting-panel" id="awaiting">
-                <div class="gov-awaiting-row">
-                    <h2 class="gov-section-title">Awaiting your assessment</h2>
-                    <p class="gov-section-lede">New additions you have not yet marked.</p>
-                    <div id="gov-awaiting-body" class="gov-awaiting-body"></div>
-                </div>
-            </section>
 
             <div id="gov-groups" class="gov-groups"></div>
 
@@ -258,11 +271,11 @@
                             Continuous timeline of who sat on each group. Changes are recorded automatically;
                             use a checkpoint to pin a milestone. Open an entry to export PDF or
                             <strong>Restore this composition</strong> if live lists were changed by mistake.
-                            <strong>Reseed unassigned</strong> puts people with no group back onto their seed-list groups.
+                            <strong>Reapply seed lists</strong> puts back any missing Board / Steering / Technical placements from the original people file (keeps extras you added later).
                         </p>
                     </div>
                     <div class="gov-history-head-actions">
-                        <button type="button" class="gov-btn gov-btn--muted" id="gov-history-reseed" title="For people with no group, re-apply placements from the seed list">Reseed unassigned</button>
+                        <button type="button" class="gov-btn gov-btn--muted" id="gov-history-reseed" title="Put back any missing Board / Steering / Technical placements from the seed people list">Reapply seed lists</button>
                         <button type="button" class="gov-btn" id="gov-history-checkpoint">Save checkpoint</button>
                     </div>
                 </div>

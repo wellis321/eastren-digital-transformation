@@ -13,6 +13,9 @@
   const statusEl = document.getElementById('gov-status');
   const awaitingEl = document.getElementById('gov-awaiting-body');
   const jumpEl = document.querySelector('.gov-jump-links') || document.querySelector('.gov-jump');
+  const attrFilterEl = document.getElementById('gov-attr-filter');
+  const attrChipsEl = document.getElementById('gov-attr-filter-chips');
+  const attrStatusEl = document.getElementById('gov-attr-filter-status');
 
   if (!groupsEl) return;
 
@@ -66,6 +69,22 @@
   let selectedHistoryEntry = null;
   let snapshotStatusFilter = 'all';
   let snapshotSearchQuery = '';
+  let attributeLabels = {};
+  /** @type {Record<string, {id:string,label:string,isSeed:boolean,sort:number}>} */
+  let attributeMeta = {};
+  /** @type {Set<string>} */
+  let activeTagFilters = new Set();
+
+  const orderedAttributeIds = () => {
+    const ids = Object.keys(attributeMeta);
+    if (!ids.length) return Object.keys(attributeLabels);
+    return ids.sort((a, b) => {
+      const sa = attributeMeta[a]?.sort ?? 9999;
+      const sb = attributeMeta[b]?.sort ?? 9999;
+      if (sa !== sb) return sa - sb;
+      return (attributeMeta[a]?.label || a).localeCompare(attributeMeta[b]?.label || b, 'en-GB');
+    });
+  };
 
   const HISTORY_REASONS = {
     membership_save: 'Membership updated',
@@ -79,7 +98,8 @@
     baseline: 'Starting baseline',
     group_status: 'Group status changed',
     restore: 'Restored from history',
-    reseed_unassigned: 'Reseeded unassigned from seed list',
+    reseed_unassigned: 'Reapplied seed list placements',
+    reapply_seed: 'Reapplied seed list placements',
   };
 
   const setStatus = (msg, isError) => {
@@ -89,6 +109,66 @@
   };
 
   const personById = (id) => people.find((p) => p.id === id);
+
+  const personTags = (person) =>
+    Array.isArray(person?.tags) ? person.tags.filter((t) => typeof t === 'string' && t) : [];
+
+  const tagLabel = (id) => attributeLabels[id] || id;
+
+  const personMatchesTagFilter = (person) => {
+    if (!activeTagFilters.size) return true;
+    const tags = personTags(person);
+    for (const t of activeTagFilters) {
+      if (tags.includes(t)) return true;
+    }
+    return false;
+  };
+
+  const filteredPeople = (list) => list.filter(personMatchesTagFilter);
+
+  const tagsInUse = () => {
+    const counts = new Map();
+    for (const p of people) {
+      for (const t of personTags(p)) {
+        counts.set(t, (counts.get(t) || 0) + 1);
+      }
+    }
+    return counts;
+  };
+
+  const renderTagBadges = (person) => {
+    const tags = personTags(person);
+    if (!tags.length) return '';
+    return `<ul class="gov-person-tags" aria-label="Person types">${tags
+      .map((t) => {
+        const on = activeTagFilters.has(t) ? ' is-active' : '';
+        return `<li><button type="button" class="gov-person-tag${on}" data-action="toggle-tag" data-tag="${esc(t)}" title="Filter by ${esc(tagLabel(t))}">${esc(tagLabel(t))}</button></li>`;
+      })
+      .join('')}</ul>`;
+  };
+
+  const renderPersonTagEditor = (person) => {
+    if (!canShape) return '';
+    const tags = new Set(personTags(person));
+    const ids = orderedAttributeIds();
+    if (!ids.length) {
+      return `<details class="gov-person-tag-edit">
+        <summary>Edit types</summary>
+        <p class="gov-place-note">No person types yet — create one under Person types in the sidebar.</p>
+      </details>`;
+    }
+    const checks = ids
+      .map((id) => {
+        const checked = tags.has(id) ? ' checked' : '';
+        return `<label class="gov-tag-check"><input type="checkbox" value="${esc(id)}"${checked}> ${esc(tagLabel(id))}</label>`;
+      })
+      .join('');
+    return `<details class="gov-person-tag-edit">
+      <summary>Edit types</summary>
+      <div class="gov-tag-check-grid" data-tag-editor="${esc(person.id)}">${checks}</div>
+      <button type="button" class="gov-btn gov-btn--muted" data-action="save-person-tags" data-id="${esc(person.id)}">Save types</button>
+    </details>`;
+  };
 
   const groupsFor = (person) => {
     if (dbInitialized && state.membership && Object.keys(state.membership).length) {
@@ -196,6 +276,17 @@
     proposals = Array.isArray(bundle.proposals) ? bundle.proposals : [];
     if (bundle.groupStatuses && typeof bundle.groupStatuses === 'object' && !Array.isArray(bundle.groupStatuses)) {
       groupStatusLabels = bundle.groupStatuses;
+    }
+    if (bundle.attributeLabels && typeof bundle.attributeLabels === 'object' && !Array.isArray(bundle.attributeLabels)) {
+      attributeLabels = bundle.attributeLabels;
+    }
+    if (bundle.attributes && typeof bundle.attributes === 'object' && !Array.isArray(bundle.attributes)) {
+      attributeMeta = bundle.attributes;
+      const fromMeta = {};
+      Object.keys(attributeMeta).forEach((id) => {
+        fromMeta[id] = attributeMeta[id].label || id;
+      });
+      attributeLabels = { ...attributeLabels, ...fromMeta };
     }
     currentUser = bundle.currentUser || currentUser;
     dbInitialized = !!bundle.dbInitialized || Object.keys(state.membership).length > 0;
@@ -675,9 +766,6 @@
   const renderRow = (person, groupId) => {
     const vote = getMyVote(person.id, groupId);
     const voteDisabled = canVote ? '' : ' disabled';
-    const awaiting = needsKey(person.id, groupId)
-      ? '<span class="gov-mark-needed" title="You have not yet given Yes, Maybe, or No for this person on this group">Your mark needed</span>'
-      : '';
     const prop = proposalForPersonGroup(person.id, groupId);
     const tentativeRemove =
       prop && (prop.action === 'remove' || (prop.action === 'move' && prop.fromGroupId === groupId));
@@ -705,11 +793,12 @@
         <div class="gov-person-text">
           <div class="gov-person-line">
             <strong class="gov-person-name">${esc(person.name)}</strong>
-            ${awaiting}
             ${tentativeBadge}
             ${renderTallyCompact(person.id, groupId)}
           </div>
           <span class="gov-person-role">${esc(person.role || 'Role not recorded')}</span>
+          ${renderTagBadges(person)}
+          ${renderPersonTagEditor(person)}
           ${alsoOn}
           ${prop ? `<p class="gov-proposal-meta">Suggested by ${esc(prop.proposedBy)}</p>${renderProposalActions(prop)}` : ''}
           ${renderPlaceControls(person, groupId)}
@@ -754,11 +843,11 @@
 
   const renderRoster = (groupId, peopleList) => {
     const pendingAdds = proposalsForGroup(groupId).filter((p) => p.action === 'add' || p.action === 'move');
-    if (!peopleList.length && !pendingAdds.length) return '';
-    const memberChips = peopleList
+    const visible = filteredPeople(peopleList);
+    if (!visible.length && !pendingAdds.length) return '';
+    const memberChips = visible
       .map((p) => {
         const vote = getMyVote(p.id, groupId);
-        const pending = needsKey(p.id, groupId) ? ' gov-roster-chip--pending' : '';
         const prop = proposalForPersonGroup(p.id, groupId);
         const tentative =
           prop &&
@@ -773,7 +862,7 @@
               : vote === 'no'
                 ? ' gov-roster-chip--no'
                 : '';
-        return `<li><a class="gov-roster-chip${voteClass}${pending}${tentative}" href="#member-${esc(groupId)}-${esc(p.id)}">${esc(p.name)}</a></li>`;
+        return `<li><a class="gov-roster-chip${voteClass}${tentative}" href="#member-${esc(groupId)}-${esc(p.id)}">${esc(p.name)}</a></li>`;
       })
       .join('');
     const addChips = pendingAdds
@@ -796,19 +885,27 @@
     const ids = state.order[groupId] || sortedIdsForGroup(groupId);
     state.order[groupId] = ids;
     const members = ids.map((id) => personById(id)).filter(Boolean);
+    const visibleMembers = filteredPeople(members);
     const groupProps = proposalsForGroup(groupId);
     const pendingAdds = groupProps.filter((p) => p.action === 'add' || p.action === 'move');
-    const rows = members.map((p) => renderRow(p, groupId)).join('');
+    const rows = visibleMembers.map((p) => renderRow(p, groupId)).join('');
     const tentativeRows = pendingAdds.map(renderTentativeAddRow).join('');
     const count = members.length;
+    const visibleCount = visibleMembers.length;
     const suggestNote = pendingAdds.length
       ? ` · ${pendingAdds.length} suggested`
       : '';
+    const filterNote =
+      activeTagFilters.size && visibleCount !== count
+        ? ` · showing ${visibleCount}`
+        : '';
     const countLabel = count === 1 ? '1 person' : `${count} people`;
     const empty =
       !ids.length && !pendingAdds.length
         ? `<p class="gov-empty">No members yet — add someone, move them here, or use the unassigned pool.</p>`
-        : '';
+        : activeTagFilters.size && !visibleMembers.length && ids.length
+          ? `<p class="gov-empty">No members match the selected person type${activeTagFilters.size > 1 ? 's' : ''}.</p>`
+          : '';
     const tools = [];
     if (canVote) {
       tools.push(
@@ -844,13 +941,13 @@
       : '';
     const toolsHtml = tools.length ? `<div class="gov-group-tools">${tools.join('')}</div>` : '';
     const listHtml =
-      members.length || pendingAdds.length
-        ? `<h3 class="gov-assess-heading">Assess &amp; place</h3><ul class="gov-person-list">${rows}${tentativeRows}</ul>`
+      visibleMembers.length || pendingAdds.length
+        ? `<h3 class="gov-assess-heading">Members</h3><ul class="gov-person-list">${rows}${tentativeRows}</ul>`
         : '';
 
     return `<section class="gov-group-panel${customClass}${dissolvedClass}" id="${esc(groupId)}">
       <header class="gov-group-head">
-        <p class="gov-group-kicker">${esc(countLabel)}${esc(suggestNote)}${customBadge}${statusBadge}</p>
+        <p class="gov-group-kicker">${esc(countLabel)}${esc(filterNote)}${esc(suggestNote)}${customBadge}${statusBadge}</p>
         <h2 class="gov-group-title">${esc(meta.label || groupId)}</h2>
         ${meta.blurb ? `<p class="gov-group-blurb">${esc(meta.blurb)}</p>` : ''}
         <div class="gov-group-actions">
@@ -865,31 +962,15 @@
   };
 
   const renderAwaiting = () => {
+    // Assessment queue retired — panel removed from the page.
     if (!awaitingEl) return;
-    if (!needsAssessment.length) {
-      awaitingEl.innerHTML = `<span class="gov-awaiting-status">You have no new people left to assess.</span>`;
-      return;
-    }
-    awaitingEl.innerHTML = `<ul class="gov-awaiting-list">${needsAssessment
-      .map(
-        (n) => `<li>
-          <strong>${esc(n.name)}</strong>
-          <span class="gov-person-role">${esc(n.role || '')}</span>
-          <span class="gov-group-badge">${esc(n.groupLabel || n.groupId)}</span>
-          <a href="#${esc(n.groupId)}">Assess</a>
-        </li>`
-      )
-      .join('')}</ul>`;
+    awaitingEl.innerHTML = '';
   };
 
   const renderJump = () => {
     if (!jumpEl) return;
-    const pending = needsAssessment.length;
-    const awaitingLabel =
-      pending > 0 ? `Awaiting <span class="gov-jump-count">${pending}</span>` : 'Awaiting';
     const poolCount = unassignedPeople().length;
     const links = [
-      `<a href="#awaiting">${awaitingLabel}</a>`,
       ...groupOrder.map((g) => {
         const n = membersForGroup(g).length;
         const st = groupMeta[g]?.status || 'development';
@@ -923,9 +1004,14 @@
 
   const renderPool = () => {
     if (!poolEl) return;
-    const list = unassignedPeople();
-    if (!list.length) {
+    const allUnassigned = unassignedPeople();
+    const list = filteredPeople(allUnassigned);
+    if (!allUnassigned.length) {
       poolEl.innerHTML = `<p class="gov-empty">Everyone is assigned to at least one group.</p>`;
+      return;
+    }
+    if (!list.length) {
+      poolEl.innerHTML = `<p class="gov-empty">No unassigned people match the selected person type${activeTagFilters.size > 1 ? 's' : ''}.</p>`;
       return;
     }
     const groupOpts = groupOrder
@@ -933,17 +1019,20 @@
       .join('');
     poolEl.innerHTML = `<ul class="gov-pool-list">${list
       .map((p) => {
-    const add = canShape || canPropose
-      ? `<div class="gov-pool-add">
+        const add =
+          canShape || canPropose
+            ? `<div class="gov-pool-add">
             <label class="visually-hidden" for="add-${esc(p.id)}">Add ${esc(p.name)} to group</label>
             <select id="add-${esc(p.id)}" data-add-select="${esc(p.id)}">${groupOpts}</select>
             <button type="button" class="gov-btn" data-action="add" data-id="${esc(p.id)}">${canShape ? 'Add' : 'Suggest add'}</button>
           </div>`
-      : '';
+            : '';
         return `<li class="gov-pool-row">
           <div>
             <strong>${esc(p.name)}</strong>
             <span class="gov-person-role">${esc(p.role || 'Role not recorded')}</span>
+            ${renderTagBadges(p)}
+            ${renderPersonTagEditor(p)}
           </div>
           ${add}
         </li>`;
@@ -951,11 +1040,181 @@
       .join('')}</ul>`;
   };
 
+  const renderAttrFilter = () => {
+    if (!attrFilterEl || !attrChipsEl) return;
+    const counts = tagsInUse();
+    if (!counts.size && !Object.keys(attributeMeta).length) {
+      attrFilterEl.hidden = true;
+      return;
+    }
+    attrFilterEl.hidden = false;
+    const ordered = orderedAttributeIds().filter((id) => counts.has(id));
+    for (const id of counts.keys()) {
+      if (!ordered.includes(id)) ordered.push(id);
+    }
+    const clearOn = activeTagFilters.size === 0 ? ' is-active' : '';
+    attrChipsEl.innerHTML = [
+      `<button type="button" class="gov-attr-chip${clearOn}" data-action="clear-tag-filters" aria-pressed="${
+        activeTagFilters.size === 0
+      }">All</button>`,
+      ...ordered.map((id) => {
+        const on = activeTagFilters.has(id) ? ' is-active' : '';
+        const n = counts.get(id) || 0;
+        return `<button type="button" class="gov-attr-chip${on}" data-action="toggle-tag" data-tag="${esc(
+          id
+        )}" aria-pressed="${activeTagFilters.has(id)}">${esc(tagLabel(id))} <span class="gov-jump-count">${n}</span></button>`;
+      }),
+    ].join('');
+    if (attrStatusEl) {
+      if (!activeTagFilters.size) {
+        attrStatusEl.hidden = true;
+        attrStatusEl.textContent = '';
+      } else {
+        const match = people.filter(personMatchesTagFilter).length;
+        attrStatusEl.hidden = false;
+        attrStatusEl.textContent = `Showing ${match} of ${people.length} people (match any selected type).`;
+      }
+    }
+  };
+
+  const renderAttrManageList = () => {
+    const listEl = document.getElementById('gov-attr-manage-list');
+    const createBtn = document.getElementById('gov-create-attr');
+    const labelInput = document.getElementById('gov-new-attr-label');
+    if (!listEl) return;
+    if (createBtn) createBtn.disabled = !canShape;
+    if (labelInput) labelInput.disabled = !canShape;
+    const ids = orderedAttributeIds();
+    if (!ids.length) {
+      listEl.innerHTML = `<p class="gov-place-note">${canShape ? 'No types yet — create one below.' : 'No person types loaded.'}</p>`;
+      return;
+    }
+    const counts = tagsInUse();
+    listEl.innerHTML = `<ul class="gov-attr-manage-ul">${ids
+      .map((id) => {
+        const meta = attributeMeta[id] || { label: tagLabel(id), isSeed: false };
+        const n = counts.get(id) || 0;
+        const badge = meta.isSeed ? '<span class="gov-group-badge">Built-in</span>' : '<span class="gov-group-badge">Custom</span>';
+        const rename = canShape
+          ? `<button type="button" class="gov-icon-btn" data-action="rename-attr" data-attr="${esc(id)}" title="Rename" aria-label="Rename ${esc(meta.label)}">✎</button>`
+          : '';
+        const del =
+          canShape && !meta.isSeed
+            ? `<button type="button" class="gov-icon-btn gov-icon-btn--danger" data-action="delete-attr" data-attr="${esc(id)}" title="Delete type" aria-label="Delete ${esc(meta.label)}">×</button>`
+            : '';
+        return `<li class="gov-attr-manage-row">
+          <div class="gov-attr-manage-main">
+            <strong>${esc(meta.label || id)}</strong>
+            ${badge}
+            <span class="gov-jump-count">${n}</span>
+          </div>
+          <div class="gov-attr-manage-actions">${rename}${del}</div>
+        </li>`;
+      })
+      .join('')}</ul>`;
+  };
+
+  const createAttribute = () => {
+    if (!canShape) return;
+    const labelInput = document.getElementById('gov-new-attr-label');
+    const label = (labelInput?.value || '').trim();
+    if (!label) {
+      setStatus('Enter a name for the new person type', true);
+      return;
+    }
+    setStatus('Creating person type…');
+    postJson({ action: 'create_attribute', label })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        if (labelInput) labelInput.value = '';
+        setStatus(`Created type “${data.created?.label || label}” — assign it on people with Edit types`);
+        render();
+      })
+      .catch((err) => setStatus(err.message || 'Could not create type', true));
+  };
+
+  const renameAttribute = (attrId) => {
+    if (!canShape || !attrId) return;
+    const current = attributeMeta[attrId]?.label || tagLabel(attrId);
+    const next = prompt(`Rename person type “${current}”:`, current);
+    if (next === null) return;
+    const label = next.trim();
+    if (!label) {
+      setStatus('Name cannot be empty', true);
+      return;
+    }
+    if (label === current) return;
+    setStatus('Renaming…');
+    postJson({ action: 'rename_attribute', attrId, label })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        setStatus(`Renamed to “${data.updated?.label || label}”`);
+        render();
+      })
+      .catch((err) => setStatus(err.message || 'Could not rename type', true));
+  };
+
+  const deleteAttribute = (attrId) => {
+    if (!canShape || !attrId) return;
+    const meta = attributeMeta[attrId];
+    if (!meta || meta.isSeed) {
+      setStatus('Built-in person types cannot be deleted', true);
+      return;
+    }
+    const n = tagsInUse().get(attrId) || 0;
+    if (
+      !confirm(
+        `Delete type “${meta.label}”?${n ? ` It will be removed from ${n} people.` : ''} This cannot be undone.`
+      )
+    ) {
+      return;
+    }
+    setStatus('Deleting type…');
+    postJson({ action: 'delete_attribute', attrId })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        activeTagFilters.delete(attrId);
+        setStatus(`Deleted “${meta.label}”`);
+        render();
+      })
+      .catch((err) => setStatus(err.message || 'Could not delete type', true));
+  };
+
+  const savePersonTags = (personId) => {
+    if (!canShape || !personId) return;
+    const grid = document.querySelector(`[data-tag-editor="${CSS.escape(personId)}"]`);
+    if (!grid) return;
+    const tags = Array.from(grid.querySelectorAll('input[type="checkbox"]:checked')).map((el) => el.value);
+    setStatus('Saving types…');
+    postJson({ action: 'set_person_tags', personId, tags })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        setStatus('Person types updated');
+        render();
+      })
+      .catch((err) => setStatus(err.message || 'Could not save types', true));
+  };
+
+  const toggleTagFilter = (tag) => {
+    if (!tag) return;
+    if (activeTagFilters.has(tag)) activeTagFilters.delete(tag);
+    else activeTagFilters.add(tag);
+    render();
+  };
+
+  const clearTagFilters = () => {
+    if (!activeTagFilters.size) return;
+    activeTagFilters.clear();
+    render();
+  };
+
   const render = () => {
     groupsEl.innerHTML = groupOrder.map(renderGroup).join('');
     renderAwaiting();
     renderPool();
     renderJump();
+    renderAttrFilter();
+    renderAttrManageList();
     syncGroupSelects();
     const resetBtn = document.getElementById('gov-reset-all');
     const addBtn = document.getElementById('gov-add-person');
@@ -964,13 +1223,11 @@
     if (addBtn) addBtn.disabled = !canShape;
     if (createBtn) createBtn.disabled = !canShape;
     if (!dirty) {
-      const pending = needsAssessment.length;
-      const pendingNote = pending ? ` · ${pending} awaiting your mark` : '';
       const who = currentUser.label ? ` as ${currentUser.label}` : '';
       setStatus(
         canVote
-          ? `Ready — one opinion per person${who}${pendingNote}`
-          : `Signed in required to mark opinions${pendingNote}`
+          ? `Ready${who} — move people freely; Yes / Maybe / No is optional`
+          : `Signed in required to mark opinions`
       );
     }
   };
@@ -998,6 +1255,14 @@
     const action = btn.getAttribute('data-action');
     const id = btn.getAttribute('data-id');
     const group = btn.getAttribute('data-group');
+    if (action === 'toggle-tag') {
+      toggleTagFilter(btn.getAttribute('data-tag'));
+      return;
+    }
+    if (action === 'save-person-tags') {
+      savePersonTags(id);
+      return;
+    }
     if (action === 'vote') setVote(id, group, btn.getAttribute('data-vote'));
     if (action === 'remove') removeFromGroup(id, group);
     if (action === 'reset-group') resetGroupMarks(group);
@@ -1012,6 +1277,15 @@
       const toGroupId = select?.value || '';
       placePerson(id, toGroupId, action === 'move-to' ? 'move' : 'add', group);
     }
+  });
+
+  attrFilterEl?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    e.preventDefault();
+    const action = btn.getAttribute('data-action');
+    if (action === 'clear-tag-filters') clearTagFilters();
+    if (action === 'toggle-tag') toggleTagFilter(btn.getAttribute('data-tag'));
   });
 
   groupsEl.addEventListener('change', (e) => {
@@ -1034,6 +1308,18 @@
   });
 
   document.getElementById('gov-pool-body')?.addEventListener('click', (e) => {
+    const tagBtn = e.target.closest('[data-action="toggle-tag"]');
+    if (tagBtn) {
+      e.preventDefault();
+      toggleTagFilter(tagBtn.getAttribute('data-tag'));
+      return;
+    }
+    const saveBtn = e.target.closest('[data-action="save-person-tags"]');
+    if (saveBtn) {
+      e.preventDefault();
+      savePersonTags(saveBtn.getAttribute('data-id'));
+      return;
+    }
     const btn = e.target.closest('[data-action="add"]');
     if (!btn || (!canShape && !canPropose)) return;
     const id = btn.getAttribute('data-id');
@@ -1049,6 +1335,28 @@
   document.getElementById('gov-create-group')?.addEventListener('click', (e) => {
     e.preventDefault();
     createGroup();
+  });
+
+  document.getElementById('gov-create-attr')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    createAttribute();
+  });
+
+  document.getElementById('gov-new-attr-label')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      createAttribute();
+    }
+  });
+
+  document.getElementById('gov-attr-manage-list')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn || !canShape) return;
+    e.preventDefault();
+    const action = btn.getAttribute('data-action');
+    const attrId = btn.getAttribute('data-attr');
+    if (action === 'rename-attr') renameAttribute(attrId);
+    if (action === 'delete-attr') deleteAttribute(attrId);
   });
 
   document.getElementById('gov-export')?.addEventListener('click', () => {
@@ -1544,14 +1852,17 @@
 
   const reseedUnassignedFromSeed = () => {
     if (!canConfirmMembership) {
-      setStatus('Only a membership confirmer can reseed unassigned people', true);
+      setStatus('Only a membership confirmer can reapply seed lists', true);
       return;
     }
-    const ok = confirm(
-      'Place unassigned people back onto the groups listed in the seed file?\n\nPeople who are already on a list are left unchanged. Use this after an accidental wipe when history does not have a full snapshot.'
-    );
-    if (!ok) return;
-    setStatus('Reseeding unassigned people…');
+    if (
+      !confirm(
+        'Reapply Board / Steering / Technical placements from the seed people list?\n\nMissing people are put back. Extra live placements (e.g. Business Group) are kept.'
+      )
+    ) {
+      return;
+    }
+    setStatus('Reapplying seed lists…');
     const btn = document.getElementById('gov-history-reseed');
     if (btn) btn.disabled = true;
     postJson({ action: 'reseed_unassigned' })
@@ -1561,16 +1872,16 @@
         const n = data.reseeded?.restoredPeople ?? 0;
         const pairs = data.reseeded?.insertedPairs ?? 0;
         setStatus(
-          n
-            ? `Reseeded ${n} people (${pairs} placements) from the seed list`
-            : 'No unassigned seed people needed restoring'
+          pairs > 0
+            ? `Restored ${n} people (${pairs} placements) from the seed list`
+            : 'Seed lists already match — nothing missing to restore'
         );
         render();
         refreshHistoryQuiet();
       })
-      .catch((err) => setStatus(err.message || 'Could not reseed unassigned people', true))
+      .catch((err) => setStatus(err.message || 'Could not reapply seed lists', true))
       .finally(() => {
-        if (btn) btn.disabled = false;
+        if (btn) btn.disabled = !canConfirmMembership;
       });
   };
 

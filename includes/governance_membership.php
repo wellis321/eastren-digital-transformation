@@ -32,13 +32,43 @@ function governance_ensure_table(): void
         // ignore if race / already present
     }
 
+    // Assessment nags retired: clear any leftover flags so banners stay off.
+    try {
+        $pdo->exec('UPDATE governance_membership SET needs_assessment = 0 WHERE needs_assessment = 1');
+    } catch (Throwable) {
+        // ignore
+    }
+
     $pdo->exec("CREATE TABLE IF NOT EXISTS governance_people (
       person_id   VARCHAR(120) NOT NULL PRIMARY KEY,
       name        VARCHAR(200) NOT NULL,
       role        VARCHAR(300) NOT NULL DEFAULT '',
+      tags_json   TEXT         NULL,
       created_by  VARCHAR(120) NOT NULL DEFAULT '',
       created_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    // Older installs may lack tags_json (person attributes / filter types)
+    try {
+        $cols = $pdo->query("SHOW COLUMNS FROM governance_people LIKE 'tags_json'")->fetchAll();
+        if (!$cols) {
+            $pdo->exec('ALTER TABLE governance_people ADD COLUMN tags_json TEXT NULL AFTER role');
+        }
+    } catch (Throwable) {
+        // ignore if race / already present
+    }
+
+    // Catalog of person types (Champion, Decider, custom types, …)
+    $pdo->exec("CREATE TABLE IF NOT EXISTS governance_attributes (
+      attr_id     VARCHAR(80)  NOT NULL PRIMARY KEY,
+      label       VARCHAR(200) NOT NULL,
+      is_seed     TINYINT(1)   NOT NULL DEFAULT 0,
+      sort_order  INT          NOT NULL DEFAULT 100,
+      created_by  VARCHAR(120) NOT NULL DEFAULT '',
+      created_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    governance_ensure_attributes_seeded();
 
     // One opinion per signed-in user, per person, per group
     $pdo->exec("CREATE TABLE IF NOT EXISTS governance_votes (
@@ -274,8 +304,9 @@ function governance_can_vote(): bool
 }
 
 /**
- * Only designated confirmers may change live membership (add / move / remove / create groups).
- * Today that is portal administrators; later: Project Owner and allocated group managers.
+ * Only designated confirmers may change live membership and group status
+ * (add / move / remove / create groups / set Active vs In development).
+ * Today that is portal administrators (Lisa / William); everyone else suggests.
  * Matches require_admin(): viewer/editor blocked; admin and legacy empty role allowed.
  */
 function governance_can_confirm_membership(): bool
@@ -313,7 +344,272 @@ function governance_slugify(string $name): string
     return trim($s, '-') ?: ('person-' . bin2hex(random_bytes(4)));
 }
 
-/** @return list<array{id: string, name: string, role: string, groups: list<string>, source: string}> */
+/**
+ * Built-in person-type labels from seed JSON (or hard-coded defaults).
+ *
+ * @return array<string, string> attr id => label
+ */
+function governance_seed_attribute_defaults(): array
+{
+    $defaults = [
+        'advisor' => 'Advisor',
+        'designer' => 'Designer',
+        'decider' => 'Decider',
+        'champion' => 'Champion',
+        'trainer' => 'Trainer',
+        'tester' => 'Tester',
+        'influencer' => 'Influencer',
+        'customer' => 'Customer',
+        'expert' => 'Expert',
+        'informed' => 'Informed',
+        'consulted' => 'Consulted',
+        'stakeholder-key' => 'Key stakeholder',
+        'stakeholder-primary' => 'Primary stakeholder',
+        'stakeholder-secondary' => 'Secondary stakeholder',
+    ];
+    $path = dirname(__DIR__) . '/assets/data/governance-people.json';
+    if (is_file($path)) {
+        $raw = json_decode((string)file_get_contents($path), true);
+        if (is_array($raw['meta']['attributeLabels'] ?? null)) {
+            foreach ($raw['meta']['attributeLabels'] as $id => $label) {
+                $id = strtolower(trim((string)$id));
+                $label = trim((string)$label);
+                if ($id !== '' && $label !== '') {
+                    $defaults[$id] = $label;
+                }
+            }
+        }
+    }
+    return $defaults;
+}
+
+/**
+ * Insert seed attribute rows once (empty table only). Deletions are not re-inserted.
+ */
+function governance_ensure_attributes_seeded(): void
+{
+    $pdo = db();
+    $count = (int)$pdo->query('SELECT COUNT(*) FROM governance_attributes')->fetchColumn();
+    if ($count > 0) {
+        return;
+    }
+    $ins = $pdo->prepare(
+        'INSERT INTO governance_attributes (attr_id, label, is_seed, sort_order, created_by, created_at)
+         VALUES (?, ?, 1, ?, \'seed\', NOW())'
+    );
+    $sort = 10;
+    foreach (governance_seed_attribute_defaults() as $id => $label) {
+        $ins->execute([$id, $label, $sort]);
+        $sort += 10;
+    }
+}
+
+/**
+ * @return array<string, array{id:string,label:string,isSeed:bool,sort:int}>
+ */
+function governance_attribute_meta(): array
+{
+    governance_ensure_table();
+    $stmt = db()->query(
+        'SELECT attr_id, label, is_seed, sort_order
+           FROM governance_attributes
+          ORDER BY sort_order ASC, label ASC'
+    );
+    $out = [];
+    foreach ($stmt->fetchAll() as $row) {
+        $id = (string)$row['attr_id'];
+        $out[$id] = [
+            'id' => $id,
+            'label' => (string)$row['label'],
+            'isSeed' => (int)$row['is_seed'] === 1,
+            'sort' => (int)$row['sort_order'],
+        ];
+    }
+    return $out;
+}
+
+/**
+ * Canonical person-attribute labels (Champion, Decider, Key stakeholder, …).
+ *
+ * @return array<string, string> tag id => label
+ */
+function governance_attribute_labels(): array
+{
+    $labels = [];
+    foreach (governance_attribute_meta() as $id => $meta) {
+        $labels[$id] = $meta['label'];
+    }
+    return $labels;
+}
+
+/**
+ * @param mixed $raw
+ * @return list<string>
+ */
+function governance_normalize_tags($raw): array
+{
+    if (is_string($raw)) {
+        $decoded = json_decode($raw, true);
+        if (is_array($decoded)) {
+            $raw = $decoded;
+        } else {
+            $parts = preg_split('/\s*,\s*/', $raw);
+            $raw = is_array($parts) ? $parts : [];
+        }
+    }
+    if (!is_array($raw)) {
+        return [];
+    }
+    $allowed = governance_attribute_labels();
+    $out = [];
+    $seen = [];
+    foreach ($raw as $t) {
+        $id = strtolower(trim((string)$t));
+        if ($id === '' || !isset($allowed[$id]) || isset($seen[$id])) {
+            continue;
+        }
+        $seen[$id] = true;
+        $out[] = $id;
+    }
+    return $out;
+}
+
+/**
+ * Create a custom person type (e.g. Change agent, Leader).
+ *
+ * @return array{id:string,label:string,isSeed:bool}
+ */
+function governance_create_attribute(string $label, string $createdBy): array
+{
+    if (!governance_can_shape()) {
+        throw new RuntimeException('Forbidden');
+    }
+    $label = trim($label);
+    if ($label === '') {
+        throw new InvalidArgumentException('Attribute name is required');
+    }
+    if (mb_strlen($label) > 200) {
+        throw new InvalidArgumentException('Attribute name is too long');
+    }
+
+    governance_ensure_table();
+    $base = governance_slugify($label);
+    if ($base === '' || str_starts_with($base, 'person-')) {
+        $base = 'attr-' . ($base !== '' ? preg_replace('/^person-/', '', $base) : bin2hex(random_bytes(3)));
+    }
+    $attrId = $base;
+    $n = 2;
+    $pdo = db();
+    $meta = governance_attribute_meta();
+    while (isset($meta[$attrId])) {
+        $attrId = $base . '-' . $n;
+        $n++;
+        if ($n > 50) {
+            throw new InvalidArgumentException('Could not create a unique attribute id');
+        }
+    }
+
+    $maxSort = (int)$pdo->query('SELECT COALESCE(MAX(sort_order), 100) FROM governance_attributes')->fetchColumn();
+    $pdo->prepare(
+        'INSERT INTO governance_attributes (attr_id, label, is_seed, sort_order, created_by, created_at)
+         VALUES (?, ?, 0, ?, ?, NOW())'
+    )->execute([$attrId, $label, $maxSort + 10, $createdBy]);
+
+    return [
+        'id' => $attrId,
+        'label' => $label,
+        'isSeed' => false,
+    ];
+}
+
+/**
+ * Rename a person type (seed or custom).
+ *
+ * @return array{id:string,label:string,isSeed:bool}
+ */
+function governance_rename_attribute(string $attrId, string $label, string $updatedBy): array
+{
+    if (!governance_can_shape()) {
+        throw new RuntimeException('Forbidden');
+    }
+    $attrId = strtolower(trim($attrId));
+    $label = trim($label);
+    if ($attrId === '') {
+        throw new InvalidArgumentException('Attribute id is required');
+    }
+    if ($label === '') {
+        throw new InvalidArgumentException('Attribute name is required');
+    }
+    if (mb_strlen($label) > 200) {
+        throw new InvalidArgumentException('Attribute name is too long');
+    }
+
+    governance_ensure_table();
+    $meta = governance_attribute_meta()[$attrId] ?? null;
+    if ($meta === null) {
+        throw new InvalidArgumentException('Unknown attribute');
+    }
+
+    db()->prepare('UPDATE governance_attributes SET label = ? WHERE attr_id = ?')->execute([$label, $attrId]);
+
+    return [
+        'id' => $attrId,
+        'label' => $label,
+        'isSeed' => !empty($meta['isSeed']),
+    ];
+}
+
+/**
+ * Delete a custom person type and strip it from everyone.
+ * Built-in (seed) types cannot be deleted — rename them instead if needed.
+ */
+function governance_delete_attribute(string $attrId, string $updatedBy = ''): void
+{
+    if (!governance_can_shape()) {
+        throw new RuntimeException('Forbidden');
+    }
+    $attrId = strtolower(trim($attrId));
+    $meta = governance_attribute_meta()[$attrId] ?? null;
+    if ($meta === null) {
+        throw new InvalidArgumentException('Unknown attribute');
+    }
+    if (!empty($meta['isSeed'])) {
+        throw new InvalidArgumentException('Built-in person types cannot be deleted — rename them, or create a custom type instead');
+    }
+
+    governance_ensure_table();
+    $pdo = db();
+    $pdo->beginTransaction();
+    try {
+        // Strip from custom / overridden people rows
+        $stmt = $pdo->query('SELECT person_id, tags_json FROM governance_people WHERE tags_json IS NOT NULL');
+        $upd = $pdo->prepare('UPDATE governance_people SET tags_json = ? WHERE person_id = ?');
+        foreach ($stmt->fetchAll() as $row) {
+            $decoded = json_decode((string)($row['tags_json'] ?? ''), true);
+            if (!is_array($decoded)) {
+                continue;
+            }
+            $next = [];
+            foreach ($decoded as $t) {
+                $t = strtolower(trim((string)$t));
+                if ($t === '' || $t === $attrId) {
+                    continue;
+                }
+                if (!in_array($t, $next, true)) {
+                    $next[] = $t;
+                }
+            }
+            $upd->execute([json_encode($next, JSON_UNESCAPED_UNICODE), $row['person_id']]);
+        }
+        $pdo->prepare('DELETE FROM governance_attributes WHERE attr_id = ? AND is_seed = 0')->execute([$attrId]);
+        $pdo->commit();
+    } catch (Throwable $e) {
+        $pdo->rollBack();
+        throw $e;
+    }
+}
+
+/** @return list<array{id: string, name: string, role: string, groups: list<string>, tags: list<string>, source: string}> */
 function governance_seed_people(): array
 {
     $path = dirname(__DIR__) . '/assets/data/governance-people.json';
@@ -343,17 +639,18 @@ function governance_seed_people(): array
             'name' => (string)$p['name'],
             'role' => (string)($p['role'] ?? ''),
             'groups' => $groups,
+            'tags' => governance_normalize_tags($p['tags'] ?? []),
             'source' => 'seed',
         ];
     }
     return $out;
 }
 
-/** @return list<array{id: string, name: string, role: string, groups: list<string>, source: string}> */
+/** @return list<array{id: string, name: string, role: string, groups: list<string>, tags: list<string>, source: string}> */
 function governance_custom_people(): array
 {
     governance_ensure_table();
-    $stmt = db()->query('SELECT person_id, name, role FROM governance_people ORDER BY name ASC');
+    $stmt = db()->query('SELECT person_id, name, role, tags_json FROM governance_people ORDER BY name ASC');
     $out = [];
     foreach ($stmt->fetchAll() as $row) {
         $out[] = [
@@ -361,7 +658,10 @@ function governance_custom_people(): array
             'name' => (string)$row['name'],
             'role' => (string)$row['role'],
             'groups' => [],
+            'tags' => governance_normalize_tags($row['tags_json'] ?? null),
             'source' => 'custom',
+            // True when this row carries an explicit tags override (including empty list).
+            'tagsOverride' => array_key_exists('tags_json', $row) && $row['tags_json'] !== null,
         ];
     }
     return $out;
@@ -475,17 +775,28 @@ function governance_reseed_unassigned_from_seed(string $updatedBy): array
     if (!governance_can_confirm_membership()) {
         throw new RuntimeException('Only a membership confirmer can reseed unassigned people from the seed list');
     }
+    return governance_reapply_seed_placements($updatedBy, false);
+}
+
+/**
+ * Ensure every seed person↔group pair from governance-people.json exists in live membership.
+ * Does not remove people from lists (keeps live extras such as Business Group placements).
+ * When $unassignedOnly is true, only people with zero current membership rows are considered.
+ *
+ * @return array{restoredPeople:int,insertedPairs:int}
+ */
+function governance_reapply_seed_placements(string $updatedBy, bool $unassignedOnly = false): array
+{
     governance_ensure_table();
     $allowed = governance_group_ids();
 
-    $hasRows = [];
-    foreach (db()->query('SELECT DISTINCT person_id FROM governance_membership')->fetchAll() as $row) {
-        $hasRows[(string)$row['person_id']] = true;
-    }
-
-    $byId = [];
-    foreach (governance_seed_people() as $p) {
-        $byId[$p['id']] = $p;
+    $currentPairs = [];
+    $peopleWithAny = [];
+    foreach (db()->query('SELECT person_id, group_id FROM governance_membership')->fetchAll() as $row) {
+        $pid = (string)$row['person_id'];
+        $gid = (string)$row['group_id'];
+        $currentPairs[$pid . '|' . $gid] = true;
+        $peopleWithAny[$pid] = true;
     }
 
     $pdo = db();
@@ -497,10 +808,15 @@ function governance_reseed_unassigned_from_seed(string $updatedBy): array
     );
     $peopleRestored = 0;
     $pairs = 0;
-    $pdo->beginTransaction();
+    $startedTx = false;
     try {
-        foreach ($byId as $pid => $p) {
-            if (isset($hasRows[$pid])) {
+        if (!$pdo->inTransaction()) {
+            $pdo->beginTransaction();
+            $startedTx = true;
+        }
+        foreach (governance_seed_people() as $p) {
+            $pid = (string)$p['id'];
+            if ($unassignedOnly && isset($peopleWithAny[$pid])) {
                 continue;
             }
             $groups = is_array($p['groups'] ?? null) ? $p['groups'] : [];
@@ -511,7 +827,13 @@ function governance_reseed_unassigned_from_seed(string $updatedBy): array
                 if ($gid === '' || !in_array($gid, $allowed, true)) {
                     continue;
                 }
+                $key = $pid . '|' . $gid;
+                if (isset($currentPairs[$key])) {
+                    $sort++;
+                    continue;
+                }
                 $ins->execute([$pid, $gid, $sort, $updatedBy]);
+                $currentPairs[$key] = true;
                 $pairs++;
                 $added++;
                 $sort++;
@@ -520,14 +842,22 @@ function governance_reseed_unassigned_from_seed(string $updatedBy): array
                 $peopleRestored++;
             }
         }
-        $pdo->commit();
+        if ($startedTx && $pdo->inTransaction()) {
+            $pdo->commit();
+        }
     } catch (Throwable $e) {
-        $pdo->rollBack();
+        if ($startedTx && $pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
         throw $e;
     }
 
     if ($pairs > 0) {
-        governance_capture_history('reseed_unassigned', $updatedBy, true);
+        try {
+            governance_capture_history($unassignedOnly ? 'reseed_unassigned' : 'reapply_seed', $updatedBy, true);
+        } catch (Throwable) {
+            // Placements already saved; history is best-effort.
+        }
     }
 
     return ['restoredPeople' => $peopleRestored, 'insertedPairs' => $pairs];
@@ -650,18 +980,28 @@ function governance_load_bundle(): array
             $byId[$p['id']]['name'] = $p['name'];
             $byId[$p['id']]['role'] = $p['role'] !== '' ? $p['role'] : $byId[$p['id']]['role'];
             $byId[$p['id']]['source'] = 'both';
+            if (!empty($p['tagsOverride'])) {
+                $byId[$p['id']]['tags'] = $p['tags'];
+            }
         } else {
+            unset($p['tagsOverride']);
             $byId[$p['id']] = $p;
         }
     }
+    foreach ($byId as &$personRow) {
+        unset($personRow['tagsOverride']);
+        if (!isset($personRow['tags']) || !is_array($personRow['tags'])) {
+            $personRow['tags'] = [];
+        }
+    }
+    unset($personRow);
 
     $orderBuckets = [];
     $membership = [];
-    $needsFlags = [];
     $dbHasRows = false;
 
     $stmt = db()->query(
-        'SELECT person_id, group_id, sort_order, needs_assessment
+        'SELECT person_id, group_id, sort_order
            FROM governance_membership
           ORDER BY group_id ASC, sort_order ASC, person_id ASC'
     );
@@ -679,9 +1019,6 @@ function governance_load_bundle(): array
             $orderBuckets[$gid] = [];
         }
         $orderBuckets[$gid][] = $pid;
-        if ((int)$row['needs_assessment'] === 1) {
-            $needsFlags[$pid . '|' . $gid] = true;
-        }
     }
 
     $userId = governance_current_user_id();
@@ -725,20 +1062,6 @@ function governance_load_bundle(): array
     }
 
     $needs = [];
-    foreach ($needsFlags as $key => $_) {
-        [$pid, $gid] = explode('|', $key, 2);
-        $already = isset($myVotes[$pid][$gid]);
-        if ($already) {
-            continue;
-        }
-        $needs[] = [
-            'personId' => $pid,
-            'name' => $byId[$pid]['name'] ?? $pid,
-            'role' => $byId[$pid]['role'] ?? '',
-            'groupId' => $gid,
-            'groupLabel' => governance_group_meta()[$gid]['label'] ?? $gid,
-        ];
-    }
 
     $people = array_values($byId);
     if ($dbHasRows) {
@@ -764,6 +1087,8 @@ function governance_load_bundle(): array
         'canPropose' => governance_can_propose(),
         'canSetGroupStatus' => governance_can_set_group_status(),
         'groupStatuses' => governance_group_status_labels(),
+        'attributeLabels' => governance_attribute_labels(),
+        'attributes' => governance_attribute_meta(),
         'proposals' => governance_list_pending_proposals(),
         'currentUser' => [
             'id' => $userId,
@@ -777,27 +1102,15 @@ function governance_load_bundle(): array
 
 function governance_pending_count(?int $userId = null): int
 {
-    try {
-        governance_ensure_table();
-        $uid = $userId ?? governance_current_user_id();
-        if ($uid < 1) {
-            return 0;
-        }
-        $stmt = db()->prepare(
-            "SELECT COUNT(*) FROM governance_membership m
-              WHERE m.needs_assessment = 1
-                AND NOT EXISTS (
-                  SELECT 1 FROM governance_votes v
-                   WHERE v.user_id = ?
-                     AND v.person_id = m.person_id
-                     AND v.group_id = m.group_id
-                )"
-        );
-        $stmt->execute([$uid]);
-        return (int)$stmt->fetchColumn();
-    } catch (Throwable) {
-        return 0;
-    }
+    // Placement no longer requires a Yes/Maybe/No from every signed-in user.
+    // Suggest → confirm (Lisa / William as confirmers) covers list changes;
+    // personal marks remain optional and do not drive banners.
+    return 0;
+}
+
+function governance_banner_html(): string
+{
+    return '';
 }
 
 /**
@@ -1153,9 +1466,7 @@ function governance_delete_group(string $groupId, string $updatedBy = ''): void
 
 /**
  * Place a person on a group: add (keep existing lists) or move (leave fromGroup).
- * New placement is flagged for assessment so others mark them in that list.
- *
- * @return array{personId: string, toGroupId: string, mode: string, fromGroupId: ?string}
+ * Confirmers change the live list; others use suggestions. No “mark needed” flag.
  */
 function governance_place_person(
     string $personId,
@@ -1237,9 +1548,8 @@ function governance_place_person(
         $pdo->prepare(
             'INSERT INTO governance_membership
               (person_id, group_id, vote, sort_order, needs_assessment, updated_by, updated_at)
-             VALUES (?, ?, \'unset\', ?, 1, ?, NOW())
+             VALUES (?, ?, \'unset\', ?, 0, ?, NOW())
              ON DUPLICATE KEY UPDATE
-               needs_assessment = 1,
                updated_by = VALUES(updated_by),
                updated_at = NOW()'
         )->execute([$personId, $toGroupId, $sort, $updatedBy]);
@@ -1599,8 +1909,8 @@ function governance_add_person(string $name, string $role, string $groupId, stri
     }
 
     $pdo->prepare(
-        'INSERT INTO governance_people (person_id, name, role, created_by, created_at)
-         VALUES (?, ?, ?, ?, NOW())'
+        'INSERT INTO governance_people (person_id, name, role, tags_json, created_by, created_at)
+         VALUES (?, ?, ?, NULL, ?, NOW())'
     )->execute([$personId, $name, $role, $updatedBy]);
 
     $max = $pdo->prepare('SELECT COALESCE(MIN(sort_order), 0) - 1 FROM governance_membership WHERE group_id = ?');
@@ -1610,8 +1920,8 @@ function governance_add_person(string $name, string $role, string $groupId, stri
     $pdo->prepare(
         'INSERT INTO governance_membership
           (person_id, group_id, vote, sort_order, needs_assessment, updated_by, updated_at)
-         VALUES (?, ?, \'unset\', ?, 1, ?, NOW())
-         ON DUPLICATE KEY UPDATE needs_assessment = 1, updated_by = VALUES(updated_by), updated_at = NOW()'
+         VALUES (?, ?, \'unset\', ?, 0, ?, NOW())
+         ON DUPLICATE KEY UPDATE updated_by = VALUES(updated_by), updated_at = NOW()'
     )->execute([$personId, $groupId, $sort, $updatedBy]);
 
     governance_capture_history('add_person', $updatedBy);
@@ -1621,7 +1931,56 @@ function governance_add_person(string $name, string $role, string $groupId, stri
         'name' => $name,
         'role' => $role,
         'groupId' => $groupId,
+        'tags' => [],
     ];
+}
+
+/**
+ * Set project attributes (Champion, Decider, Key stakeholder, …) on a person.
+ * Confirmers only. Upserts a governance_people row so seed people can be overridden.
+ *
+ * @param list<string>|mixed $tags
+ * @return array{personId: string, tags: list<string>}
+ */
+function governance_set_person_tags(string $personId, $tags, string $updatedBy): array
+{
+    if (!governance_can_shape()) {
+        throw new RuntimeException('Only a membership confirmer can edit person attributes');
+    }
+    $personId = trim($personId);
+    if ($personId === '') {
+        throw new InvalidArgumentException('Person id is required');
+    }
+
+    $normalized = governance_normalize_tags($tags);
+    governance_ensure_table();
+
+    $name = '';
+    $role = '';
+    $found = false;
+    foreach (array_merge(governance_seed_people(), governance_custom_people()) as $p) {
+        if ($p['id'] === $personId) {
+            $name = (string)$p['name'];
+            $role = (string)($p['role'] ?? '');
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) {
+        throw new InvalidArgumentException('Unknown person');
+    }
+
+    $pdo = db();
+    $pdo->prepare(
+        'INSERT INTO governance_people (person_id, name, role, tags_json, created_by, created_at)
+         VALUES (?, ?, ?, ?, ?, NOW())
+         ON DUPLICATE KEY UPDATE
+           name = VALUES(name),
+           role = IF(VALUES(role) = \'\', role, VALUES(role)),
+           tags_json = VALUES(tags_json)'
+    )->execute([$personId, $name, $role, json_encode($normalized, JSON_UNESCAPED_UNICODE), $updatedBy]);
+
+    return ['personId' => $personId, 'tags' => $normalized];
 }
 
 /**
@@ -1824,20 +2183,4 @@ function governance_get_history(int $id): ?array
         'reason' => (string)$row['reason'],
         'snapshot' => $snapshot,
     ];
-}
-
-function governance_banner_html(): string
-{
-    $count = governance_pending_count();
-    if ($count < 1) {
-        return '';
-    }
-    $label = $count === 1
-        ? '1 person is awaiting your membership assessment'
-        : $count . ' people are awaiting your membership assessment';
-    $url = e(APP_URL . '/governance-membership.html#awaiting');
-    return '<div class="gov-notify-banner" role="status">'
-        . '<strong>Governance:</strong> ' . e($label) . '. '
-        . '<a href="' . $url . '">Review in the membership tool</a>'
-        . '</div>';
 }

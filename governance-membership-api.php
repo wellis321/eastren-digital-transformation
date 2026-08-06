@@ -182,6 +182,56 @@ try {
         exit;
     }
 
+    if ($action === 'set_person_tags') {
+        $updated = governance_set_person_tags(
+            (string)($payload['personId'] ?? ''),
+            $payload['tags'] ?? [],
+            $user
+        );
+        echo json_encode([
+            'ok' => true,
+            'updated' => $updated,
+            'state' => governance_load_bundle(),
+        ]);
+        exit;
+    }
+
+    if ($action === 'create_attribute') {
+        $created = governance_create_attribute(
+            (string)($payload['label'] ?? ''),
+            $user
+        );
+        echo json_encode([
+            'ok' => true,
+            'created' => $created,
+            'state' => governance_load_bundle(),
+        ]);
+        exit;
+    }
+
+    if ($action === 'rename_attribute') {
+        $updated = governance_rename_attribute(
+            (string)($payload['attrId'] ?? ''),
+            (string)($payload['label'] ?? ''),
+            $user
+        );
+        echo json_encode([
+            'ok' => true,
+            'updated' => $updated,
+            'state' => governance_load_bundle(),
+        ]);
+        exit;
+    }
+
+    if ($action === 'delete_attribute') {
+        governance_delete_attribute((string)($payload['attrId'] ?? ''), $user);
+        echo json_encode([
+            'ok' => true,
+            'state' => governance_load_bundle(),
+        ]);
+        exit;
+    }
+
     if ($action === 'set_group_status') {
         $updated = governance_set_group_status(
             (string)($payload['groupId'] ?? ''),
@@ -233,7 +283,13 @@ try {
     }
 
     if ($action === 'reseed_unassigned') {
-        $result = governance_reseed_unassigned_from_seed($user);
+        // Re-apply any missing seed person↔group pairs (does not remove live extras).
+        if (!governance_can_confirm_membership()) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Only a membership confirmer can reapply seed placements']);
+            exit;
+        }
+        $result = governance_reapply_seed_placements($user, false);
         echo json_encode([
             'ok' => true,
             'reseeded' => $result,

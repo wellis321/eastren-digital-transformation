@@ -3585,6 +3585,134 @@ tbody tr:nth-child(even):hover {
     font-size: 0.8rem;
     color: var(--erc-text-light);
 }
+.gov-person-tags {
+    list-style: none;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+.gov-person-tag {
+    appearance: none;
+    border: 1px solid var(--erc-border);
+    background: var(--erc-surface);
+    color: var(--erc-text);
+    font: inherit;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    line-height: 1.3;
+}
+.gov-person-tag:hover,
+.gov-person-tag.is-active {
+    border-color: var(--erc-green);
+    background: rgba(0, 106, 81, 0.1);
+    color: var(--erc-green-dark);
+}
+.gov-attr-filter {
+    margin: 0.75rem 0 0;
+    padding: 0.75rem 0 0;
+    border-top: 1px solid var(--erc-border);
+}
+.gov-attr-filter-lede {
+    margin: 0.25rem 0 0.55rem;
+    font-size: 0.85rem;
+    color: var(--erc-text-light);
+    max-width: 42rem;
+}
+.gov-attr-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+.gov-attr-chip {
+    appearance: none;
+    border: 1px solid var(--erc-border);
+    background: var(--erc-surface);
+    color: var(--erc-text);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.28rem 0.55rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.gov-attr-chip:hover {
+    border-color: var(--erc-green);
+}
+.gov-attr-chip.is-active {
+    border-color: var(--erc-green);
+    background: rgba(0, 106, 81, 0.12);
+    color: var(--erc-green-dark);
+}
+.gov-attr-filter-status {
+    margin: 0.45rem 0 0;
+    font-size: 0.8rem;
+    color: var(--erc-text-light);
+}
+.gov-attr-manage-list {
+    margin: 0.35rem 0 0;
+}
+.gov-attr-manage-ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+.gov-attr-manage-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.08);
+}
+.gov-attr-manage-main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+    min-width: 0;
+    font-size: 0.85rem;
+}
+.gov-attr-manage-actions {
+    display: flex;
+    gap: 0.2rem;
+    flex-shrink: 0;
+}
+.gov-person-tag-edit {
+    margin: 0.4rem 0 0;
+    font-size: 0.8rem;
+}
+.gov-person-tag-edit > summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--erc-green-dark);
+}
+.gov-tag-check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    gap: 0.25rem 0.5rem;
+    margin: 0.45rem 0 0.5rem;
+}
+.gov-tag-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    line-height: 1.3;
+    cursor: pointer;
+}
+.gov-tag-check input {
+    margin-top: 0.15rem;
+}
 .gov-person-actions {
     display: flex;
     flex-direction: column;

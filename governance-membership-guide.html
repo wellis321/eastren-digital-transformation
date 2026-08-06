@@ -163,7 +163,6 @@
             <li><a href="#opinions">Your marks and tallies</a></li>
             <li><a href="#membership">Moving people and building lists</a></li>
             <li><a href="#groups">Core groups, custom groups, and status</a></li>
-            <li><a href="#awaiting-section">Awaiting assessment and the site banner</a></li>
             <li><a href="#history">Group history and checkpoints</a></li>
             <li><a href="#exports">Exports (PDF, CSV, JSON)</a></li>
             <li><a href="#privacy">Privacy and data rules</a></li>
@@ -179,9 +178,10 @@
         <p>Membership for Board, Steering, Technical, Business, and any extra working sets is still being formed.</p>
     </div>
     <p>
-        Different people bring different knowledge of roles and remits. Rather than one person drafting lists in isolation,
-        the tool lets signed-in colleagues mark <em>Yes</em>, <em>Maybe</em>, or <em>No</em> for each person on each group.
-        Shared tallies show where views align or diverge. The Project Manager / Project Owner still confirms who actually attends.
+        Different people bring different knowledge of roles and remits. Signed-in colleagues can optionally mark
+        <em>Yes</em>, <em>Maybe</em>, or <em>No</em> for each person on each group — shared tallies show where views align.
+        Moving people between lists is normal: most people <strong>suggest</strong> changes; confirmers (Lisa / William)
+        accept those suggestions onto the live lists and can set whether a group is Active or still In development.
     </p>
     <p>
         As groups move from forming to stable — and later as people join, leave, or change roles — the tool keeps a
@@ -208,10 +208,9 @@
             <div>
                 <h4>Main column</h4>
                 <ul style="margin:0.4rem 0 0; padding-left:1.1rem; font-size:0.92rem; line-height:1.65;">
-                    <li><strong>Groups jump bar</strong> — <a href="governance-membership.html#gov-jump">Awaiting, each group, Unassigned, History</a></li>
+                    <li><strong>Groups jump bar</strong> — <a href="governance-membership.html#gov-jump">each group, Unassigned, History</a></li>
                     <li><strong>Toolbar</strong> — <a href="governance-membership.html#gov-exports">Export PDF / CSV / JSON and Clear my marks</a></li>
-                    <li><strong>Awaiting your assessment</strong> — <a href="governance-membership.html#awaiting">people you have not marked yet</a></li>
-                    <li><strong>Group panels</strong> — <a href="governance-membership.html#gov-groups">roster chips, then assess &amp; place rows</a></li>
+                    <li><strong>Group panels</strong> — <a href="governance-membership.html#gov-groups">roster chips, then member rows</a></li>
                     <li><strong>Unassigned pool</strong> — <a href="governance-membership.html#pool">people not yet on any group</a></li>
                     <li><strong>Group history</strong> — <a href="governance-membership.html#group-history">paged timeline</a> (Milestones, status focus, name search, snapshot PDF)</li>
                 </ul>
@@ -221,28 +220,30 @@
 
     <div class="section-header" id="opinions" style="margin-top:2.25rem;">
         <h2>Your marks and tallies</h2>
-        <p>Each signed-in person has their own Yes / Maybe / No for each person on each group. Try it on any <a href="governance-membership.html#gov-groups">group panel</a>.</p>
+        <p>Each signed-in person can optionally mark Yes / Maybe / No for each person on each group. Marks are never required when someone is moved. Try it on any <a href="governance-membership.html#gov-groups">group panel</a>.</p>
     </div>
     <ul style="line-height:1.7;">
-        <li><strong>Your mark</strong> is private. The API and exports do not list who voted what — only you see your own buttons as selected.</li>
+        <li><strong>Your mark</strong> is private and optional. The API and exports do not list who voted what — only you see your own buttons as selected.</li>
         <li><strong>Private reason</strong> (optional) — after you mark Yes / Maybe / No, you can add a short note explaining why. Only you see that note; it is not in tallies or exports.</li>
         <li><strong>Tallies</strong> are shared: counts of Yes, Maybe, and No for that person on that list. That is how the room compares views without exposing individuals.</li>
         <li><strong>One mark per person per group</strong> — changing your mind overwrites your previous mark for that pair.</li>
         <li><strong><a href="governance-membership.html#gov-reset-all">Clear my marks</a></strong> (toolbar or per group) removes only <em>your</em> opinions. Other people’s marks and the membership lists stay put.</li>
-        <li>Within a group, people with more Yes tend to float higher in the assess list (with manual order as a tie-break).</li>
+        <li>Within a group, people with more Yes tend to float higher in the member list (with manual order as a tie-break).</li>
     </ul>
 
     <div class="section-header" id="membership" style="margin-top:2.25rem;">
         <h2>Moving people and building lists</h2>
-        <p>Membership (who is on which list) is shared. Opinions sit on top of that. List changes follow <strong>suggest → confirm</strong> unless you are a membership confirmer.</p>
+        <p>Membership (who is on which list) is shared. Opinions sit on top of that. List changes follow <strong>suggest → confirm</strong> unless you are a membership confirmer (Lisa / William).</p>
     </div>
     <ul style="line-height:1.7;">
-        <li><strong>Roster</strong> under each <a href="governance-membership.html#gov-groups">group heading</a> is the quick “who’s on this list” scan — chip links jump to the assess row. Tentative suggestions appear with distinct badges / dashed chips until accepted.</li>
-        <li><strong>Also on / Move to</strong> — under <em>Place on another group</em> (or <em>Suggest place…</em> if you are not a confirmer). Multi-membership is allowed for “also on”.</li>
+        <li><strong>Roster</strong> under each <a href="governance-membership.html#gov-groups">group heading</a> is the quick “who’s on this list” scan — chip links jump to the member row. Tentative suggestions appear with distinct badges / dashed chips until accepted.</li>
+        <li><strong>Person types</strong> — attributes appear as badges; use <a href="governance-membership.html#gov-attr-filter">Filter by person type</a> to narrow lists.</li>
+        <li><strong>Manage types</strong> — confirmers use <a href="governance-membership.html#manage-attributes">Person types</a> in the sidebar to create custom types, rename any type, or delete a custom type. On each person, open <em>Edit types</em> to tick or clear types and Save.</li>
+        <li><strong>Also on / Move to</strong> — under <em>Place on another group</em> (or <em>Suggest place…</em> if you are not a confirmer). Multi-membership is allowed for “also on”. Moving people is normal — no one is asked to “assess” a placement afterwards.</li>
         <li><strong>× Remove</strong> — confirmers remove from this group immediately; everyone else sends a <em>suggested removal</em> (the person stays on the list, struck through, until Accept / Reject).</li>
         <li><strong>Accept / Reject</strong> — confirmers decide on pending suggestions; the proposer can withdraw their own suggestion.</li>
         <li><strong><a href="governance-membership.html#pool">Unassigned pool</a></strong> — people with no group yet; use Add (or suggest Add) to place them.</li>
-        <li><strong><a href="governance-membership.html#add-person">Add someone</a></strong> — creates a person with name and job title only, places them on a group, and flags them for assessment by others. Prefer name and role only — no emails.</li>
+        <li><strong><a href="governance-membership.html#add-person">Add someone</a></strong> — creates a person with name and job title only and places them on a group. Prefer name and role only — no emails.</li>
     </ul>
 
     <div class="section-header" id="groups" style="margin-top:2.25rem;">
@@ -267,20 +268,11 @@
     </ul>
     <p>
         Status badges are visible to everyone. Changing status is <strong>confirmer only</strong>
-        (so the programme’s view of which lists are live stays deliberate). Status changes are recorded in history.
+        (Lisa / William today). A group can be Active for a while and later go back to In development —
+        that does not stop anyone else from suggesting membership changes.
+        Status changes are recorded in history.
         See an example on the <a href="governance-membership.html#project-board">Project Board panel</a>.
     </p>
-
-    <div class="section-header" id="awaiting-section" style="margin-top:2.25rem;">
-        <h2>Awaiting assessment and the site banner</h2>
-        <p>When someone is newly added or placed on a group, others are asked to mark them. Open <a href="governance-membership.html#awaiting">Awaiting your assessment</a> in the tool.</p>
-    </div>
-    <ul style="line-height:1.7;">
-        <li>That placement is flagged as needing assessment.</li>
-        <li>Until <em>you</em> give a Yes / Maybe / No for that person on that group, they show <strong>Your mark needed</strong> on their row and appear under <a href="governance-membership.html#awaiting">Awaiting your assessment</a>.</li>
-        <li>A yellow <strong>site banner</strong> can appear on other portal pages while you still have people waiting — so assessment does not get forgotten.</li>
-        <li>Once you mark them, they drop off your awaiting list (other people may still need to mark them separately).</li>
-    </ul>
 
     <div class="section-header" id="history" style="margin-top:2.25rem;">
         <h2>Group history and checkpoints</h2>
@@ -327,7 +319,7 @@
         <div>
             <ul style="margin:0; padding-left:1.1rem; font-size:0.92rem; line-height:1.7;">
                 <li><strong>Signed-in users</strong> — mark Yes / Maybe / No; see tallies; clear their own marks; export live lists; browse history (paged / Milestones); focus a snapshot by status or search; export a snapshot PDF; <em>suggest</em> add / move / remove (tentative until confirmed); withdraw their own suggestions.</li>
-                <li><strong>Membership confirmers</strong> (administrators today) — everything above, plus Accept / Reject suggestions, make live add / move / remove changes, create or delete custom groups, set lifecycle status, and save checkpoints.</li>
+                <li><strong>Membership confirmers</strong> (Lisa / William as administrators today) — everything above, plus Accept / Reject suggestions, make live add / move / remove changes, create or delete custom groups, set lifecycle status, and save checkpoints.</li>
                 <li><strong>Not signed in</strong> — the tool will not load live data; sign in via the PHP portal.</li>
             </ul>
         </div>
