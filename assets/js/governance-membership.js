@@ -939,11 +939,14 @@
     if (!t.total) {
       return `<span class="gov-tally-compact gov-tally-compact--empty" title="No opinions yet">—</span>`;
     }
-    return `<span class="gov-tally-compact" title="${t.yes} Yes · ${t.maybe} Maybe · ${t.no} No">
-      <span class="gov-tally-compact__yes">${t.yes}Y</span>
-      <span class="gov-tally-compact__maybe">${t.maybe}~</span>
-      <span class="gov-tally-compact__no">${t.no}N</span>
-    </span>`;
+    // Only show the marks that actually happened — "0Y 1~ 0N" made people
+    // decode zeros and single-letter codes just to find the one real number.
+    const parts = [];
+    if (t.yes) parts.push(`<span class="gov-tally-compact__yes">${t.yes} Yes</span>`);
+    if (t.maybe) parts.push(`<span class="gov-tally-compact__maybe">${t.maybe} Maybe</span>`);
+    if (t.no) parts.push(`<span class="gov-tally-compact__no">${t.no} No</span>`);
+    const sep = '<span class="gov-tally-compact__sep"> · </span>';
+    return `<span class="gov-tally-compact" title="${t.yes} Yes · ${t.maybe} Maybe · ${t.no} No">${parts.join(sep)}</span>`;
   };
 
   const renderSharedNotes = (personId, groupId) => {

@@ -3554,14 +3554,16 @@ tbody tr:nth-child(even):hover {
 }
 .gov-tally-compact__yes {
     color: var(--erc-green-dark);
-    margin-right: 0.3rem;
 }
 .gov-tally-compact__maybe {
     color: #92400e;
-    margin-right: 0.3rem;
 }
 .gov-tally-compact__no {
     color: #555;
+}
+.gov-tally-compact__sep {
+    color: var(--erc-border);
+    font-weight: 400;
 }
 .gov-also-on {
     display: block;
