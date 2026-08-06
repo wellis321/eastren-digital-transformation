@@ -645,21 +645,23 @@
       .catch((err) => setStatus(err.message || 'Could not send suggestion', true));
   };
 
-  // Case/whitespace-insensitive lookup — catches "Alan Scott" vs "alan scott " duplicates.
-  const findDuplicateName = (value, existingNames) => {
+  // Case/whitespace-insensitive lookup by name — catches "Alan Scott" vs "alan scott ".
+  // Returns the matched item itself (not just its name) so callers can show more context,
+  // e.g. a person's role, to help judge whether it's actually the same person.
+  const findDuplicateByName = (value, items, getName) => {
     const needle = value.trim().toLowerCase();
     if (!needle) return null;
-    return existingNames.find((n) => n.trim().toLowerCase() === needle) || null;
+    return items.find((item) => getName(item).trim().toLowerCase() === needle) || null;
   };
 
   // Live-warn under a name field as the user types, so duplicates get caught before
   // they hit "Add" — the confirm() in each create function is the second, final check.
-  const wireDuplicateWarning = (inputId, warnId, getExistingNames, describeMatch) => {
+  const wireDuplicateWarning = (inputId, warnId, getExistingItems, getName, describeMatch) => {
     const input = document.getElementById(inputId);
     const warn = document.getElementById(warnId);
     if (!input || !warn) return;
     input.addEventListener('input', () => {
-      const match = findDuplicateName(input.value, getExistingNames());
+      const match = findDuplicateByName(input.value, getExistingItems(), getName);
       if (match) {
         warn.textContent = describeMatch(match);
         warn.hidden = false;
@@ -681,14 +683,15 @@
       setStatus('Enter a name, job role, and group before adding', true);
       return;
     }
-    const dupe = findDuplicateName(name, people.map((p) => p.name));
+    const dupe = findDuplicateByName(name, people, (p) => p.name);
     if (
       dupe &&
       !confirm(
-        `A person named “${dupe}” already exists. Adding “${name}” will create a second, separate ` +
-          `entry — their votes, reasons, and person types won't carry over.\n\n` +
-          `If this is the same person, choose Cancel and use “Also on” from their existing card instead.\n\n` +
-          `Add “${name}” as a new, separate person anyway?`
+        `A person named “${dupe.name}” already exists. They have the role of “${dupe.role || 'not recorded'}”.\n\n` +
+          `If that's the same person, choose Cancel and use “Also on” from their existing card to add them ` +
+          `to this group instead.\n\n` +
+          `If they're a different person, continue to add “${name}” as usual.\n\n` +
+          `Add “${name}” anyway?`
       )
     ) {
       return;
@@ -725,8 +728,8 @@
       setStatus('Enter a name for the new group', true);
       return;
     }
-    const dupe = findDuplicateName(label, Object.values(groupMeta).map((g) => g.label));
-    if (dupe && !confirm(`A group named “${dupe}” already exists. Create “${label}” as a separate group anyway?`)) {
+    const dupe = findDuplicateByName(label, Object.values(groupMeta), (g) => g.label);
+    if (dupe && !confirm(`A group named “${dupe.label}” already exists. Create “${label}” as a separate group anyway?`)) {
       return;
     }
     setStatus('Creating group…');
@@ -1353,8 +1356,8 @@
       setStatus('Enter a name for the new person type', true);
       return;
     }
-    const dupe = findDuplicateName(label, Object.values(attributeMeta).map((a) => a.label));
-    if (dupe && !confirm(`A person type named “${dupe}” already exists. Create “${label}” as a separate type anyway?`)) {
+    const dupe = findDuplicateByName(label, Object.values(attributeMeta), (a) => a.label);
+    if (dupe && !confirm(`A person type named “${dupe.label}” already exists. Create “${label}” as a separate type anyway?`)) {
       return;
     }
     setStatus('Creating person type…');
@@ -1650,20 +1653,23 @@
   wireDuplicateWarning(
     'gov-new-name',
     'gov-new-name-dupe',
-    () => people.map((p) => p.name),
-    (match) => `⚠ “${match}” already exists. Use “Also on” from their existing card to add them to another group instead of creating a duplicate.`
+    () => people,
+    (p) => p.name,
+    (match) => `⚠ A person named “${match.name}” already exists. They have the role of “${match.role || 'not recorded'}”.`
   );
   wireDuplicateWarning(
     'gov-new-group-label',
     'gov-new-group-label-dupe',
-    () => Object.values(groupMeta).map((g) => g.label),
-    (match) => `⚠ A group named “${match}” already exists.`
+    () => Object.values(groupMeta),
+    (g) => g.label,
+    (match) => `⚠ A group named “${match.label}” already exists.`
   );
   wireDuplicateWarning(
     'gov-new-attr-label',
     'gov-new-attr-label-dupe',
-    () => Object.values(attributeMeta).map((a) => a.label),
-    (match) => `⚠ A person type named “${match}” already exists.`
+    () => Object.values(attributeMeta),
+    (a) => a.label,
+    (match) => `⚠ A person type named “${match.label}” already exists.`
   );
 
   document.getElementById('gov-export')?.addEventListener('click', () => {
