@@ -41,6 +41,13 @@ if ($message === '') {
 if (strlen($page) > 500) {
     $page = substr($page, 0, 500);
 }
+// Must be a same-origin relative path — feedback-view.php renders this as an
+// href for admins to click. A value like "@evil.example/" concatenated onto
+// APP_URL parses as userinfo, silently sending the click to evil.example
+// instead. Same allow-list resolve_next_redirect() already uses elsewhere.
+if ($page !== '' && (!str_starts_with($page, '/') || str_starts_with($page, '//'))) {
+    $page = '';
+}
 
 try {
     feedback_ensure_table();
