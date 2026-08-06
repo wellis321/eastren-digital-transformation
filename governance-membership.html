@@ -147,20 +147,20 @@
                 <a class="gov-sidebar-jump-btn" href="#group-history">History</a>
             </div>
 
-            <section class="gov-sidebar-card" id="how-to-use">
-                <h2 class="gov-sidebar-title">How to use this tool</h2>
+            <details class="gov-sidebar-card gov-sidebar-card--accordion" id="how-to-use">
+                <summary class="gov-sidebar-title">How to use this tool</summary>
                 <ol class="gov-setup-list">
-                    <li><strong>Scan the roster</strong> under each group heading — that is the quick “who’s on this list” view.</li>
+                    <li><strong>Each person's row</strong> shows their name, role, and your voting buttons straight away. Open <em>More</em> on a row for types, other lists they're on, or to place them elsewhere.</li>
                     <li><strong>Filter by type</strong> — use the chips under Groups (Champion, Decider, Influencer, and so on) to show only people with those attributes. Use <em>In groups</em> to limit which lists are shown (e.g. Influencers on Steering only).</li>
                     <li><strong>Your mark</strong> (optional) — Yes / Maybe / No is your private opinion on a person for a group. It is not required when someone is moved.</li>
-                    <li><strong>Reason</strong> — optional note under your mark. Tick <em>Share with others</em> if you want colleagues to see your reasoning (and which mark you gave); leave it unticked to keep the note private to you.</li>
+                    <li><strong>Reason</strong> — click <em>Add reason</em> under a mark to jot a note. Tick <em>Share with others</em> if you want colleagues to see it (and which mark you gave); leave it unticked to keep it private to you.</li>
                     <li><strong>Tallies</strong> — counts of Yes / Maybe / No are always shared; individual marks stay private unless you share a reason.</li>
-                    <li><strong>Wrong list?</strong> — open <em>Place on another group</em>: Lisa / William (confirmers) change the live list; everyone else sends a suggestion that stays tentative until accepted.</li>
+                    <li><strong>Wrong list?</strong> — open a row's <em>More</em>, then <em>Place on another group</em>: Lisa / William (confirmers) change the live list; everyone else sends a suggestion that stays tentative until accepted.</li>
                     <li><strong>× Remove</strong> — confirmers remove from the live list; others suggest a removal (person stays until accepted).</li>
                     <li><strong>New group</strong> — confirmers create a custom list below, then place people onto it.</li>
-                    <li><strong>Person types</strong> — create types under <em>Person types</em>; assign them on each person. Built-in types can be renamed but not deleted.</li>
-                    <li><strong>History</strong> — membership and person-type changes are saved automatically. Open History for past compositions (including types on newer snapshots); use <em>Milestones</em> or <em>Show older</em> when the timeline grows; filter a snapshot by status or search a name; <em>Export PDF</em> on the selected card.</li>
-                    <li><strong>Group status</strong> — confirmers can mark a list Active / stable or In development (and change it again later). That does not stop anyone else suggesting moves.</li>
+                    <li><strong>Person types</strong> — create types under <em>Person types</em>; assign them on each person via their row's <em>More</em>. Built-in types can be renamed but not deleted.</li>
+                    <li><strong>History</strong> — membership and person-type changes are saved automatically. Open History for past compositions; filter a snapshot by status or search a name; <em>Export PDF</em> on the selected card.</li>
+                    <li><strong>Group status</strong> — confirmers can mark a list Active / stable or In development. That does not stop anyone else suggesting moves.</li>
                 </ol>
                 <h3 class="gov-setup-sub">Please remember</h3>
                 <ul class="gov-setup-list">
@@ -168,10 +168,10 @@
                     <li>Most people make suggestions; Lisa and William confirm the live membership lists and group status.</li>
                     <li><a href="governance-membership-guide.html">Full guide to this tool</a> — features, history, exports, privacy, permissions, and how to suggest improvements.</li>
                 </ul>
-            </section>
+            </details>
 
-            <section class="gov-sidebar-card gov-sidebar-card--invert" id="add-person">
-                <h2 class="gov-sidebar-title">Add someone</h2>
+            <details class="gov-sidebar-card gov-sidebar-card--invert gov-sidebar-card--accordion" id="add-person">
+                <summary class="gov-sidebar-title">Add someone</summary>
                 <p class="gov-section-lede">Name + job on a list. Confirmers place them live; others’ adds still need confirmation.</p>
                 <div class="gov-add-form gov-add-form--stack">
                     <label>
@@ -194,10 +194,10 @@
                     </label>
                     <button type="button" class="gov-btn" id="gov-add-person">Add to list</button>
                 </div>
-            </section>
+            </details>
 
-            <section class="gov-sidebar-card gov-sidebar-card--invert" id="create-group">
-                <h2 class="gov-sidebar-title">Create a new group</h2>
+            <details class="gov-sidebar-card gov-sidebar-card--invert gov-sidebar-card--accordion" id="create-group">
+                <summary class="gov-sidebar-title">Create a new group</summary>
                 <p class="gov-section-lede">For a working set beyond Board, Steering, Technical, or Business.</p>
                 <div class="gov-add-form gov-add-form--stack">
                     <label>
@@ -211,11 +211,11 @@
                     </label>
                     <button type="button" class="gov-btn" id="gov-create-group">Create group</button>
                 </div>
-            </section>
+            </details>
 
-            <section class="gov-sidebar-card" id="manage-attributes">
-                <h2 class="gov-sidebar-title">Person types</h2>
-                <p class="gov-section-lede">Champion, Decider, Key stakeholder, and any types you add (e.g. Change agent). Assign them on each person in the lists.</p>
+            <details class="gov-sidebar-card gov-sidebar-card--accordion" id="manage-attributes">
+                <summary class="gov-sidebar-title">Person types</summary>
+                <p class="gov-section-lede">Champion, Decider, Key stakeholder, and any types you add (e.g. Change agent). Assign them on each person via their row's <em>More</em>.</p>
                 <div id="gov-attr-manage-list" class="gov-attr-manage-list" aria-live="polite"></div>
                 <div class="gov-add-form gov-add-form--stack" style="margin-top:0.85rem;">
                     <label>
@@ -225,7 +225,7 @@
                     <p class="gov-dupe-warning" id="gov-new-attr-label-dupe" hidden></p>
                     <button type="button" class="gov-btn" id="gov-create-attr">Create type</button>
                 </div>
-            </section>
+            </details>
         </aside>
 
         <div class="gov-layout-main">
@@ -339,6 +339,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="assets/js/main.js"></script>
-<script src="assets/js/governance-membership.js?v=20"></script>
+<script src="assets/js/governance-membership.js?v=23"></script>
 </body>
 </html>

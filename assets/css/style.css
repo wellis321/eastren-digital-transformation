@@ -2907,6 +2907,48 @@ tbody tr:nth-child(even):hover {
     font-size: 0.95rem;
     color: var(--erc-green-dark);
 }
+/* Sidebar sections are <details> — closed by default so the whole column
+   isn't a permanent wall of guidance + 3 open forms above every group. */
+.gov-sidebar-card--accordion {
+    padding: 0;
+}
+.gov-sidebar-card--accordion > summary.gov-sidebar-title {
+    cursor: pointer;
+    list-style: none;
+    margin: 0;
+    padding: 0.85rem 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+.gov-sidebar-card--accordion > summary.gov-sidebar-title::-webkit-details-marker {
+    display: none;
+}
+.gov-sidebar-card--accordion > summary.gov-sidebar-title::after {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    flex-shrink: 0;
+    opacity: 0.6;
+}
+.gov-sidebar-card--accordion[open] > summary.gov-sidebar-title::after {
+    transform: rotate(45deg);
+}
+.gov-sidebar-card--accordion > summary.gov-sidebar-title:focus-visible {
+    outline: 2px solid var(--erc-green);
+    outline-offset: -2px;
+}
+.gov-sidebar-card--accordion > :not(summary) {
+    padding-left: 0.95rem;
+    padding-right: 0.95rem;
+}
+.gov-sidebar-card--accordion > :last-child {
+    padding-bottom: 0.85rem;
+}
 .gov-setup-list {
     margin: 0.25rem 0 0;
     padding-left: 1.1rem;
@@ -3356,58 +3398,6 @@ tbody tr:nth-child(even):hover {
     gap: 0.4rem;
     align-items: center;
 }
-.gov-roster {
-    list-style: none;
-    margin: 0 0 1rem;
-    padding: 0.65rem 0.75rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    background: color-mix(in srgb, var(--erc-green) 6%, var(--erc-surface, #fff));
-    border: 1px solid color-mix(in srgb, var(--erc-green) 18%, var(--erc-border));
-}
-.gov-roster-chip {
-    display: inline-block;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--erc-text);
-    text-decoration: none;
-    padding: 0.22rem 0.5rem;
-    border: 1px solid var(--erc-border);
-    background: var(--erc-surface, #fff);
-    line-height: 1.3;
-}
-.gov-roster-chip:hover {
-    border-color: var(--erc-green);
-    color: var(--erc-green-dark);
-}
-.gov-roster-chip--yes {
-    border-color: rgba(0, 106, 81, 0.4);
-    background: rgba(0, 106, 81, 0.08);
-}
-.gov-roster-chip--maybe {
-    border-color: rgba(217, 119, 6, 0.4);
-    background: rgba(217, 119, 6, 0.08);
-}
-.gov-roster-chip--no {
-    border-color: rgba(120, 120, 120, 0.4);
-    color: #555;
-}
-.gov-roster-chip--pending {
-    box-shadow: inset 0 -2px 0 #d97706;
-}
-.gov-roster-chip--tentative-add {
-    border-style: dashed;
-    border-color: rgba(0, 106, 81, 0.55);
-    color: var(--erc-green-dark, #004d3b);
-    background: rgba(0, 106, 81, 0.06);
-}
-.gov-roster-chip--tentative-remove {
-    border-style: dashed;
-    border-color: rgba(127, 29, 29, 0.45);
-    text-decoration: line-through;
-    opacity: 0.85;
-}
 .gov-assess-heading {
     margin: 0 0 0.35rem;
     font-size: 0.78rem;
@@ -3708,16 +3698,6 @@ tbody tr:nth-child(even):hover {
     color: var(--erc-text, #222);
     font-weight: 700;
 }
-.gov-attr-manage-main .gov-group-badge {
-    border-color: rgba(0, 106, 81, 0.35);
-    color: var(--erc-green-dark, #004d3b);
-    background: rgba(0, 106, 81, 0.08);
-}
-.gov-attr-manage-main .gov-group-badge--custom {
-    border-color: rgba(180, 83, 9, 0.4);
-    color: #92400e;
-    background: rgba(217, 119, 6, 0.12);
-}
 .gov-attr-manage-main .gov-jump-count {
     color: var(--erc-green-dark, #004d3b);
     font-weight: 700;
@@ -3791,7 +3771,7 @@ tbody tr:nth-child(even):hover {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    width: min(100%, 26rem);
+    width: 100%;
     margin: 0;
 }
 .gov-vote-note-field {
@@ -3841,6 +3821,78 @@ tbody tr:nth-child(even):hover {
     padding: 0.35rem 0.5rem;
     background: rgba(0, 106, 81, 0.06);
     border-left: 3px solid var(--erc-green);
+}
+
+/* Reason trigger + popover — was a permanently-open textarea under every
+   voted person; now an on-demand editor, opened via the native popover API. */
+.gov-reason-trigger {
+    appearance: none;
+    border: 1px solid var(--erc-border);
+    background: var(--erc-surface);
+    color: var(--erc-text-light);
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.28rem 0.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.gov-reason-trigger:hover {
+    color: var(--erc-green-dark);
+    border-color: var(--erc-green);
+}
+.gov-reason-popover {
+    width: min(90vw, 22rem);
+    margin: auto;
+    padding: 0.85rem;
+    border: 1px solid var(--erc-border);
+    border-top: 3px solid var(--erc-green);
+    background: var(--erc-surface, #fff);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18);
+}
+.gov-reason-popover-title {
+    display: block;
+    margin: 0 0 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--erc-green-dark);
+}
+
+/* "More" — tags, other lists, and place-on-another-group, tucked behind one
+   disclosure per row instead of always rendering. */
+.gov-person-more {
+    flex-basis: 100%;
+    margin-top: 0.35rem;
+}
+.gov-person-more > summary {
+    cursor: pointer;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--erc-text-light);
+}
+.gov-person-more > summary::-webkit-details-marker {
+    display: none;
+}
+.gov-person-more > summary:hover,
+.gov-person-more[open] > summary {
+    color: var(--erc-green-dark);
+}
+.gov-more-hint {
+    font-weight: 400;
+    color: var(--erc-text-light);
+}
+.gov-person-more-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+    padding: 0.6rem 0.65rem;
+    background: var(--erc-surface-alt, #f7f7f7);
+    border-left: 3px solid var(--erc-border);
 }
 .gov-shared-note__who {
     font-weight: 600;

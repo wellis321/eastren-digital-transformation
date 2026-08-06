@@ -69,3 +69,26 @@ python3 -m http.server 8000
 - **`documents/progress/` is out of scope** — draft programme progress files (CSV, MOU, briefing docs). Do not read, integrate, or reference these when working on the portal.
 - PDF/PPTX are the original source documents; prefer the `.txt`/`.md` files for text extraction tasks
 - `documents/east-ren-digi-plans.txt` exists in the directory but is not yet listed in the key documents table above
+
+## Design Context
+
+### Users
+East Renfrewshire Council staff working on the Housing Digital Transformation programme, using this as an internal working tool during the working day — not a public-facing site. Two distinct user types:
+- **Confirmers** (Lisa, William) — power users who use the tool regularly/daily to maintain live governance group membership, resolve proposals, and set group status. Efficiency and low friction matter most to them.
+- **Proposers/occasional contributors** — other staff who drop in less often to vote (Yes/Maybe/No) on people, leave reasons, or suggest membership changes. Clarity and confidence matter most to them; they shouldn't feel intimidated by a dense "system."
+
+### Brand Personality
+Calm & orderly. Feels like a well-run meeting, not a spreadsheet dump or an admin dashboard. Trustworthy, unhurried, low-cognitive-load — appropriate for council-branded internal software, not a consumer product chasing delight for its own sake.
+
+### Aesthetic Direction
+- ERC corporate identity is fixed and non-negotiable: primary green `#006A51` and the existing token palette in `assets/css/style.css` stay exactly as-is. This is council-branded software, not a blank creative canvas.
+- Decluttering is achieved through layout, spacing, grouping, and progressive disclosure — not new colors, new fonts, or a visual re-brand.
+- Light mode only; no indication dark mode is needed for this internal tool.
+- Avoid generic AI-dashboard clichés (card-grid sameness, hero-metric layouts, glassmorphism) — but equally avoid over-designing a civic tool with unnecessary flair. Restraint over spectacle.
+
+### Design Principles
+1. **Progressive disclosure over always-on density.** Primary info per person (name, role, current vote/tally) stays visible by default; secondary detail (reason notes, tag editor, "also on" cross-listing, place-on-another-group, propose actions) should be reachable but not permanently rendered for every row at once — known pain point: "too much always-visible at once."
+2. **Never remove capability.** Every existing feature (voting, shareable reasons, tags, proposals, confirm/propose permissions, group status, filters, exports, history) must remain fully reachable — decluttering re-organizes, it does not amputate.
+3. **Serve both audiences without compromise.** Power users (confirmers) need speed and minimal clicks for frequent actions; occasional proposers need clarity and low intimidation. Prefer patterns that scale disclosure to intent rather than picking one audience over the other.
+4. **Brand identity is fixed, not up for reinvention.** Any visual change must work within the existing ERC green/token palette already defined in `style.css`.
+5. **Calm, orderly rhythm.** Favor generous grouping and intentional whitespace over uniform dense packing; avoid multiple competing always-on controls fighting for attention within a single row or card.

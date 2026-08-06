@@ -654,6 +654,12 @@
     return items.find((item) => getName(item).trim().toLowerCase() === needle) || null;
   };
 
+  /** "They're on Steering Group, Technical Group.", or a fallback when unassigned. */
+  const describeMatchGroups = (person) => {
+    const labels = groupsFor(person).map((g) => groupMeta[g]?.label || g);
+    return labels.length ? `They're on ${labels.join(', ')}.` : 'They are not on any group yet.';
+  };
+
   // Live-warn under a name field as the user types, so duplicates get caught before
   // they hit "Add" — the confirm() in each create function is the second, final check.
   const wireDuplicateWarning = (inputId, warnId, getExistingItems, getName, describeMatch) => {
@@ -687,7 +693,7 @@
     if (
       dupe &&
       !confirm(
-        `A person named “${dupe.name}” already exists. They have the role of “${dupe.role || 'not recorded'}”.\n\n` +
+        `A person named “${dupe.name}” already exists. They have the role of “${dupe.role || 'not recorded'}”. ${describeMatchGroups(dupe)}\n\n` +
           `If that's the same person, choose Cancel and use “Also on” from their existing card to add them ` +
           `to this group instead.\n\n` +
           `If they're a different person, continue to add “${name}” as usual.\n\n` +
@@ -964,19 +970,46 @@
     }
     const rowId = `member-${esc(groupId)}-${esc(person.id)}`;
     const rowClass = tentativeRemove ? ' gov-person-row--tentative-remove' : '';
-    const noteBlock =
-      canVote && vote !== 'unset'
-        ? `<div class="gov-vote-note">
-          <label class="gov-vote-note-field">
-            <span class="visually-hidden">Reason for your mark on ${esc(person.name)}</span>
-            <textarea class="gov-vote-note-input" maxlength="500" rows="2" placeholder="Reason (optional)…" data-action="vote-note" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>${esc(getMyVoteNote(person.id, groupId))}</textarea>
-          </label>
-          <label class="gov-vote-note-share">
-            <input type="checkbox" data-action="vote-note-share" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${noteShared ? ' checked' : ''}${voteDisabled}>
-            Share with others
-          </label>
-        </div>`
-        : '';
+
+    // Reason editing moves into a native popover, opened by a small trigger —
+    // was a permanently-open textarea+checkbox under every voted person, for
+    // every viewer, which was most of the page's density. Existing SHARED
+    // reasons still render as plain read-only text below (renderSharedNotes),
+    // unaffected — only the EDITING surface is now on-demand.
+    let reasonBlock = '';
+    if (canVote && vote !== 'unset') {
+      const reasonPopId = `reason-pop-${esc(groupId)}-${esc(person.id)}`;
+      const hasNote = getMyVoteNote(person.id, groupId).trim() !== '';
+      reasonBlock = `<button type="button" class="gov-reason-trigger" popovertarget="${reasonPopId}">${hasNote ? 'Edit reason' : 'Add reason'}</button>
+        <div class="gov-reason-popover" popover id="${reasonPopId}">
+          <div class="gov-vote-note">
+            <label class="gov-vote-note-field">
+              <span class="gov-reason-popover-title">Your reason for ${esc(person.name)}</span>
+              <textarea class="gov-vote-note-input" maxlength="500" rows="3" placeholder="Reason (optional)…" data-action="vote-note" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>${esc(getMyVoteNote(person.id, groupId))}</textarea>
+            </label>
+            <label class="gov-vote-note-share">
+              <input type="checkbox" data-action="vote-note-share" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${noteShared ? ' checked' : ''}${voteDisabled}>
+              Share with others
+            </label>
+          </div>
+        </div>`;
+    }
+
+    // Tags, "also on", and place-on-another-group are real but infrequent —
+    // tucked behind one "More" disclosure instead of always rendering.
+    const tagCount = personTags(person).length;
+    const tagBadges = renderTagBadges(person);
+    const tagEditor = renderPersonTagEditor(person);
+    const placeControls = renderPlaceControls(person, groupId);
+    const moreBody = `${tagBadges}${tagEditor}${alsoOn}${placeControls}`;
+    const moreHintParts = [];
+    if (tagCount) moreHintParts.push(`${tagCount} type${tagCount === 1 ? '' : 's'}`);
+    if (otherLists.length) moreHintParts.push(`also on ${otherLists.length}`);
+    const moreHint = moreHintParts.length ? ` <span class="gov-more-hint">${esc(moreHintParts.join(' · '))}</span>` : '';
+    const moreBlock = moreBody
+      ? `<details class="gov-person-more"><summary>More${moreHint}</summary><div class="gov-person-more-body">${moreBody}</div></details>`
+      : '';
+
     return `<li class="gov-person-row${rowClass}" id="${rowId}" data-id="${esc(person.id)}" data-vote="${esc(vote)}">
       <div class="gov-person-main">
         <div class="gov-person-icons" aria-hidden="true">${voteIcon(vote)}</div>
@@ -987,12 +1020,8 @@
             ${renderTallyCompact(person.id, groupId)}
           </div>
           <span class="gov-person-role">${esc(person.role || 'Role not recorded')}</span>
-          ${renderTagBadges(person)}
-          ${renderPersonTagEditor(person)}
-          ${alsoOn}
           ${renderSharedNotes(person.id, groupId)}
           ${prop ? `<p class="gov-proposal-meta">Suggested by ${esc(prop.proposedBy)}</p>${renderProposalActions(prop)}` : ''}
-          ${renderPlaceControls(person, groupId)}
         </div>
       </div>
       <div class="gov-person-actions">
@@ -1002,9 +1031,10 @@
           <button type="button" class="gov-vote-btn${vote === 'no' ? ' is-active' : ''}" data-action="vote" data-vote="no" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>No</button>
           <button type="button" class="gov-vote-btn gov-vote-btn--clear" data-action="vote" data-vote="unset" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Clear your mark"${voteDisabled}>Clear</button>
         </div>
-        ${noteBlock}
+        ${reasonBlock}
         ${removeBtn}
       </div>
+      ${moreBlock}
     </li>`;
   };
 
@@ -1023,39 +1053,6 @@
         </div>
       </div>
     </li>`;
-  };
-
-  const renderRoster = (groupId, peopleList) => {
-    const pendingAdds = proposalsForGroup(groupId).filter((p) => p.action === 'add' || p.action === 'move');
-    const visible = filteredPeople(peopleList);
-    if (!visible.length && !pendingAdds.length) return '';
-    const memberChips = visible
-      .map((p) => {
-        const vote = getMyVote(p.id, groupId);
-        const prop = proposalForPersonGroup(p.id, groupId);
-        const tentative =
-          prop &&
-          (prop.action === 'remove' || (prop.action === 'move' && prop.fromGroupId === groupId))
-            ? ' gov-roster-chip--tentative-remove'
-            : '';
-        const voteClass =
-          vote === 'yes'
-            ? ' gov-roster-chip--yes'
-            : vote === 'maybe'
-              ? ' gov-roster-chip--maybe'
-              : vote === 'no'
-                ? ' gov-roster-chip--no'
-                : '';
-        return `<li><a class="gov-roster-chip${voteClass}${tentative}" href="#member-${esc(groupId)}-${esc(p.id)}">${esc(p.name)}</a></li>`;
-      })
-      .join('');
-    const addChips = pendingAdds
-      .map(
-        (p) =>
-          `<li><a class="gov-roster-chip gov-roster-chip--tentative-add" href="#proposal-${p.id}">${esc(p.personName)} (suggested)</a></li>`
-      )
-      .join('');
-    return `<ul class="gov-roster" aria-label="Members at a glance">${memberChips}${addChips}</ul>`;
   };
 
   const renderGroup = (groupId) => {
@@ -1139,7 +1136,6 @@
           ${toolsHtml}
         </div>
       </header>
-      ${renderRoster(groupId, members)}
       ${empty}
       ${listHtml}
     </section>`;
@@ -1326,9 +1322,6 @@
       .map((id) => {
         const meta = attributeMeta[id] || { label: tagLabel(id), isSeed: false };
         const n = counts.get(id) || 0;
-        const badge = meta.isSeed
-          ? '<span class="gov-group-badge">Built-in</span>'
-          : '<span class="gov-group-badge gov-group-badge--custom">Custom</span>';
         const rename = canShape
           ? `<button type="button" class="gov-icon-btn" data-action="rename-attr" data-attr="${esc(id)}" title="Rename" aria-label="Rename ${esc(meta.label)}">✎</button>`
           : '';
@@ -1339,7 +1332,6 @@
         return `<li class="gov-attr-manage-row">
           <div class="gov-attr-manage-main">
             <strong>${esc(meta.label || id)}</strong>
-            ${badge}
             <span class="gov-jump-count">${n}</span>
           </div>
           <div class="gov-attr-manage-actions">${rename}${del}</div>
@@ -1655,7 +1647,8 @@
     'gov-new-name-dupe',
     () => people,
     (p) => p.name,
-    (match) => `⚠ A person named “${match.name}” already exists. They have the role of “${match.role || 'not recorded'}”.`
+    (match) =>
+      `⚠ A person named “${match.name}” already exists. They have the role of “${match.role || 'not recorded'}”. ${describeMatchGroups(match)}`
   );
   wireDuplicateWarning(
     'gov-new-group-label',
@@ -2741,6 +2734,8 @@
     if (!id) return;
     const target = document.getElementById(id);
     if (!target) return;
+    // Sidebar sections are collapsed <details> — open the one being jumped to.
+    if (target.tagName === 'DETAILS') target.open = true;
     if (scrollSidebarTarget(target)) {
       e.preventDefault();
       if (history.replaceState) history.replaceState(null, '', `#${id}`);
