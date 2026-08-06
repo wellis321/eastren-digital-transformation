@@ -3689,18 +3689,38 @@ tbody tr:nth-child(even):hover {
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    padding: 0.4rem 0.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.45rem 0.55rem;
+    border: 1px solid var(--erc-border);
     border-radius: var(--radius-sm);
-    background: rgba(0, 0, 0, 0.08);
+    background: var(--erc-surface, #fff);
+    color: var(--erc-text, #222);
 }
 .gov-attr-manage-main {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.35rem;
+    align-items: center;
+    gap: 0.4rem;
     min-width: 0;
     font-size: 0.85rem;
+}
+.gov-attr-manage-main strong {
+    color: var(--erc-text, #222);
+    font-weight: 700;
+}
+.gov-attr-manage-main .gov-group-badge {
+    border-color: rgba(0, 106, 81, 0.35);
+    color: var(--erc-green-dark, #004d3b);
+    background: rgba(0, 106, 81, 0.08);
+}
+.gov-attr-manage-main .gov-group-badge--custom {
+    border-color: rgba(180, 83, 9, 0.4);
+    color: #92400e;
+    background: rgba(217, 119, 6, 0.12);
+}
+.gov-attr-manage-main .gov-jump-count {
+    color: var(--erc-green-dark, #004d3b);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
 }
 .gov-attr-manage-actions {
     display: flex;

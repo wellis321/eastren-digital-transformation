@@ -1228,7 +1228,9 @@
       .map((id) => {
         const meta = attributeMeta[id] || { label: tagLabel(id), isSeed: false };
         const n = counts.get(id) || 0;
-        const badge = meta.isSeed ? '<span class="gov-group-badge">Built-in</span>' : '<span class="gov-group-badge">Custom</span>';
+        const badge = meta.isSeed
+          ? '<span class="gov-group-badge">Built-in</span>'
+          : '<span class="gov-group-badge gov-group-badge--custom">Custom</span>';
         const rename = canShape
           ? `<button type="button" class="gov-icon-btn" data-action="rename-attr" data-attr="${esc(id)}" title="Rename" aria-label="Rename ${esc(meta.label)}">✎</button>`
           : '';
