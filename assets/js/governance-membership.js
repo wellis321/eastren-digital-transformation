@@ -875,7 +875,7 @@
         ? `<div class="gov-vote-note">
           <label class="gov-vote-note-field">
             <span class="visually-hidden">Reason for your mark on ${esc(person.name)}</span>
-            <input type="text" class="gov-vote-note-input" maxlength="500" placeholder="Reason (optional)…" value="${esc(getMyVoteNote(person.id, groupId))}" data-action="vote-note" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>
+            <textarea class="gov-vote-note-input" maxlength="500" rows="2" placeholder="Reason (optional)…" data-action="vote-note" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>${esc(getMyVoteNote(person.id, groupId))}</textarea>
           </label>
           <label class="gov-vote-note-share">
             <input type="checkbox" data-action="vote-note-share" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${noteShared ? ' checked' : ''}${voteDisabled}>
@@ -1464,7 +1464,7 @@
   });
 
   groupsEl.addEventListener('input', (e) => {
-    const input = e.target.closest('input[data-action="vote-note"]');
+    const input = e.target.closest('[data-action="vote-note"]');
     if (!input || !canVote) return;
     const wrap = input.closest('.gov-vote-note');
     const shareEl = wrap?.querySelector('input[data-action="vote-note-share"]');
@@ -1476,7 +1476,7 @@
     const shareBox = e.target.closest('input[data-action="vote-note-share"]');
     if (shareBox && canVote) {
       const wrap = shareBox.closest('.gov-vote-note');
-      const noteInput = wrap?.querySelector('input[data-action="vote-note"]');
+      const noteInput = wrap?.querySelector('[data-action="vote-note"]');
       clearTimeout(voteNoteTimer);
       setVoteNote(
         shareBox.getAttribute('data-id'),
@@ -1486,7 +1486,7 @@
       );
       return;
     }
-    const input = e.target.closest('input[data-action="vote-note"]');
+    const input = e.target.closest('[data-action="vote-note"]');
     if (!input || !canVote) return;
     const wrap = input.closest('.gov-vote-note');
     const shareEl = wrap?.querySelector('input[data-action="vote-note-share"]');

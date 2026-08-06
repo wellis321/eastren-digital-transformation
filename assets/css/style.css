@@ -3791,7 +3791,7 @@ tbody tr:nth-child(even):hover {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    width: min(100%, 16rem);
+    width: min(100%, 26rem);
     margin: 0;
 }
 .gov-vote-note-field {
@@ -3807,6 +3807,8 @@ tbody tr:nth-child(even):hover {
     border: 1px solid var(--erc-border);
     background: var(--erc-surface, #fff);
     color: inherit;
+    resize: vertical;
+    min-height: 2.4rem;
 }
 .gov-vote-note-input:focus {
     outline: 2px solid rgba(0, 106, 81, 0.35);
