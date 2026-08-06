@@ -2861,8 +2861,9 @@ tbody tr:nth-child(even):hover {
     text-decoration: none;
 }
 #add-person,
-#create-group {
-    scroll-margin-top: 5rem;
+#create-group,
+#manage-attributes {
+    scroll-margin-top: 0.5rem;
 }
 .gov-sidebar-card {
     padding: 0.85rem 0.95rem;

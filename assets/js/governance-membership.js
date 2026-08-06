@@ -2427,6 +2427,38 @@
     loadHistoryList({ append: false }).catch(() => {});
   };
 
+  /** Scroll a sidebar target inside the sticky aside — do not move the main column. */
+  const scrollSidebarTarget = (target) => {
+    const sidebar = document.querySelector('.gov-sidebar');
+    if (!sidebar || !target || !sidebar.contains(target)) return false;
+    const overflow = getComputedStyle(sidebar).overflowY;
+    const canScrollAside =
+      (overflow === 'auto' || overflow === 'scroll') &&
+      sidebar.scrollHeight > sidebar.clientHeight + 4;
+    if (canScrollAside) {
+      const delta = target.getBoundingClientRect().top - sidebar.getBoundingClientRect().top;
+      sidebar.scrollTo({ top: Math.max(0, sidebar.scrollTop + delta - 8), behavior: 'smooth' });
+    } else {
+      // Stacked layout (narrow screens): page scroll is expected.
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    return true;
+  };
+
+  document.querySelector('.gov-sidebar-jump')?.addEventListener('click', (e) => {
+    const link = e.target.closest('a.gov-sidebar-jump-btn[href^="#"]');
+    if (!link) return;
+    const id = link.getAttribute('href').slice(1);
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    if (scrollSidebarTarget(target)) {
+      e.preventDefault();
+      if (history.replaceState) history.replaceState(null, '', `#${id}`);
+      else location.hash = id;
+    }
+  });
+
   fetch(API_URL, { credentials: 'same-origin' })
     .then(async (r) => {
       if (r.status === 401) {
@@ -2442,9 +2474,11 @@
       return loadHistoryList();
     })
     .then(() => {
-      if (location.hash) {
-        const el = document.querySelector(location.hash);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!location.hash) return;
+      const el = document.querySelector(location.hash);
+      if (!el) return;
+      if (!scrollSidebarTarget(el)) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     })
     .catch((err) => {
