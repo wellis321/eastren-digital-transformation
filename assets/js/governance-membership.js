@@ -459,6 +459,42 @@
   // Guards against out-of-order responses: an older in-flight save resolving after a
   // newer one must not redraw the list with its now-stale (e.g. shorter) text.
   const voteNoteSeq = {};
+
+  // render() rebuilds the whole list, which destroys and recreates the reason field —
+  // silently stealing focus (and any keystrokes typed right after) if the user is still
+  // in it. Capture what's focused, redraw, then refocus the matching field.
+  const captureVoteNoteFocus = () => {
+    const el = document.activeElement;
+    if (!el || !groupsEl.contains(el)) return null;
+    const action = el.getAttribute('data-action');
+    if (action !== 'vote-note' && action !== 'vote-note-share') return null;
+    return {
+      action,
+      id: el.getAttribute('data-id'),
+      group: el.getAttribute('data-group'),
+      selectionStart: typeof el.selectionStart === 'number' ? el.selectionStart : null,
+      selectionEnd: typeof el.selectionEnd === 'number' ? el.selectionEnd : null,
+    };
+  };
+  const restoreVoteNoteFocus = (focusInfo) => {
+    if (!focusInfo) return;
+    const candidates = groupsEl.querySelectorAll(`[data-action="${focusInfo.action}"]`);
+    for (const el of candidates) {
+      if (el.getAttribute('data-id') !== focusInfo.id || el.getAttribute('data-group') !== focusInfo.group) {
+        continue;
+      }
+      el.focus();
+      if (focusInfo.selectionStart !== null && typeof el.setSelectionRange === 'function') {
+        try {
+          el.setSelectionRange(focusInfo.selectionStart, focusInfo.selectionEnd);
+        } catch {
+          // some input types don't support selection ranges — ignore
+        }
+      }
+      break;
+    }
+  };
+
   const setVoteNote = (personId, groupId, comment, shared, { quiet = false } = {}) => {
     if (!canVote) return;
     if (getMyVote(personId, groupId) === 'unset') {
@@ -489,6 +525,7 @@
     })
       .then((data) => {
         if (seq !== voteNoteSeq[fieldKey]) return; // a newer save has since started — drop this stale response
+        const focusInfo = captureVoteNoteFocus();
         if (data.state) applyBundle(data.state);
         if (!quiet) {
           setStatus(
@@ -498,6 +535,7 @@
           );
         }
         render();
+        restoreVoteNoteFocus(focusInfo);
       })
       .catch((err) => {
         if (seq !== voteNoteSeq[fieldKey]) return;
