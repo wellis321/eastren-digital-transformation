@@ -255,12 +255,15 @@
                         <h2 class="gov-section-title">Group history</h2>
                         <p class="gov-section-lede">
                             Continuous timeline of who sat on each group. Changes are recorded automatically;
-                            use a checkpoint to pin a milestone. The list loads in pages — use <strong>Milestones</strong>
-                            or <strong>Show older</strong> when the timeline grows. Open an entry to focus by status
-                            (e.g. Active / stable only), search a name, or export that snapshot as PDF.
+                            use a checkpoint to pin a milestone. Open an entry to export PDF or
+                            <strong>Restore this composition</strong> if live lists were changed by mistake.
+                            <strong>Reseed unassigned</strong> puts people with no group back onto their seed-list groups.
                         </p>
                     </div>
-                    <button type="button" class="gov-btn" id="gov-history-checkpoint">Save checkpoint</button>
+                    <div class="gov-history-head-actions">
+                        <button type="button" class="gov-btn gov-btn--muted" id="gov-history-reseed" title="For people with no group, re-apply placements from the seed list">Reseed unassigned</button>
+                        <button type="button" class="gov-btn" id="gov-history-checkpoint">Save checkpoint</button>
+                    </div>
                 </div>
                 <div class="gov-history-layout">
                     <div class="gov-history-list-wrap">

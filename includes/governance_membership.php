@@ -381,9 +381,250 @@ function governance_empty_tally(): array
  *   dbInitialized: bool
  * }
  */
+
+function governance_membership_pair_count(): int
+{
+    governance_ensure_table();
+    return (int)db()->query('SELECT COUNT(*) FROM governance_membership')->fetchColumn();
+}
+
+/**
+ * Materialise seed + custom person.groups into governance_membership when the table is empty.
+ * Prevents the first place/move from making a single-row table the source of truth.
+ *
+ * @return int rows inserted
+ */
+function governance_ensure_membership_seeded(string $updatedBy = 'system'): int
+{
+    governance_ensure_table();
+    if (governance_membership_pair_count() > 0) {
+        return 0;
+    }
+
+    $allowed = governance_group_ids();
+    $byId = [];
+    foreach (governance_seed_people() as $p) {
+        $byId[$p['id']] = $p;
+    }
+    foreach (governance_custom_people() as $p) {
+        if (isset($byId[$p['id']])) {
+            // Keep seed groups; custom people rows usually have empty groups.
+            $byId[$p['id']]['name'] = $p['name'];
+            if ($p['role'] !== '') {
+                $byId[$p['id']]['role'] = $p['role'];
+            }
+        } else {
+            $byId[$p['id']] = $p;
+        }
+    }
+
+    $pdo = db();
+    $ins = $pdo->prepare(
+        'INSERT INTO governance_membership
+          (person_id, group_id, vote, sort_order, needs_assessment, updated_by, updated_at)
+         VALUES (?, ?, \'unset\', ?, 0, ?, NOW())'
+    );
+    $n = 0;
+    $pdo->beginTransaction();
+    try {
+        foreach ($byId as $p) {
+            $groups = is_array($p['groups'] ?? null) ? $p['groups'] : [];
+            $sort = 0;
+            foreach ($groups as $gid) {
+                $gid = (string)$gid;
+                if ($gid === '' || !in_array($gid, $allowed, true)) {
+                    continue;
+                }
+                $ins->execute([(string)$p['id'], $gid, $sort, $updatedBy]);
+                $n++;
+                $sort++;
+            }
+        }
+        $pdo->commit();
+    } catch (Throwable $e) {
+        $pdo->rollBack();
+        throw $e;
+    }
+
+        return $n;
+}
+
+/**
+ * Restore placements from seed JSON only for people who currently have zero membership rows.
+ * Safe recovery after an accidental wipe; does not move people already on a list.
+ *
+ * @return array{restoredPeople:int,insertedPairs:int}
+ */
+function governance_reseed_unassigned_from_seed(string $updatedBy): array
+{
+    if (!governance_can_confirm_membership()) {
+        throw new RuntimeException('Only a membership confirmer can reseed unassigned people from the seed list');
+    }
+    governance_ensure_table();
+    $allowed = governance_group_ids();
+
+    $hasRows = [];
+    foreach (db()->query('SELECT DISTINCT person_id FROM governance_membership')->fetchAll() as $row) {
+        $hasRows[(string)$row['person_id']] = true;
+    }
+
+    $byId = [];
+    foreach (governance_seed_people() as $p) {
+        $byId[$p['id']] = $p;
+    }
+
+    $pdo = db();
+    $ins = $pdo->prepare(
+        'INSERT INTO governance_membership
+          (person_id, group_id, vote, sort_order, needs_assessment, updated_by, updated_at)
+         VALUES (?, ?, \'unset\', ?, 0, ?, NOW())
+         ON DUPLICATE KEY UPDATE updated_by = VALUES(updated_by), updated_at = NOW()'
+    );
+    $peopleRestored = 0;
+    $pairs = 0;
+    $pdo->beginTransaction();
+    try {
+        foreach ($byId as $pid => $p) {
+            if (isset($hasRows[$pid])) {
+                continue;
+            }
+            $groups = is_array($p['groups'] ?? null) ? $p['groups'] : [];
+            $added = 0;
+            $sort = 0;
+            foreach ($groups as $gid) {
+                $gid = (string)$gid;
+                if ($gid === '' || !in_array($gid, $allowed, true)) {
+                    continue;
+                }
+                $ins->execute([$pid, $gid, $sort, $updatedBy]);
+                $pairs++;
+                $added++;
+                $sort++;
+            }
+            if ($added > 0) {
+                $peopleRestored++;
+            }
+        }
+        $pdo->commit();
+    } catch (Throwable $e) {
+        $pdo->rollBack();
+        throw $e;
+    }
+
+    if ($pairs > 0) {
+        governance_capture_history('reseed_unassigned', $updatedBy, true);
+    }
+
+    return ['restoredPeople' => $peopleRestored, 'insertedPairs' => $pairs];
+}
+
+/**
+ * Replace live membership with a history snapshot (confirmers only).
+ *
+ * @return array{historyId:int,insertedPairs:int}
+ */
+function governance_restore_from_history(int $historyId, string $updatedBy, bool $force = false): array
+{
+    if (!governance_can_confirm_membership()) {
+        throw new RuntimeException('Only a membership confirmer can restore a history snapshot');
+    }
+    $entry = governance_get_history($historyId);
+    if ($entry === null) {
+        throw new InvalidArgumentException('History entry not found');
+    }
+    $groups = $entry['snapshot']['groups'] ?? null;
+    if (!is_array($groups)) {
+        throw new InvalidArgumentException('History snapshot is missing groups');
+    }
+
+    $allowed = governance_group_ids();
+    $rows = [];
+    foreach ($groups as $g) {
+        if (!is_array($g)) {
+            continue;
+        }
+        $gid = (string)($g['id'] ?? '');
+        if ($gid === '' || !in_array($gid, $allowed, true)) {
+            continue;
+        }
+        $members = is_array($g['members'] ?? null) ? $g['members'] : [];
+        $sort = 0;
+        foreach ($members as $m) {
+            if (!is_array($m)) {
+                continue;
+            }
+            $pid = (string)($m['id'] ?? '');
+            if ($pid === '') {
+                continue;
+            }
+            $key = $pid . '|' . $gid;
+            if (!isset($rows[$key])) {
+                $rows[$key] = $sort;
+            }
+            $sort++;
+        }
+    }
+
+    $newCount = count($rows);
+    $currentCount = governance_membership_pair_count();
+    if ($newCount < 1 && $currentCount > 0 && !$force) {
+        throw new InvalidArgumentException(
+            'Refusing to restore an empty snapshot while live membership has placements. Choose a fuller history entry.'
+        );
+    }
+    if ($currentCount > 8 && $newCount < (int)ceil($currentCount * 0.35) && !$force) {
+        throw new InvalidArgumentException(
+            'This snapshot has far fewer placements than live membership. Pick an earlier full snapshot, or confirm a forced restore.'
+        );
+    }
+
+    $pdo = db();
+    $existingNeeds = [];
+    foreach ($pdo->query('SELECT person_id, group_id, needs_assessment FROM governance_membership')->fetchAll() as $row) {
+        $existingNeeds[$row['person_id'] . '|' . $row['group_id']] = (int)$row['needs_assessment'] === 1;
+    }
+
+    $pdo->beginTransaction();
+    try {
+        $keepKeys = array_keys($rows);
+        $delVote = $pdo->prepare('DELETE FROM governance_votes WHERE person_id = ? AND group_id = ?');
+        foreach ($pdo->query('SELECT person_id, group_id FROM governance_membership')->fetchAll() as $pair) {
+            $key = $pair['person_id'] . '|' . $pair['group_id'];
+            if (!isset($rows[$key])) {
+                $delVote->execute([(string)$pair['person_id'], (string)$pair['group_id']]);
+            }
+        }
+
+        $pdo->exec('DELETE FROM governance_membership');
+        $ins = $pdo->prepare(
+            'INSERT INTO governance_membership
+              (person_id, group_id, vote, sort_order, needs_assessment, updated_by, updated_at)
+             VALUES (?, ?, \'unset\', ?, ?, ?, NOW())'
+        );
+        foreach ($rows as $key => $sort) {
+            [$pid, $gid] = explode('|', $key, 2);
+            $needs = !empty($existingNeeds[$key]) ? 1 : 0;
+            $ins->execute([$pid, $gid, (int)$sort, $needs, $updatedBy]);
+        }
+        $pdo->commit();
+    } catch (Throwable $e) {
+        $pdo->rollBack();
+        throw $e;
+    }
+
+    governance_capture_history('restore', $updatedBy, true);
+
+    return ['historyId' => $historyId, 'insertedPairs' => $newCount];
+}
+
 function governance_load_bundle(): array
 {
     governance_ensure_table();
+    // Empty membership + seed JSON in the UI is unsafe: the first place/move
+    // would make that one row the source of truth and unassign everyone else.
+    if (governance_membership_pair_count() === 0) {
+        governance_ensure_membership_seeded((string)($_SESSION['admin_user'] ?? 'system'));
+    }
 
     $byId = [];
     foreach (governance_seed_people() as $p) {
@@ -601,6 +842,19 @@ function governance_save_state(array $payload, string $updatedBy): void
             }
             $i++;
         }
+    }
+
+    $existingCount = count($existingNeeds);
+    $newCount = count($rows);
+    if ($existingCount > 5 && $newCount === 0) {
+        throw new InvalidArgumentException(
+            'Refusing to wipe all membership via save. Restore from history or reseed unassigned people instead.'
+        );
+    }
+    if ($existingCount > 10 && $newCount < (int)ceil($existingCount * 0.35)) {
+        throw new InvalidArgumentException(
+            'Refusing to save a membership map that removes most placements. Check the client state or restore from history.'
+        );
     }
 
     $pdo = db();
@@ -860,6 +1114,7 @@ function governance_place_person(
     }
 
     governance_ensure_table();
+    governance_ensure_membership_seeded($updatedBy);
     $pdo = db();
 
     // Confirm person exists in seed or custom
@@ -946,6 +1201,7 @@ function governance_remove_person_from_group(string $personId, string $groupId, 
     }
 
     governance_ensure_table();
+    governance_ensure_membership_seeded($updatedBy);
     $pdo = db();
     $chk = $pdo->prepare('SELECT 1 FROM governance_membership WHERE person_id = ? AND group_id = ?');
     $chk->execute([$personId, $groupId]);
@@ -1245,6 +1501,7 @@ function governance_add_person(string $name, string $role, string $groupId, stri
     }
 
     governance_ensure_table();
+    governance_ensure_membership_seeded($updatedBy);
     $base = governance_slugify($name);
     $personId = $base;
     $n = 2;
@@ -1428,9 +1685,10 @@ function governance_list_history(int $limit = 25, int $offset = 0, string $filte
 
     $total = (int)$pdo->query("SELECT COUNT(*) FROM governance_history{$where}")->fetchColumn();
 
-    // First visit with no history yet: pin today's composition as the starting point.
+    // First visit with no history yet: seed membership if needed, then pin composition.
     if ($total === 0 && $filter === 'all' && governance_can_shape()) {
         $user = (string)($_SESSION['admin_user'] ?? 'user');
+        governance_ensure_membership_seeded($user);
         $captured = governance_capture_history('baseline', $user, true);
         if ($captured !== null) {
             $total = 1;

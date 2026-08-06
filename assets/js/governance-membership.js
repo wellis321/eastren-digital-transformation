@@ -42,6 +42,7 @@
   let canVote = true;
   let canShape = true;
   let canPropose = true;
+  let canConfirmMembership = false;
   let canSetGroupStatus = false;
   let proposals = [];
   let groupStatusLabels = {
@@ -76,6 +77,8 @@
     checkpoint: 'Checkpoint',
     baseline: 'Starting baseline',
     group_status: 'Group status changed',
+    restore: 'Restored from history',
+    reseed_unassigned: 'Reseeded unassigned from seed list',
   };
 
   const setStatus = (msg, isError) => {
@@ -181,6 +184,7 @@
     canVote = bundle.canVote !== false;
     canShape = bundle.canShape !== false;
     canPropose = bundle.canPropose !== false;
+    canConfirmMembership = !!bundle.canConfirmMembership || !!bundle.canSetGroupStatus;
     canSetGroupStatus = !!bundle.canSetGroupStatus;
     proposals = Array.isArray(bundle.proposals) ? bundle.proposals : [];
     if (bundle.groupStatuses && typeof bundle.groupStatuses === 'object' && !Array.isArray(bundle.groupStatuses)) {
@@ -1416,6 +1420,93 @@
       .join('');
   };
 
+
+  const countSnapshotMembers = (entry) => {
+    const groups = Array.isArray(entry?.snapshot?.groups) ? entry.snapshot.groups : [];
+    return groups.reduce((n, g) => n + (Array.isArray(g.members) ? g.members.length : 0), 0);
+  };
+
+  const restoreHistoryEntry = (entry) => {
+    if (!canConfirmMembership) {
+      setStatus('Only a membership confirmer can restore a snapshot', true);
+      return;
+    }
+    if (!entry?.id) return;
+    const memberCount = countSnapshotMembers(entry);
+    const when = formatHistoryWhen(entry.capturedAt);
+    const ok = confirm(
+      `Replace the live membership lists with the composition from ${when} (${memberCount} placements)?\n\nThis cannot be undone except by restoring another snapshot.`
+    );
+    if (!ok) return;
+    setStatus('Restoring membership from history…');
+    const btn = document.getElementById('gov-history-restore');
+    if (btn) btn.disabled = true;
+    postJson({ action: 'restore_history', historyId: entry.id, force: false })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        dirty = false;
+        setStatus('Membership restored from history');
+        render();
+        refreshHistoryQuiet();
+        openHistoryEntry(entry.id);
+      })
+      .catch((err) => {
+        const msg = err.message || 'Could not restore snapshot';
+        if (/far fewer|empty snapshot/i.test(msg)) {
+          const force = confirm(`${msg}\n\nForce restore anyway?`);
+          if (!force) {
+            setStatus(msg, true);
+            return;
+          }
+          return postJson({ action: 'restore_history', historyId: entry.id, force: true }).then((data) => {
+            if (data.state) applyBundle(data.state);
+            dirty = false;
+            setStatus('Membership force-restored from history');
+            render();
+            refreshHistoryQuiet();
+            openHistoryEntry(entry.id);
+          });
+        }
+        setStatus(msg, true);
+      })
+      .catch((err) => setStatus(err.message || 'Could not restore snapshot', true))
+      .finally(() => {
+        if (btn) btn.disabled = false;
+      });
+  };
+
+  const reseedUnassignedFromSeed = () => {
+    if (!canConfirmMembership) {
+      setStatus('Only a membership confirmer can reseed unassigned people', true);
+      return;
+    }
+    const ok = confirm(
+      'Place unassigned people back onto the groups listed in the seed file?\n\nPeople who are already on a list are left unchanged. Use this after an accidental wipe when history does not have a full snapshot.'
+    );
+    if (!ok) return;
+    setStatus('Reseeding unassigned people…');
+    const btn = document.getElementById('gov-history-reseed');
+    if (btn) btn.disabled = true;
+    postJson({ action: 'reseed_unassigned' })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        dirty = false;
+        const n = data.reseeded?.restoredPeople ?? 0;
+        const pairs = data.reseeded?.insertedPairs ?? 0;
+        setStatus(
+          n
+            ? `Reseeded ${n} people (${pairs} placements) from the seed list`
+            : 'No unassigned seed people needed restoring'
+        );
+        render();
+        refreshHistoryQuiet();
+      })
+      .catch((err) => setStatus(err.message || 'Could not reseed unassigned people', true))
+      .finally(() => {
+        if (btn) btn.disabled = false;
+      });
+  };
+
   const SNAPSHOT_STATUS_FILTERS = [
     { id: 'all', label: 'All statuses' },
     { id: 'active', label: 'Active / stable' },
@@ -1549,10 +1640,16 @@
       emptyMsg = 'No groups match this status / search focus. Clear the filters to see the full snapshot.';
     }
     const focusHint = snapshotFilterNote(entry);
+    const restoreBtn = canConfirmMembership
+      ? `<button type="button" class="gov-btn" id="gov-history-restore">Restore this composition</button>`
+      : '';
     viewEl.innerHTML = `<div class="gov-history-snapshot">
       <div class="gov-history-snapshot-toolbar">
         <p class="gov-history-snapshot-meta"><strong>As of ${esc(when)}</strong>${by} · ${esc(reasonLabel(entry.reason))}</p>
-        <button type="button" class="gov-btn gov-btn--muted" id="gov-history-export-pdf">Export PDF</button>
+        <div class="gov-history-snapshot-actions">
+          ${restoreBtn}
+          <button type="button" class="gov-btn gov-btn--muted" id="gov-history-export-pdf">Export PDF</button>
+        </div>
       </div>
       <div class="gov-history-snapshot-focus">
         <div class="gov-history-filters" role="group" aria-label="Focus groups by status">
@@ -1570,6 +1667,9 @@
     </div>`;
     document.getElementById('gov-history-export-pdf')?.addEventListener('click', () => {
       exportHistoryPdf(entry);
+    });
+    document.getElementById('gov-history-restore')?.addEventListener('click', () => {
+      restoreHistoryEntry(entry);
     });
     viewEl.querySelectorAll('[data-snapshot-status]').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -1603,6 +1703,8 @@
     renderHistoryList();
     const checkpointBtn = document.getElementById('gov-history-checkpoint');
     if (checkpointBtn) checkpointBtn.disabled = !canShape;
+    const reseedBtn = document.getElementById('gov-history-reseed');
+    if (reseedBtn) reseedBtn.disabled = !canConfirmMembership;
   };
 
   const loadHistoryList = ({ append = false } = {}) => {
@@ -1684,6 +1786,10 @@
     loadHistoryList({ append: true }).catch((err) =>
       setStatus(err.message || 'Could not load older history', true)
     );
+  });
+
+  document.getElementById('gov-history-reseed')?.addEventListener('click', () => {
+    reseedUnassignedFromSeed();
   });
 
   document.getElementById('gov-history-checkpoint')?.addEventListener('click', () => {

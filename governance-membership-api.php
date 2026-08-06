@@ -69,7 +69,7 @@ try {
     }
 
     $user = (string)($_SESSION['admin_user'] ?? 'user');
-    $action = (string)($payload['action'] ?? 'save');
+    $action = trim((string)($payload['action'] ?? ''));
 
     if ($action === 'set_vote') {
         governance_set_vote(
@@ -204,14 +204,44 @@ try {
         exit;
     }
 
-    // Default: membership / order save — does not overwrite others' votes
-    if (!governance_can_shape()) {
-        http_response_code(403);
-        echo json_encode(['error' => 'Only a membership confirmer can change membership lists']);
+    if ($action === 'restore_history') {
+        $force = !empty($payload['force']);
+        $result = governance_restore_from_history(
+            (int)($payload['historyId'] ?? 0),
+            $user,
+            $force
+        );
+        echo json_encode([
+            'ok' => true,
+            'restored' => $result,
+            'state' => governance_load_bundle(),
+        ]);
         exit;
     }
-    governance_save_state($payload, $user);
-    echo json_encode(['ok' => true, 'state' => governance_load_bundle()]);
+
+    if ($action === 'reseed_unassigned') {
+        $result = governance_reseed_unassigned_from_seed($user);
+        echo json_encode([
+            'ok' => true,
+            'reseeded' => $result,
+            'state' => governance_load_bundle(),
+        ]);
+        exit;
+    }
+
+    if ($action === 'save') {
+        if (!governance_can_shape()) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Only a membership confirmer can change membership lists']);
+            exit;
+        }
+        governance_save_state($payload, $user);
+        echo json_encode(['ok' => true, 'state' => governance_load_bundle()]);
+        exit;
+    }
+
+    http_response_code(400);
+    echo json_encode(['error' => 'Unknown action']);
 } catch (InvalidArgumentException $e) {
     http_response_code(400);
     echo json_encode(['error' => $e->getMessage()]);

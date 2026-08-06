@@ -2954,6 +2954,18 @@ tbody tr:nth-child(even):hover {
 .gov-history-head .gov-btn {
     flex-shrink: 0;
 }
+.gov-history-head-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+.gov-history-snapshot-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    align-items: center;
+}
 .gov-history-layout {
     display: grid;
     grid-template-columns: minmax(12rem, 16rem) 1fr;
