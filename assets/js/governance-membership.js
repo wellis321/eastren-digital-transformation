@@ -1463,7 +1463,10 @@
   };
 
   groupsEl.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-action]');
+    // Scoped to buttons only — a bare [data-action] selector also matches the reason
+    // textarea/checkbox (data-action="vote-note"/"vote-note-share"), and calling
+    // preventDefault() on those cancels the checkbox's native toggle before it can fire.
+    const btn = e.target.closest('button[data-action]');
     if (!btn || btn.disabled) return;
     e.preventDefault();
     const action = btn.getAttribute('data-action');
