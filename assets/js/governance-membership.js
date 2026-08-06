@@ -1011,28 +1011,30 @@
       : '';
 
     return `<li class="gov-person-row${rowClass}" id="${rowId}" data-id="${esc(person.id)}" data-vote="${esc(vote)}">
-      <div class="gov-person-main">
-        <div class="gov-person-icons" aria-hidden="true">${voteIcon(vote)}</div>
-        <div class="gov-person-text">
-          <div class="gov-person-line">
-            <strong class="gov-person-name">${esc(person.name)}</strong>
-            ${tentativeBadge}
-            ${renderTallyCompact(person.id, groupId)}
+      <div class="gov-person-top">
+        <div class="gov-person-main">
+          <div class="gov-person-icons" aria-hidden="true">${voteIcon(vote)}</div>
+          <div class="gov-person-text">
+            <div class="gov-person-line">
+              <strong class="gov-person-name">${esc(person.name)}</strong>
+              ${tentativeBadge}
+              ${renderTallyCompact(person.id, groupId)}
+            </div>
+            <span class="gov-person-role">${esc(person.role || 'Role not recorded')}</span>
+            ${renderSharedNotes(person.id, groupId)}
+            ${prop ? `<p class="gov-proposal-meta">Suggested by ${esc(prop.proposedBy)}</p>${renderProposalActions(prop)}` : ''}
           </div>
-          <span class="gov-person-role">${esc(person.role || 'Role not recorded')}</span>
-          ${renderSharedNotes(person.id, groupId)}
-          ${prop ? `<p class="gov-proposal-meta">Suggested by ${esc(prop.proposedBy)}</p>${renderProposalActions(prop)}` : ''}
         </div>
-      </div>
-      <div class="gov-person-actions">
-        <div class="gov-vote-btns" role="group" aria-label="Your mark for ${esc(person.name)}">
-          <button type="button" class="gov-vote-btn${vote === 'yes' ? ' is-active' : ''}" data-action="vote" data-vote="yes" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>Yes</button>
-          <button type="button" class="gov-vote-btn${vote === 'maybe' ? ' is-active' : ''}" data-action="vote" data-vote="maybe" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>Maybe</button>
-          <button type="button" class="gov-vote-btn${vote === 'no' ? ' is-active' : ''}" data-action="vote" data-vote="no" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>No</button>
-          <button type="button" class="gov-vote-btn gov-vote-btn--clear" data-action="vote" data-vote="unset" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Clear your mark"${voteDisabled}>Clear</button>
+        <div class="gov-person-actions">
+          <div class="gov-vote-btns" role="group" aria-label="Your mark for ${esc(person.name)}">
+            <button type="button" class="gov-vote-btn${vote === 'yes' ? ' is-active' : ''}" data-action="vote" data-vote="yes" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>Yes</button>
+            <button type="button" class="gov-vote-btn${vote === 'maybe' ? ' is-active' : ''}" data-action="vote" data-vote="maybe" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>Maybe</button>
+            <button type="button" class="gov-vote-btn${vote === 'no' ? ' is-active' : ''}" data-action="vote" data-vote="no" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>No</button>
+            <button type="button" class="gov-vote-btn gov-vote-btn--clear" data-action="vote" data-vote="unset" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Clear your mark"${voteDisabled}>Clear</button>
+          </div>
+          ${reasonBlock}
+          ${removeBtn}
         </div>
-        ${reasonBlock}
-        ${removeBtn}
       </div>
       ${moreBlock}
     </li>`;

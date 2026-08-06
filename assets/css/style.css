@@ -3412,7 +3412,6 @@ tbody tr:nth-child(even):hover {
     margin: 0;
     padding: 0;
 }
-.gov-person-row,
 .gov-pool-row {
     display: flex;
     flex-wrap: wrap;
@@ -3422,6 +3421,23 @@ tbody tr:nth-child(even):hover {
     padding: 0.55rem 0;
     border-top: 1px solid var(--erc-border);
     scroll-margin-top: 8rem;
+}
+/* .gov-person-row itself is a plain block (not a flex item participant) — its
+   <details class="gov-person-more"> child was silently failing to toggle on
+   click while it was a flex item (flex-basis:100%) of a wrapping flex row;
+   the flex row now lives one level down, in .gov-person-top, so More is a
+   normal block sibling instead. */
+.gov-person-row {
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--erc-border);
+    scroll-margin-top: 8rem;
+}
+.gov-person-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
 }
 .gov-person-row:first-child,
 .gov-pool-row:first-child {
@@ -3859,23 +3875,19 @@ tbody tr:nth-child(even):hover {
 }
 
 /* "More" — tags, other lists, and place-on-another-group, tucked behind one
-   disclosure per row instead of always rendering. */
+   disclosure per row instead of always rendering. Deliberately left with the
+   browser's default <summary> marker/display, matching the other nested
+   disclosures on this row (Edit types, Place on another group) — overriding
+   display/list-style here (tested: flex, inline-flex, marker-hiding) reliably
+   stopped the native click-to-toggle firing in this deeply-nested context. */
 .gov-person-more {
-    flex-basis: 100%;
     margin-top: 0.35rem;
 }
 .gov-person-more > summary {
     cursor: pointer;
-    list-style: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
     font-size: 0.78rem;
     font-weight: 600;
     color: var(--erc-text-light);
-}
-.gov-person-more > summary::-webkit-details-marker {
-    display: none;
 }
 .gov-person-more > summary:hover,
 .gov-person-more[open] > summary {
