@@ -941,12 +941,16 @@
     }
     // Only show the marks that actually happened — "0Y 1~ 0N" made people
     // decode zeros and single-letter codes just to find the one real number.
+    const plural = (n, one, many) => (n === 1 ? one : many);
+    const yesLabel = `${t.yes} ${plural(t.yes, 'Yes', 'Yeses')}`;
+    const maybeLabel = `${t.maybe} ${plural(t.maybe, 'Maybe', 'Maybes')}`;
+    const noLabel = `${t.no} ${plural(t.no, 'No', 'Noes')}`;
     const parts = [];
-    if (t.yes) parts.push(`<span class="gov-tally-compact__yes">${t.yes} Yes</span>`);
-    if (t.maybe) parts.push(`<span class="gov-tally-compact__maybe">${t.maybe} Maybe</span>`);
-    if (t.no) parts.push(`<span class="gov-tally-compact__no">${t.no} No</span>`);
+    if (t.yes) parts.push(`<span class="gov-tally-compact__yes">${yesLabel}</span>`);
+    if (t.maybe) parts.push(`<span class="gov-tally-compact__maybe">${maybeLabel}</span>`);
+    if (t.no) parts.push(`<span class="gov-tally-compact__no">${noLabel}</span>`);
     const sep = '<span class="gov-tally-compact__sep"> · </span>';
-    return `<span class="gov-tally-compact" title="${t.yes} Yes · ${t.maybe} Maybe · ${t.no} No">${parts.join(sep)}</span>`;
+    return `<span class="gov-tally-compact" title="${yesLabel} · ${maybeLabel} · ${noLabel}">${parts.join(sep)}</span>`;
   };
 
   const renderSharedNotes = (personId, groupId) => {
