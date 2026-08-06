@@ -1144,6 +1144,7 @@
             .join('');
           const table = members.length
             ? `<table class="gov-pdf-table">
+              <caption class="gov-pdf-caption">${esc(g.label || g.id)}</caption>
               <thead>
                 <tr>
                   <th>Name</th>
@@ -1191,6 +1192,7 @@
             .join('');
           const table = members.length
             ? `<table class="gov-pdf-table">
+              <caption class="gov-pdf-caption">${esc(meta.label || groupId)}</caption>
               <thead>
                 <tr>
                   <th>Name</th>
@@ -1271,9 +1273,9 @@
         },
       },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      // Empty modes = even canvas slices only. Avoid/css pagebreaks insert spacers
-      // that park the next section at the foot of the page (Chrome and Firefox).
-      pagebreak: { mode: [] },
+      // Start each group on a new page. Do NOT use avoid/inside — that parks
+      // large tables at the foot with a blank band above.
+      pagebreak: { mode: ['css'], before: '.gov-pdf-group' },
     };
 
     // html2pdf 0.10.x uses an es6-promise build that breaks on .finally() —

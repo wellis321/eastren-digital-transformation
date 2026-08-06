@@ -3767,14 +3767,24 @@ tbody tr:nth-child(even):hover {
     color: #4b5563;
 }
 .gov-pdf-group {
-    margin: 0 0 7mm;
-    padding: 0 0 5mm;
-    border-bottom: 1px solid #d1d5db;
+    margin: 0 0 4mm;
+    padding: 0;
 }
 .gov-pdf-group-head {
-    margin-bottom: 2.5mm;
-    padding-left: 2.5mm;
-    border-left: 3.5px solid #006a51;
+    margin: 0 0 3.5mm;
+    padding: 2.5mm 3mm;
+    background: #e8f3ef;
+    border-left: 4px solid #006a51;
+}
+.gov-pdf-caption {
+    caption-side: top;
+    text-align: left;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #006a51;
+    padding: 0 0 1.5mm;
 }
 .gov-pdf-kicker {
     margin: 0 0 0.5mm;
@@ -3786,7 +3796,7 @@ tbody tr:nth-child(even):hover {
 }
 .gov-pdf-group-head h2 {
     margin: 0 0 1mm;
-    font-size: 13.5pt;
+    font-size: 14pt;
     color: #004d3b;
 }
 .gov-pdf-blurb {
