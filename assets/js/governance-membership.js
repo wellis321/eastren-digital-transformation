@@ -15,7 +15,10 @@
   const jumpEl = document.querySelector('.gov-jump-links') || document.querySelector('.gov-jump');
   const attrFilterEl = document.getElementById('gov-attr-filter');
   const attrChipsEl = document.getElementById('gov-attr-filter-chips');
+  const groupChipsEl = document.getElementById('gov-group-filter-chips');
   const attrStatusEl = document.getElementById('gov-attr-filter-status');
+  const poolSectionEl = document.getElementById('pool');
+  const POOL_SCOPE = 'pool';
 
   if (!groupsEl) return;
 
@@ -76,6 +79,8 @@
   let attributeMeta = {};
   /** @type {Set<string>} */
   let activeTagFilters = new Set();
+  /** @type {Set<string>} group ids and/or POOL_SCOPE; empty = all lists */
+  let activeGroupFilters = new Set();
 
   const orderedAttributeIds = () => {
     const ids = Object.keys(attributeMeta);
@@ -127,11 +132,33 @@
     return false;
   };
 
+  const groupFilterActive = () => activeGroupFilters.size > 0;
+
+  const groupInScope = (groupId) => {
+    if (!groupFilterActive()) return true;
+    return activeGroupFilters.has(groupId);
+  };
+
+  const poolInScope = () => {
+    if (!groupFilterActive()) return true;
+    return activeGroupFilters.has(POOL_SCOPE);
+  };
+
+  /** People considered when counting type chips under the current group scope. */
+  const peopleInGroupScope = () => {
+    if (!groupFilterActive()) return people;
+    return people.filter((p) => {
+      const gs = groupsFor(p);
+      if (!gs.length) return activeGroupFilters.has(POOL_SCOPE);
+      return gs.some((g) => activeGroupFilters.has(g));
+    });
+  };
+
   const filteredPeople = (list) => list.filter(personMatchesTagFilter);
 
-  const tagsInUse = () => {
+  const tagsInUse = (scopePeople = people) => {
     const counts = new Map();
-    for (const p of people) {
+    for (const p of scopePeople) {
       for (const t of personTags(p)) {
         counts.set(t, (counts.get(t) || 0) + 1);
       }
@@ -955,7 +982,7 @@
       ? ` · ${pendingAdds.length} suggested`
       : '';
     const filterNote =
-      activeTagFilters.size && visibleCount !== count
+      (activeTagFilters.size || groupFilterActive()) && visibleCount !== count
         ? ` · showing ${visibleCount}`
         : '';
     const countLabel = count === 1 ? '1 person' : `${count} people`;
@@ -1029,8 +1056,9 @@
   const renderJump = () => {
     if (!jumpEl) return;
     const poolCount = unassignedPeople().length;
+    const visibleGroups = groupOrder.filter(groupInScope);
     const links = [
-      ...groupOrder.map((g) => {
+      ...visibleGroups.map((g) => {
         const n = membersForGroup(g).length;
         const st = groupMeta[g]?.status || 'development';
         const stShort =
@@ -1043,9 +1071,11 @@
                 : 'Dev';
         return `<a href="#${esc(g)}">${esc(groupMeta[g]?.label || g)} <span class="gov-jump-count">${n}</span> <span class="gov-jump-status gov-jump-status--${esc(st)}">${stShort}</span></a>`;
       }),
-      `<a href="#pool">Unassigned <span class="gov-jump-count">${poolCount}</span></a>`,
+      poolInScope()
+        ? `<a href="#pool">Unassigned <span class="gov-jump-count">${poolCount}</span></a>`
+        : '',
       `<a href="#group-history">History</a>`,
-    ];
+    ].filter(Boolean);
     jumpEl.innerHTML = links.join('');
   };
 
@@ -1063,6 +1093,11 @@
 
   const renderPool = () => {
     if (!poolEl) return;
+    if (poolSectionEl) poolSectionEl.hidden = !poolInScope();
+    if (!poolInScope()) {
+      poolEl.innerHTML = '';
+      return;
+    }
     const allUnassigned = unassignedPeople();
     const list = filteredPeople(allUnassigned);
     if (!allUnassigned.length) {
@@ -1101,21 +1136,25 @@
 
   const renderAttrFilter = () => {
     if (!attrFilterEl || !attrChipsEl) return;
-    const counts = tagsInUse();
-    if (!counts.size && !Object.keys(attributeMeta).length) {
+    const scopedPeople = peopleInGroupScope();
+    const counts = tagsInUse(scopedPeople);
+    if (!counts.size && !Object.keys(attributeMeta).length && !groupOrder.length) {
       attrFilterEl.hidden = true;
       return;
     }
     attrFilterEl.hidden = false;
-    const ordered = orderedAttributeIds().filter((id) => counts.has(id));
+    const ordered = orderedAttributeIds().filter((id) => counts.has(id) || activeTagFilters.has(id));
     for (const id of counts.keys()) {
+      if (!ordered.includes(id)) ordered.push(id);
+    }
+    for (const id of activeTagFilters) {
       if (!ordered.includes(id)) ordered.push(id);
     }
     const clearOn = activeTagFilters.size === 0 ? ' is-active' : '';
     attrChipsEl.innerHTML = [
       `<button type="button" class="gov-attr-chip${clearOn}" data-action="clear-tag-filters" aria-pressed="${
         activeTagFilters.size === 0
-      }">All</button>`,
+      }">All types</button>`,
       ...ordered.map((id) => {
         const on = activeTagFilters.has(id) ? ' is-active' : '';
         const n = counts.get(id) || 0;
@@ -1124,14 +1163,50 @@
         )}" aria-pressed="${activeTagFilters.has(id)}">${esc(tagLabel(id))} <span class="gov-jump-count">${n}</span></button>`;
       }),
     ].join('');
+
+    if (groupChipsEl) {
+      const groupClearOn = !groupFilterActive() ? ' is-active' : '';
+      const groupBtns = groupOrder.map((g) => {
+        const on = activeGroupFilters.has(g) ? ' is-active' : '';
+        const n = membersForGroup(g).length;
+        return `<button type="button" class="gov-attr-chip${on}" data-action="toggle-group-filter" data-group="${esc(
+          g
+        )}" aria-pressed="${activeGroupFilters.has(g)}">${esc(groupMeta[g]?.label || g)} <span class="gov-jump-count">${n}</span></button>`;
+      });
+      const poolOn = activeGroupFilters.has(POOL_SCOPE) ? ' is-active' : '';
+      const poolCount = unassignedPeople().length;
+      groupChipsEl.innerHTML = [
+        `<button type="button" class="gov-attr-chip${groupClearOn}" data-action="clear-group-filters" aria-pressed="${
+          !groupFilterActive()
+        }">All groups</button>`,
+        ...groupBtns,
+        `<button type="button" class="gov-attr-chip${poolOn}" data-action="toggle-group-filter" data-group="${POOL_SCOPE}" aria-pressed="${activeGroupFilters.has(
+          POOL_SCOPE
+        )}">Unassigned <span class="gov-jump-count">${poolCount}</span></button>`,
+      ].join('');
+    }
+
     if (attrStatusEl) {
-      if (!activeTagFilters.size) {
+      if (!activeTagFilters.size && !groupFilterActive()) {
         attrStatusEl.hidden = true;
         attrStatusEl.textContent = '';
       } else {
-        const match = people.filter(personMatchesTagFilter).length;
+        const typeBit = activeTagFilters.size
+          ? activeTagFilters.size === 1
+            ? tagLabel([...activeTagFilters][0])
+            : `${activeTagFilters.size} types`
+          : 'any type';
+        let groupBit = 'all groups';
+        if (groupFilterActive()) {
+          const labels = [...activeGroupFilters].map((id) =>
+            id === POOL_SCOPE ? 'Unassigned' : groupMeta[id]?.label || id
+          );
+          groupBit = labels.join(', ');
+        }
+        const match = scopedPeople.filter(personMatchesTagFilter).length;
+        const denom = scopedPeople.length;
         attrStatusEl.hidden = false;
-        attrStatusEl.textContent = `Showing ${match} of ${people.length} people (match any selected type).`;
+        attrStatusEl.textContent = `Showing ${match} of ${denom} people — ${typeBit} in ${groupBit}.`;
       }
     }
   };
@@ -1267,8 +1342,35 @@
     render();
   };
 
+  const toggleGroupFilter = (groupId) => {
+    if (!groupId) return;
+    if (groupId !== POOL_SCOPE && !groupOrder.includes(groupId)) return;
+    if (activeGroupFilters.has(groupId)) activeGroupFilters.delete(groupId);
+    else activeGroupFilters.add(groupId);
+    render();
+  };
+
+  const clearGroupFilters = () => {
+    if (!activeGroupFilters.size) return;
+    activeGroupFilters.clear();
+    render();
+  };
+
   const render = () => {
-    groupsEl.innerHTML = groupOrder.map(renderGroup).join('');
+    // Drop group filters for lists that no longer exist
+    if (activeGroupFilters.size) {
+      for (const id of [...activeGroupFilters]) {
+        if (id !== POOL_SCOPE && !groupOrder.includes(id)) activeGroupFilters.delete(id);
+      }
+    }
+    const visibleGroupIds = groupOrder.filter(groupInScope);
+    if (visibleGroupIds.length) {
+      groupsEl.innerHTML = visibleGroupIds.map(renderGroup).join('');
+    } else if (groupFilterActive() && !poolInScope()) {
+      groupsEl.innerHTML = `<p class="gov-empty">No groups selected — pick a group above, or choose All groups.</p>`;
+    } else {
+      groupsEl.innerHTML = '';
+    }
     renderAwaiting();
     renderPool();
     renderJump();
@@ -1345,6 +1447,8 @@
     const action = btn.getAttribute('data-action');
     if (action === 'clear-tag-filters') clearTagFilters();
     if (action === 'toggle-tag') toggleTagFilter(btn.getAttribute('data-tag'));
+    if (action === 'clear-group-filters') clearGroupFilters();
+    if (action === 'toggle-group-filter') toggleGroupFilter(btn.getAttribute('data-group'));
   });
 
   groupsEl.addEventListener('change', (e) => {

@@ -151,7 +151,7 @@
                 <h2 class="gov-sidebar-title">How to use this tool</h2>
                 <ol class="gov-setup-list">
                     <li><strong>Scan the roster</strong> under each group heading — that is the quick “who’s on this list” view.</li>
-                    <li><strong>Filter by type</strong> — use the chips under Groups (Champion, Decider, Key stakeholder, and so on) to show only people with those attributes.</li>
+                    <li><strong>Filter by type</strong> — use the chips under Groups (Champion, Decider, Influencer, and so on) to show only people with those attributes. Use <em>In groups</em> to limit which lists are shown (e.g. Influencers on Steering only).</li>
                     <li><strong>Your mark</strong> (optional) — Yes / Maybe / No is your private opinion on a person for a group. It is not required when someone is moved.</li>
                     <li><strong>Reason</strong> — optional note under your mark. Tick <em>Share with others</em> if you want colleagues to see your reasoning (and which mark you gave); leave it unticked to keep the note private to you.</li>
                     <li><strong>Tallies</strong> — counts of Yes / Maybe / No are always shared; individual marks stay private unless you share a reason.</li>
@@ -239,8 +239,11 @@
 
             <div class="gov-attr-filter" id="gov-attr-filter" hidden>
                 <p class="gov-jump-label">Filter by person type</p>
-                <p class="gov-attr-filter-lede">From the stakeholder list — Champion, Decider, Key / Primary / Secondary, and similar. Select one or more to narrow every group and the pool.</p>
+                <p class="gov-attr-filter-lede">Select one or more types (Champion, Influencer, and so on). Combine with <em>In groups</em> below to narrow further — e.g. Influencers on Steering only.</p>
                 <div class="gov-attr-filter-chips" id="gov-attr-filter-chips" role="group" aria-label="Person type filters"></div>
+                <p class="gov-jump-label gov-attr-filter-group-label">In groups</p>
+                <p class="gov-attr-filter-lede gov-attr-filter-lede--tight">Optional. Leave on All to search every list; pick Steering (or others) to show only those panels.</p>
+                <div class="gov-attr-filter-chips" id="gov-group-filter-chips" role="group" aria-label="Group filters"></div>
                 <p class="gov-attr-filter-status" id="gov-attr-filter-status" hidden></p>
             </div>
 

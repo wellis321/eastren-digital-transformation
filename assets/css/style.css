@@ -3637,6 +3637,12 @@ tbody tr:nth-child(even):hover {
     color: var(--erc-text-light);
     max-width: 42rem;
 }
+.gov-attr-filter-lede--tight {
+    margin-top: 0.15rem;
+}
+.gov-attr-filter-group-label {
+    margin-top: 0.85rem;
+}
 .gov-attr-filter-chips {
     display: flex;
     flex-wrap: wrap;
