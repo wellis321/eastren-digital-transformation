@@ -158,7 +158,7 @@ function enhance_static_html(string $html, string $baseDir): string
             $meta = '<meta name="csrf-token" content="' . e(csrf_token()) . '">';
             $html = preg_replace('/<\/head>/i', $meta . "\n</head>", $html, 1) ?? $html;
         }
-        // Governance: people awaiting Yes/Maybe/No assessment
+        // Governance site banner hook (assessment nags retired — banner always empty)
         if (stripos($html, 'gov-notify-banner') === false) {
             try {
                 require_once __DIR__ . '/governance_membership.php';

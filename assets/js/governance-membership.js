@@ -493,8 +493,8 @@
           const label = groupMeta[toGroupId]?.label || toGroupId;
           setStatus(
             mode === 'move'
-              ? `Moved to ${label} — others will be asked to assess them there`
-              : `Also added to ${label} — others will be asked to assess them there`
+              ? `Moved to ${label}`
+              : `Also added to ${label}`
           );
           render();
           const panel = document.getElementById(toGroupId);
