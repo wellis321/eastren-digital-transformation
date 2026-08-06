@@ -3906,6 +3906,11 @@ tbody tr:nth-child(even):hover {
     background: var(--erc-surface-alt, #f7f7f7);
     border-left: 3px solid var(--erc-border);
 }
+.gov-placed-meta {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--erc-text-light);
+}
 .gov-shared-note__who {
     font-weight: 600;
     color: var(--erc-green-dark);

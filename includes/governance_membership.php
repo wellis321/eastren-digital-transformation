@@ -1244,10 +1244,11 @@ function governance_load_bundle(): array
 
     $orderBuckets = [];
     $membership = [];
+    $membershipMeta = [];
     $dbHasRows = false;
 
     $stmt = db()->query(
-        'SELECT person_id, group_id, sort_order
+        'SELECT person_id, group_id, sort_order, updated_by, updated_at
            FROM governance_membership
           ORDER BY group_id ASC, sort_order ASC, person_id ASC'
     );
@@ -1265,6 +1266,13 @@ function governance_load_bundle(): array
             $orderBuckets[$gid] = [];
         }
         $orderBuckets[$gid][] = $pid;
+        if (!isset($membershipMeta[$pid])) {
+            $membershipMeta[$pid] = [];
+        }
+        $membershipMeta[$pid][$gid] = [
+            'by' => (string)($row['updated_by'] ?? ''),
+            'at' => (string)($row['updated_at'] ?? ''),
+        ];
     }
 
     $userId = governance_current_user_id();
@@ -1347,6 +1355,7 @@ function governance_load_bundle(): array
         'tallies' => $tallies ?: new stdClass(),
         'order' => $orderBuckets ?: new stdClass(),
         'membership' => $membership ?: new stdClass(),
+        'membershipMeta' => $membershipMeta ?: new stdClass(),
         'needsAssessment' => $needs,
         'pendingCount' => count($needs),
         'canEdit' => governance_can_edit(),

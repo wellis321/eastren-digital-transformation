@@ -45,6 +45,7 @@
   let myVoteNotes = {};
   let myVoteNoteShared = {};
   let sharedVoteNotes = {};
+  let membershipMeta = {};
   let tallies = {};
   let needsAssessment = [];
   let canEdit = true;
@@ -243,6 +244,20 @@
     return Array.isArray(list) ? list : [];
   };
 
+  /** Who last placed/moved this person onto this group, and when — from governance_membership.updated_by/at. */
+  const getMembershipMeta = (personId, groupId) => {
+    const meta = membershipMeta?.[personId]?.[groupId];
+    return meta && meta.by ? meta : null;
+  };
+
+  /** MySQL "YYYY-MM-DD HH:MM:SS" -> "6 Aug 2026". */
+  const formatShortDate = (mysqlDateTime) => {
+    if (!mysqlDateTime) return '';
+    const d = new Date(mysqlDateTime.replace(' ', 'T'));
+    if (Number.isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  };
+
   const getTally = (personId, groupId) => {
     const t = tallies?.[personId]?.[groupId];
     if (!t || typeof t !== 'object') {
@@ -312,6 +327,7 @@
     myVoteNotes = asPlainObject(bundle.myVoteNotes);
     myVoteNoteShared = asPlainObject(bundle.myVoteNoteShared);
     sharedVoteNotes = asPlainObject(bundle.sharedVoteNotes);
+    membershipMeta = asPlainObject(bundle.membershipMeta);
     tallies = asPlainObject(bundle.tallies);
     needsAssessment = Array.isArray(bundle.needsAssessment) ? bundle.needsAssessment : [];
     canEdit = bundle.canEdit !== false;
@@ -1001,7 +1017,13 @@
     const tagBadges = renderTagBadges(person);
     const tagEditor = renderPersonTagEditor(person);
     const placeControls = renderPlaceControls(person, groupId);
-    const moreBody = `${tagBadges}${tagEditor}${alsoOn}${placeControls}`;
+    const placedMeta = getMembershipMeta(person.id, groupId);
+    const placedLine = placedMeta
+      ? `<p class="gov-placed-meta">On this list: ${esc(placedMeta.by)}${
+          placedMeta.at ? ` · ${esc(formatShortDate(placedMeta.at))}` : ''
+        }</p>`
+      : '';
+    const moreBody = `${placedLine}${tagBadges}${tagEditor}${alsoOn}${placeControls}`;
     const moreHintParts = [];
     if (tagCount) moreHintParts.push(`${tagCount} type${tagCount === 1 ? '' : 's'}`);
     if (otherLists.length) moreHintParts.push(`also on ${otherLists.length}`);
