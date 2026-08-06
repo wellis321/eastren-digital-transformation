@@ -2960,6 +2960,20 @@ tbody tr:nth-child(even):hover {
     gap: 0.5rem;
     align-items: center;
 }
+.gov-history-action-status {
+    margin: 0.5rem 0 0;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--erc-border);
+    border-radius: var(--radius-sm);
+    background: rgba(0, 106, 81, 0.08);
+    color: var(--erc-text);
+    font-size: 0.9rem;
+}
+.gov-history-action-status.is-error {
+    border-color: #b42318;
+    background: rgba(180, 35, 24, 0.08);
+    color: #b42318;
+}
 .gov-history-snapshot-actions {
     display: flex;
     flex-wrap: wrap;

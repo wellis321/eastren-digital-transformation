@@ -1850,20 +1850,36 @@
       });
   };
 
+  const setHistoryActionStatus = (message, isError = false) => {
+    const el = document.getElementById('gov-history-reseed-status');
+    if (el) {
+      el.hidden = !message;
+      el.textContent = message || '';
+      el.classList.toggle('is-error', !!isError);
+      if (message) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+    if (message) setStatus(message, isError);
+  };
+
   const reseedUnassignedFromSeed = () => {
-    if (!canConfirmMembership) {
-      setStatus('Only a membership confirmer can reapply seed lists', true);
-      return;
-    }
-    if (
-      !confirm(
-        'Reapply Board / Steering / Technical placements from the seed people list?\n\nMissing people are put back. Extra live placements (e.g. Business Group) are kept.'
-      )
-    ) {
-      return;
-    }
-    setStatus('Reapplying seed lists…');
     const btn = document.getElementById('gov-history-reseed');
+    if (!canConfirmMembership) {
+      const msg =
+        'Only a membership confirmer (admin) can reapply seed lists. Sign in as Lisa or William, or ask them to click this button.';
+      setHistoryActionStatus(msg, true);
+      window.alert(msg);
+      return;
+    }
+    const ok = window.confirm(
+      'Reapply Board / Steering / Technical placements from the seed people list?\n\nMissing people are put back onto those groups. Extra live placements (e.g. Business Group) are kept.'
+    );
+    if (!ok) {
+      setHistoryActionStatus('Reapply cancelled.');
+      return;
+    }
+    setHistoryActionStatus('Reapplying seed lists…');
     if (btn) btn.disabled = true;
     postJson({ action: 'reseed_unassigned' })
       .then((data) => {
@@ -1871,15 +1887,20 @@
         dirty = false;
         const n = data.reseeded?.restoredPeople ?? 0;
         const pairs = data.reseeded?.insertedPairs ?? 0;
-        setStatus(
+        const msg =
           pairs > 0
-            ? `Restored ${n} people (${pairs} placements) from the seed list`
-            : 'Seed lists already match — nothing missing to restore'
-        );
+            ? `Restored ${n} people (${pairs} placements) from the seed list. Check Board / Steering / Technical above.`
+            : 'Seed lists already match the database — nothing missing to restore. If a group still looks empty, hard-refresh the page (or Restore a history snapshot).';
+        setHistoryActionStatus(msg);
+        window.alert(msg);
         render();
         refreshHistoryQuiet();
       })
-      .catch((err) => setStatus(err.message || 'Could not reapply seed lists', true))
+      .catch((err) => {
+        const msg = err.message || 'Could not reapply seed lists';
+        setHistoryActionStatus(msg, true);
+        window.alert(msg);
+      })
       .finally(() => {
         if (btn) btn.disabled = !canConfirmMembership;
       });
@@ -2082,7 +2103,13 @@
     const checkpointBtn = document.getElementById('gov-history-checkpoint');
     if (checkpointBtn) checkpointBtn.disabled = !canShape;
     const reseedBtn = document.getElementById('gov-history-reseed');
-    if (reseedBtn) reseedBtn.disabled = !canConfirmMembership;
+    // Keep clickable so we can explain permissions instead of a dead control.
+    if (reseedBtn) {
+      reseedBtn.disabled = false;
+      reseedBtn.title = canConfirmMembership
+        ? 'Put back any missing Board / Steering / Technical placements from the seed people list'
+        : 'Sign in as a membership confirmer to reapply seed lists';
+    }
   };
 
   const loadHistoryList = ({ append = false } = {}) => {
