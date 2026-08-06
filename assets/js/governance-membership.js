@@ -456,6 +456,9 @@
   };
 
   let voteNoteTimer = null;
+  // Guards against out-of-order responses: an older in-flight save resolving after a
+  // newer one must not redraw the list with its now-stale (e.g. shorter) text.
+  const voteNoteSeq = {};
   const setVoteNote = (personId, groupId, comment, shared, { quiet = false } = {}) => {
     if (!canVote) return;
     if (getMyVote(personId, groupId) === 'unset') {
@@ -475,6 +478,8 @@
       if (!Object.keys(myVoteNotes[personId]).length) delete myVoteNotes[personId];
     }
     if (!quiet) setStatus(share ? 'Saving shared reason…' : 'Saving private reason…');
+    const fieldKey = `${personId}::${groupId}`;
+    const seq = (voteNoteSeq[fieldKey] = (voteNoteSeq[fieldKey] || 0) + 1);
     postJson({
       action: 'set_vote_note',
       personId,
@@ -483,6 +488,7 @@
       shared: share,
     })
       .then((data) => {
+        if (seq !== voteNoteSeq[fieldKey]) return; // a newer save has since started — drop this stale response
         if (data.state) applyBundle(data.state);
         if (!quiet) {
           setStatus(
@@ -493,7 +499,10 @@
         }
         render();
       })
-      .catch((err) => setStatus(err.message || 'Could not save note', true));
+      .catch((err) => {
+        if (seq !== voteNoteSeq[fieldKey]) return;
+        setStatus(err.message || 'Could not save note', true);
+      });
   };
 
   const queueVoteNote = (personId, groupId, comment, shared) => {
