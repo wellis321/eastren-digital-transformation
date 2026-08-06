@@ -3587,8 +3587,9 @@ tbody tr:nth-child(even):hover {
 }
 .gov-person-actions {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-end;
     gap: 0.45rem;
 }
 .gov-vote-btns {
@@ -3616,6 +3617,26 @@ tbody tr:nth-child(even):hover {
 .gov-vote-btn--clear {
     font-weight: 500;
     color: var(--erc-text-light);
+}
+.gov-vote-note {
+    display: block;
+    width: min(100%, 16rem);
+    margin: 0;
+}
+.gov-vote-note-input {
+    width: 100%;
+    box-sizing: border-box;
+    font: inherit;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.45rem;
+    border: 1px solid var(--erc-border);
+    background: var(--erc-surface, #fff);
+    color: inherit;
+}
+.gov-vote-note-input:focus {
+    outline: 2px solid rgba(0, 106, 81, 0.35);
+    outline-offset: 1px;
+    border-color: var(--erc-green);
 }
 .gov-icon-btn {
     appearance: none;

@@ -72,10 +72,23 @@ try {
     $action = trim((string)($payload['action'] ?? ''));
 
     if ($action === 'set_vote') {
+        $hasComment = array_key_exists('comment', $payload);
         governance_set_vote(
             (string)($payload['personId'] ?? ''),
             (string)($payload['groupId'] ?? ''),
-            (string)($payload['vote'] ?? '')
+            (string)($payload['vote'] ?? ''),
+            $hasComment ? (string)$payload['comment'] : null,
+            $hasComment
+        );
+        echo json_encode(['ok' => true, 'state' => governance_load_bundle()]);
+        exit;
+    }
+
+    if ($action === 'set_vote_note') {
+        governance_set_vote_note(
+            (string)($payload['personId'] ?? ''),
+            (string)($payload['groupId'] ?? ''),
+            (string)($payload['comment'] ?? '')
         );
         echo json_encode(['ok' => true, 'state' => governance_load_bundle()]);
         exit;

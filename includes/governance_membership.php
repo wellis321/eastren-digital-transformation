@@ -48,6 +48,7 @@ function governance_ensure_table(): void
       person_id   VARCHAR(120) NOT NULL,
       group_id    VARCHAR(80)  NOT NULL,
       vote        VARCHAR(10)  NOT NULL,
+      comment     VARCHAR(500) NOT NULL DEFAULT '',
       updated_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       UNIQUE KEY uq_user_person_group (user_id, person_id, group_id),
       KEY idx_person_group (person_id, group_id),
@@ -72,6 +73,20 @@ function governance_ensure_table(): void
             $pdo->exec(
                 "ALTER TABLE governance_groups
                    ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'development' AFTER is_core"
+            );
+        }
+    } catch (Throwable) {
+        // ignore if race / already present
+    }
+
+
+    // Private rationale on a mark (visible only to that voter)
+    try {
+        $cols = $pdo->query("SHOW COLUMNS FROM governance_votes LIKE 'comment'")->fetchAll();
+        if (!$cols) {
+            $pdo->exec(
+                "ALTER TABLE governance_votes
+                   ADD COLUMN comment VARCHAR(500) NOT NULL DEFAULT '' AFTER vote"
             );
         }
     } catch (Throwable) {
@@ -671,10 +686,11 @@ function governance_load_bundle(): array
 
     $userId = governance_current_user_id();
     $myVotes = [];
+    $myVoteNotes = [];
     $tallies = [];
 
     $vstmt = db()->query(
-        'SELECT user_id, user_label, person_id, group_id, vote
+        'SELECT user_id, user_label, person_id, group_id, vote, comment
            FROM governance_votes
           ORDER BY updated_at ASC, id ASC'
     );
@@ -698,6 +714,13 @@ function governance_load_bundle(): array
                 $myVotes[$pid] = [];
             }
             $myVotes[$pid][$gid] = $vote;
+            $note = trim((string)($row['comment'] ?? ''));
+            if ($note !== '') {
+                if (!isset($myVoteNotes[$pid])) {
+                    $myVoteNotes[$pid] = [];
+                }
+                $myVoteNotes[$pid][$gid] = $note;
+            }
         }
     }
 
@@ -728,6 +751,7 @@ function governance_load_bundle(): array
     return [
         'people' => $people,
         'myVotes' => $myVotes ?: new stdClass(),
+        'myVoteNotes' => $myVoteNotes ?: new stdClass(),
         'tallies' => $tallies ?: new stdClass(),
         'order' => $orderBuckets ?: new stdClass(),
         'membership' => $membership ?: new stdClass(),
@@ -900,9 +924,16 @@ function governance_save_state(array $payload, string $updatedBy): void
 
 /**
  * Upsert or clear the current user's single opinion for a person/group.
+ * Optional $comment is a private rationale (only returned to that user in the bundle).
+ * Pass $updateComment = true to write the comment; otherwise an existing note is kept.
  */
-function governance_set_vote(string $personId, string $groupId, string $vote): void
-{
+function governance_set_vote(
+    string $personId,
+    string $groupId,
+    string $vote,
+    ?string $comment = null,
+    bool $updateComment = false
+): void {
     if (!governance_can_vote()) {
         throw new RuntimeException('Forbidden');
     }
@@ -928,14 +959,57 @@ function governance_set_vote(string $personId, string $groupId, string $vote): v
         return;
     }
 
+    $note = $updateComment ? substr(trim((string)$comment), 0, 500) : null;
+
+    if ($note !== null) {
+        $pdo->prepare(
+            'INSERT INTO governance_votes (user_id, user_label, person_id, group_id, vote, comment, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, NOW())
+             ON DUPLICATE KEY UPDATE
+               vote = VALUES(vote),
+               comment = VALUES(comment),
+               user_label = VALUES(user_label),
+               updated_at = NOW()'
+        )->execute([$userId, $label, $personId, $groupId, $vote, $note]);
+        return;
+    }
+
     $pdo->prepare(
-        'INSERT INTO governance_votes (user_id, user_label, person_id, group_id, vote, updated_at)
-         VALUES (?, ?, ?, ?, ?, NOW())
+        'INSERT INTO governance_votes (user_id, user_label, person_id, group_id, vote, comment, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, NOW())
          ON DUPLICATE KEY UPDATE
            vote = VALUES(vote),
            user_label = VALUES(user_label),
            updated_at = NOW()'
-    )->execute([$userId, $label, $personId, $groupId, $vote]);
+    )->execute([$userId, $label, $personId, $groupId, $vote, '']);
+}
+
+/**
+ * Update only the private note on the current user's existing mark.
+ */
+function governance_set_vote_note(string $personId, string $groupId, string $comment): void
+{
+    if (!governance_can_vote()) {
+        throw new RuntimeException('Forbidden');
+    }
+    $personId = trim($personId);
+    $groupId = trim($groupId);
+    $comment = substr(trim($comment), 0, 500);
+    if ($personId === '' || !in_array($groupId, governance_group_ids(), true)) {
+        throw new InvalidArgumentException('Invalid person or group');
+    }
+
+    governance_ensure_table();
+    $userId = governance_current_user_id();
+    $stmt = db()->prepare(
+        'UPDATE governance_votes
+            SET comment = ?, updated_at = NOW()
+          WHERE user_id = ? AND person_id = ? AND group_id = ?'
+    );
+    $stmt->execute([$comment, $userId, $personId, $groupId]);
+    if ($stmt->rowCount() < 1) {
+        throw new InvalidArgumentException('Save a Yes / Maybe / No mark before adding a private note');
+    }
 }
 
 /**

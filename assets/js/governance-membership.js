@@ -36,6 +36,7 @@
   let groupOrder = DEFAULT_GROUP_ORDER.slice();
   let state = { order: {}, membership: {} };
   let myVotes = {};
+  let myVoteNotes = {};
   let tallies = {};
   let needsAssessment = [];
   let canEdit = true;
@@ -112,6 +113,11 @@
     return v === 'yes' || v === 'maybe' || v === 'no' ? v : 'unset';
   };
 
+  const getMyVoteNote = (personId, groupId) => {
+    const n = myVoteNotes?.[personId]?.[groupId];
+    return typeof n === 'string' ? n : '';
+  };
+
   const getTally = (personId, groupId) => {
     const t = tallies?.[personId]?.[groupId];
     if (!t || typeof t !== 'object') {
@@ -178,6 +184,7 @@
       membership: asPlainObject(bundle.membership),
     };
     myVotes = asPlainObject(bundle.myVotes);
+    myVoteNotes = asPlainObject(bundle.myVoteNotes);
     tallies = asPlainObject(bundle.tallies);
     needsAssessment = Array.isArray(bundle.needsAssessment) ? bundle.needsAssessment : [];
     canEdit = bundle.canEdit !== false;
@@ -253,9 +260,14 @@
     if (!myVotes[personId]) myVotes[personId] = {};
 
     const prev = getMyVote(personId, groupId);
+    myVoteNotes = asPlainObject(myVoteNotes);
     if (vote === 'unset') {
       delete myVotes[personId][groupId];
       if (!Object.keys(myVotes[personId]).length) delete myVotes[personId];
+      if (myVoteNotes[personId]) {
+        delete myVoteNotes[personId][groupId];
+        if (!Object.keys(myVoteNotes[personId]).length) delete myVoteNotes[personId];
+      }
     } else {
       myVotes[personId][groupId] = vote;
     }
@@ -298,6 +310,40 @@
       .catch((err) => {
         setStatus(err.message || 'Could not save opinion', true);
       });
+  };
+
+  let voteNoteTimer = null;
+  const setVoteNote = (personId, groupId, comment, { quiet = false } = {}) => {
+    if (!canVote) return;
+    if (getMyVote(personId, groupId) === 'unset') {
+      if (!quiet) setStatus('Choose Yes / Maybe / No before adding a private note', true);
+      return;
+    }
+    myVoteNotes = asPlainObject(myVoteNotes);
+    if (!myVoteNotes[personId]) myVoteNotes[personId] = {};
+    const trimmed = String(comment || '').trim().slice(0, 500);
+    if (trimmed) myVoteNotes[personId][groupId] = trimmed;
+    else {
+      delete myVoteNotes[personId][groupId];
+      if (!Object.keys(myVoteNotes[personId]).length) delete myVoteNotes[personId];
+    }
+    if (!quiet) setStatus('Saving your private note…');
+    postJson({
+      action: 'set_vote_note',
+      personId,
+      groupId,
+      comment: trimmed,
+    })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        if (!quiet) setStatus('Private note saved — only you can see it');
+      })
+      .catch((err) => setStatus(err.message || 'Could not save note', true));
+  };
+
+  const queueVoteNote = (personId, groupId, comment) => {
+    clearTimeout(voteNoteTimer);
+    voteNoteTimer = setTimeout(() => setVoteNote(personId, groupId, comment, { quiet: true }), 450);
   };
 
   const placePerson = (personId, toGroupId, mode, fromGroupId) => {
@@ -676,6 +722,14 @@
           <button type="button" class="gov-vote-btn${vote === 'no' ? ' is-active' : ''}" data-action="vote" data-vote="no" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>No</button>
           <button type="button" class="gov-vote-btn gov-vote-btn--clear" data-action="vote" data-vote="unset" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Clear your mark"${voteDisabled}>Clear</button>
         </div>
+        ${
+          canVote && vote !== 'unset'
+            ? `<label class="gov-vote-note">
+          <span class="visually-hidden">Private reason for your mark on ${esc(person.name)}</span>
+          <input type="text" class="gov-vote-note-input" maxlength="500" placeholder="Private reason (optional)…" value="${esc(getMyVoteNote(person.id, groupId))}" data-action="vote-note" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>
+        </label>`
+            : ''
+        }
         ${removeBtn}
       </div>
     </li>`;
@@ -964,6 +1018,19 @@
     const select = e.target.closest('select[data-action="set-status"]');
     if (!select) return;
     setGroupStatus(select.getAttribute('data-group'), select.value);
+  });
+
+  groupsEl.addEventListener('input', (e) => {
+    const input = e.target.closest('input[data-action="vote-note"]');
+    if (!input || !canVote) return;
+    queueVoteNote(input.getAttribute('data-id'), input.getAttribute('data-group'), input.value);
+  });
+
+  groupsEl.addEventListener('change', (e) => {
+    const input = e.target.closest('input[data-action="vote-note"]');
+    if (!input || !canVote) return;
+    clearTimeout(voteNoteTimer);
+    setVoteNote(input.getAttribute('data-id'), input.getAttribute('data-group'), input.value);
   });
 
   document.getElementById('gov-pool-body')?.addEventListener('click', (e) => {
