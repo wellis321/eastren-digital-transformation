@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS governance_votes (
   group_id    VARCHAR(80)  NOT NULL,
   vote        VARCHAR(10)  NOT NULL,
   comment     VARCHAR(500) NOT NULL DEFAULT '',
+  comment_shared TINYINT(1) NOT NULL DEFAULT 0,
   updated_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY uq_user_person_group (user_id, person_id, group_id),
   KEY idx_person_group (person_id, group_id),

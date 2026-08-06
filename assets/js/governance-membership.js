@@ -40,6 +40,8 @@
   let state = { order: {}, membership: {} };
   let myVotes = {};
   let myVoteNotes = {};
+  let myVoteNoteShared = {};
+  let sharedVoteNotes = {};
   let tallies = {};
   let needsAssessment = [];
   let canEdit = true;
@@ -199,6 +201,17 @@
     return typeof n === 'string' ? n : '';
   };
 
+  /** Default to shared when no preference is stored yet (new notes are meant to be readable). */
+  const getMyVoteNoteShared = (personId, groupId) => {
+    const flag = myVoteNoteShared?.[personId]?.[groupId];
+    return flag === false || flag === 0 || flag === '0' ? false : true;
+  };
+
+  const getSharedVoteNotes = (personId, groupId) => {
+    const list = sharedVoteNotes?.[personId]?.[groupId];
+    return Array.isArray(list) ? list : [];
+  };
+
   const getTally = (personId, groupId) => {
     const t = tallies?.[personId]?.[groupId];
     if (!t || typeof t !== 'object') {
@@ -266,6 +279,8 @@
     };
     myVotes = asPlainObject(bundle.myVotes);
     myVoteNotes = asPlainObject(bundle.myVoteNotes);
+    myVoteNoteShared = asPlainObject(bundle.myVoteNoteShared);
+    sharedVoteNotes = asPlainObject(bundle.sharedVoteNotes);
     tallies = asPlainObject(bundle.tallies);
     needsAssessment = Array.isArray(bundle.needsAssessment) ? bundle.needsAssessment : [];
     canEdit = bundle.canEdit !== false;
@@ -353,12 +368,17 @@
 
     const prev = getMyVote(personId, groupId);
     myVoteNotes = asPlainObject(myVoteNotes);
+    myVoteNoteShared = asPlainObject(myVoteNoteShared);
     if (vote === 'unset') {
       delete myVotes[personId][groupId];
       if (!Object.keys(myVotes[personId]).length) delete myVotes[personId];
       if (myVoteNotes[personId]) {
         delete myVoteNotes[personId][groupId];
         if (!Object.keys(myVoteNotes[personId]).length) delete myVoteNotes[personId];
+      }
+      if (myVoteNoteShared[personId]) {
+        delete myVoteNoteShared[personId][groupId];
+        if (!Object.keys(myVoteNoteShared[personId]).length) delete myVoteNoteShared[personId];
       }
     } else {
       myVotes[personId][groupId] = vote;
@@ -405,37 +425,52 @@
   };
 
   let voteNoteTimer = null;
-  const setVoteNote = (personId, groupId, comment, { quiet = false } = {}) => {
+  const setVoteNote = (personId, groupId, comment, shared, { quiet = false } = {}) => {
     if (!canVote) return;
     if (getMyVote(personId, groupId) === 'unset') {
-      if (!quiet) setStatus('Choose Yes / Maybe / No before adding a private note', true);
+      if (!quiet) setStatus('Choose Yes / Maybe / No before adding a reason', true);
       return;
     }
+    const share = shared !== false;
     myVoteNotes = asPlainObject(myVoteNotes);
+    myVoteNoteShared = asPlainObject(myVoteNoteShared);
     if (!myVoteNotes[personId]) myVoteNotes[personId] = {};
+    if (!myVoteNoteShared[personId]) myVoteNoteShared[personId] = {};
     const trimmed = String(comment || '').trim().slice(0, 500);
+    myVoteNoteShared[personId][groupId] = share;
     if (trimmed) myVoteNotes[personId][groupId] = trimmed;
     else {
       delete myVoteNotes[personId][groupId];
       if (!Object.keys(myVoteNotes[personId]).length) delete myVoteNotes[personId];
     }
-    if (!quiet) setStatus('Saving your private note…');
+    if (!quiet) setStatus(share ? 'Saving shared reason…' : 'Saving private reason…');
     postJson({
       action: 'set_vote_note',
       personId,
       groupId,
       comment: trimmed,
+      shared: share,
     })
       .then((data) => {
         if (data.state) applyBundle(data.state);
-        if (!quiet) setStatus('Private note saved — only you can see it');
+        if (!quiet) {
+          setStatus(
+            share
+              ? 'Reason saved — others can see it with your mark'
+              : 'Reason saved — only you can see it'
+          );
+        }
+        render();
       })
       .catch((err) => setStatus(err.message || 'Could not save note', true));
   };
 
-  const queueVoteNote = (personId, groupId, comment) => {
+  const queueVoteNote = (personId, groupId, comment, shared) => {
     clearTimeout(voteNoteTimer);
-    voteNoteTimer = setTimeout(() => setVoteNote(personId, groupId, comment, { quiet: true }), 450);
+    voteNoteTimer = setTimeout(
+      () => setVoteNote(personId, groupId, comment, shared, { quiet: true }),
+      450
+    );
   };
 
   const placePerson = (personId, toGroupId, mode, fromGroupId) => {
@@ -764,9 +799,25 @@
     </span>`;
   };
 
+  const renderSharedNotes = (personId, groupId) => {
+    const notes = getSharedVoteNotes(personId, groupId);
+    if (!notes.length) return '';
+    const items = notes
+      .map((n) => {
+        const author = n.mine ? 'You' : esc(n.author || 'Someone');
+        const voteLabel =
+          n.vote === 'yes' ? 'Yes' : n.vote === 'maybe' ? 'Maybe' : n.vote === 'no' ? 'No' : '';
+        const voteBit = voteLabel ? ` · ${voteLabel}` : '';
+        return `<li><span class="gov-shared-note__who">${author}${voteBit}:</span> ${esc(n.note)}</li>`;
+      })
+      .join('');
+    return `<ul class="gov-shared-notes" aria-label="Shared reasons">${items}</ul>`;
+  };
+
   const renderRow = (person, groupId) => {
     const vote = getMyVote(person.id, groupId);
     const voteDisabled = canVote ? '' : ' disabled';
+    const noteShared = getMyVoteNoteShared(person.id, groupId);
     const prop = proposalForPersonGroup(person.id, groupId);
     const tentativeRemove =
       prop && (prop.action === 'remove' || (prop.action === 'move' && prop.fromGroupId === groupId));
@@ -788,6 +839,19 @@
     }
     const rowId = `member-${esc(groupId)}-${esc(person.id)}`;
     const rowClass = tentativeRemove ? ' gov-person-row--tentative-remove' : '';
+    const noteBlock =
+      canVote && vote !== 'unset'
+        ? `<div class="gov-vote-note">
+          <label class="gov-vote-note-field">
+            <span class="visually-hidden">Reason for your mark on ${esc(person.name)}</span>
+            <input type="text" class="gov-vote-note-input" maxlength="500" placeholder="Reason (optional)…" value="${esc(getMyVoteNote(person.id, groupId))}" data-action="vote-note" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>
+          </label>
+          <label class="gov-vote-note-share">
+            <input type="checkbox" data-action="vote-note-share" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${noteShared ? ' checked' : ''}${voteDisabled}>
+            Share with others
+          </label>
+        </div>`
+        : '';
     return `<li class="gov-person-row${rowClass}" id="${rowId}" data-id="${esc(person.id)}" data-vote="${esc(vote)}">
       <div class="gov-person-main">
         <div class="gov-person-icons" aria-hidden="true">${voteIcon(vote)}</div>
@@ -801,6 +865,7 @@
           ${renderTagBadges(person)}
           ${renderPersonTagEditor(person)}
           ${alsoOn}
+          ${renderSharedNotes(person.id, groupId)}
           ${prop ? `<p class="gov-proposal-meta">Suggested by ${esc(prop.proposedBy)}</p>${renderProposalActions(prop)}` : ''}
           ${renderPlaceControls(person, groupId)}
         </div>
@@ -812,14 +877,7 @@
           <button type="button" class="gov-vote-btn${vote === 'no' ? ' is-active' : ''}" data-action="vote" data-vote="no" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>No</button>
           <button type="button" class="gov-vote-btn gov-vote-btn--clear" data-action="vote" data-vote="unset" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Clear your mark"${voteDisabled}>Clear</button>
         </div>
-        ${
-          canVote && vote !== 'unset'
-            ? `<label class="gov-vote-note">
-          <span class="visually-hidden">Private reason for your mark on ${esc(person.name)}</span>
-          <input type="text" class="gov-vote-note-input" maxlength="500" placeholder="Private reason (optional)…" value="${esc(getMyVoteNote(person.id, groupId))}" data-action="vote-note" data-id="${esc(person.id)}" data-group="${esc(groupId)}"${voteDisabled}>
-        </label>`
-            : ''
-        }
+        ${noteBlock}
         ${removeBtn}
       </div>
     </li>`;
@@ -1298,14 +1356,33 @@
   groupsEl.addEventListener('input', (e) => {
     const input = e.target.closest('input[data-action="vote-note"]');
     if (!input || !canVote) return;
-    queueVoteNote(input.getAttribute('data-id'), input.getAttribute('data-group'), input.value);
+    const wrap = input.closest('.gov-vote-note');
+    const shareEl = wrap?.querySelector('input[data-action="vote-note-share"]');
+    const shared = shareEl ? shareEl.checked : true;
+    queueVoteNote(input.getAttribute('data-id'), input.getAttribute('data-group'), input.value, shared);
   });
 
   groupsEl.addEventListener('change', (e) => {
+    const shareBox = e.target.closest('input[data-action="vote-note-share"]');
+    if (shareBox && canVote) {
+      const wrap = shareBox.closest('.gov-vote-note');
+      const noteInput = wrap?.querySelector('input[data-action="vote-note"]');
+      clearTimeout(voteNoteTimer);
+      setVoteNote(
+        shareBox.getAttribute('data-id'),
+        shareBox.getAttribute('data-group'),
+        noteInput?.value || '',
+        shareBox.checked
+      );
+      return;
+    }
     const input = e.target.closest('input[data-action="vote-note"]');
     if (!input || !canVote) return;
+    const wrap = input.closest('.gov-vote-note');
+    const shareEl = wrap?.querySelector('input[data-action="vote-note-share"]');
+    const shared = shareEl ? shareEl.checked : true;
     clearTimeout(voteNoteTimer);
-    setVoteNote(input.getAttribute('data-id'), input.getAttribute('data-group'), input.value);
+    setVoteNote(input.getAttribute('data-id'), input.getAttribute('data-group'), input.value, shared);
   });
 
   document.getElementById('gov-pool-body')?.addEventListener('click', (e) => {

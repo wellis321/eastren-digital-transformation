@@ -3761,8 +3761,14 @@ tbody tr:nth-child(even):hover {
     color: var(--erc-text-light);
 }
 .gov-vote-note {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
     width: min(100%, 16rem);
+    margin: 0;
+}
+.gov-vote-note-field {
+    display: block;
     margin: 0;
 }
 .gov-vote-note-input {
@@ -3779,6 +3785,37 @@ tbody tr:nth-child(even):hover {
     outline: 2px solid rgba(0, 106, 81, 0.35);
     outline-offset: 1px;
     border-color: var(--erc-green);
+}
+.gov-vote-note-share {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--erc-text-light);
+    cursor: pointer;
+    user-select: none;
+}
+.gov-vote-note-share input {
+    margin: 0;
+}
+.gov-shared-notes {
+    list-style: none;
+    margin: 0.4rem 0 0;
+    padding: 0;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: var(--erc-text);
+}
+.gov-shared-notes li {
+    margin: 0.2rem 0 0;
+    padding: 0.35rem 0.5rem;
+    background: rgba(0, 106, 81, 0.06);
+    border-left: 3px solid var(--erc-green);
+}
+.gov-shared-note__who {
+    font-weight: 600;
+    color: var(--erc-green-dark);
 }
 .gov-icon-btn {
     appearance: none;

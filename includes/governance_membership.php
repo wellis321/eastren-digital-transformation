@@ -110,13 +110,26 @@ function governance_ensure_table(): void
     }
 
 
-    // Private rationale on a mark (visible only to that voter)
+    // Private rationale on a mark (visible only to that voter unless shared)
     try {
         $cols = $pdo->query("SHOW COLUMNS FROM governance_votes LIKE 'comment'")->fetchAll();
         if (!$cols) {
             $pdo->exec(
                 "ALTER TABLE governance_votes
                    ADD COLUMN comment VARCHAR(500) NOT NULL DEFAULT '' AFTER vote"
+            );
+        }
+    } catch (Throwable) {
+        // ignore if race / already present
+    }
+
+    // Whether the rationale is visible to others (0 = private, 1 = shared)
+    try {
+        $cols = $pdo->query("SHOW COLUMNS FROM governance_votes LIKE 'comment_shared'")->fetchAll();
+        if (!$cols) {
+            $pdo->exec(
+                "ALTER TABLE governance_votes
+                   ADD COLUMN comment_shared TINYINT(1) NOT NULL DEFAULT 0 AFTER comment"
             );
         }
     } catch (Throwable) {
@@ -1118,10 +1131,12 @@ function governance_load_bundle(): array
     $userId = governance_current_user_id();
     $myVotes = [];
     $myVoteNotes = [];
+    $myVoteNoteShared = [];
+    $sharedVoteNotes = [];
     $tallies = [];
 
     $vstmt = db()->query(
-        'SELECT user_id, user_label, person_id, group_id, vote, comment
+        'SELECT user_id, user_label, person_id, group_id, vote, comment, comment_shared
            FROM governance_votes
           ORDER BY updated_at ASC, id ASC'
     );
@@ -1140,18 +1155,37 @@ function governance_load_bundle(): array
         }
         $tallies[$pid][$gid][$vote]++;
         $tallies[$pid][$gid]['total']++;
+        $note = trim((string)($row['comment'] ?? ''));
+        $shared = (int)($row['comment_shared'] ?? 0) === 1;
         if ((int)$row['user_id'] === $userId) {
             if (!isset($myVotes[$pid])) {
                 $myVotes[$pid] = [];
             }
             $myVotes[$pid][$gid] = $vote;
-            $note = trim((string)($row['comment'] ?? ''));
+            if (!isset($myVoteNoteShared[$pid])) {
+                $myVoteNoteShared[$pid] = [];
+            }
+            $myVoteNoteShared[$pid][$gid] = $shared;
             if ($note !== '') {
                 if (!isset($myVoteNotes[$pid])) {
                     $myVoteNotes[$pid] = [];
                 }
                 $myVoteNotes[$pid][$gid] = $note;
             }
+        }
+        if ($note !== '' && $shared) {
+            if (!isset($sharedVoteNotes[$pid])) {
+                $sharedVoteNotes[$pid] = [];
+            }
+            if (!isset($sharedVoteNotes[$pid][$gid])) {
+                $sharedVoteNotes[$pid][$gid] = [];
+            }
+            $sharedVoteNotes[$pid][$gid][] = [
+                'author' => (string)($row['user_label'] ?: ('User ' . $row['user_id'])),
+                'note' => $note,
+                'vote' => $vote,
+                'mine' => (int)$row['user_id'] === $userId,
+            ];
         }
     }
 
@@ -1169,6 +1203,8 @@ function governance_load_bundle(): array
         'people' => $people,
         'myVotes' => $myVotes ?: new stdClass(),
         'myVoteNotes' => $myVoteNotes ?: new stdClass(),
+        'myVoteNoteShared' => $myVoteNoteShared ?: new stdClass(),
+        'sharedVoteNotes' => $sharedVoteNotes ?: new stdClass(),
         'tallies' => $tallies ?: new stdClass(),
         'order' => $orderBuckets ?: new stdClass(),
         'membership' => $membership ?: new stdClass(),
@@ -1331,7 +1367,7 @@ function governance_save_state(array $payload, string $updatedBy): void
 
 /**
  * Upsert or clear the current user's single opinion for a person/group.
- * Optional $comment is a private rationale (only returned to that user in the bundle).
+ * Optional $comment is a rationale; $commentShared controls whether others can see it.
  * Pass $updateComment = true to write the comment; otherwise an existing note is kept.
  */
 function governance_set_vote(
@@ -1339,7 +1375,8 @@ function governance_set_vote(
     string $groupId,
     string $vote,
     ?string $comment = null,
-    bool $updateComment = false
+    bool $updateComment = false,
+    bool $commentShared = true
 ): void {
     if (!governance_can_vote()) {
         throw new RuntimeException('Forbidden');
@@ -1367,35 +1404,41 @@ function governance_set_vote(
     }
 
     $note = $updateComment ? substr(trim((string)$comment), 0, 500) : null;
+    $sharedFlag = $commentShared ? 1 : 0;
 
     if ($note !== null) {
         $pdo->prepare(
-            'INSERT INTO governance_votes (user_id, user_label, person_id, group_id, vote, comment, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?, NOW())
+            'INSERT INTO governance_votes (user_id, user_label, person_id, group_id, vote, comment, comment_shared, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
              ON DUPLICATE KEY UPDATE
                vote = VALUES(vote),
                comment = VALUES(comment),
+               comment_shared = VALUES(comment_shared),
                user_label = VALUES(user_label),
                updated_at = NOW()'
-        )->execute([$userId, $label, $personId, $groupId, $vote, $note]);
+        )->execute([$userId, $label, $personId, $groupId, $vote, $note, $sharedFlag]);
         return;
     }
 
     $pdo->prepare(
-        'INSERT INTO governance_votes (user_id, user_label, person_id, group_id, vote, comment, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, NOW())
+        'INSERT INTO governance_votes (user_id, user_label, person_id, group_id, vote, comment, comment_shared, updated_at)
+         VALUES (?, ?, ?, ?, ?, \'\', 1, NOW())
          ON DUPLICATE KEY UPDATE
            vote = VALUES(vote),
            user_label = VALUES(user_label),
            updated_at = NOW()'
-    )->execute([$userId, $label, $personId, $groupId, $vote, '']);
+    )->execute([$userId, $label, $personId, $groupId, $vote]);
 }
 
 /**
- * Update only the private note on the current user's existing mark.
+ * Update the rationale (and share flag) on the current user's existing mark.
  */
-function governance_set_vote_note(string $personId, string $groupId, string $comment): void
-{
+function governance_set_vote_note(
+    string $personId,
+    string $groupId,
+    string $comment,
+    bool $shared = true
+): void {
     if (!governance_can_vote()) {
         throw new RuntimeException('Forbidden');
     }
@@ -1410,12 +1453,12 @@ function governance_set_vote_note(string $personId, string $groupId, string $com
     $userId = governance_current_user_id();
     $stmt = db()->prepare(
         'UPDATE governance_votes
-            SET comment = ?, updated_at = NOW()
+            SET comment = ?, comment_shared = ?, updated_at = NOW()
           WHERE user_id = ? AND person_id = ? AND group_id = ?'
     );
-    $stmt->execute([$comment, $userId, $personId, $groupId]);
+    $stmt->execute([$comment, $shared ? 1 : 0, $userId, $personId, $groupId]);
     if ($stmt->rowCount() < 1) {
-        throw new InvalidArgumentException('Save a Yes / Maybe / No mark before adding a private note');
+        throw new InvalidArgumentException('Choose Yes / Maybe / No before adding a reason');
     }
 }
 

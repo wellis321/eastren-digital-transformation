@@ -416,7 +416,7 @@ try {
     assert_true('custom attr deleted from catalog', !isset(governance_attribute_meta()[$attr['id']]));
 
     // ------------------------------------------------------------------
-    // F. Votes (optional, private notes)
+    // F. Votes (optional notes — private by default on set_vote, shareable)
     // ------------------------------------------------------------------
     echo "\nF. Votes & notes\n";
     as_admin();
@@ -425,7 +425,7 @@ try {
     if (!person_on($voteTarget, $voteGroup)) {
         $voteGroup = 'project-board';
     }
-    governance_set_vote($voteTarget, $voteGroup, 'yes', 'because test', true);
+    governance_set_vote($voteTarget, $voteGroup, 'yes', 'because test', true, false);
     $b = governance_load_bundle();
     $myVotes = is_array($b['myVotes'] ?? null) ? $b['myVotes'] : (array)($b['myVotes'] ?? []);
     $myNotes = is_array($b['myVoteNotes'] ?? null) ? $b['myVoteNotes'] : (array)($b['myVoteNotes'] ?? []);
@@ -434,11 +434,45 @@ try {
     $noteMap = is_array($myNotes[$voteTarget] ?? null) ? $myNotes[$voteTarget] : [];
     $note = $noteMap[$voteGroup] ?? null;
     assert_true('private note saved', $note === 'because test', 'got ' . json_encode($note));
-    governance_set_vote_note($voteTarget, $voteGroup, 'updated reason');
+    $sharedMap = is_array($b['sharedVoteNotes'] ?? null) ? $b['sharedVoteNotes'] : (array)($b['sharedVoteNotes'] ?? []);
+    $sharedList = is_array($sharedMap[$voteTarget] ?? null)
+        ? (is_array($sharedMap[$voteTarget][$voteGroup] ?? null) ? $sharedMap[$voteTarget][$voteGroup] : [])
+        : [];
+    assert_true('private note not in shared list', count($sharedList) === 0, json_encode($sharedList));
+
+    governance_set_vote_note($voteTarget, $voteGroup, 'updated reason', true);
     $bNote = governance_load_bundle();
     $notes2 = is_array($bNote['myVoteNotes'] ?? null) ? $bNote['myVoteNotes'] : (array)($bNote['myVoteNotes'] ?? []);
     $note2 = is_array($notes2[$voteTarget] ?? null) ? ($notes2[$voteTarget][$voteGroup] ?? null) : null;
     assert_true('set_vote_note updates', $note2 === 'updated reason');
+    $shared2 = is_array($bNote['sharedVoteNotes'] ?? null) ? $bNote['sharedVoteNotes'] : (array)($bNote['sharedVoteNotes'] ?? []);
+    $sharedList2 = is_array($shared2[$voteTarget] ?? null)
+        ? (is_array($shared2[$voteTarget][$voteGroup] ?? null) ? $shared2[$voteTarget][$voteGroup] : [])
+        : [];
+    assert_true('shared note visible in bundle', count($sharedList2) >= 1);
+    $foundShared = false;
+    foreach ($sharedList2 as $sn) {
+        if (($sn['note'] ?? '') === 'updated reason' && !empty($sn['mine'])) {
+            $foundShared = true;
+            break;
+        }
+    }
+    assert_true('shared note has mine flag', $foundShared);
+
+    governance_set_vote_note($voteTarget, $voteGroup, 'back to private', false);
+    $bPriv = governance_load_bundle();
+    $shared3 = is_array($bPriv['sharedVoteNotes'] ?? null) ? $bPriv['sharedVoteNotes'] : (array)($bPriv['sharedVoteNotes'] ?? []);
+    $sharedList3 = is_array($shared3[$voteTarget] ?? null)
+        ? (is_array($shared3[$voteTarget][$voteGroup] ?? null) ? $shared3[$voteTarget][$voteGroup] : [])
+        : [];
+    $stillShared = false;
+    foreach ($sharedList3 as $sn) {
+        if (($sn['note'] ?? '') === 'back to private') {
+            $stillShared = true;
+        }
+    }
+    assert_true('unsharing removes from shared list', !$stillShared);
+
     governance_set_vote($voteTarget, $voteGroup, 'unset', null);
     $b2 = governance_load_bundle();
     $myVotes2 = is_array($b2['myVotes'] ?? null) ? $b2['myVotes'] : (array)($b2['myVotes'] ?? []);

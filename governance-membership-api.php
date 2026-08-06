@@ -73,22 +73,30 @@ try {
 
     if ($action === 'set_vote') {
         $hasComment = array_key_exists('comment', $payload);
+        $shared = array_key_exists('shared', $payload)
+            ? !empty($payload['shared'])
+            : true;
         governance_set_vote(
             (string)($payload['personId'] ?? ''),
             (string)($payload['groupId'] ?? ''),
             (string)($payload['vote'] ?? ''),
             $hasComment ? (string)$payload['comment'] : null,
-            $hasComment
+            $hasComment,
+            $shared
         );
         echo json_encode(['ok' => true, 'state' => governance_load_bundle()]);
         exit;
     }
 
     if ($action === 'set_vote_note') {
+        $shared = array_key_exists('shared', $payload)
+            ? !empty($payload['shared'])
+            : true;
         governance_set_vote_note(
             (string)($payload['personId'] ?? ''),
             (string)($payload['groupId'] ?? ''),
-            (string)($payload['comment'] ?? '')
+            (string)($payload['comment'] ?? ''),
+            $shared
         );
         echo json_encode(['ok' => true, 'state' => governance_load_bundle()]);
         exit;
