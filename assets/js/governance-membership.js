@@ -1648,12 +1648,16 @@
 
     // Account menu (Admin) — hidden entirely for non-confirmers, not just
     // permission-gated on click, so it doesn't even register as an option.
+    // The panel itself stays out of the normal scroll flow even for
+    // confirmers — it only reveals when the Admin link is actually clicked
+    // (see revealAdminPanel/its click listeners below), not just because
+    // they're allowed to see it.
     const profileNavGroup = document.getElementById('gov-profile-nav-group');
     const profileMobileNavGroup = document.getElementById('gov-profile-mobile-nav-group');
     const adminPanel = document.getElementById('gov-admin-panel');
     if (profileNavGroup) profileNavGroup.hidden = !canConfirmMembership;
     if (profileMobileNavGroup) profileMobileNavGroup.hidden = !canConfirmMembership;
-    if (adminPanel) adminPanel.hidden = !canConfirmMembership;
+    if (adminPanel && !canConfirmMembership) adminPanel.hidden = true;
     const profileLabel = document.getElementById('gov-profile-nav-label');
     const profileMobileLabel = document.getElementById('gov-profile-mobile-nav-label');
     if (profileLabel) profileLabel.textContent = currentUser.label || 'Account';
@@ -2937,6 +2941,18 @@
     }
   });
 
+  // Admin panel stays hidden until actually navigated to (see render()) —
+  // reveal it right before the browser's native anchor-scroll runs, whether
+  // that's a nav-menu click or a direct #gov-admin-panel link/refresh.
+  const revealAdminPanel = () => {
+    if (!canConfirmMembership) return;
+    const panel = document.getElementById('gov-admin-panel');
+    if (panel) panel.hidden = false;
+  };
+  document.querySelectorAll('a[href="#gov-admin-panel"]').forEach((link) => {
+    link.addEventListener('click', revealAdminPanel);
+  });
+
   busyStart();
   fetch(API_URL, { credentials: 'same-origin' })
     .then(async (r) => {
@@ -2954,6 +2970,9 @@
     })
     .then(() => {
       if (!location.hash) return;
+      // canConfirmMembership is only known once the bundle above has applied —
+      // too late for the pre-load check further up, so reveal here instead.
+      if (location.hash === '#gov-admin-panel') revealAdminPanel();
       const el = document.querySelector(location.hash);
       if (!el) return;
       if (!scrollSidebarTarget(el)) {
