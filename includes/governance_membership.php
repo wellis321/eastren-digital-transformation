@@ -6,6 +6,18 @@ require_once __DIR__ . '/permissions.php';
 
 function governance_ensure_table(): void
 {
+    // This function is called from ~30 places across this file (every getter
+    // re-checks schema is ready), and does 15-20+ SQL round-trips itself
+    // (CREATE TABLE / SHOW COLUMNS / ALTER TABLE checks). A single bundle
+    // load — every page load, and every save's response — was triggering it
+    // 5-6 times over, i.e. 100+ redundant queries for one request. It only
+    // needs to actually run once per request.
+    static $done = false;
+    if ($done) {
+        return;
+    }
+    $done = true;
+
     $pdo = db();
     $pdo->exec("CREATE TABLE IF NOT EXISTS governance_membership (
       id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

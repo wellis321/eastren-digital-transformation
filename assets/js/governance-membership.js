@@ -19,8 +19,29 @@
   const attrStatusEl = document.getElementById('gov-attr-filter-status');
   const poolSectionEl = document.getElementById('pool');
   const POOL_SCOPE = 'pool';
+  const busyBarEl = document.getElementById('gov-busy-bar');
 
   if (!groupsEl) return;
+
+  // Global "something is loading" indicator, wrapping every fetch (initial
+  // load + every save). A counter handles overlapping in-flight requests.
+  // The short delay before showing avoids a flash for fast (<150ms) actions.
+  let busyCount = 0;
+  let busyShowTimer = null;
+  const busyStart = () => {
+    busyCount += 1;
+    if (busyCount === 1 && busyBarEl) {
+      clearTimeout(busyShowTimer);
+      busyShowTimer = setTimeout(() => busyBarEl.classList.add('is-active'), 150);
+    }
+  };
+  const busyEnd = () => {
+    busyCount = Math.max(0, busyCount - 1);
+    if (busyCount === 0 && busyBarEl) {
+      clearTimeout(busyShowTimer);
+      busyBarEl.classList.remove('is-active');
+    }
+  };
 
   const esc = (s) => {
     const d = document.createElement('div');
@@ -362,6 +383,7 @@
         new Error('Cannot save — refresh while signed in through the PHP portal (php -S … router.php).')
       );
     }
+    busyStart();
     return fetch(API_URL, {
       method: 'POST',
       headers: {
@@ -370,11 +392,13 @@
       },
       body: JSON.stringify({ ...payload, csrf_token: token }),
       credentials: 'same-origin',
-    }).then(async (r) => {
-      const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.error || 'Save failed');
-      return data;
-    });
+    })
+      .then(async (r) => {
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.error || 'Save failed');
+        return data;
+      })
+      .finally(busyEnd);
   };
 
   const persistSoon = () => {
@@ -1030,9 +1054,7 @@
           placedMeta.at ? ` · ${esc(formatShortDate(placedMeta.at))}` : ''
         }</p>`
       : '';
-    const editPersonBtn = canShape
-      ? `<button type="button" class="gov-btn gov-btn--muted" data-action="rename-person" data-id="${esc(person.id)}" title="Edit name / job role">✎ Edit name / role</button>`
-      : '';
+    const editPersonBtn = canShape ? renderRenamePersonPopover(person) : '';
     const moreBody = `${placedLine}${tagBadges}${tagEditor}${alsoOn}${placeControls}${editPersonBtn}`;
     const moreHintParts = [];
     if (tagCount) moreHintParts.push(`${tagCount} type${tagCount === 1 ? '' : 's'}`);
@@ -1087,6 +1109,49 @@
         </div>
       </div>
     </li>`;
+  };
+
+  // Small popover form (name/role or a group label) instead of a browser
+  // prompt() — chaining two prompt() calls for name+role made the second one
+  // (role) easy to miss or dismiss without noticing it was a separate field.
+  const renderRenameGroupPopover = (groupId, label) => {
+    const popId = `rename-group-pop-${esc(groupId)}`;
+    return `<button type="button" class="gov-icon-btn" popovertarget="${popId}" title="Rename group" aria-label="Rename ${esc(label)}">✎</button>
+      <div class="gov-reason-popover" popover id="${popId}">
+        <p class="gov-reason-popover-title">Rename group</p>
+        <form class="gov-rename-form" data-action="rename-group-form" data-group="${esc(groupId)}">
+          <label class="gov-rename-field">
+            <span>Group name</span>
+            <input type="text" class="gov-rename-input" data-rename-field="label" maxlength="200" value="${esc(label)}" required autofocus>
+          </label>
+          <div class="gov-rename-actions">
+            <button type="submit" class="gov-btn">Save</button>
+            <button type="button" class="gov-btn gov-btn--muted" popovertarget="${popId}" popovertargetaction="hide">Cancel</button>
+          </div>
+        </form>
+      </div>`;
+  };
+
+  const renderRenamePersonPopover = (person) => {
+    const popId = `rename-person-pop-${esc(person.id)}`;
+    return `<button type="button" class="gov-reason-trigger" popovertarget="${popId}">✎ Edit name / role</button>
+      <div class="gov-reason-popover" popover id="${popId}">
+        <p class="gov-reason-popover-title">Edit ${esc(person.name)}</p>
+        <form class="gov-rename-form" data-action="rename-person-form" data-id="${esc(person.id)}">
+          <label class="gov-rename-field">
+            <span>Name</span>
+            <input type="text" class="gov-rename-input" data-rename-field="name" maxlength="200" value="${esc(person.name)}" required autofocus>
+          </label>
+          <label class="gov-rename-field">
+            <span>Job / role</span>
+            <input type="text" class="gov-rename-input" data-rename-field="role" maxlength="300" value="${esc(person.role || '')}">
+          </label>
+          <div class="gov-rename-actions">
+            <button type="submit" class="gov-btn">Save</button>
+            <button type="button" class="gov-btn gov-btn--muted" popovertarget="${popId}" popovertargetaction="hide">Cancel</button>
+          </div>
+        </form>
+      </div>`;
   };
 
   const renderGroup = (groupId) => {
@@ -1165,11 +1230,7 @@
         <p class="gov-group-kicker">${esc(countLabel)}${esc(filterNote)}${esc(suggestNote)}${customBadge}${statusBadge}</p>
         <div class="gov-group-title-row">
           <h2 class="gov-group-title">${esc(meta.label || groupId)}</h2>
-          ${
-            canShape
-              ? `<button type="button" class="gov-icon-btn" data-action="rename-group" data-group="${esc(groupId)}" title="Rename group" aria-label="Rename ${esc(meta.label || groupId)}">✎</button>`
-              : ''
-          }
+          ${canShape ? renderRenameGroupPopover(groupId, meta.label || groupId) : ''}
         </div>
         ${meta.blurb ? `<p class="gov-group-blurb">${esc(meta.blurb)}</p>` : ''}
         <div class="gov-group-actions">
@@ -1427,17 +1488,19 @@
       .catch((err) => setStatus(err.message || 'Could not rename type', true));
   };
 
-  const renameGroup = (groupId) => {
+  /** @param popover the open popover element to close on success, so the form doesn't just sit there */
+  const renameGroup = (groupId, rawLabel, popover) => {
     if (!canShape || !groupId) return;
     const current = groupMeta[groupId]?.label || groupId;
-    const next = prompt(`Rename “${current}” to:`, current);
-    if (next === null) return;
-    const label = next.trim();
+    const label = (rawLabel || '').trim();
     if (!label) {
       setStatus('Group name cannot be empty', true);
       return;
     }
-    if (label === current) return;
+    if (label === current) {
+      popover?.hidePopover?.();
+      return;
+    }
     const dupe = findDuplicateByName(
       label,
       Object.entries(groupMeta).filter(([id]) => id !== groupId).map(([, g]) => g),
@@ -1451,26 +1514,27 @@
       .then((data) => {
         if (data.state) applyBundle(data.state);
         setStatus(`Renamed to “${data.renamed?.label || label}”`);
+        popover?.hidePopover?.();
         render();
       })
       .catch((err) => setStatus(err.message || 'Could not rename group', true));
   };
 
-  const renamePerson = (personId) => {
+  /** @param popover the open popover element to close on success */
+  const renamePerson = (personId, rawName, rawRole, popover) => {
     if (!canShape || !personId) return;
     const person = personById(personId);
     if (!person) return;
-    const nextName = prompt(`Rename “${person.name}” to:`, person.name);
-    if (nextName === null) return;
-    const name = nextName.trim();
+    const name = (rawName || '').trim();
     if (!name) {
       setStatus('Name cannot be empty', true);
       return;
     }
-    const nextRole = prompt(`Job role for “${name}”:`, person.role || '');
-    if (nextRole === null) return;
-    const role = nextRole.trim();
-    if (name === person.name && role === (person.role || '')) return;
+    const role = (rawRole || '').trim();
+    if (name === person.name && role === (person.role || '')) {
+      popover?.hidePopover?.();
+      return;
+    }
     const dupe = name !== person.name ? findDuplicateByName(name, people.filter((p) => p.id !== personId), (p) => p.name) : null;
     if (dupe && !confirm(`A person named “${dupe.name}” already exists. Rename to “${name}” anyway?`)) {
       return;
@@ -1480,6 +1544,7 @@
       .then((data) => {
         if (data.state) applyBundle(data.state);
         setStatus(`Updated “${data.renamed?.name || name}”`);
+        popover?.hidePopover?.();
         render();
       })
       .catch((err) => setStatus(err.message || 'Could not update person', true));
@@ -1628,8 +1693,6 @@
     if (action === 'remove') removeFromGroup(id, group);
     if (action === 'reset-group') resetGroupMarks(group);
     if (action === 'delete-group') deleteGroup(group);
-    if (action === 'rename-group') renameGroup(group);
-    if (action === 'rename-person') renamePerson(id);
     if (action === 'accept-proposal') decideProposal(Number(btn.getAttribute('data-proposal-id')), 'accept');
     if (action === 'reject-proposal') decideProposal(Number(btn.getAttribute('data-proposal-id')), 'reject');
     if (action === 'withdraw-proposal') withdrawProposal(Number(btn.getAttribute('data-proposal-id')));
@@ -1639,6 +1702,23 @@
       );
       const toGroupId = select?.value || '';
       placePerson(id, toGroupId, action === 'move-to' ? 'move' : 'add', group);
+    }
+  });
+
+  groupsEl.addEventListener('submit', (e) => {
+    const groupForm = e.target.closest('form[data-action="rename-group-form"]');
+    if (groupForm) {
+      e.preventDefault();
+      const label = groupForm.querySelector('[data-rename-field="label"]')?.value || '';
+      renameGroup(groupForm.getAttribute('data-group'), label, groupForm.closest('[popover]'));
+      return;
+    }
+    const personForm = e.target.closest('form[data-action="rename-person-form"]');
+    if (personForm) {
+      e.preventDefault();
+      const name = personForm.querySelector('[data-rename-field="name"]')?.value || '';
+      const role = personForm.querySelector('[data-rename-field="role"]')?.value || '';
+      renamePerson(personForm.getAttribute('data-id'), name, role, personForm.closest('[popover]'));
     }
   });
 
@@ -2844,6 +2924,7 @@
     }
   });
 
+  busyStart();
   fetch(API_URL, { credentials: 'same-origin' })
     .then(async (r) => {
       if (r.status === 401) {
@@ -2869,5 +2950,6 @@
     .catch((err) => {
       setStatus(err.message || 'Could not load membership data', true);
       groupsEl.innerHTML = `<p class="gov-empty">${esc(err.message || 'No membership data loaded.')}</p>`;
-    });
+    })
+    .finally(busyEnd);
 })();

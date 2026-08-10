@@ -10,6 +10,11 @@
 </head>
 <body>
 
+<!-- Slim progress bar shown while any save/load is in flight — visible
+     regardless of scroll position, so an action never feels like it did
+     nothing just because the status text (in the toolbar) is out of view. -->
+<div id="gov-busy-bar" class="gov-busy-bar" aria-hidden="true"></div>
+
 <!-- Top Bar -->
 <div class="site-topbar">
     <a href="index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
@@ -339,6 +344,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="assets/js/main.js"></script>
-<script src="assets/js/governance-membership.js?v=28"></script>
+<script src="assets/js/governance-membership.js?v=30"></script>
 </body>
 </html>

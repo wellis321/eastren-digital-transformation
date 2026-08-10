@@ -2664,6 +2664,46 @@ tbody tr:nth-child(even):hover {
 /* ----------------------------------------------------------
    Governance membership tool
    ---------------------------------------------------------- */
+/* Slim indeterminate progress bar — shown while any save/load is in flight.
+   Fixed to the viewport top so it's visible no matter how far the page is
+   scrolled, unlike the status text in the toolbar. */
+.gov-busy-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 2147483647;
+    background: transparent;
+    overflow: hidden;
+    pointer-events: none;
+}
+.gov-busy-bar.is-active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 40%;
+    background: var(--erc-green);
+    animation: gov-busy-sweep 1.1s ease-in-out infinite;
+}
+@keyframes gov-busy-sweep {
+    0% {
+        left: -40%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .gov-busy-bar.is-active::before {
+        animation: none;
+        left: 0;
+        width: 100%;
+        opacity: 0.6;
+    }
+}
 .gov-toolbar {
     display: flex;
     flex-wrap: wrap;
@@ -3880,6 +3920,41 @@ tbody tr:nth-child(even):hover {
     font-size: 0.78rem;
     font-weight: 700;
     color: var(--erc-green-dark);
+}
+.gov-rename-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+.gov-rename-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--erc-text);
+}
+.gov-rename-input {
+    width: 100%;
+    box-sizing: border-box;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 400;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--erc-border);
+    background: var(--erc-surface, #fff);
+    color: inherit;
+}
+.gov-rename-input:focus {
+    outline: 2px solid rgba(0, 106, 81, 0.35);
+    outline-offset: 1px;
+    border-color: var(--erc-green);
+}
+.gov-rename-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 0.15rem;
 }
 
 /* "More" — tags, other lists, and place-on-another-group, tucked behind one
