@@ -175,6 +175,17 @@ try {
         exit;
     }
 
+    if ($action === 'rename_group') {
+        $renamed = governance_rename_group(
+            (string)($payload['groupId'] ?? ''),
+            (string)($payload['label'] ?? ''),
+            array_key_exists('blurb', $payload) ? (string)$payload['blurb'] : null,
+            $user
+        );
+        echo json_encode(['ok' => true, 'renamed' => $renamed, 'state' => governance_load_bundle()]);
+        exit;
+    }
+
     if ($action === 'add_person') {
         $added = governance_add_person(
             (string)($payload['name'] ?? ''),
@@ -185,6 +196,21 @@ try {
         echo json_encode([
             'ok' => true,
             'added' => $added,
+            'state' => governance_load_bundle(),
+        ]);
+        exit;
+    }
+
+    if ($action === 'rename_person') {
+        $renamed = governance_rename_person(
+            (string)($payload['personId'] ?? ''),
+            (string)($payload['name'] ?? ''),
+            (string)($payload['role'] ?? ''),
+            $user
+        );
+        echo json_encode([
+            'ok' => true,
+            'renamed' => $renamed,
             'state' => governance_load_bundle(),
         ]);
         exit;

@@ -209,19 +209,17 @@ function governance_core_group_definitions(): array
 function governance_seed_core_groups(): void
 {
     $pdo = db();
+    // INSERT IGNORE only — this runs on every request (via governance_ensure_table()),
+    // so it must be a one-time seed, not a resync. An unconditional UPDATE here
+    // used to silently revert any renamed core group's label/blurb back to these
+    // hardcoded defaults on the very next page load.
     $ins = $pdo->prepare(
         'INSERT IGNORE INTO governance_groups
           (group_id, label, blurb, is_core, sort_order, created_by, created_at)
          VALUES (?, ?, ?, 1, ?, \'system\', NOW())'
     );
-    $upd = $pdo->prepare(
-        'UPDATE governance_groups
-            SET label = ?, blurb = ?, sort_order = ?, is_core = 1
-          WHERE group_id = ?'
-    );
     foreach (governance_core_group_definitions() as $id => $meta) {
         $ins->execute([$id, $meta['label'], $meta['blurb'], $meta['sortOrder']]);
-        $upd->execute([$meta['label'], $meta['blurb'], $meta['sortOrder'], $id]);
     }
 }
 
@@ -1718,6 +1716,43 @@ function governance_set_group_status(string $groupId, string $status, string $up
 }
 
 /**
+ * Rename a group (label and/or short purpose). Works for core groups too —
+ * e.g. renaming "Business Group" to "Operations Group" — since the group_id
+ * (used for membership/vote foreign keys) never changes, only the display label.
+ *
+ * @return array{groupId: string, label: string, blurb: string}
+ */
+function governance_rename_group(string $groupId, string $label, ?string $blurb, string $updatedBy): array
+{
+    if (!governance_can_shape()) {
+        throw new RuntimeException('Only a membership confirmer can rename a group');
+    }
+    $groupId = trim($groupId);
+    $label = trim($label);
+    if ($label === '') {
+        throw new InvalidArgumentException('Group name is required');
+    }
+    if (mb_strlen($label) > 200) {
+        throw new InvalidArgumentException('Group name is too long');
+    }
+    $meta = governance_group_meta()[$groupId] ?? null;
+    if ($meta === null) {
+        throw new InvalidArgumentException('Unknown group');
+    }
+
+    $blurb = $blurb === null ? (string)$meta['blurb'] : trim($blurb);
+    if (mb_strlen($blurb) > 500) {
+        throw new InvalidArgumentException('Description is too long');
+    }
+
+    db()->prepare('UPDATE governance_groups SET label = ?, blurb = ? WHERE group_id = ?')
+        ->execute([$label, $blurb, $groupId]);
+    governance_capture_history('rename_group', $updatedBy);
+
+    return ['groupId' => $groupId, 'label' => $label, 'blurb' => $blurb];
+}
+
+/**
  * Delete a custom group (core groups cannot be removed). Clears membership and votes for it.
  */
 function governance_delete_group(string $groupId, string $updatedBy = ''): void
@@ -2272,6 +2307,59 @@ function governance_set_person_tags(string $personId, $tags, string $updatedBy):
     }
 
     return ['personId' => $personId, 'tags' => $normalized];
+}
+
+/**
+ * Rename a person (name and/or job role). Works for seed people too — upserts
+ * a governance_people row the same way governance_set_person_tags() does, so
+ * the override sticks without needing to touch the seed data file.
+ *
+ * @return array{personId: string, name: string, role: string}
+ */
+function governance_rename_person(string $personId, string $name, string $role, string $updatedBy): array
+{
+    if (!governance_can_shape()) {
+        throw new RuntimeException('Only a membership confirmer can edit a person');
+    }
+    $personId = trim($personId);
+    $name = trim($name);
+    $role = trim($role);
+    if ($personId === '') {
+        throw new InvalidArgumentException('Person id is required');
+    }
+    if ($name === '') {
+        throw new InvalidArgumentException('Name is required');
+    }
+    if (mb_strlen($name) > 200) {
+        throw new InvalidArgumentException('Name is too long');
+    }
+    if (mb_strlen($role) > 300) {
+        throw new InvalidArgumentException('Job role is too long');
+    }
+
+    governance_ensure_table();
+    $found = false;
+    foreach (array_merge(governance_seed_people(), governance_custom_people()) as $p) {
+        if ($p['id'] === $personId) {
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) {
+        throw new InvalidArgumentException('Unknown person');
+    }
+
+    // tags_json intentionally left out of the UPDATE clause so an existing
+    // override's tags survive a rename untouched; NULL only applies on first insert.
+    db()->prepare(
+        'INSERT INTO governance_people (person_id, name, role, tags_json, created_by, created_at)
+         VALUES (?, ?, ?, NULL, ?, NOW())
+         ON DUPLICATE KEY UPDATE name = VALUES(name), role = VALUES(role)'
+    )->execute([$personId, $name, $role, $updatedBy]);
+
+    governance_capture_history('rename_person', $updatedBy);
+
+    return ['personId' => $personId, 'name' => $name, 'role' => $role];
 }
 
 /**

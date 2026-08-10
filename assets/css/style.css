@@ -3287,6 +3287,12 @@ tbody tr:nth-child(even):hover {
     align-items: center;
     gap: 0.4rem;
 }
+.gov-group-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+}
 .gov-group-title {
     margin: 0;
     font-size: clamp(1.25rem, 2.5vw, 1.55rem);

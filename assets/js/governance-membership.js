@@ -1030,7 +1030,10 @@
           placedMeta.at ? ` · ${esc(formatShortDate(placedMeta.at))}` : ''
         }</p>`
       : '';
-    const moreBody = `${placedLine}${tagBadges}${tagEditor}${alsoOn}${placeControls}`;
+    const editPersonBtn = canShape
+      ? `<button type="button" class="gov-btn gov-btn--muted" data-action="rename-person" data-id="${esc(person.id)}" title="Edit name / job role">✎ Edit name / role</button>`
+      : '';
+    const moreBody = `${placedLine}${tagBadges}${tagEditor}${alsoOn}${placeControls}${editPersonBtn}`;
     const moreHintParts = [];
     if (tagCount) moreHintParts.push(`${tagCount} type${tagCount === 1 ? '' : 's'}`);
     if (otherLists.length) moreHintParts.push(`also on ${otherLists.length}`);
@@ -1160,7 +1163,14 @@
     return `<section class="gov-group-panel${customClass}${dissolvedClass}" id="${esc(groupId)}">
       <header class="gov-group-head">
         <p class="gov-group-kicker">${esc(countLabel)}${esc(filterNote)}${esc(suggestNote)}${customBadge}${statusBadge}</p>
-        <h2 class="gov-group-title">${esc(meta.label || groupId)}</h2>
+        <div class="gov-group-title-row">
+          <h2 class="gov-group-title">${esc(meta.label || groupId)}</h2>
+          ${
+            canShape
+              ? `<button type="button" class="gov-icon-btn" data-action="rename-group" data-group="${esc(groupId)}" title="Rename group" aria-label="Rename ${esc(meta.label || groupId)}">✎</button>`
+              : ''
+          }
+        </div>
         ${meta.blurb ? `<p class="gov-group-blurb">${esc(meta.blurb)}</p>` : ''}
         <div class="gov-group-actions">
           ${statusRow}
@@ -1417,6 +1427,64 @@
       .catch((err) => setStatus(err.message || 'Could not rename type', true));
   };
 
+  const renameGroup = (groupId) => {
+    if (!canShape || !groupId) return;
+    const current = groupMeta[groupId]?.label || groupId;
+    const next = prompt(`Rename “${current}” to:`, current);
+    if (next === null) return;
+    const label = next.trim();
+    if (!label) {
+      setStatus('Group name cannot be empty', true);
+      return;
+    }
+    if (label === current) return;
+    const dupe = findDuplicateByName(
+      label,
+      Object.entries(groupMeta).filter(([id]) => id !== groupId).map(([, g]) => g),
+      (g) => g.label
+    );
+    if (dupe && !confirm(`A group named “${dupe.label}” already exists. Rename to “${label}” anyway?`)) {
+      return;
+    }
+    setStatus('Renaming group…');
+    postJson({ action: 'rename_group', groupId, label })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        setStatus(`Renamed to “${data.renamed?.label || label}”`);
+        render();
+      })
+      .catch((err) => setStatus(err.message || 'Could not rename group', true));
+  };
+
+  const renamePerson = (personId) => {
+    if (!canShape || !personId) return;
+    const person = personById(personId);
+    if (!person) return;
+    const nextName = prompt(`Rename “${person.name}” to:`, person.name);
+    if (nextName === null) return;
+    const name = nextName.trim();
+    if (!name) {
+      setStatus('Name cannot be empty', true);
+      return;
+    }
+    const nextRole = prompt(`Job role for “${name}”:`, person.role || '');
+    if (nextRole === null) return;
+    const role = nextRole.trim();
+    if (name === person.name && role === (person.role || '')) return;
+    const dupe = name !== person.name ? findDuplicateByName(name, people.filter((p) => p.id !== personId), (p) => p.name) : null;
+    if (dupe && !confirm(`A person named “${dupe.name}” already exists. Rename to “${name}” anyway?`)) {
+      return;
+    }
+    setStatus('Saving changes…');
+    postJson({ action: 'rename_person', personId, name, role })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        setStatus(`Updated “${data.renamed?.name || name}”`);
+        render();
+      })
+      .catch((err) => setStatus(err.message || 'Could not update person', true));
+  };
+
   const deleteAttribute = (attrId) => {
     if (!canShape || !attrId) return;
     const meta = attributeMeta[attrId];
@@ -1560,6 +1628,8 @@
     if (action === 'remove') removeFromGroup(id, group);
     if (action === 'reset-group') resetGroupMarks(group);
     if (action === 'delete-group') deleteGroup(group);
+    if (action === 'rename-group') renameGroup(group);
+    if (action === 'rename-person') renamePerson(id);
     if (action === 'accept-proposal') decideProposal(Number(btn.getAttribute('data-proposal-id')), 'accept');
     if (action === 'reject-proposal') decideProposal(Number(btn.getAttribute('data-proposal-id')), 'reject');
     if (action === 'withdraw-proposal') withdrawProposal(Number(btn.getAttribute('data-proposal-id')));
