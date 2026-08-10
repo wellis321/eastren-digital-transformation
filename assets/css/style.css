@@ -3026,6 +3026,28 @@ tbody tr:nth-child(even):hover {
     border-top: 1px solid var(--erc-border);
     scroll-margin-top: 7.5rem;
 }
+.gov-admin-panel {
+    margin: 2rem 0 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--erc-border);
+    scroll-margin-top: 7.5rem;
+}
+.gov-admin-action {
+    margin-top: 1rem;
+    padding: 1rem 1.1rem;
+    max-width: 32rem;
+    border: 1px solid var(--erc-border);
+    border-left: 3px solid #b45309;
+    background: var(--erc-surface-alt, #f7f7f7);
+}
+.gov-admin-action-title {
+    margin: 0 0 0.35rem;
+    font-size: 1rem;
+    color: var(--erc-text);
+}
+.gov-admin-action .gov-section-lede {
+    margin-bottom: 0.85rem;
+}
 .gov-history-head {
     display: flex;
     flex-wrap: wrap;

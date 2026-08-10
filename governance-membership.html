@@ -76,6 +76,14 @@
                     <a href="resources.html">Resources</a>
                 </div>
             </div>
+            <!-- Confirmer-only: hidden until JS confirms canConfirmMembership, so
+                 non-admins never see it exists (not just permission-gated on click). -->
+            <div class="nav-group" id="gov-profile-nav-group" hidden>
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true" id="gov-profile-nav-btn"><span id="gov-profile-nav-label">Account</span> <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="#gov-admin-panel">Admin</a>
+                </div>
+            </div>
         </nav>
         <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
             <span></span><span></span><span></span>
@@ -125,6 +133,12 @@
                 <a href="peer-benchmarks.html">Peer Benchmarks (costs)</a>
                 <a href="reports.html">Reports</a>
                 <a href="resources.html">Resources</a>
+            </div>
+        </div>
+        <div class="mobile-nav-group" id="gov-profile-mobile-nav-group" hidden>
+            <button class="mobile-nav-group-btn" aria-expanded="false" id="gov-profile-mobile-nav-btn"><span id="gov-profile-mobile-nav-label">Account</span> <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="#gov-admin-panel">Admin</a>
             </div>
         </div>
     </nav>
@@ -282,15 +296,12 @@
                             Continuous timeline of who sat on each group. Changes are recorded automatically;
                             use a checkpoint to pin a milestone. Open an entry to export PDF or
                             <strong>Restore this composition</strong> if live lists were changed by mistake.
-                            <strong>Rebuild lists from seed</strong> resets Board / Steering / Technical (and other seed placements) from the people file — use this if groups were emptied.
                         </p>
                     </div>
                     <div class="gov-history-head-actions">
-                        <button type="button" class="gov-btn gov-btn--muted" id="gov-history-reseed" title="Rebuild Board / Steering / Technical from the seed people file">Rebuild lists from seed</button>
                         <button type="button" class="gov-btn" id="gov-history-checkpoint">Save checkpoint</button>
                     </div>
                 </div>
-                <p class="gov-history-action-status" id="gov-history-reseed-status" role="status" aria-live="polite" hidden></p>
                 <div class="gov-history-layout">
                     <div class="gov-history-list-wrap">
                         <div class="gov-history-list-head">
@@ -307,6 +318,24 @@
                     <div class="gov-history-view" id="gov-history-view" aria-live="polite">
                         <p class="gov-history-empty">Select a point on the timeline to see the groups as they were then.</p>
                     </div>
+                </div>
+            </section>
+
+            <!-- Confirmer-only, reached via the Account menu — kept off the main
+                 page flow so a destructive action isn't sitting next to routine
+                 ones where it could get clicked by accident. -->
+            <section class="gov-admin-panel" id="gov-admin-panel" hidden>
+                <h2 class="gov-section-title">Admin</h2>
+                <p class="gov-section-lede">Confirmer-only tools for this membership list.</p>
+                <div class="gov-admin-action">
+                    <h3 class="gov-admin-action-title">Rebuild lists from seed</h3>
+                    <p class="gov-section-lede">
+                        Resets Board / Steering / Technical (and other seed placements) to the original list
+                        from the seed people file. Custom people not in the seed file keep their places.
+                        Use this if groups were emptied by mistake.
+                    </p>
+                    <button type="button" class="gov-btn gov-btn--muted" id="gov-history-reseed" title="Rebuild Board / Steering / Technical from the seed people file">Rebuild lists from seed</button>
+                    <p class="gov-history-action-status" id="gov-history-reseed-status" role="status" aria-live="polite" hidden></p>
                 </div>
             </section>
         </div>
@@ -344,6 +373,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="assets/js/main.js"></script>
-<script src="assets/js/governance-membership.js?v=30"></script>
+<script src="assets/js/governance-membership.js?v=31"></script>
 </body>
 </html>

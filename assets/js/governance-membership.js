@@ -1645,6 +1645,19 @@
     if (resetBtn) resetBtn.disabled = !canVote;
     if (addBtn) addBtn.disabled = !canShape;
     if (createBtn) createBtn.disabled = !canShape;
+
+    // Account menu (Admin) — hidden entirely for non-confirmers, not just
+    // permission-gated on click, so it doesn't even register as an option.
+    const profileNavGroup = document.getElementById('gov-profile-nav-group');
+    const profileMobileNavGroup = document.getElementById('gov-profile-mobile-nav-group');
+    const adminPanel = document.getElementById('gov-admin-panel');
+    if (profileNavGroup) profileNavGroup.hidden = !canConfirmMembership;
+    if (profileMobileNavGroup) profileMobileNavGroup.hidden = !canConfirmMembership;
+    if (adminPanel) adminPanel.hidden = !canConfirmMembership;
+    const profileLabel = document.getElementById('gov-profile-nav-label');
+    const profileMobileLabel = document.getElementById('gov-profile-mobile-nav-label');
+    if (profileLabel) profileLabel.textContent = currentUser.label || 'Account';
+    if (profileMobileLabel) profileMobileLabel.textContent = currentUser.label || 'Account';
     if (!dirty) {
       const who = currentUser.label ? ` as ${currentUser.label}` : '';
       setStatus(
