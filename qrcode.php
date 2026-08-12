@@ -16,6 +16,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit('Invalid CSRF token.');
     }
 
+    $action = (string)($_POST['action'] ?? 'create');
+    $id = trim((string)($_POST['id'] ?? ''));
+
+    if ($action === 'archive') {
+        if (qr_archive_link($id)) {
+            flash('success', 'QR code archived. Scans still work until you delete it.');
+        } else {
+            flash('error', 'Could not archive that QR code.');
+        }
+        redirect(APP_URL . '/qrcode.php');
+    }
+
+    if ($action === 'restore') {
+        if (qr_restore_link($id)) {
+            flash('success', 'QR code restored.');
+        } else {
+            flash('error', 'Could not restore that QR code.');
+        }
+        redirect(APP_URL . '/qrcode.php#archived');
+    }
+
+    if ($action === 'delete') {
+        if (qr_delete_link($id)) {
+            flash('success', 'QR code deleted permanently.');
+        } else {
+            flash('error', 'Could not delete that QR code.');
+        }
+        redirect(APP_URL . '/qrcode.php#archived');
+    }
+
+    // Default: create
     $raw = (string)($_POST['url'] ?? '');
     $url = qr_normalize_url($raw);
     if ($url === null) {
@@ -28,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$links = qr_list_links();
+$links = qr_list_links('active');
+$archived = qr_list_links('archived');
 ?>
 <!DOCTYPE html>
 <html lang="en-GB">
@@ -53,12 +85,20 @@ $links = qr_list_links();
         <p><a href="<?= e(APP_URL) ?>/index.html" class="link-visible">← Back to portal</a></p>
     </header>
 
+    <aside class="card qr-how" aria-labelledby="qr-how-heading">
+        <h2 id="qr-how-heading">What this tracks</h2>
+        <p>Each QR code points at a short track link on this site (for example <code>/r/6aece704</code>), not straight at your destination URL.</p>
+        <p>When someone scans or opens that link, the scan count goes up by 1, then they are redirected to your URL.</p>
+        <p>The number is <strong>total opens</strong> for that code — not unique people, location, or device. The same person scanning twice counts as two.</p>
+    </aside>
+
     <?= render_flash() ?>
 
     <section class="card qr-composer" aria-labelledby="qr-create-heading">
         <h2 id="qr-create-heading">Create a tracked QR code</h2>
         <form method="post" action="<?= e(APP_URL) ?>/qrcode.php" class="qr-form">
             <?= csrf_field() ?>
+            <input type="hidden" name="action" value="create">
             <label class="qr-form__label" for="qr-url">Destination URL</label>
             <div class="qr-form__row">
                 <input
@@ -83,11 +123,11 @@ $links = qr_list_links();
     <section class="qr-codes" aria-labelledby="qr-codes-heading">
         <div class="qr-codes__head">
             <h2 id="qr-codes-heading">Your codes</h2>
-            <p>Scan counts update when this page is refreshed. Counts are stored in MySQL and survive restarts.</p>
+            <p>Scan counts update when this page is refreshed. Archive hides a code from this list; delete removes it for good.</p>
         </div>
 
         <?php if (!$links): ?>
-            <div class="card"><p class="qr-empty">No codes yet. Create one above.</p></div>
+            <div class="card"><p class="qr-empty">No active codes. Create one above<?= $archived ? ', or restore one from Archived' : '' ?>.</p></div>
         <?php else: ?>
             <ul class="qr-grid">
                 <?php foreach ($links as $link): ?>
@@ -122,6 +162,73 @@ $links = qr_list_links();
                                     <?php endif; ?>
                                 </p>
                             <?php endif; ?>
+                            <div class="qr-item__actions">
+                                <form method="post" action="<?= e(APP_URL) ?>/qrcode.php">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="action" value="archive">
+                                    <input type="hidden" name="id" value="<?= e($id) ?>">
+                                    <button type="submit" class="btn btn-outline qr-btn">Archive</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </section>
+
+    <section class="qr-codes qr-archived" id="archived" aria-labelledby="qr-archived-heading">
+        <div class="qr-codes__head">
+            <h2 id="qr-archived-heading">Archived</h2>
+            <p>Hidden from the main list. Scan links still work until you delete them permanently.</p>
+        </div>
+
+        <?php if (!$archived): ?>
+            <div class="card"><p class="qr-empty">No archived codes.</p></div>
+        <?php else: ?>
+            <ul class="qr-grid">
+                <?php foreach ($archived as $link): ?>
+                    <?php
+                    $id = (string)$link['id'];
+                    $trackUrl = qr_track_url($id);
+                    $hits = (int)$link['hits'];
+                    ?>
+                    <li class="card qr-item qr-item--archived">
+                        <div class="qr-item__meta qr-item__meta--full">
+                            <p class="qr-item__hits">
+                                <span class="qr-item__count"><?= $hits ?></span>
+                                <span class="qr-item__label"><?= $hits === 1 ? 'scan' : 'scans' ?></span>
+                            </p>
+                            <a class="qr-item__dest link-visible" href="<?= e((string)$link['url']) ?>" target="_blank" rel="noreferrer">
+                                <?= e((string)$link['url']) ?>
+                            </a>
+                            <p class="qr-item__track">
+                                Tracks via
+                                <a href="<?= e($trackUrl) ?>"><?= e($trackUrl) ?></a>
+                            </p>
+                            <?php if (!empty($link['archived_at'])): ?>
+                                <p class="qr-item__when">
+                                    Archived <?= e(date('d M Y H:i', strtotime((string)$link['archived_at']))) ?>
+                                </p>
+                            <?php endif; ?>
+                            <div class="qr-item__actions">
+                                <form method="post" action="<?= e(APP_URL) ?>/qrcode.php">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="action" value="restore">
+                                    <input type="hidden" name="id" value="<?= e($id) ?>">
+                                    <button type="submit" class="btn btn-outline qr-btn">Restore</button>
+                                </form>
+                                <form
+                                    method="post"
+                                    action="<?= e(APP_URL) ?>/qrcode.php"
+                                    onsubmit="return confirm('Delete this QR code permanently? Scan links will stop working.');"
+                                >
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="id" value="<?= e($id) ?>">
+                                    <button type="submit" class="btn btn-outline qr-btn qr-btn--danger">Delete permanently</button>
+                                </form>
+                            </div>
                         </div>
                     </li>
                 <?php endforeach; ?>
