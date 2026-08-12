@@ -16,6 +16,9 @@ DirectoryIndex index.php
     RewriteRule ^assets/     - [L]
     RewriteRule ^robots\.txt$ - [L]
 
+    # Public QR scan redirect (no auth)
+    RewriteRule ^r/([a-f0-9]{8})$ qr-r.php?id=$1 [L,QSA]
+
     # Block direct access to router.php
     RewriteRule ^router\.php$ - [F,L]
 

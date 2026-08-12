@@ -24,6 +24,7 @@ Then clear **hPanel → Cache Manager → Clear cache**.
 
 1. **Databases → MySQL Databases** — create a database and user (note the `u123456_` prefix).
 2. Open **phpMyAdmin** and run `sql/auth-tables.sql`.
+   Optional tools: `sql/feedback-table.sql`, `sql/qrcode-table.sql` (also auto-created on first use).
 3. Add at least one user. Generate a bcrypt hash locally:
 
 ```bash

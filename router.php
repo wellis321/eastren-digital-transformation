@@ -13,6 +13,7 @@ $publicPaths = [
     '/login.php',
     '/logout.php',
     '/activate.php',
+    '/qr-r.php',
     '/auth/microsoft/login.php',
     '/auth/microsoft/callback.php',
 ];
@@ -22,6 +23,13 @@ if (preg_match('#^/(assets|robots\.txt)(/|$)#', $uri)) {
         return false;
     }
     http_response_code(404);
+    exit;
+}
+
+// Public QR scan redirect: /r/{id}
+if (preg_match('#^/r/([a-f0-9]{8})$#', $uri, $qrMatch)) {
+    $_GET['id'] = $qrMatch[1];
+    require __DIR__ . '/qr-r.php';
     exit;
 }
 

@@ -2514,6 +2514,165 @@ tbody tr:nth-child(even):hover {
     color: #1e293b;
 }
 
+/* QR scan tracker */
+.qr-page {
+    max-width: 920px;
+    margin: 2rem auto;
+    padding: 0 1.25rem 3rem;
+}
+
+.qr-page__header {
+    margin-bottom: 1.5rem;
+}
+
+.qr-page__header h1 {
+    margin: 0 0 0.35rem;
+}
+
+.qr-page__header p {
+    margin: 0.35rem 0 0;
+    color: var(--erc-text-light);
+}
+
+.qr-composer h2,
+.qr-codes__head h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+}
+
+.qr-form__label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--erc-text-light);
+}
+
+.qr-form__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+.qr-form__row .form-control {
+    flex: 1 1 220px;
+    min-width: 0;
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--erc-border);
+    border-radius: 4px;
+    font: inherit;
+    color: var(--erc-text);
+    background: #fff;
+}
+
+.qr-form__row .form-control:focus {
+    outline: 2px solid color-mix(in srgb, var(--erc-green) 35%, transparent);
+    outline-offset: 1px;
+    border-color: var(--erc-green);
+}
+
+.qr-form__error {
+    margin: 0.65rem 0 0;
+    color: #991b1b;
+    font-size: 0.9rem;
+}
+
+.qr-codes {
+    margin-top: 1.75rem;
+}
+
+.qr-codes__head {
+    margin-bottom: 0.85rem;
+}
+
+.qr-codes__head p,
+.qr-empty {
+    margin: 0;
+    color: var(--erc-text-light);
+}
+
+.qr-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+}
+
+.qr-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: center;
+}
+
+.qr-item__code {
+    width: 148px;
+    height: 148px;
+    flex-shrink: 0;
+    background: #fff;
+    border: 1px solid var(--erc-border);
+    border-radius: 6px;
+    padding: 0.35rem;
+}
+
+.qr-item__code img,
+.qr-item__code canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.qr-item__meta {
+    min-width: 0;
+    display: grid;
+    gap: 0.35rem;
+}
+
+.qr-item__hits {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+}
+
+.qr-item__count {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--erc-green-dark);
+}
+
+.qr-item__label {
+    color: var(--erc-text-light);
+    font-size: 0.95rem;
+}
+
+.qr-item__dest {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.qr-item__track,
+.qr-item__when {
+    margin: 0;
+    color: var(--erc-text-light);
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.qr-item__track a {
+    color: var(--erc-text-light);
+}
+
+@media (max-width: 640px) {
+    .qr-item {
+        grid-template-columns: 1fr;
+        justify-items: start;
+    }
+}
+
 /* Feedback widget (matches AS-IS app pattern) */
 .feedback-toggle {
     position: fixed;

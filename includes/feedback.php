@@ -45,6 +45,7 @@ function feedback_page_label(string $url): string
         '/reports.html'      => 'Reports',
         '/history.html'      => 'ERC Digital History',
         '/feedback-view.php' => 'Feedback inbox',
+        '/qrcode.php'        => 'QR scan tracker',
     ];
 
     if (isset($map[$path])) {

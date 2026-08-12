@@ -148,6 +148,7 @@ function enhance_static_html(string $html, string $baseDir): string
                 . '<a href="' . $ercUrl  . '/">ERC Portal</a>'
                 . '<a href="' . $asisUrl . '/">AS-IS Process Mapping</a>'
                 . ($metricsUrl !== '' ? '<a href="' . $metricsUrl . '/">Housing Metrics</a>' : '')
+                . '<a href="' . $ercUrl . '/qrcode.php">QR scan tracker</a>'
                 . '</div>';
             $html = preg_replace('/<\/footer>/i', $strip . "\n</footer>", $html, 1);
         }
