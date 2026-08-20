@@ -56,6 +56,9 @@ $asisSiteUrl = defined('ASIS_SITE_URL') && ASIS_SITE_URL !== ''
 $metricsSiteUrl = defined('METRICS_SITE_URL') && METRICS_SITE_URL !== ''
     ? METRICS_SITE_URL
     : 'https://dodgerblue-wombat-806788.hostingersite.com';
+$phase2SiteUrl = defined('PHASE2_SITE_URL') && PHASE2_SITE_URL !== ''
+    ? PHASE2_SITE_URL
+    : 'https://dimgrey-koala-534577.hostingersite.com';
 ?>
 <!DOCTYPE html>
 <html lang="en-GB">
@@ -151,8 +154,14 @@ $metricsSiteUrl = defined('METRICS_SITE_URL') && METRICS_SITE_URL !== ''
                         <span class="auth-related-sites__desc">Scottish Housing Regulator Charter performance dashboard</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= e(rtrim($phase2SiteUrl, '/')) ?>/" class="auth-related-sites__link">
+                        <span class="auth-related-sites__name">Phase 2 Tracker</span>
+                        <span class="auth-related-sites__desc">Repairs system delivery status, tasks, risks and milestones</span>
+                    </a>
+                </li>
             </ul>
-            <p class="auth-related-sites__hint">Same username and password when all four use the shared database.</p>
+            <p class="auth-related-sites__hint">Same username and password across all these — they share one database.</p>
         </nav>
     </div>
 </main>
