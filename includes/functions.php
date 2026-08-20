@@ -141,6 +141,7 @@ function enhance_static_html(string $html, string $baseDir): string
         $asisUrl    = defined('ASIS_SITE_URL')    ? htmlspecialchars(ASIS_SITE_URL,    ENT_QUOTES, 'UTF-8') : '';
         $ercUrl     = defined('APP_URL')          ? htmlspecialchars(APP_URL,          ENT_QUOTES, 'UTF-8') : '';
         $metricsUrl = defined('METRICS_SITE_URL') ? htmlspecialchars(METRICS_SITE_URL, ENT_QUOTES, 'UTF-8') : '';
+        $phase2Url  = defined('PHASE2_SITE_URL')  ? htmlspecialchars(PHASE2_SITE_URL,  ENT_QUOTES, 'UTF-8') : '';
         if ($sorUrl !== '' && $asisUrl !== '') {
             $strip = "\n" . '<div class="footer-tools-strip">'
                 . '<span class="ft-label">ERC Digital Tools</span>'
@@ -148,6 +149,7 @@ function enhance_static_html(string $html, string $baseDir): string
                 . '<a href="' . $ercUrl  . '/">ERC Portal</a>'
                 . '<a href="' . $asisUrl . '/">AS-IS Process Mapping</a>'
                 . ($metricsUrl !== '' ? '<a href="' . $metricsUrl . '/">Housing Metrics</a>' : '')
+                . ($phase2Url !== '' ? '<a href="' . $phase2Url . '/">Phase 2 Tracker</a>' : '')
                 . '<a href="' . $ercUrl . '/qrcode.php">QR scan tracker</a>'
                 . '</div>';
             $html = preg_replace('/<\/footer>/i', $strip . "\n</footer>", $html, 1);

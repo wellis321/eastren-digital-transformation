@@ -53,6 +53,7 @@ define('SESSION_SECRET', env_val('SESSION_SECRET', 'changeme'));
 define('SOR_SITE_URL', rtrim(env_val('SOR_SITE_URL', 'https://papayawhip-hamster-802775.hostingersite.com'), '/'));
 define('ASIS_SITE_URL', rtrim(env_val('ASIS_SITE_URL', 'https://slategray-cat-335719.hostingersite.com'), '/'));
 define('METRICS_SITE_URL', rtrim(env_val('METRICS_SITE_URL', 'https://dodgerblue-wombat-806788.hostingersite.com'), '/'));
+define('PHASE2_SITE_URL', rtrim(env_val('PHASE2_SITE_URL', 'https://dimgrey-koala-534577.hostingersite.com'), '/'));
 
 header('X-Frame-Options: DENY');
 header('X-Content-Type-Options: nosniff');
