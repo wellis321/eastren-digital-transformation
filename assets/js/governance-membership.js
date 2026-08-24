@@ -851,6 +851,18 @@
       .catch((err) => setStatus(err.message || 'Could not delete group', true));
   };
 
+  const moveGroup = (groupId, direction) => {
+    if (!canShape || !groupId) return;
+    setStatus('Reordering…');
+    postJson({ action: 'move_group', groupId, direction })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        setStatus('Group order updated');
+        render();
+      })
+      .catch((err) => setStatus(err.message || 'Could not reorder groups', true));
+  };
+
   const voteIcon = (vote) => {
     if (vote === 'yes') return '<span class="gov-vote-icon gov-vote-icon--yes" title="Your mark: Yes">Y</span>';
     if (vote === 'maybe') return '<span class="gov-vote-icon gov-vote-icon--maybe" title="Your mark: Maybe">~</span>';
@@ -1225,10 +1237,24 @@
         ? `<h3 class="gov-assess-heading">Members</h3><ul class="gov-person-list">${rows}${tentativeRows}</ul>`
         : '';
 
+    // Position within the FULL group order (not the filtered/visible subset) —
+    // reordering is a real, underlying change, so it shouldn't behave
+    // differently just because a type/group filter happens to be active.
+    const groupIndex = groupOrder.indexOf(groupId);
+    const isFirstGroup = groupIndex <= 0;
+    const isLastGroup = groupIndex === -1 || groupIndex === groupOrder.length - 1;
+    const moveControls = canShape
+      ? `<div class="gov-group-move" role="group" aria-label="Reorder ${esc(meta.label || groupId)}">
+          <button type="button" class="gov-icon-btn" data-action="move-group" data-group="${esc(groupId)}" data-direction="up" title="Move up"${isFirstGroup ? ' disabled' : ''} aria-label="Move ${esc(meta.label || groupId)} up">▲</button>
+          <button type="button" class="gov-icon-btn" data-action="move-group" data-group="${esc(groupId)}" data-direction="down" title="Move down"${isLastGroup ? ' disabled' : ''} aria-label="Move ${esc(meta.label || groupId)} down">▼</button>
+        </div>`
+      : '';
+
     return `<section class="gov-group-panel${customClass}${dissolvedClass}" id="${esc(groupId)}">
       <header class="gov-group-head">
         <p class="gov-group-kicker">${esc(countLabel)}${esc(filterNote)}${esc(suggestNote)}${customBadge}${statusBadge}</p>
         <div class="gov-group-title-row">
+          ${moveControls}
           <h2 class="gov-group-title">${esc(meta.label || groupId)}</h2>
           ${canShape ? renderRenameGroupPopover(groupId, meta.label || groupId) : ''}
         </div>
@@ -1710,6 +1736,7 @@
     if (action === 'remove') removeFromGroup(id, group);
     if (action === 'reset-group') resetGroupMarks(group);
     if (action === 'delete-group') deleteGroup(group);
+    if (action === 'move-group') moveGroup(group, btn.getAttribute('data-direction'));
     if (action === 'accept-proposal') decideProposal(Number(btn.getAttribute('data-proposal-id')), 'accept');
     if (action === 'reject-proposal') decideProposal(Number(btn.getAttribute('data-proposal-id')), 'reject');
     if (action === 'withdraw-proposal') withdrawProposal(Number(btn.getAttribute('data-proposal-id')));

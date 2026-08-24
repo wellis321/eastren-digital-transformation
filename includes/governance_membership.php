@@ -284,10 +284,15 @@ function governance_group_meta(): array
 {
     governance_ensure_table();
     $out = [];
+    // sort_order alone (not is_core-first) so any group — core or custom —
+    // can be repositioned anywhere, including above the core groups; see
+    // governance_move_group(). Existing data's sort_order already reflects
+    // core-then-custom (10/20/30/40 vs 110+), so this doesn't reorder anything
+    // that hasn't been explicitly moved.
     $stmt = db()->query(
         'SELECT group_id, label, blurb, is_core, status, sort_order
            FROM governance_groups
-          ORDER BY is_core DESC, sort_order ASC, created_at ASC, label ASC'
+          ORDER BY sort_order ASC, created_at ASC, label ASC'
     );
     foreach ($stmt->fetchAll() as $row) {
         $out[(string)$row['group_id']] = [
@@ -1762,6 +1767,55 @@ function governance_rename_group(string $groupId, string $label, ?string $blurb,
     governance_capture_history('rename_group', $updatedBy);
 
     return ['groupId' => $groupId, 'label' => $label, 'blurb' => $blurb];
+}
+
+/**
+ * Move a group up or down one place in the display order — works across
+ * core and custom groups alike (governance_group_meta() sorts on sort_order
+ * alone), so e.g. a newly-created group can be walked all the way to the top.
+ * Swaps sort_order with whichever group is currently adjacent.
+ *
+ * @return list<string> the new group order (ids)
+ */
+function governance_move_group(string $groupId, string $direction, string $updatedBy): array
+{
+    if (!governance_can_shape()) {
+        throw new RuntimeException('Only a membership confirmer can reorder groups');
+    }
+    $groupId = trim($groupId);
+    if (!in_array($direction, ['up', 'down'], true)) {
+        throw new InvalidArgumentException('Direction must be "up" or "down"');
+    }
+
+    $pdo = db();
+    $rows = $pdo->query(
+        'SELECT group_id, sort_order FROM governance_groups ORDER BY sort_order ASC, created_at ASC, label ASC'
+    )->fetchAll();
+    $index = null;
+    foreach ($rows as $i => $row) {
+        if ((string)$row['group_id'] === $groupId) {
+            $index = $i;
+            break;
+        }
+    }
+    if ($index === null) {
+        throw new InvalidArgumentException('Unknown group');
+    }
+    $neighborIndex = $direction === 'up' ? $index - 1 : $index + 1;
+    if ($neighborIndex < 0 || $neighborIndex >= count($rows)) {
+        // Already at that end — no-op, not an error (button should be disabled anyway).
+        return array_column($rows, 'group_id');
+    }
+
+    $current = $rows[$index];
+    $neighbor = $rows[$neighborIndex];
+    $upd = $pdo->prepare('UPDATE governance_groups SET sort_order = ? WHERE group_id = ?');
+    $upd->execute([(int)$neighbor['sort_order'], (string)$current['group_id']]);
+    $upd->execute([(int)$current['sort_order'], (string)$neighbor['group_id']]);
+    governance_capture_history('move_group', $updatedBy);
+
+    [$rows[$index], $rows[$neighborIndex]] = [$rows[$neighborIndex], $rows[$index]];
+    return array_column($rows, 'group_id');
 }
 
 /**

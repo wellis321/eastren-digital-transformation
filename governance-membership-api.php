@@ -186,6 +186,16 @@ try {
         exit;
     }
 
+    if ($action === 'move_group') {
+        $moved = governance_move_group(
+            (string)($payload['groupId'] ?? ''),
+            (string)($payload['direction'] ?? ''),
+            $user
+        );
+        echo json_encode(['ok' => true, 'moved' => $moved, 'state' => governance_load_bundle()]);
+        exit;
+    }
+
     if ($action === 'add_person') {
         $added = governance_add_person(
             (string)($payload['name'] ?? ''),

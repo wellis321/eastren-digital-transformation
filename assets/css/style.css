@@ -3578,6 +3578,21 @@ tbody tr:nth-child(even):hover {
     align-items: center;
     gap: 0.4rem;
 }
+.gov-group-move {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+.gov-group-move .gov-icon-btn {
+    width: 1.3rem;
+    height: 1.05rem;
+    font-size: 0.6rem;
+    line-height: 1;
+}
+.gov-group-move .gov-icon-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
 .gov-group-title {
     margin: 0;
     font-size: clamp(1.25rem, 2.5vw, 1.55rem);
