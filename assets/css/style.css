@@ -3599,6 +3599,58 @@ tbody tr:nth-child(even):hover {
     line-height: 1.2;
     color: var(--erc-green-dark);
 }
+.gov-group-collapse-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border: 1px solid var(--erc-border);
+    background: var(--erc-surface);
+    color: var(--erc-text-light);
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.gov-group-collapse-btn:hover,
+.gov-group-collapse-btn:focus-visible {
+    color: var(--erc-green-dark);
+    border-color: var(--erc-green);
+}
+.gov-group-panel--collapsed {
+    padding-bottom: 1rem;
+}
+.gov-group-panel--collapsed .gov-group-head {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+.gov-group-collapsed-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.3rem 1rem;
+    margin-top: 0.6rem;
+}
+.gov-group-collapsed-name {
+    font-size: 0.85rem;
+    color: var(--erc-text);
+    padding: 0.1rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+@media (max-width: 900px) {
+    .gov-group-collapsed-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+@media (max-width: 640px) {
+    .gov-group-collapsed-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
 .gov-group-badge {
     display: inline-block;
     font-size: 0.68rem;
@@ -3748,6 +3800,51 @@ tbody tr:nth-child(even):hover {
 .gov-person-row:first-child,
 .gov-pool-row:first-child {
     border-top: 0;
+}
+.gov-person-drag {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding-top: 0.1rem;
+    flex-shrink: 0;
+}
+.gov-drag-handle {
+    display: inline-block;
+    width: 0.85rem;
+    height: 1.1rem;
+    line-height: 1.1rem;
+    text-align: center;
+    color: var(--erc-text-light);
+    cursor: grab;
+    font-size: 0.85rem;
+    user-select: none;
+}
+.gov-drag-handle:active {
+    cursor: grabbing;
+}
+.gov-person-move {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+.gov-person-move .gov-icon-btn {
+    width: 1.3rem;
+    height: 1.05rem;
+    font-size: 0.6rem;
+    line-height: 1;
+}
+.gov-person-move .gov-icon-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+.gov-person-row.is-dragging {
+    opacity: 0.4;
+}
+.gov-person-row--drag-over-top {
+    box-shadow: inset 0 2px 0 0 var(--erc-green);
+}
+.gov-person-row--drag-over-bottom {
+    box-shadow: inset 0 -2px 0 0 var(--erc-green);
 }
 .gov-person-main {
     display: flex;
@@ -4215,6 +4312,41 @@ tbody tr:nth-child(even):hover {
     gap: 0.5rem;
     justify-content: flex-end;
     margin-top: 0.15rem;
+}
+.gov-person-menu {
+    width: max-content;
+    min-width: 10rem;
+    padding: 0.3rem;
+}
+/* Layout only applies once the browser actually opens the popover — an
+   unconditional `display` here would override the UA's `[popover]{display:none}`
+   default (author styles always win over UA styles) and leave the menu
+   permanently visible even when closed. */
+.gov-person-menu:popover-open {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+.gov-menu-item {
+    appearance: none;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: transparent;
+    color: var(--erc-text);
+    font: inherit;
+    font-size: 0.82rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.gov-menu-item:hover,
+.gov-menu-item:focus-visible {
+    background: var(--erc-surface-alt, #f7f7f7);
+}
+.gov-menu-item--danger {
+    color: #7f1d1d;
 }
 
 /* "More" — tags, other lists, and place-on-another-group, tucked behind one

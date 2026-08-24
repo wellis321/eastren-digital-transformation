@@ -61,6 +61,36 @@
   let people = [];
   let groupMeta = {};
   let groupOrder = DEFAULT_GROUP_ORDER.slice();
+  // Which groups a viewer has collapsed to a compact name grid — a per-browser
+  // display preference, not shared state, so it lives in localStorage rather
+  // than round-tripping through the server.
+  const COLLAPSED_GROUPS_KEY = 'gov-collapsed-groups';
+  const loadCollapsedGroups = () => {
+    try {
+      const raw = JSON.parse(localStorage.getItem(COLLAPSED_GROUPS_KEY) || '[]');
+      return new Set(Array.isArray(raw) ? raw : []);
+    } catch {
+      return new Set();
+    }
+  };
+  let collapsedGroups = loadCollapsedGroups();
+  const saveCollapsedGroups = () => {
+    try {
+      localStorage.setItem(COLLAPSED_GROUPS_KEY, JSON.stringify([...collapsedGroups]));
+    } catch {
+      // Private-browsing / storage-disabled — collapse state just won't persist.
+    }
+  };
+  const toggleGroupCollapse = (groupId) => {
+    if (collapsedGroups.has(groupId)) collapsedGroups.delete(groupId);
+    else collapsedGroups.add(groupId);
+    saveCollapsedGroups();
+    render();
+  };
+  // Person currently being dragged for within-group reordering. Kept in JS
+  // rather than read back from dataTransfer during dragover — some browsers
+  // (Firefox) don't allow getData() outside dragstart/drop.
+  let dragPerson = null;
   let state = { order: {}, membership: {} };
   let myVotes = {};
   let myVoteNotes = {};
@@ -323,12 +353,26 @@
     return members.map((p) => p.id);
   };
 
+  // A group with no order yet gets one seeded by vote tally (most Yes/Maybe
+  // first). Once that order exists, it's a manual, persisted arrangement —
+  // reordering (drag/▲▼) always wins and is never silently re-sorted back to
+  // tally rank. This only reconciles membership changes: people removed from
+  // the group are dropped, and anyone newly added is appended (ranked by
+  // tally among themselves) without disturbing everyone else's position.
   const ensureOrder = (groupId) => {
-    if (!Array.isArray(state.order[groupId]) || !state.order[groupId].length) {
+    const currentIds = membersForGroup(groupId).map((p) => p.id);
+    const existing = Array.isArray(state.order[groupId]) ? state.order[groupId] : [];
+    if (!existing.length) {
       state.order[groupId] = sortedIdsForGroup(groupId);
       return;
     }
-    state.order[groupId] = sortedIdsForGroup(groupId);
+    const currentSet = new Set(currentIds);
+    const kept = existing.filter((id) => currentSet.has(id));
+    const keptSet = new Set(kept);
+    const added = currentIds
+      .filter((id) => !keptSet.has(id))
+      .sort((a, b) => tallyRank(a, groupId) - tallyRank(b, groupId));
+    state.order[groupId] = [...kept, ...added];
   };
 
   const applyBundle = (bundle) => {
@@ -474,7 +518,8 @@
       (n) => !(n.personId === personId && n.groupId === groupId)
     );
     dirty = true;
-    state.order[groupId] = sortedIdsForGroup(groupId);
+    // Order is manual once set (see ensureOrder) — casting a vote no longer
+    // reshuffles the list out from under whoever's looking at it.
     render();
     setStatus('Saving your opinion…');
 
@@ -863,6 +908,43 @@
       .catch((err) => setStatus(err.message || 'Could not reorder groups', true));
   };
 
+  // Reordering people within a group is purely a display-order change —
+  // there's no dedicated swap endpoint like move_group has. state.order is
+  // already the persisted, per-group sort order (see governance_save_state),
+  // so we just mutate it locally and reuse the existing generic save path.
+  const movePersonInGroup = (groupId, personId, direction) => {
+    if (!canShape || !groupId || !personId) return;
+    ensureOrder(groupId);
+    const ids = (state.order[groupId] || []).slice();
+    const index = ids.indexOf(personId);
+    if (index === -1) return;
+    const neighborIndex = direction === 'up' ? index - 1 : index + 1;
+    if (neighborIndex < 0 || neighborIndex >= ids.length) return;
+    [ids[index], ids[neighborIndex]] = [ids[neighborIndex], ids[index]];
+    state.order[groupId] = ids;
+    render();
+    persistSoon();
+  };
+
+  const reorderPersonInGroup = (groupId, draggedId, targetId, placeAfter) => {
+    if (!canShape || !groupId || !draggedId || draggedId === targetId) return;
+    ensureOrder(groupId);
+    const ids = (state.order[groupId] || []).slice();
+    const fromIndex = ids.indexOf(draggedId);
+    if (fromIndex === -1) return;
+    ids.splice(fromIndex, 1);
+    let toIndex = ids.indexOf(targetId);
+    if (toIndex === -1) {
+      ids.push(draggedId);
+    } else {
+      if (placeAfter) toIndex += 1;
+      ids.splice(toIndex, 0, draggedId);
+    }
+    state.order[groupId] = ids;
+    render();
+    persistSoon();
+  };
+
   const voteIcon = (vote) => {
     if (vote === 'yes') return '<span class="gov-vote-icon gov-vote-icon--yes" title="Your mark: Yes">Y</span>';
     if (vote === 'maybe') return '<span class="gov-vote-icon gov-vote-icon--maybe" title="Your mark: Maybe">~</span>';
@@ -1005,6 +1087,24 @@
   };
 
   const renderRow = (person, groupId) => {
+    // Drag-and-drop is the primary way to reorder people within a group;
+    // the ▲/▼ buttons exist alongside it as a keyboard/touch fallback, since
+    // native HTML5 drag-and-drop has no built-in accessible equivalent.
+    // Both write to the same underlying state.order[groupId] persisted list.
+    let dragControls = '';
+    if (canShape) {
+      const orderIds = state.order[groupId] || [];
+      const posIndex = orderIds.indexOf(person.id);
+      const isFirstPerson = posIndex <= 0;
+      const isLastPerson = posIndex === -1 || posIndex === orderIds.length - 1;
+      dragControls = `<div class="gov-person-drag">
+        <span class="gov-drag-handle" draggable="true" title="Drag to reorder ${esc(person.name)}" aria-hidden="true">⠿</span>
+        <div class="gov-person-move" role="group" aria-label="Reorder ${esc(person.name)}">
+          <button type="button" class="gov-icon-btn" data-action="move-person" data-id="${esc(person.id)}" data-group="${esc(groupId)}" data-direction="up" title="Move up"${isFirstPerson ? ' disabled' : ''} aria-label="Move ${esc(person.name)} up">▲</button>
+          <button type="button" class="gov-icon-btn" data-action="move-person" data-id="${esc(person.id)}" data-group="${esc(groupId)}" data-direction="down" title="Move down"${isLastPerson ? ' disabled' : ''} aria-label="Move ${esc(person.name)} down">▼</button>
+        </div>
+      </div>`;
+    }
     const vote = getMyVote(person.id, groupId);
     const voteDisabled = canVote ? '' : ' disabled';
     const noteShared = getMyVoteNoteShared(person.id, groupId);
@@ -1021,9 +1121,23 @@
       otherLists.length > 0
         ? `<span class="gov-also-on">Also: ${esc(otherLists.join(', '))}</span>`
         : '';
+    // Confirmers get rename + remove folded into one "⋯" menu instead of two
+    // separate always-visible buttons — keeps the row's action cluster from
+    // growing every time a new per-person action gets added. Proposers only
+    // ever have the single "suggest removal" action, so a menu would be
+    // overkill for them — stays a plain icon button.
     let removeBtn = '';
+    let personMenu = '';
+    let renamePersonPopoverBody = '';
     if (canShape) {
-      removeBtn = `<button type="button" class="gov-icon-btn gov-icon-btn--danger" data-action="remove" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Remove from this group" aria-label="Remove from group">×</button>`;
+      const menuPopId = `person-menu-${esc(groupId)}-${esc(person.id)}`;
+      const renamePopId = renamePersonPopId(person.id);
+      personMenu = `<button type="button" class="gov-icon-btn" popovertarget="${menuPopId}" title="More actions" aria-label="More actions for ${esc(person.name)}">⋯</button>
+        <div class="gov-reason-popover gov-person-menu" popover id="${menuPopId}">
+          <button type="button" class="gov-menu-item" popovertarget="${renamePopId}" popovertargetaction="show">✎ Edit name / role</button>
+          <button type="button" class="gov-menu-item gov-menu-item--danger" data-action="remove" data-id="${esc(person.id)}" data-group="${esc(groupId)}">× Remove from group</button>
+        </div>`;
+      renamePersonPopoverBody = renderRenamePersonPopoverBody(person);
     } else if (canPropose && !tentativeRemove) {
       removeBtn = `<button type="button" class="gov-icon-btn gov-icon-btn--danger" data-action="remove" data-id="${esc(person.id)}" data-group="${esc(groupId)}" title="Suggest removal (needs confirmation)" aria-label="Suggest removal">×</button>`;
     }
@@ -1066,8 +1180,7 @@
           placedMeta.at ? ` · ${esc(formatShortDate(placedMeta.at))}` : ''
         }</p>`
       : '';
-    const editPersonBtn = canShape ? renderRenamePersonPopover(person) : '';
-    const moreBody = `${placedLine}${tagBadges}${tagEditor}${alsoOn}${placeControls}${editPersonBtn}`;
+    const moreBody = `${placedLine}${tagBadges}${tagEditor}${alsoOn}${placeControls}`;
     const moreHintParts = [];
     if (tagCount) moreHintParts.push(`${tagCount} type${tagCount === 1 ? '' : 's'}`);
     if (otherLists.length) moreHintParts.push(`also on ${otherLists.length}`);
@@ -1076,8 +1189,9 @@
       ? `<details class="gov-person-more"><summary>More${moreHint}</summary><div class="gov-person-more-body">${moreBody}</div></details>`
       : '';
 
-    return `<li class="gov-person-row${rowClass}" id="${rowId}" data-id="${esc(person.id)}" data-vote="${esc(vote)}">
+    return `<li class="gov-person-row${rowClass}" id="${rowId}" data-id="${esc(person.id)}" data-group="${esc(groupId)}" data-vote="${esc(vote)}">
       <div class="gov-person-top">
+        ${dragControls}
         <div class="gov-person-main">
           <div class="gov-person-icons" aria-hidden="true">${voteIcon(vote)}</div>
           <div class="gov-person-text">
@@ -1100,9 +1214,11 @@
           </div>
           ${reasonBlock}
           ${removeBtn}
+          ${personMenu}
         </div>
       </div>
       ${moreBlock}
+      ${renamePersonPopoverBody}
     </li>`;
   };
 
@@ -1128,13 +1244,18 @@
   // (role) easy to miss or dismiss without noticing it was a separate field.
   const renderRenameGroupPopover = (groupId, label) => {
     const popId = `rename-group-pop-${esc(groupId)}`;
-    return `<button type="button" class="gov-icon-btn" popovertarget="${popId}" title="Rename group" aria-label="Rename ${esc(label)}">✎</button>
+    const blurb = groupMeta[groupId]?.blurb || '';
+    return `<button type="button" class="gov-icon-btn" popovertarget="${popId}" title="Edit group" aria-label="Edit ${esc(label)}">✎</button>
       <div class="gov-reason-popover" popover id="${popId}">
-        <p class="gov-reason-popover-title">Rename group</p>
+        <p class="gov-reason-popover-title">Edit group</p>
         <form class="gov-rename-form" data-action="rename-group-form" data-group="${esc(groupId)}">
           <label class="gov-rename-field">
             <span>Group name</span>
             <input type="text" class="gov-rename-input" data-rename-field="label" maxlength="200" value="${esc(label)}" required autofocus>
+          </label>
+          <label class="gov-rename-field">
+            <span>Description</span>
+            <textarea class="gov-rename-input" data-rename-field="blurb" maxlength="500" rows="3">${esc(blurb)}</textarea>
           </label>
           <div class="gov-rename-actions">
             <button type="submit" class="gov-btn">Save</button>
@@ -1144,10 +1265,13 @@
       </div>`;
   };
 
-  const renderRenamePersonPopover = (person) => {
-    const popId = `rename-person-pop-${esc(person.id)}`;
-    return `<button type="button" class="gov-reason-trigger" popovertarget="${popId}">✎ Edit name / role</button>
-      <div class="gov-reason-popover" popover id="${popId}">
+  // Split into a stable id + the popover body (no trigger button of its own)
+  // so the "⋯" row menu can trigger it directly — keeps rename out of the
+  // per-row action cluster instead of adding a permanent extra button/line.
+  const renamePersonPopId = (personId) => `rename-person-pop-${esc(personId)}`;
+  const renderRenamePersonPopoverBody = (person) => {
+    const popId = renamePersonPopId(person.id);
+    return `<div class="gov-reason-popover" popover id="${popId}">
         <p class="gov-reason-popover-title">Edit ${esc(person.name)}</p>
         <form class="gov-rename-form" data-action="rename-person-form" data-id="${esc(person.id)}">
           <label class="gov-rename-field">
@@ -1250,22 +1374,31 @@
         </div>`
       : '';
 
-    return `<section class="gov-group-panel${customClass}${dissolvedClass}" id="${esc(groupId)}">
+    // Collapsed view swaps the full row list for a compact name grid — a
+    // display-only preference (localStorage), open to every viewer, not just
+    // confirmers, since it doesn't change any data.
+    const isCollapsed = collapsedGroups.has(groupId);
+    const collapseToggle = `<button type="button" class="gov-group-collapse-btn" data-action="toggle-group-collapse" data-group="${esc(groupId)}" title="${isCollapsed ? 'Expand group' : 'Collapse group'}" aria-expanded="${isCollapsed ? 'false' : 'true'}" aria-label="${isCollapsed ? 'Expand' : 'Collapse'} ${esc(meta.label || groupId)}"><span aria-hidden="true">${isCollapsed ? '▸' : '▾'}</span> ${isCollapsed ? 'Expand' : 'Collapse'}</button>`;
+    const collapsedGrid = visibleMembers.length
+      ? `<div class="gov-group-collapsed-grid">${visibleMembers.map((p) => `<span class="gov-group-collapsed-name">${esc(p.name)}</span>`).join('')}</div>`
+      : empty || `<p class="gov-empty">No members yet.</p>`;
+
+    return `<section class="gov-group-panel${customClass}${dissolvedClass}${isCollapsed ? ' gov-group-panel--collapsed' : ''}" id="${esc(groupId)}">
       <header class="gov-group-head">
         <p class="gov-group-kicker">${esc(countLabel)}${esc(filterNote)}${esc(suggestNote)}${customBadge}${statusBadge}</p>
         <div class="gov-group-title-row">
           ${moveControls}
           <h2 class="gov-group-title">${esc(meta.label || groupId)}</h2>
+          ${collapseToggle}
           ${canShape ? renderRenameGroupPopover(groupId, meta.label || groupId) : ''}
         </div>
         ${meta.blurb ? `<p class="gov-group-blurb">${esc(meta.blurb)}</p>` : ''}
-        <div class="gov-group-actions">
+        ${isCollapsed ? '' : `<div class="gov-group-actions">
           ${statusRow}
           ${toolsHtml}
-        </div>
+        </div>`}
       </header>
-      ${empty}
-      ${listHtml}
+      ${isCollapsed ? collapsedGrid : `${empty}${listHtml}`}
     </section>`;
   };
 
@@ -1515,15 +1648,17 @@
   };
 
   /** @param popover the open popover element to close on success, so the form doesn't just sit there */
-  const renameGroup = (groupId, rawLabel, popover) => {
+  const renameGroup = (groupId, rawLabel, rawBlurb, popover) => {
     if (!canShape || !groupId) return;
     const current = groupMeta[groupId]?.label || groupId;
+    const currentBlurb = groupMeta[groupId]?.blurb || '';
     const label = (rawLabel || '').trim();
+    const blurb = (rawBlurb || '').trim();
     if (!label) {
       setStatus('Group name cannot be empty', true);
       return;
     }
-    if (label === current) {
+    if (label === current && blurb === currentBlurb) {
       popover?.hidePopover?.();
       return;
     }
@@ -1535,15 +1670,15 @@
     if (dupe && !confirm(`A group named “${dupe.label}” already exists. Rename to “${label}” anyway?`)) {
       return;
     }
-    setStatus('Renaming group…');
-    postJson({ action: 'rename_group', groupId, label })
+    setStatus('Saving group…');
+    postJson({ action: 'rename_group', groupId, label, blurb })
       .then((data) => {
         if (data.state) applyBundle(data.state);
-        setStatus(`Renamed to “${data.renamed?.label || label}”`);
+        setStatus(`Saved “${data.renamed?.label || label}”`);
         popover?.hidePopover?.();
         render();
       })
-      .catch((err) => setStatus(err.message || 'Could not rename group', true));
+      .catch((err) => setStatus(err.message || 'Could not save group', true));
   };
 
   /** @param popover the open popover element to close on success */
@@ -1737,6 +1872,8 @@
     if (action === 'reset-group') resetGroupMarks(group);
     if (action === 'delete-group') deleteGroup(group);
     if (action === 'move-group') moveGroup(group, btn.getAttribute('data-direction'));
+    if (action === 'toggle-group-collapse') toggleGroupCollapse(group);
+    if (action === 'move-person') movePersonInGroup(group, id, btn.getAttribute('data-direction'));
     if (action === 'accept-proposal') decideProposal(Number(btn.getAttribute('data-proposal-id')), 'accept');
     if (action === 'reject-proposal') decideProposal(Number(btn.getAttribute('data-proposal-id')), 'reject');
     if (action === 'withdraw-proposal') withdrawProposal(Number(btn.getAttribute('data-proposal-id')));
@@ -1754,7 +1891,8 @@
     if (groupForm) {
       e.preventDefault();
       const label = groupForm.querySelector('[data-rename-field="label"]')?.value || '';
-      renameGroup(groupForm.getAttribute('data-group'), label, groupForm.closest('[popover]'));
+      const blurb = groupForm.querySelector('[data-rename-field="blurb"]')?.value || '';
+      renameGroup(groupForm.getAttribute('data-group'), label, blurb, groupForm.closest('[popover]'));
       return;
     }
     const personForm = e.target.closest('form[data-action="rename-person-form"]');
@@ -1813,6 +1951,64 @@
     const shared = shareEl ? shareEl.checked : true;
     clearTimeout(voteNoteTimer);
     setVoteNote(input.getAttribute('data-id'), input.getAttribute('data-group'), input.value, shared);
+  });
+
+  // Drag-and-drop reordering of people within a group. The handle (not the
+  // whole row) is the draggable element, so drags never conflict with the
+  // row's own buttons/links; the whole row is used as the drag ghost image.
+  const clearDragIndicators = () => {
+    groupsEl
+      .querySelectorAll('.is-dragging, .gov-person-row--drag-over-top, .gov-person-row--drag-over-bottom')
+      .forEach((el) => el.classList.remove('is-dragging', 'gov-person-row--drag-over-top', 'gov-person-row--drag-over-bottom'));
+  };
+
+  groupsEl.addEventListener('dragstart', (e) => {
+    const handle = e.target.closest('.gov-drag-handle');
+    if (!handle || !canShape) return;
+    const row = handle.closest('.gov-person-row');
+    if (!row) return;
+    dragPerson = { groupId: row.getAttribute('data-group'), personId: row.getAttribute('data-id') };
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', dragPerson.personId);
+    e.dataTransfer.setDragImage(row, 16, 16);
+    row.classList.add('is-dragging');
+  });
+
+  groupsEl.addEventListener('dragover', (e) => {
+    if (!dragPerson) return;
+    const row = e.target.closest('.gov-person-row');
+    if (!row || row.getAttribute('data-group') !== dragPerson.groupId || row.getAttribute('data-id') === dragPerson.personId) {
+      return;
+    }
+    e.preventDefault();
+    const rect = row.getBoundingClientRect();
+    const placeAfter = e.clientY > rect.top + rect.height / 2;
+    row.classList.toggle('gov-person-row--drag-over-top', !placeAfter);
+    row.classList.toggle('gov-person-row--drag-over-bottom', placeAfter);
+  });
+
+  groupsEl.addEventListener('dragleave', (e) => {
+    const row = e.target.closest('.gov-person-row');
+    if (row) row.classList.remove('gov-person-row--drag-over-top', 'gov-person-row--drag-over-bottom');
+  });
+
+  groupsEl.addEventListener('drop', (e) => {
+    if (!dragPerson) return;
+    const row = e.target.closest('.gov-person-row');
+    if (!row || row.getAttribute('data-group') !== dragPerson.groupId || row.getAttribute('data-id') === dragPerson.personId) {
+      return;
+    }
+    e.preventDefault();
+    const rect = row.getBoundingClientRect();
+    const placeAfter = e.clientY > rect.top + rect.height / 2;
+    reorderPersonInGroup(dragPerson.groupId, dragPerson.personId, row.getAttribute('data-id'), placeAfter);
+    dragPerson = null;
+    clearDragIndicators();
+  });
+
+  groupsEl.addEventListener('dragend', () => {
+    dragPerson = null;
+    clearDragIndicators();
   });
 
   document.getElementById('gov-pool-body')?.addEventListener('click', (e) => {
