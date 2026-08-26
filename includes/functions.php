@@ -177,6 +177,9 @@ function enhance_static_html(string $html, string $baseDir): string
             $html = preg_replace_callback('#(<nav class="site-nav"[^>]*>)(.*?)(</nav>)#is', $transformNav, $html, 1) ?? $html;
             $html = preg_replace_callback('#(<nav class="mobile-nav"[^>]*>)(.*?)(</nav>)#is', $transformNav, $html, 1) ?? $html;
         }
+        if ($hiddenIds !== []) {
+            $html = nav_strip_hidden_cards($html, $hiddenIds);
+        }
     } catch (Throwable) {
         // DB may be unavailable in some local contexts
     }

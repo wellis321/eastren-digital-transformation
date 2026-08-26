@@ -161,8 +161,9 @@ function nav_set_hidden(string $itemId, bool $hidden, string $updatedBy): void
 /**
  * Remove the <a> tags for every hidden leaf item from within a nav block's
  * markup. Scoped to a single already-extracted <nav>...</nav> substring (the
- * caller does the extraction) so this can never touch a same-href link
- * living outside the nav — e.g. a "Next: Our Engagement Plan" content card.
+ * caller does the extraction) so this can never touch a same-href plain-text
+ * link living outside the nav — see nav_strip_hidden_cards() for the
+ * separate "quick link" card grids that DO need to be hidden too.
  */
 function nav_strip_hidden_links(string $navBlockHtml, array $hiddenIds): string
 {
@@ -189,6 +190,35 @@ function nav_strip_hidden_links(string $navBlockHtml, array $hiddenIds): string
         $navBlockHtml
     ) ?? $navBlockHtml;
     return $navBlockHtml;
+}
+
+/**
+ * Several pages (the homepage's quick-link grid, "Next:" cross-link cards on
+ * content pages) link to the same destinations via a `class="nav-card"`
+ * element outside the <nav> — those are a second navigation surface, not
+ * page content, so a hidden item needs to disappear from these too. Scoped
+ * specifically to the nav-card class (not every same-href <a>) so a plain
+ * prose mention of a hidden page's URL is never touched — only the ones
+ * styled as a navigational card.
+ */
+function nav_strip_hidden_cards(string $html, array $hiddenIds): string
+{
+    if ($hiddenIds === []) {
+        return $html;
+    }
+    foreach (nav_leaf_items() as $item) {
+        if (!isset($hiddenIds[$item['id']])) {
+            continue;
+        }
+        $href = preg_quote($item['href'], '#');
+        // class="nav-card" can appear before or after href= depending on the page.
+        $html = preg_replace(
+            '#<a\s+(?:href="' . $href . '"\s+class="nav-card"|class="nav-card"\s+href="' . $href . '")[^>]*>.*?</a>\s*#is',
+            '',
+            $html
+        ) ?? $html;
+    }
+    return $html;
 }
 
 /**
