@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>How I Work | ERC Housing Digital Transformation</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* ======================================================
+           SLIDE DECK — overrides & additions (same engine as slides.html)
+           ====================================================== */
+        html, body { height: 100%; overflow: hidden; margin: 0; }
+        .site-header { display: none !important; }
+
+        .topbar-slide-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.75rem;
+        }
+        .topbar-slide-controls a { color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
+        .topbar-slide-controls a:hover { color: #fff; }
+        .topbar-divider { color: rgba(255,255,255,0.3); }
+
+        .deck-wrapper {
+            position: fixed;
+            top: 42px;
+            left: 0; right: 0; bottom: 0;
+            background: #0d1f18;
+            display: flex;
+            flex-direction: column;
+        }
+        .deck-progress { height: 3px; background: rgba(255,255,255,0.15); flex-shrink: 0; }
+        .deck-progress-fill { height: 100%; background: #00c988; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); }
+        .slides-viewport { flex: 1; position: relative; overflow: hidden; }
+        .slide {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.38s;
+            opacity: 0;
+        }
+        .slide.active { transform: translateX(0); opacity: 1; }
+        .slide.exit-left { transform: translateX(-100%); opacity: 0; }
+
+        .sl-header {
+            background: var(--erc-green, #006A51);
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            gap: 1rem;
+        }
+        .sl-header-left { display: flex; align-items: center; gap: 0.75rem; min-width: 0; }
+        .sl-num {
+            width: 2rem; height: 2rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .sl-title {
+            font-size: 1.45rem; font-weight: 700; margin: 0; color: #fff;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .sl-timing { font-size: 0.75rem; opacity: 0.72; white-space: nowrap; flex-shrink: 0; }
+
+        .sl-body { flex: 1; overflow-y: auto; padding: 1.5rem 2rem; display: flex; flex-direction: column; }
+
+        .deck-footer {
+            background: #0d1f18;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.55rem 1.2rem;
+            flex-shrink: 0;
+            gap: 1rem;
+        }
+        .deck-nav-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            border-radius: 6px;
+            padding: 0.35rem 0.9rem;
+            font-size: 0.82rem;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .deck-nav-btn:hover:not(:disabled) { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.6); }
+        .deck-nav-btn:disabled { opacity: 0.3; cursor: default; }
+        .deck-counter { color: rgba(255,255,255,0.65); font-size: 0.8rem; letter-spacing: 0.03em; }
+        .deck-dots { display: flex; gap: 0.35rem; align-items: center; }
+        .deck-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; transition: background 0.2s, transform 0.2s; }
+        .deck-dot.active { background: #00c988; transform: scale(1.3); }
+
+        .s-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+        .s-cols.three { grid-template-columns: 1fr 1fr 1fr; }
+        .s-col-head {
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+            color: var(--erc-green, #006A51); margin: 0 0 0.65rem; padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--erc-green, #006A51);
+        }
+        .s-col ul { margin: 0; padding-left: 1.15rem; }
+        .s-col li { font-size: 0.875rem; line-height: 1.55; margin-bottom: 0.45rem; color: #333; }
+        .s-col li strong { color: #1a3a2f; }
+
+        .s-quote {
+            background: linear-gradient(135deg, #f0f9f5, #e6f5ef);
+            border-left: 4px solid var(--erc-green, #006A51);
+            padding: 1rem 1.4rem;
+            font-style: italic;
+            font-size: 0.98rem;
+            line-height: 1.6;
+            color: #1a3a2f;
+            margin-bottom: 1.4rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .s-callout {
+            background: #f0f9f5;
+            border: 1px solid #c0dfd0;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.83rem;
+            color: #1a3a2f;
+            margin-top: 1rem;
+        }
+        .s-callout strong { color: #006A51; }
+        .s-callout.warn { background: #fff8ee; border-color: #f0d090; color: #6b4a0a; }
+        .s-callout.warn strong { color: #a06010; }
+
+        .s-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+        .s-table th {
+            background: var(--erc-green, #006A51); color: #fff;
+            padding: 0.55rem 0.8rem; text-align: left; font-weight: 600; font-size: 0.8rem;
+        }
+        .s-table td { padding: 0.55rem 0.8rem; border-bottom: 1px solid #e8e8e8; vertical-align: top; color: #333; }
+        .s-table tr:nth-child(even) td { background: #f7faf9; }
+        .s-table a { color: var(--erc-green, #006A51); font-weight: 600; }
+
+        .slide-title-bg {
+            flex: 1;
+            background: linear-gradient(140deg, #004d3a 0%, #006A51 50%, #007a5e 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 3rem; color: #fff;
+        }
+        .slide-title-bg .leaves { height: 44px; width: auto; margin-bottom: 1.5rem; display: block; object-fit: contain; }
+        .slide-title-bg h1 { font-size: 2.6rem; font-weight: 800; margin: 0 0 0.75rem; color: #fff; max-width: 720px; line-height: 1.2; }
+        .slide-title-bg .subtitle { font-size: 1rem; opacity: 0.78; margin: 0 0 2rem; }
+        .slide-title-bg .meta {
+            display: flex; gap: 2rem; font-size: 0.85rem; opacity: 0.68;
+            border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1.5rem;
+        }
+
+        /* ---- Tool / pillar cards ---- */
+        .s-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.2rem; }
+        .s-pillars.two { grid-template-columns: repeat(2, 1fr); }
+        .s-pillar {
+            background: #f0f9f5; border: 1px solid #c0dfd0; border-top: 4px solid var(--erc-green, #006A51);
+            border-radius: 0 0 8px 8px; padding: 1.2rem 1rem; text-align: center;
+        }
+        .s-pillar-icon { display: flex; align-items: center; justify-content: center; margin-bottom: 0.6rem; }
+        .s-pillar-title { font-weight: 700; font-size: 0.9rem; color: var(--erc-green, #006A51); margin-bottom: 0.4rem; }
+        .s-pillar-desc { font-size: 0.78rem; color: #555; line-height: 1.45; }
+
+        /* ---- Tool chip list (for a broader set of small tools) ---- */
+        .s-chip-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: 1rem; }
+        .s-chip-card {
+            background: #fff; border: 1px solid #d8e8e2; border-radius: 8px;
+            padding: 0.75rem 0.9rem; display: flex; gap: 0.6rem; align-items: flex-start;
+        }
+        .s-chip-icon { flex-shrink: 0; margin-top: 0.1rem; }
+        .s-chip-name { font-weight: 700; font-size: 0.85rem; color: #1a3a2f; }
+        .s-chip-desc { font-size: 0.76rem; color: #555; line-height: 1.4; margin-top: 0.15rem; }
+
+        /* ---- Workflow / pipeline steps ---- */
+        .s-flow { display: flex; align-items: stretch; justify-content: center; gap: 0; margin: 1.2rem 0; flex-wrap: wrap; }
+        .s-flow-step {
+            background: linear-gradient(135deg, #f0f9f5, #e6f5ef);
+            border: 1px solid #c0dfd0;
+            border-radius: 8px;
+            padding: 0.9rem 1.1rem;
+            min-width: 130px;
+            text-align: center;
+        }
+        .s-flow-step .name { font-weight: 700; font-size: 0.85rem; color: var(--erc-green, #006A51); }
+        .s-flow-step .desc { font-size: 0.72rem; color: #666; margin-top: 0.25rem; line-height: 1.35; }
+        .s-flow-arrow { font-size: 1.3rem; color: var(--erc-green, #006A51); font-weight: 700; align-self: center; padding: 0 0.5rem; }
+
+        @media (max-width: 768px) {
+            .s-cols { grid-template-columns: 1fr; gap: 1rem; }
+            .s-pillars, .s-pillars.two, .s-chip-grid { grid-template-columns: 1fr; }
+            .sl-title { font-size: 1.1rem; }
+            .slide-title-bg h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="site-topbar">
+    <a href="index.html" class="topbar-left" aria-label="ERC Research Portal — Home">
+        <img src="assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-slide-controls">
+        <a href="index.html">Portal home</a>
+        <span class="topbar-divider">|</span>
+        <a href="logout.php">Sign out</a>
+        <span class="topbar-divider">|</span>
+        <span id="current-date" style="color: rgba(255,255,255,0.5);"></span>
+    </div>
+</div>
+
+<!-- DECK WRAPPER -->
+<div class="deck-wrapper">
+
+    <div class="deck-progress">
+        <div class="deck-progress-fill" id="progressFill" style="width:12.5%;"></div>
+    </div>
+
+    <div class="slides-viewport" id="slidesViewport">
+
+        <!-- ================================================
+             SLIDE 1: TITLE
+             ================================================ -->
+        <div class="slide active" data-index="0">
+            <div class="slide-title-bg">
+                <img src="assets/media/leaves.png" alt="ERC" class="leaves">
+                <p class="subtitle" style="margin:0 0 0.4rem;">How I Work</p>
+                <h1>Tools, Thinking &amp; Delivery Approach</h1>
+                <p class="subtitle">A working reference for how research, AI tools, engineering choices, and Microsoft 365 fit together day to day</p>
+                <div class="meta">
+                    <span>William Ellis</span>
+                    <span>Digital Transformation Lead</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================
+             SLIDE 2: RESEARCH & CONTENT GENERATION
+             ================================================ -->
+        <div class="slide" data-index="1">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">1</span>
+                    <h2 class="sl-title">Research &amp; Content Generation</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; ~5 minutes</span>
+            </div>
+            <div class="sl-body">
+                <p style="font-size:0.85rem; color:#555; margin:0 0 0.75rem;">I use AI research tools to turn source material into whatever format actually gets read by the audience I'm writing for &mdash; not everything needs to be a document.</p>
+                <div class="s-chip-grid">
+                    <div class="s-chip-card">
+                        <span class="s-chip-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </span>
+                        <span>
+                            <span class="s-chip-name">Google NotebookLM</span>
+                            <span class="s-chip-desc">My main research workhorse. I load source material in and generate research summaries, explainer videos, infographics, presentations, and podcast-style audio overviews from the same source set.</span>
+                        </span>
+                    </div>
+                    <div class="s-chip-card">
+                        <span class="s-chip-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                        </span>
+                        <span>
+                            <span class="s-chip-name">Google Stitch</span>
+                            <span class="s-chip-desc">Google's AI UI/design tool &mdash; useful for quickly generating interface concepts and visual directions before committing engineering time to a design.</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="s-callout" style="margin-top:1.2rem;">
+                    <strong>Why this matters:</strong> a stakeholder briefing, a five-minute video, and an infographic all come from the same underlying research &mdash; the format changes to fit the audience, not the substance.
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================
+             SLIDE 3: AI-ASSISTED DEVELOPMENT
+             ================================================ -->
+        <div class="slide" data-index="2">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">2</span>
+                    <h2 class="sl-title">AI-Assisted Development</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; ~5 minutes</span>
+            </div>
+            <div class="sl-body">
+                <div class="s-cols">
+                    <div class="s-col">
+                        <p class="s-col-head">Editor &amp; Assistants</p>
+                        <ul>
+                            <li><strong>Cursor</strong> &mdash; my primary editor, AI-native from the ground up</li>
+                            <li><strong>Claude</strong> &mdash; for reasoning through design decisions, writing, and review</li>
+                            <li><strong>Claude Desktop</strong> &mdash; for work that sits outside a codebase entirely</li>
+                            <li><strong>Claude in Cursor</strong> &mdash; Claude working directly inside the editor, with full repo context, so it can read, plan, and edit across a whole project rather than one file at a time</li>
+                        </ul>
+                    </div>
+                    <div class="s-col">
+                        <p class="s-col-head">Local Models</p>
+                        <ul>
+                            <li><strong>Ollama</strong> &mdash; runs models entirely on my own machine, no data leaving it</li>
+                            <li>Models pulled and kept current from <strong>Hugging Face</strong> and <strong>LM Studio</strong></li>
+                            <li>Used where I want a task done fully offline, or want to compare a local model's output against a hosted one</li>
+                        </ul>
+                        <div class="s-callout" style="margin-top:0.85rem;">
+                            <strong>Principle:</strong> the right tool depends on the task &mdash; a hosted frontier model for hard reasoning, a local model when privacy or offline access matters more than raw capability.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================
+             SLIDE 4: TECHNOLOGY PHILOSOPHY
+             ================================================ -->
+        <div class="slide" data-index="3">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">3</span>
+                    <h2 class="sl-title">Technology Philosophy</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; ~5 minutes</span>
+            </div>
+            <div class="sl-body">
+                <div class="s-cols">
+                    <div class="s-col">
+                        <p class="s-col-head">Current vs. Preferred Stack</p>
+                        <ul>
+                            <li><strong>PHP / MySQL</strong> is what I deliver in today &mdash; it matches existing hosting and skills, and it ships reliably</li>
+                            <li><strong>SvelteKit</strong>, paired with whichever database actually fits the job rather than one default choice, is my preference where I have a free hand</li>
+                            <li>The deciding factor is always what the environment can actually support and maintain, not personal preference alone</li>
+                        </ul>
+                    </div>
+                    <div class="s-col">
+                        <p class="s-col-head">Functional Over Object-Oriented</p>
+                        <ul>
+                            <li>I default to <strong>functional programming</strong> over OOP</li>
+                            <li>In a social organisation like a council, OOP's inheritance and shared mutable state tend to accumulate hidden coupling as teams and requirements change &mdash; functional code with clear inputs and outputs stays easier to reason about as ownership shifts</li>
+                            <li>I draw on <strong>Category theory</strong> and <strong>Set theory</strong> as the underlying mental model for how data and transformations compose</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="s-callout" style="margin-top:1rem;">
+                    <strong>JSON everywhere:</strong> I use JSON as the default interchange format across systems &mdash; it's simple, language-agnostic, and keeps interoperability straightforward as tools and teams change.
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================
+             SLIDE 5: GUIDING PRINCIPLES
+             ================================================ -->
+        <div class="slide" data-index="4">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">4</span>
+                    <h2 class="sl-title">Guiding Principles</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; ~5 minutes</span>
+            </div>
+            <div class="sl-body">
+                <div class="s-quote">
+                    &ldquo;Information as a System&rdquo; &mdash; every tool and dataset I build is a piece of one connected picture, not a one-off, so the effort compounds instead of fragmenting.
+                </div>
+                <div class="s-pillars">
+                    <div class="s-pillar">
+                        <div class="s-pillar-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18M3 9v10a2 2 0 0 0 2 2h4M21 9v10a2 2 0 0 1-2 2h-4"/></svg>
+                        </div>
+                        <div class="s-pillar-title">Reduce Duplication</div>
+                        <div class="s-pillar-desc">One authoritative source of a given fact, referenced everywhere else &mdash; not re-typed and re-diverging</div>
+                    </div>
+                    <div class="s-pillar">
+                        <div class="s-pillar-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        </div>
+                        <div class="s-pillar-title">Improve Standardisation</div>
+                        <div class="s-pillar-desc">Consistent structures and formats so systems can talk to each other without bespoke translation every time</div>
+                    </div>
+                    <div class="s-pillar">
+                        <div class="s-pillar-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        </div>
+                        <div class="s-pillar-title">User Wellbeing</div>
+                        <div class="s-pillar-desc">Standardisation isn't the end goal &mdash; it's what frees up time and headspace for the people using and maintaining the system</div>
+                    </div>
+                </div>
+                <div class="s-callout" style="margin-top:1rem;">
+                    <strong>Accessibility (A11y):</strong> treated as a baseline requirement, not a late-stage compliance check &mdash; every tool I build needs to work for everyone using it, from the first version.
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================
+             SLIDE 6: LIVE SYSTEMS PORTFOLIO
+             ================================================ -->
+        <div class="slide" data-index="5">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">5</span>
+                    <h2 class="sl-title">Live Systems I've Built</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; ~5 minutes</span>
+            </div>
+            <div class="sl-body">
+                <p style="font-size:0.8rem; color:#666; margin:0 0 0.85rem;">All research &amp; learning demonstration systems, built to show what's possible and prove out the approach before anything becomes an official council tool.</p>
+                <table class="s-table">
+                    <thead>
+                        <tr><th>System</th><th>What it does</th><th>Link</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Housing Metrics</strong></td>
+                            <td>Dashboard for housing performance data</td>
+                            <td><a href="https://dodgerblue-wombat-806788.hostingersite.com/" target="_blank" rel="noreferrer">Open &rarr;</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Housing Digital Transformation</strong></td>
+                            <td>This programme's own portal &mdash; stakeholder engagement, governance, research</td>
+                            <td><a href="https://aqua-quetzal-992173.hostingersite.com/stakeholder-engagement.html" target="_blank" rel="noreferrer">Open &rarr;</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phase 2 Tracker</strong></td>
+                            <td>Delivery tracking for phase 2 work</td>
+                            <td><a href="https://dimgrey-koala-534577.hostingersite.com/index.php" target="_blank" rel="noreferrer">Open &rarr;</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>AS-IS Process Mapping</strong></td>
+                            <td>Current-state process mapping system</td>
+                            <td><a href="https://slategray-cat-335719.hostingersite.com/" target="_blank" rel="noreferrer">Open &rarr;</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Learning Management System</strong></td>
+                            <td>Course/learning content delivery</td>
+                            <td><a href="https://dimgrey-koala-534577.hostingersite.com/learning/index.php" target="_blank" rel="noreferrer">Open &rarr;</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Groups / Governance Management</strong></td>
+                            <td>Membership, voting, and group governance tool</td>
+                            <td><a href="https://aqua-quetzal-992173.hostingersite.com/governance-membership.html" target="_blank" rel="noreferrer">Open &rarr;</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Schedule of Rates (SOR) Management</strong></td>
+                            <td>Pricing schedule management system</td>
+                            <td><a href="https://papayawhip-hamster-802775.hostingersite.com/" target="_blank" rel="noreferrer">Open &rarr;</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ================================================
+             SLIDE 7: FROM PROTOTYPE TO ORGANISATION
+             ================================================ -->
+        <div class="slide" data-index="6">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">6</span>
+                    <h2 class="sl-title">From Prototype to Organisation</h2>
+                </div>
+                <span class="sl-timing">&#x23F1; ~5 minutes</span>
+            </div>
+            <div class="sl-body">
+                <p style="font-size:0.8rem; color:#666; margin:0 0 0.5rem;">Fast, standalone builds are how I explore an idea quickly &mdash; but the organisation runs on Microsoft 365, so anything that proves out moves across.</p>
+                <div class="s-flow">
+                    <div class="s-flow-step">
+                        <div class="name">Build fast</div>
+                        <div class="desc">Standalone site, quick to change</div>
+                    </div>
+                    <div class="s-flow-arrow">&rarr;</div>
+                    <div class="s-flow-step">
+                        <div class="name">SharePoint</div>
+                        <div class="desc">Information becomes an organisational record</div>
+                    </div>
+                    <div class="s-flow-arrow">&rarr;</div>
+                    <div class="s-flow-step">
+                        <div class="name">Planner &amp; Whiteboards</div>
+                        <div class="desc">Work gets tracked and shaped collaboratively</div>
+                    </div>
+                    <div class="s-flow-arrow">&rarr;</div>
+                    <div class="s-flow-step">
+                        <div class="name">Microsoft Lists</div>
+                        <div class="desc">Ongoing group &amp; resource management</div>
+                    </div>
+                </div>
+                <div class="s-cols" style="margin-top:0.5rem;">
+                    <div class="s-col">
+                        <p class="s-col-head">What Whiteboards Are For</p>
+                        <ul>
+                            <li>Consolidating and commemorating milestones and celebrations</li>
+                            <li>Sharing learning across teams</li>
+                            <li>Story mapping and other collaborative structuring exercises</li>
+                        </ul>
+                    </div>
+                    <div class="s-col">
+                        <p class="s-col-head">What Microsoft Lists Are For</p>
+                        <ul>
+                            <li>Group and membership management</li>
+                            <li>Document and resource management</li>
+                            <li>Where day-to-day tracking lives once something is business-as-usual</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================
+             SLIDE 8: QUESTIONS
+             ================================================ -->
+        <div class="slide" data-index="7">
+            <div class="sl-header">
+                <div class="sl-header-left">
+                    <span class="sl-num">?</span>
+                    <h2 class="sl-title">Questions</h2>
+                </div>
+                <span class="sl-timing">Thank you</span>
+            </div>
+            <div class="sl-body" style="justify-content:center; align-items:center; text-align:center;">
+                <div style="max-width: 820px;">
+                    <div style="font-size: 3.2rem; font-weight: 900; color: var(--erc-green, #006A51); letter-spacing: -0.02em; line-height: 1; margin-bottom: 1rem;">
+                        Questions?
+                    </div>
+                    <p style="font-size: 1.05rem; color:#333; margin: 0 0 1.25rem;">
+                        Happy to go deeper on any of the tools, the reasoning behind the tech choices, or walk through any of the live systems.
+                    </p>
+                    <div class="s-callout" style="display:inline-block; margin: 0; font-size: 0.9rem;">
+                        <strong>Prompt:</strong> Where would you like me to start?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /slides-viewport -->
+
+    <!-- Footer nav -->
+    <div class="deck-footer">
+        <button class="deck-nav-btn" id="prevBtn" onclick="prevSlide()" disabled>&#8592; Previous</button>
+        <div style="display:flex; align-items:center; gap:1rem;">
+            <div class="deck-dots" id="dotsContainer"></div>
+            <span class="deck-counter" id="counter">1 / 8</span>
+        </div>
+        <button class="deck-nav-btn" id="nextBtn" onclick="nextSlide()">Next &#8594;</button>
+    </div>
+
+</div><!-- /deck-wrapper -->
+
+<script src="assets/js/main.js"></script>
+<script>
+(function () {
+    var slides = document.querySelectorAll('.slide');
+    var total = slides.length;
+    var current = 0;
+
+    var prevBtn = document.getElementById('prevBtn');
+    var nextBtn = document.getElementById('nextBtn');
+    var counter = document.getElementById('counter');
+    var progressFill = document.getElementById('progressFill');
+    var dotsContainer = document.getElementById('dotsContainer');
+
+    for (var i = 0; i < total; i++) {
+        var dot = document.createElement('button');
+        dot.className = 'deck-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        dot.dataset.index = i;
+        dot.addEventListener('click', function () { goTo(parseInt(this.dataset.index)); });
+        dotsContainer.appendChild(dot);
+    }
+
+    function goTo(idx) {
+        if (idx < 0 || idx >= total) return;
+        var dir = idx > current ? 1 : -1;
+
+        slides[current].classList.remove('active');
+        if (dir > 0) slides[current].classList.add('exit-left');
+
+        slides[idx].getBoundingClientRect();
+        slides[idx].style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+        slides[idx].style.opacity = '0';
+
+        slides[current].style.transform = '';
+        slides[current].style.opacity = '';
+
+        requestAnimationFrame(function () {
+            slides[idx].classList.add('active');
+            slides[idx].style.transform = '';
+            slides[idx].style.opacity = '';
+
+            setTimeout(function () {
+                slides[current].classList.remove('exit-left');
+                slides[current].style.transform = '';
+                slides[current].style.opacity = '';
+                current = idx;
+                updateUI();
+            }, 380);
+        });
+
+        current = idx;
+        updateUI();
+    }
+
+    function updateUI() {
+        counter.textContent = (current + 1) + ' / ' + total;
+        progressFill.style.width = (((current + 1) / total) * 100) + '%';
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current === total - 1;
+
+        var dots = dotsContainer.querySelectorAll('.deck-dot');
+        dots.forEach(function (d, i) {
+            d.classList.toggle('active', i === current);
+        });
+    }
+
+    function nextSlide() { goTo(current + 1); }
+    function prevSlide() { goTo(current - 1); }
+
+    window.nextSlide = nextSlide;
+    window.prevSlide = prevSlide;
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            prevSlide();
+        }
+    });
+
+    var touchStartX = 0;
+    document.addEventListener('touchstart', function (e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+        var dx = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(dx) > 50) { dx > 0 ? nextSlide() : prevSlide(); }
+    });
+
+    updateUI();
+})();
+</script>
+</body>
+</html>

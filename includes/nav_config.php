@@ -89,6 +89,7 @@ function nav_definition(): array
             'label' => 'Reference',
             'href' => null,
             'children' => [
+                ['id' => 'reference-how-i-work', 'label' => 'How I Work', 'href' => 'how-i-work.html'],
                 ['id' => 'reference-history', 'label' => 'ERC Digital History', 'href' => 'history.html'],
                 ['id' => 'reference-scotland-policy', 'label' => "Scotland's Policy", 'href' => 'scotland-policy.html'],
                 ['id' => 'reference-digital-direction', 'label' => 'Digital Direction', 'href' => 'digital-direction.html'],
