@@ -16,6 +16,12 @@
         /* Hide the main site nav in slide mode */
         .site-header { display: none !important; }
 
+        /* The feedback widget's default bottom-right position sits directly
+           under the deck's own Next/Previous controls in this fixed
+           full-screen layout — lift it clear of the footer bar. */
+        .feedback-toggle { bottom: 3.75rem !important; }
+        .feedback-panel { bottom: 6.75rem !important; }
+
         /* Extra controls in topbar */
         .topbar-slide-controls {
             display: flex;

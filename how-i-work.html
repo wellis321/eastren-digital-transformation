@@ -14,6 +14,12 @@
         html, body { height: 100%; overflow: hidden; margin: 0; }
         .site-header { display: none !important; }
 
+        /* The feedback widget's default bottom-right position sits directly
+           under the deck's own Next/Previous controls in this fixed
+           full-screen layout — lift it clear of the footer bar. */
+        .feedback-toggle { bottom: 3.75rem !important; }
+        .feedback-panel { bottom: 6.75rem !important; }
+
         .topbar-slide-controls {
             display: flex;
             align-items: center;
