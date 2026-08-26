@@ -378,6 +378,14 @@ p { margin-bottom: 1rem; }
     position: relative;
 }
 
+/* Server-side nav filtering (includes/nav_config.php) only ever removes
+   individual <a> items — a section is hidden entirely just by having none
+   left, no separate "hide whole group" flag needed. */
+.nav-group:has(.nav-dropdown:empty),
+.mobile-nav-group:has(.mobile-nav-sub:empty) {
+    display: none;
+}
+
 .nav-group-btn {
     display: flex;
     align-items: center;
@@ -2735,6 +2743,52 @@ tbody tr:nth-child(even):hover {
         grid-template-columns: 1fr;
         justify-items: start;
     }
+}
+
+/* Menu settings (nav-admin.php) */
+.nav-admin-page {
+    max-width: 640px;
+    margin: 2rem auto;
+    padding: 0 1.25rem 3rem;
+}
+
+.nav-admin-page__header {
+    margin-bottom: 1.5rem;
+}
+
+.nav-admin-page__header h1 {
+    margin: 0 0 0.35rem;
+}
+
+.nav-admin-page__header p {
+    margin: 0.35rem 0 0;
+    color: var(--erc-text-light);
+}
+
+.nav-admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.nav-admin-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-admin-section__title {
+    margin: 0 0 0.15rem;
+    font-size: 0.95rem;
+    color: var(--erc-green-dark);
+}
+
+.nav-admin-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.9rem;
+    cursor: pointer;
 }
 
 /* Feedback widget (matches AS-IS app pattern) */

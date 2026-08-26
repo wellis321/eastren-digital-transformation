@@ -156,6 +156,30 @@ function enhance_static_html(string $html, string $baseDir): string
         }
     }
 
+    // Nav item visibility is a site-wide setting, not admin-only, so this
+    // runs regardless of session state — but never let a DB hiccup take the
+    // page's navigation down; fall back to the nav as authored in the file.
+    try {
+        require_once __DIR__ . '/nav_config.php';
+        $hiddenIds = nav_hidden_ids();
+        if ($hiddenIds !== []) {
+            $html = preg_replace_callback(
+                '#(<nav class="site-nav"[^>]*>)(.*?)(</nav>)#is',
+                static fn(array $m): string => $m[1] . nav_strip_hidden_links($m[2], $hiddenIds) . $m[3],
+                $html,
+                1
+            ) ?? $html;
+            $html = preg_replace_callback(
+                '#(<nav class="mobile-nav"[^>]*>)(.*?)(</nav>)#is',
+                static fn(array $m): string => $m[1] . nav_strip_hidden_links($m[2], $hiddenIds) . $m[3],
+                $html,
+                1
+            ) ?? $html;
+        }
+    } catch (Throwable) {
+        // DB may be unavailable in some local contexts
+    }
+
     if (!empty($_SESSION['admin_logged_in'])) {
         if (stripos($html, 'name="csrf-token"') === false) {
             $meta = '<meta name="csrf-token" content="' . e(csrf_token()) . '">';
