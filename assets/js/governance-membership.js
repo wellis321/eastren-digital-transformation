@@ -3261,7 +3261,10 @@
       // canConfirmMembership is only known once the bundle above has applied —
       // too late for the pre-load check further up, so reveal here instead.
       if (location.hash === '#gov-admin-panel') revealAdminPanel();
-      const el = document.querySelector(location.hash);
+      // getElementById (not querySelector) because a group id can start with
+      // a digit (e.g. a label like "1. Corporate Systems..."), which is a
+      // valid HTML id but throws as a raw CSS selector via location.hash.
+      const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
       if (!el) return;
       if (!scrollSidebarTarget(el)) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
