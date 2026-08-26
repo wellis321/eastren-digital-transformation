@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
-    <title>Continuous Improvement Themes | ERC Housing Digital Transformation</title>
+    <title>Continuous Improvement Themes | Housing Digital Transformation</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .theme-status-badge {
@@ -306,9 +306,9 @@
 
 <!-- Top Bar -->
 <div class="site-topbar">
-    <a href="index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
-        <img src="assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
-        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    <a href="index.html" class="topbar-left" aria-label="Housing Digital Transformation — Home">
+        <img src="assets/media/leaves.png" alt="Council logo" class="topbar-leaves" width="28" height="20">
+        <span>Housing Digital Transformation</span>
     </a>
     <div class="topbar-right">
         <a href="logout.php" class="topbar-signout">Sign out</a>
@@ -354,7 +354,7 @@
             <div class="nav-group">
                 <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="nav-dropdown">
-                    <a href="history.html">ERC Digital History</a>
+                    <a href="history.html">Digital History</a>
                     <a href="scotland-policy.html">Scotland&#039;s Policy</a>
                     <a href="digital-direction.html">Digital Direction</a>
                     <a href="best-practice.html">Best Practice</a>
@@ -404,7 +404,7 @@
         <div class="mobile-nav-group">
             <button class="mobile-nav-group-btn" aria-expanded="false">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
             <div class="mobile-nav-sub">
-                <a href="history.html">ERC Digital History</a>
+                <a href="history.html">Digital History</a>
                 <a href="scotland-policy.html">Scotland&#039;s Policy</a>
                 <a href="digital-direction.html">Digital Direction</a>
                 <a href="best-practice.html">Best Practice</a>
@@ -665,7 +665,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                     Address Standardisation via Gazetteer &amp; UPRN
                 </h4>
-                <p>ERC uses the Local Land and Property Gazetteer (LLPG) as its authoritative address register, accessible through the Improvement Service&rsquo;s Spatial Hub Scotland. Every property in the housing stock has a Unique Property Reference Number (UPRN) &mdash; a 12-digit identifier that should become the primary key for all property records across every system.</p>
+                <p>The Council uses the Local Land and Property Gazetteer (LLPG) as its authoritative address register, accessible through the Improvement Service&rsquo;s Spatial Hub Scotland. Every property in the housing stock has a Unique Property Reference Number (UPRN) &mdash; a 12-digit identifier that should become the primary key for all property records across every system.</p>
                 <ul>
                     <li>UPRN stored as <code>BIGINT</code> on every property record &mdash; this is the join key between housing management, repairs, SOR, tenant portal, and any future system</li>
                     <li>Address display generated from Gazetteer data at query time, not stored as a free-text string that can drift out of date</li>
@@ -698,14 +698,14 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     Contract Pricing Data: Scotland Excel &amp; Renfrew Trade Contracts
                 </h4>
-                <p>This is the data ERC genuinely owns and must control. Scotland Excel framework rates and Renfrew trade contract schedules are the pricing basis for repairs and maintenance work. They currently arrive as spreadsheets and PDFs &mdash; documents designed for human reading, not machine ingestion. Bringing this data under proper version control and making it available as structured, queryable data is one of the highest-value data problems the programme can solve.</p>
+                <p>This is the data the Council genuinely owns and must control. Scotland Excel framework rates and regional trade contract schedules are the pricing basis for repairs and maintenance work. They currently arrive as spreadsheets and PDFs &mdash; documents designed for human reading, not machine ingestion. Bringing this data under proper version control and making it available as structured, queryable data is one of the highest-value data problems the programme can solve.</p>
                 <ul>
                     <li><strong>Scotland Excel frameworks:</strong> Rate schedules published by Scotland Excel for participating councils need to be ingested as structured data, not stored as spreadsheet files. Each SOR code, description, unit of measure, and unit rate is a database record, not a cell in a tab on a workbook</li>
-                    <li><strong>Renfrew trade contracts:</strong> ERC&rsquo;s participation in joint contracts with Renfrewshire and other authorities gives access to negotiated rates &mdash; these schedules need to be maintained as live data in the system so ROCC can use them for job costing without manual lookups</li>
+                    <li><strong>Regional trade contracts:</strong> the Council&rsquo;s participation in joint contracts with neighbouring authorities gives access to negotiated rates &mdash; these schedules need to be maintained as live data in the system so ROCC can use them for job costing without manual lookups</li>
                     <li><strong>SOR code standardisation:</strong> SOR codes across different contracts may use different coding conventions; a mapping table is needed so ROCC can work with a consistent internal code regardless of which contract the rate comes from</li>
                     <li><strong>Rate versioning:</strong> Contract rates change at renewal; the system must store the effective date range for each rate so historical jobs are costed against the rate that applied at the time &mdash; not silently updated to the current rate</li>
                     <li><strong>Price data types:</strong> All monetary values stored as <code>DECIMAL(10,2)</code> &mdash; never <code>FLOAT</code>; unit of measure as a typed ENUM (<code>EA</code>, <code>M</code>, <code>M2</code>, <code>HR</code>); currency as ISO 4217 (<code>GBP</code>) even if it seems unnecessary now</li>
-                    <li><strong>Staff data (ERC-owned):</strong> Operative trade classification, certifications with expiry dates, and van/equipment assignments are ERC data &mdash; stored as structured records with typed fields, not managed in a spreadsheet or HR system notes field</li>
+                    <li><strong>Staff data (Council-owned):</strong> Operative trade classification, certifications with expiry dates, and van/equipment assignments are Council data &mdash; stored as structured records with typed fields, not managed in a spreadsheet or HR system notes field</li>
                 </ul>
             </div>
 
@@ -720,7 +720,7 @@
                     <li>Use the OpenAI Batch API to process large contract schedules overnight: send a row from a Scotland Excel spreadsheet, receive a structured JSON object matching the internal SOR schema &mdash; with confidence score and any ambiguities flagged for review</li>
                     <li>Define a JSON Schema for the SOR record before starting &mdash; Structured Outputs guarantees the AI returns valid JSON that matches it, making batch ingest safe to automate</li>
                     <li>SOR code parsing: send a legacy or supplier-formatted code string &rarr; receive <code>{ "sor_code": "PL0042", "description": "Replace isolating valve", "unit": "EA", "confidence": 0.97 }</code> &rarr; flag anything below 0.9 for manual review</li>
-                    <li>Address normalisation (for any legacy records that still need it): send a free-text address string &rarr; receive <code>{ "uprn": 12345678, "confidence": 0.94, "matched_address": "12 High Street, Barrhead, G78 1AA" }</code></li>
+                    <li>Address normalisation (for any legacy records that still need it): send a free-text address string &rarr; receive <code>{ "uprn": 12345678, "confidence": 0.94, "matched_address": "12 High Street, Anytown, AB1 2CD" }</code></li>
                     <li>Contract schedule comparison: use AI to diff two versions of a rate schedule and identify which SOR codes changed, were added, or were removed &mdash; surfaces the delta automatically rather than asking someone to compare two spreadsheets by eye</li>
                     <li>Migration audit log: every AI-suggested change recorded with the original value, the suggested value, the confidence score, and whether it was accepted or overridden &mdash; this log is part of the compliance record</li>
                 </ul>
@@ -751,7 +751,7 @@
                 </h4>
                 <p>Every spreadsheet that travels between systems or people via email is a data quality incident waiting to happen: it can be edited, forwarded to the wrong person, become the &ldquo;live&rdquo; version without anyone knowing, and is impossible to audit. The goal is to make the new system the authoritative source so that no one needs a spreadsheet because the data is always one click away.</p>
                 <ul>
-                    <li>Map every spreadsheet that currently carries contract or pricing data: Scotland Excel schedules, Renfrew trade rates, materials price lists &mdash; each one is a workflow to replace with a structured import or API</li>
+                    <li>Map every spreadsheet that currently carries contract or pricing data: Scotland Excel schedules, regional trade rates, materials price lists &mdash; each one is a workflow to replace with a structured import or API</li>
                     <li>When Scotland Excel publishes a revised framework schedule, the process should be: download structured file &rarr; validate against schema &rarr; import to contract pricing table &rarr; diff against previous version &rarr; notify affected users. Not: download Excel &rarr; email around for comment &rarr; manually update a local copy</li>
                     <li>Self-service reports in ROCC replace &ldquo;could you send me the list of&hellip;&rdquo; emails &mdash; role-based access means each user sees the data relevant to them without an intermediary</li>
                     <li>Staff certification data (gas safe, NICEIC, asbestos awareness, etc.) tracked in the system with automated expiry alerts &mdash; not managed in a spreadsheet by one person who may be on leave when a certificate lapses</li>
@@ -765,7 +765,7 @@
 
             <div class="peer-card">
                 <strong>Improvement Service &mdash; Spatial Hub Scotland (national)</strong>
-                <p>The Improvement Service provides all Scottish councils with access to the National Gazetteer through the Spatial Hub. ERC already has LLPG obligations as a local authority. The practical step is ensuring the UPRN is exposed as a field in the new housing system and that the Spatial Hub API is called at address entry time rather than relying on a periodic bulk import. Several Scottish councils &mdash; including North Lanarkshire and South Ayrshire &mdash; have completed UPRN adoption programmes that reduced address duplication by over 30% and improved integration between housing, planning, and environmental services.</p>
+                <p>The Improvement Service provides all Scottish councils with access to the National Gazetteer through the Spatial Hub. The Council already has LLPG obligations as a local authority. The practical step is ensuring the UPRN is exposed as a field in the new housing system and that the Spatial Hub API is called at address entry time rather than relying on a periodic bulk import. Several Scottish councils have completed UPRN adoption programmes that reduced address duplication by over 30% and improved integration between housing, planning, and environmental services.</p>
             </div>
             <div class="peer-card">
                 <strong>Aberdeenshire Council &mdash; housing data migration</strong>
@@ -859,7 +859,7 @@
 
             <div class="peer-card">
                 <strong>Scottish Housing Regulator &mdash; Charter Indicator 8</strong>
-                <p>The SHR measures void management under Charter Indicator 8: the average number of calendar days taken to re-let properties. ERC&rsquo;s performance is published annually and compared against Scottish averages. Digital inspection and automatic works scheduling are cited in multiple ARC submissions by higher-performing landlords as the primary driver of turnaround improvement.</p>
+                <p>The SHR measures void management under Charter Indicator 8: the average number of calendar days taken to re-let properties. The Council&rsquo;s performance is published annually and compared against Scottish averages. Digital inspection and automatic works scheduling are cited in multiple ARC submissions by higher-performing landlords as the primary driver of turnaround improvement.</p>
             </div>
             <div class="peer-card">
                 <strong>Wheatley Housing Group</strong>
@@ -968,7 +968,7 @@
         <div class="theme-block-header">
             <span class="theme-status-badge theme-status-badge--priority">Priority &mdash; Requires Active Effort</span>
             <h2>Tenant Engagement &amp; Communication</h2>
-            <p>Tenant engagement is the hardest thing on this list and, in my view, the most important. I know how difficult it has been to get right before at ERC &mdash; meaningful, sustained engagement is genuinely hard to achieve and easy to underinvest in. But the insight you get from tenants is qualitatively different from anything else. They know what it is actually like to live in a property, report a repair, and wait. Their input shapes what quality means in practice. I want this theme treated differently from the others &mdash; more active, revisited more often &mdash; because it has been harder and more underinvested in the past.</p>
+            <p>Tenant engagement is the hardest thing on this list and, in my view, the most important. I know how difficult it has been to get right before here &mdash; meaningful, sustained engagement is genuinely hard to achieve and easy to underinvest in. But the insight you get from tenants is qualitatively different from anything else. They know what it is actually like to live in a property, report a repair, and wait. Their input shapes what quality means in practice. I want this theme treated differently from the others &mdash; more active, revisited more often &mdash; because it has been harder and more underinvested in the past.</p>
         </div>
         <div class="theme-block-body">
 
@@ -1044,7 +1044,7 @@
 
             <div class="peer-card">
                 <strong>Scottish Social Housing Charter &mdash; Outcome 3</strong>
-                <p>The Charter requires landlords to demonstrate that they actively seek and act on tenants&rsquo; views, and that tenants find it easy to participate in decisions about services. The ARS (Annual Return on the Charter) measures tenant satisfaction with repairs, landlord communication, and the landlord&rsquo;s response to their views. ERC&rsquo;s published scores and trajectory are part of the public record.</p>
+                <p>The Charter requires landlords to demonstrate that they actively seek and act on tenants&rsquo; views, and that tenants find it easy to participate in decisions about services. The ARS (Annual Return on the Charter) measures tenant satisfaction with repairs, landlord communication, and the landlord&rsquo;s response to their views. The Council&rsquo;s published scores and trajectory are part of the public record.</p>
             </div>
             <div class="peer-card">
                 <strong>Wheatley Housing Group &mdash; Tenant Scrutiny</strong>
@@ -1055,8 +1055,8 @@
                 <p>After historically low engagement rates, Sovereign redesigned their approach around the question &ldquo;what stopped people engaging last time?&rdquo; rather than &ldquo;how do we get more responses to our survey?&rdquo;. The answer from tenants was: surveys feel like they go nowhere; we never hear what changed as a result. They rebuilt their feedback process around the visible closing of the loop and saw participation rates more than double within 18 months.</p>
             </div>
             <div class="peer-card">
-                <strong>East Renfrewshire Council &mdash; Own Experience</strong>
-                <p>ERC has run tenant engagement exercises before with mixed results. The lessons from those experiences are assets &mdash; what worked, what didn&rsquo;t, what tenants said, where participation dropped off. These should be the starting point for designing the engagement approach for this programme, not set aside in favour of a generic engagement plan.</p>
+                <strong>Our Own Experience</strong>
+                <p>The Council has run tenant engagement exercises before with mixed results. The lessons from those experiences are assets &mdash; what worked, what didn&rsquo;t, what tenants said, where participation dropped off. These should be the starting point for designing the engagement approach for this programme, not set aside in favour of a generic engagement plan.</p>
             </div>
 
             <div class="reflection-questions">
@@ -1080,7 +1080,7 @@
         <div class="theme-block-header">
             <span class="theme-status-badge">Active &mdash; Keep High on Agenda</span>
             <h2>Accessibility</h2>
-            <p>I want as many of ERC&rsquo;s tenants as possible to be able to use the repairs portal, and I want it to be genuinely easy for them when they do. A portal that works well for confident digital users but leaves everyone else behind hasn&rsquo;t achieved anything worthwhile &mdash; it has just served the people who would have managed anyway. Accessibility isn&rsquo;t a compliance exercise for me. It&rsquo;s the actual measure of whether the transformation has worked.</p>
+            <p>I want as many of the Council&rsquo;s tenants as possible to be able to use the repairs portal, and I want it to be genuinely easy for them when they do. A portal that works well for confident digital users but leaves everyone else behind hasn&rsquo;t achieved anything worthwhile &mdash; it has just served the people who would have managed anyway. Accessibility isn&rsquo;t a compliance exercise for me. It&rsquo;s the actual measure of whether the transformation has worked.</p>
         </div>
         <div class="theme-block-body">
             <p class="theme-subsection-label">Improvement Areas</p>
@@ -1104,9 +1104,9 @@
             <div class="sub-topic">
                 <h4>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    Designing for ERC&rsquo;s Actual Tenant Population
+                    Designing for Our Actual Tenant Population
                 </h4>
-                <p>ERC has 3,141 housing tenants with a wide range of ages, abilities, and digital confidence levels. The portal should be designed for the full range, not the digitally confident middle. The people most likely to find it hard to use are also often the people with the greatest need for a well-functioning repairs service.</p>
+                <p>The Council has 3,141 housing tenants with a wide range of ages, abilities, and digital confidence levels. The portal should be designed for the full range, not the digitally confident middle. The people most likely to find it hard to use are also often the people with the greatest need for a well-functioning repairs service.</p>
                 <ul>
                     <li>Large, clear touch targets on mobile &mdash; minimum 44&times;44px for all interactive elements; bigger where possible</li>
                     <li>Plain English throughout: no jargon, no abbreviations without explanation, reading level appropriate for a broad general audience</li>
@@ -1149,11 +1149,11 @@
 
             <div class="peer-card">
                 <strong>GOV.UK Design System</strong>
-                <p>The GOV.UK Design System is built around accessibility from the ground up and is tested with assistive technology users before any component is published. Its approach &mdash; accessible by default, inclusive of all users, simple enough that it can&rsquo;t easily be made inaccessible &mdash; is the reference standard for public sector digital services in the UK. ERC&rsquo;s tenant portal should aspire to the same standard of accessible design, not just compliance.</p>
+                <p>The GOV.UK Design System is built around accessibility from the ground up and is tested with assistive technology users before any component is published. Its approach &mdash; accessible by default, inclusive of all users, simple enough that it can&rsquo;t easily be made inaccessible &mdash; is the reference standard for public sector digital services in the UK. The Council&rsquo;s tenant portal should aspire to the same standard of accessible design, not just compliance.</p>
             </div>
             <div class="peer-card">
                 <strong>Scottish Government &mdash; Public Sector Bodies Accessibility Regulations</strong>
-                <p>The regulations require all public sector website content published after September 2018 to meet WCAG 2.1 AA and to publish an accessibility statement. Non-compliance can be reported to the Cabinet Office. For ERC, the tenant portal is the highest-risk surface: it will be used by the broadest and most diverse group of people, including those with the least digital confidence and the greatest accessibility needs.</p>
+                <p>The regulations require all public sector website content published after September 2018 to meet WCAG 2.1 AA and to publish an accessibility statement. Non-compliance can be reported to the Cabinet Office. For the Council, the tenant portal is the highest-risk surface: it will be used by the broadest and most diverse group of people, including those with the least digital confidence and the greatest accessibility needs.</p>
             </div>
             <div class="peer-card">
                 <strong>Midlothian Council &mdash; tenant portal accessibility</strong>
@@ -1231,7 +1231,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006A51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     External &amp; Peer Communications
                 </h4>
-                <p>ERC&rsquo;s housing digital transformation is one of the more ambitious programmes in Scottish local government housing. Sharing what works, what doesn&rsquo;t, and what has been learned contributes to the wider sector and builds ERC&rsquo;s reputation as a thoughtful, forward-looking housing authority.</p>
+                <p>Our housing digital transformation is one of the more ambitious programmes in Scottish local government housing. Sharing what works, what doesn&rsquo;t, and what has been learned contributes to the wider sector and builds the Council&rsquo;s reputation as a thoughtful, forward-looking housing authority.</p>
                 <ul>
                     <li>Contributions to Scotland Excel, COSLA, and Chartered Institute of Housing events and publications as the programme matures</li>
                     <li>Engagement with the Scottish Housing Regulator&rsquo;s good practice network &mdash; peer learning is a two-way relationship</li>
@@ -1248,7 +1248,7 @@
             </div>
             <div class="peer-card">
                 <strong>GDS &mdash; Communications for public digital services</strong>
-                <p>GDS guidance on writing for government digital services emphasises: write for the user, not for the organisation; use the words your users use, not the words your internal processes use; test what you write with real users. For ERC, this means testing repair category names, notification wording, and error messages with tenants before launch &mdash; not assuming staff understand what tenants will find clear.</p>
+                <p>GDS guidance on writing for government digital services emphasises: write for the user, not for the organisation; use the words your users use, not the words your internal processes use; test what you write with real users. For the Council, this means testing repair category names, notification wording, and error messages with tenants before launch &mdash; not assuming staff understand what tenants will find clear.</p>
             </div>
             <div class="peer-card">
                 <strong>North Ayrshire Council &mdash; digital launch communications</strong>
@@ -1263,7 +1263,7 @@
                     <li>Have the system-generated messages tenants will receive been reviewed by anyone outside the project team? Have any been tested with tenants?</li>
                     <li>How will tenants find out the portal exists before it launches? Is that communications plan in place, or will it be worked out after go-live?</li>
                     <li>Is there a two-way channel for staff questions about the new systems, or are communications one-directional?</li>
-                    <li>What is ERC sharing with peer organisations and the sector about this programme? Is the organisation being as generous with its learning as it hopes others will be with theirs?</li>
+                    <li>What is the Council sharing with peer organisations and the sector about this programme? Is the organisation being as generous with its learning as it hopes others will be with theirs?</li>
                 </ol>
             </div>
         </div>
@@ -1280,22 +1280,22 @@
 <footer class="site-footer">
     <div class="footer-inner">
         <div class="footer-brand">
-            <strong>East Renfrewshire <span class="gold">Council</span></strong>
-            <span>Housing Digital Transformation</span>
+            <strong>Housing Digital <span class="gold">Transformation</span></strong>
+            <span>Internal programme portal</span>
         </div>
         <div class="footer-meta">
             <p><strong>Programme:</strong> Housing Repairs Digital Transformation</p>
             <p><strong>Role:</strong> Project Manager (Housing Digital Transformation)</p>
-            <p><strong>William Ellis</strong></p>
-            <p style="margin-top:0.5rem; color: rgba(255,255,255,0.5);">East Renfrewshire Council &mdash; MAP Programme</p>
+            <p><strong>Programme Lead</strong></p>
+            <p style="margin-top:0.5rem; color: rgba(255,255,255,0.5);">Housing Digital Transformation Programme</p>
         </div>
         <div class="footer-disclaimer">
-            <p>A working reference portal for ERC&rsquo;s Housing Digital Transformation programme. Content drawn from ERC publications, Scottish Government strategy documents, and sector research.</p>
+            <p>A working reference portal for the Council&rsquo;s Housing Digital Transformation programme. Content drawn from Council publications, Scottish Government strategy documents, and sector research.</p>
             <p style="margin-top:0.5rem; color: rgba(255,255,255,0.5);">Information reflects the programme&rsquo;s current understanding and will be updated as delivery progresses.</p>
         </div>
     </div>
     <div class="footer-bottom">
-        &copy; 2026 William Ellis &mdash; ERC Housing Digital Transformation &mdash; All Rights Reserved
+        &copy; 2026 Housing Digital Transformation &mdash; All Rights Reserved
     </div>
 </footer>
 
