@@ -12,6 +12,26 @@ function redirect(string $url): never
     exit;
 }
 
+/**
+ * Same disclaimer banner used on the SOR site and the other sibling tools —
+ * kept here as a single source so it's identical everywhere it's used,
+ * rather than copy-pasted into every page. $namesCouncil is false only for
+ * pages that have deliberately had "East Renfrewshire Council" scrubbed
+ * from their content (currently just continuous-improvement.html) — the
+ * banner shouldn't reintroduce the name onto a page that specifically
+ * shouldn't carry it.
+ */
+function research_banner_html(bool $namesCouncil = true): string
+{
+    $org = $namesCouncil ? 'East Renfrewshire Council' : 'Council';
+    return '<div class="landing-notice">'
+        . '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" style="width:16px;height:16px;flex-shrink:0;">'
+        . '<path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />'
+        . '</svg>'
+        . '<span><strong>Research &amp; Learning Resource</strong> &mdash; This is a demonstration system built for research and learning purposes. It is not an official ' . e($org) . ' reporting tool.</span>'
+        . '</div>';
+}
+
 function csrf_token(): string
 {
     if (empty($_SESSION['csrf_token'])) {
@@ -84,9 +104,14 @@ function asset_url(string $path): string
     return APP_URL . $path . '?v=' . $v;
 }
 
-function enhance_static_html(string $html, string $baseDir): string
+function enhance_static_html(string $html, string $baseDir, string $fileName = ''): string
 {
     $root = dirname(__DIR__);
+
+    if (stripos($html, 'landing-notice') === false) {
+        $namesCouncil = $fileName !== 'continuous-improvement.html';
+        $html = preg_replace('/<body([^>]*)>/i', '<body$1>' . "\n" . research_banner_html($namesCouncil), $html, 1) ?? $html;
+    }
 
     $html = preg_replace(
         '/\s*<nav class="breadcrumb" aria-label="Breadcrumb">.*?<\/nav>\s*/is',
@@ -222,6 +247,6 @@ function render_static_html(string $file): void
         exit;
     }
     header('Content-Type: text/html; charset=UTF-8');
-    echo enhance_static_html($html, dirname($file));
+    echo enhance_static_html($html, dirname($file), basename($file));
     exit;
 }

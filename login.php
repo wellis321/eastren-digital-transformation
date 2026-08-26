@@ -80,6 +80,7 @@ $phase2SiteUrl = defined('PHASE2_SITE_URL') && PHASE2_SITE_URL !== ''
     </style>
 </head>
 <body class="auth-login-body">
+<?= research_banner_html() ?>
 
 <div class="auth-login-topbar">
     <img src="<?= e(asset_url('/assets/media/leaves.png')) ?>" alt="" class="topbar-leaves" width="28" height="20">

@@ -115,6 +115,22 @@ h5 { font-size: 1rem; }
 p { margin-bottom: 1rem; }
 
 /* ----------------------------------------------------------
+   Research & Learning Resource disclaimer — matches the SOR site and
+   other sibling tools, so the same notice appears identically across
+   the whole portfolio.
+   ---------------------------------------------------------- */
+.landing-notice {
+    background: #fefce8;
+    border-bottom: 1px solid #fde68a;
+    color: #713f12;
+    font-size: 0.8rem;
+    padding: 0.6rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* ----------------------------------------------------------
    Top Bar (Branding) — ERC dark green
    ---------------------------------------------------------- */
 .site-topbar {

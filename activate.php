@@ -114,6 +114,7 @@ render:
     <link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
 </head>
 <body class="auth-login-body">
+<?= research_banner_html() ?>
 
 <div class="auth-login-topbar">
     <img src="<?= e(asset_url('/assets/media/leaves.png')) ?>" alt="" class="topbar-leaves" width="28" height="20">
