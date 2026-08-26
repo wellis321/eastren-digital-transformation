@@ -174,9 +174,13 @@ function nav_strip_hidden_links(string $navBlockHtml, array $hiddenIds): string
         if (!isset($hiddenIds[$item['id']])) {
             continue;
         }
-        $href = preg_quote($item['href'], '#');
+        // Also matches href="X#some-anchor" / href="X?query" — a card or
+        // link pointing at a specific section of a hidden page is still a
+        // link to that hidden page. Delimiter is ~, not #, since the
+        // pattern itself now contains a literal #.
+        $href = preg_quote($item['href'], '~') . '(?:[#?][^"]*)?';
         $navBlockHtml = preg_replace(
-            '#<a\s+href="' . $href . '"[^>]*>.*?</a>\s*#is',
+            '~<a\s+href="' . $href . '"[^>]*>.*?</a>\s*~is',
             '',
             $navBlockHtml
         ) ?? $navBlockHtml;
@@ -210,10 +214,11 @@ function nav_strip_hidden_cards(string $html, array $hiddenIds): string
         if (!isset($hiddenIds[$item['id']])) {
             continue;
         }
-        $href = preg_quote($item['href'], '#');
+        $href = preg_quote($item['href'], '~') . '(?:[#?][^"]*)?';
         // class="nav-card" can appear before or after href= depending on the page.
+        // Delimiter is ~, not #, since the pattern itself now contains a literal #.
         $html = preg_replace(
-            '#<a\s+(?:href="' . $href . '"\s+class="nav-card"|class="nav-card"\s+href="' . $href . '")[^>]*>.*?</a>\s*#is',
+            '~<a\s+(?:href="' . $href . '"\s+class="nav-card"|class="nav-card"\s+href="' . $href . '")[^>]*>.*?</a>\s*~is',
             '',
             $html
         ) ?? $html;
