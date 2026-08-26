@@ -22,6 +22,29 @@
         .feedback-toggle { bottom: 3.75rem !important; }
         .feedback-panel { bottom: 6.75rem !important; }
 
+        /* Obvious way out of full-screen deck mode — the topbar's small text
+           links are easy to miss when presenting. Escape key does the same
+           thing (see script at the bottom). */
+        .deck-close-btn {
+            position: fixed;
+            top: 58px;
+            right: 1rem;
+            z-index: 950;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.35);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            line-height: 1;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .deck-close-btn:hover, .deck-close-btn:focus-visible { background: rgba(0,0,0,0.6); }
+
         /* Extra controls in topbar */
         .topbar-slide-controls {
             display: flex;
@@ -675,6 +698,8 @@
     </div>
 </div>
 
+<a href="index.html" class="deck-close-btn" aria-label="Close presentation" title="Close presentation (Esc)">&times;</a>
+
 <!-- DECK WRAPPER -->
 <div class="deck-wrapper">
 
@@ -1263,6 +1288,11 @@
         } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
             e.preventDefault();
             prevSlide();
+        } else if (e.key === 'Escape') {
+            // If the infographic lightbox is open, let its own Escape
+            // handler close that first rather than also leaving the deck.
+            var openLightbox = document.querySelector('.lightbox-backdrop.visible');
+            if (!openLightbox) window.location.href = 'index.html';
         }
     });
 
