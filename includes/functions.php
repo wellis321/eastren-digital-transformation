@@ -159,22 +159,23 @@ function enhance_static_html(string $html, string $baseDir): string
     // Nav item visibility is a site-wide setting, not admin-only, so this
     // runs regardless of session state — but never let a DB hiccup take the
     // page's navigation down; fall back to the nav as authored in the file.
+    // Admins also get a "Menu settings" link injected into Programme, since
+    // nav-admin.php has no other entry point in the static HTML.
     try {
         require_once __DIR__ . '/nav_config.php';
         $hiddenIds = nav_hidden_ids();
-        if ($hiddenIds !== []) {
-            $html = preg_replace_callback(
-                '#(<nav class="site-nav"[^>]*>)(.*?)(</nav>)#is',
-                static fn(array $m): string => $m[1] . nav_strip_hidden_links($m[2], $hiddenIds) . $m[3],
-                $html,
-                1
-            ) ?? $html;
-            $html = preg_replace_callback(
-                '#(<nav class="mobile-nav"[^>]*>)(.*?)(</nav>)#is',
-                static fn(array $m): string => $m[1] . nav_strip_hidden_links($m[2], $hiddenIds) . $m[3],
-                $html,
-                1
-            ) ?? $html;
+        $role = $_SESSION['app_role'] ?? '';
+        $isAdmin = !empty($_SESSION['admin_logged_in']) && $role !== 'viewer' && $role !== 'editor';
+        if ($hiddenIds !== [] || $isAdmin) {
+            $transformNav = static function (array $m) use ($hiddenIds, $isAdmin): string {
+                $inner = nav_strip_hidden_links($m[2], $hiddenIds);
+                if ($isAdmin) {
+                    $inner = nav_inject_admin_link($inner);
+                }
+                return $m[1] . $inner . $m[3];
+            };
+            $html = preg_replace_callback('#(<nav class="site-nav"[^>]*>)(.*?)(</nav>)#is', $transformNav, $html, 1) ?? $html;
+            $html = preg_replace_callback('#(<nav class="mobile-nav"[^>]*>)(.*?)(</nav>)#is', $transformNav, $html, 1) ?? $html;
         }
     } catch (Throwable) {
         // DB may be unavailable in some local contexts

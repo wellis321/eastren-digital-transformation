@@ -163,3 +163,27 @@ function nav_strip_hidden_links(string $navBlockHtml, array $hiddenIds): string
     ) ?? $navBlockHtml;
     return $navBlockHtml;
 }
+
+/**
+ * Add a "Menu settings" link into the Programme dropdown for admins — the
+ * only entry point to nav-admin.php in the static HTML, since that page
+ * isn't part of the nav definition itself. Run this AFTER
+ * nav_strip_hidden_links() so the link survives even if every other item in
+ * Programme has been hidden.
+ *
+ * The ">Programme " match (with trailing space, no further text) is what
+ * distinguishes the dropdown button from the unrelated standalone
+ * "Programme Overview" link elsewhere in the nav.
+ */
+function nav_inject_admin_link(string $navBlockHtml): string
+{
+    if (str_contains($navBlockHtml, 'nav-admin.php')) {
+        return $navBlockHtml;
+    }
+    return preg_replace(
+        '#(>Programme\s*<svg.*?</button>\s*<div class="(?:nav-dropdown|mobile-nav-sub)">)#s',
+        '$1<a href="nav-admin.php">Menu settings</a>',
+        $navBlockHtml,
+        1
+    ) ?? $navBlockHtml;
+}
