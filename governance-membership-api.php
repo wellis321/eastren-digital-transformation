@@ -337,6 +337,16 @@ try {
         exit;
     }
 
+    if ($action === 'clear_all_people') {
+        $result = governance_clear_all_people($user);
+        echo json_encode([
+            'ok' => true,
+            'cleared' => $result,
+            'state' => governance_load_bundle(),
+        ]);
+        exit;
+    }
+
     if ($action === 'save') {
         if (!governance_can_shape()) {
             http_response_code(403);

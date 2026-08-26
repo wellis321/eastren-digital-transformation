@@ -164,6 +164,8 @@
     reseed_unassigned: 'Rebuilt membership from seed list',
     reapply_seed: 'Reapplied seed list placements',
     rebuild_seed: 'Rebuilt membership from seed list',
+    before_clear_all_people: 'Snapshot before clearing all people',
+    clear_all_people: 'All people cleared',
   };
 
   const setStatus = (msg, isError) => {
@@ -2803,6 +2805,58 @@
       });
   };
 
+  const setClearPeopleStatus = (message, isError = false) => {
+    const el = document.getElementById('gov-history-clear-people-status');
+    if (el) {
+      el.hidden = !message;
+      el.textContent = message || '';
+      el.classList.toggle('is-error', !!isError);
+    }
+    if (message) setStatus(message, isError);
+  };
+
+  const clearAllPeople = () => {
+    const btn = document.getElementById('gov-history-clear-people');
+    if (!canConfirmMembership) {
+      const msg = 'Only a membership confirmer (admin) can clear all people. Sign in as Lisa or William.';
+      setClearPeopleStatus(msg, true);
+      window.alert(msg);
+      return;
+    }
+    const ok = window.confirm(
+      'Remove every person from this tool?\n\n' +
+        'This clears every group, the Unassigned pool, all votes, and any suggested ' +
+        'changes. Groups themselves stay, empty.\n\n' +
+        'This can be undone from History (Restore this composition) right after — ' +
+        'but not once anyone makes further changes.\n\n' +
+        'Continue?'
+    );
+    if (!ok) {
+      setClearPeopleStatus('Cancelled — nobody was removed.');
+      return;
+    }
+    setClearPeopleStatus('Clearing all people…');
+    if (btn) btn.disabled = true;
+    postJson({ action: 'clear_all_people' })
+      .then((data) => {
+        if (data.state) applyBundle(data.state);
+        dirty = false;
+        const r = data.cleared || {};
+        const msg = `Cleared: ${r.removedMembership ?? 0} group placements, ${r.removedVotes ?? 0} votes, ${r.removedProposals ?? 0} suggestions, ${r.removedPeopleOverrides ?? 0} saved people removed.`;
+        setClearPeopleStatus(msg);
+        render();
+        refreshHistoryQuiet();
+      })
+      .catch((err) => {
+        const msg = err.message || 'Could not clear all people';
+        setClearPeopleStatus(msg, true);
+        window.alert(msg);
+      })
+      .finally(() => {
+        if (btn) btn.disabled = false;
+      });
+  };
+
   const SNAPSHOT_STATUS_FILTERS = [
     { id: 'all', label: 'All statuses' },
     { id: 'active', label: 'Active / stable' },
@@ -3007,6 +3061,13 @@
         ? 'Rebuild Board / Steering / Technical from the seed people file'
         : 'Sign in as a membership confirmer to rebuild lists from seed';
     }
+    const clearPeopleBtn = document.getElementById('gov-history-clear-people');
+    if (clearPeopleBtn) {
+      clearPeopleBtn.disabled = false;
+      clearPeopleBtn.title = canConfirmMembership
+        ? 'Remove every person from the tool'
+        : 'Sign in as a membership confirmer to clear all people';
+    }
   };
 
   const loadHistoryList = ({ append = false } = {}) => {
@@ -3092,6 +3153,10 @@
 
   document.getElementById('gov-history-reseed')?.addEventListener('click', () => {
     reseedUnassignedFromSeed();
+  });
+
+  document.getElementById('gov-history-clear-people')?.addEventListener('click', () => {
+    clearAllPeople();
   });
 
   document.getElementById('gov-history-checkpoint')?.addEventListener('click', () => {

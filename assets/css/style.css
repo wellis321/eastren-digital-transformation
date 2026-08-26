@@ -2973,6 +2973,13 @@ tbody tr:nth-child(even):hover {
 .gov-btn--muted:hover {
     background: var(--erc-surface-alt);
 }
+.gov-btn--danger {
+    background: #b91c1c;
+    border-color: #b91c1c;
+}
+.gov-btn--danger:hover {
+    background: #7f1d1d;
+}
 .gov-jump {
     display: flex;
     flex-wrap: wrap;
@@ -3262,6 +3269,9 @@ tbody tr:nth-child(even):hover {
     border: 1px solid var(--erc-border);
     border-left: 3px solid #b45309;
     background: var(--erc-surface-alt, #f7f7f7);
+}
+.gov-admin-action--danger {
+    border-left-color: #b91c1c;
 }
 .gov-admin-action-title {
     margin: 0 0 0.35rem;

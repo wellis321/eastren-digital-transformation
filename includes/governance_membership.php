@@ -1004,6 +1004,40 @@ function governance_rebuild_membership_from_seed(string $updatedBy): array
 }
 
 /**
+ * Wipe every person from the tool: all group placements, votes, proposals, and
+ * any name/role/tag overrides. Groups themselves are untouched. A snapshot is
+ * captured immediately before clearing (in addition to whatever the normal
+ * history trail already has), so this is always reversible from the History
+ * timeline's "Restore this composition" even if nothing else captured the
+ * live state recently.
+ *
+ * @return array{removedMembership:int,removedVotes:int,removedProposals:int,removedPeopleOverrides:int}
+ */
+function governance_clear_all_people(string $updatedBy): array
+{
+    if (!governance_can_confirm_membership()) {
+        throw new RuntimeException('Only a membership confirmer can clear all people');
+    }
+    governance_ensure_table();
+    governance_capture_history('before_clear_all_people', $updatedBy, true);
+
+    $pdo = db();
+    $removedMembership = (int)$pdo->exec('DELETE FROM governance_membership');
+    $removedVotes = (int)$pdo->exec('DELETE FROM governance_votes');
+    $removedProposals = (int)$pdo->exec('DELETE FROM governance_proposals');
+    $removedPeople = (int)$pdo->exec('DELETE FROM governance_people');
+
+    governance_capture_history('clear_all_people', $updatedBy, true);
+
+    return [
+        'removedMembership' => $removedMembership,
+        'removedVotes' => $removedVotes,
+        'removedProposals' => $removedProposals,
+        'removedPeopleOverrides' => $removedPeople,
+    ];
+}
+
+/**
  * Replace live membership (and, when present in the snapshot, person types / tags /
  * group status) from a history entry. Confirmers only.
  *
