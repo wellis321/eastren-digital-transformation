@@ -8,6 +8,17 @@ require_once __DIR__ . '/includes/nav_config.php';
 
 require_admin();
 
+if (!nav_can_manage()) {
+    http_response_code(403);
+    echo '<!DOCTYPE html><html lang="en-GB"><head><meta charset="UTF-8"><title>Access denied</title>
+    <link rel="stylesheet" href="' . e(asset_url('/assets/css/style.css')) . '"></head><body>
+    <div style="max-width:480px;margin:6rem auto;padding:2rem;text-align:center;">
+    <h1 style="font-size:1.4rem;margin-bottom:0.75rem;">Access restricted</h1>
+    <p style="color:#555;">This page is only available to specific administrators.</p>
+    <a href="' . e(APP_URL) . '/" style="color:#006A51;">Return to home</a></div></body></html>';
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!csrf_verify()) {
         http_response_code(403);

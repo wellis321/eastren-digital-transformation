@@ -159,17 +159,17 @@ function enhance_static_html(string $html, string $baseDir): string
     // Nav item visibility is a site-wide setting, not admin-only, so this
     // runs regardless of session state — but never let a DB hiccup take the
     // page's navigation down; fall back to the nav as authored in the file.
-    // Admins also get a "Menu settings" link injected into Programme, since
-    // nav-admin.php has no other entry point in the static HTML.
+    // The "Menu settings" link is restricted to specific named accounts
+    // (nav_can_manage), not the general admin role — other admins should
+    // not see it.
     try {
         require_once __DIR__ . '/nav_config.php';
         $hiddenIds = nav_hidden_ids();
-        $role = $_SESSION['app_role'] ?? '';
-        $isAdmin = !empty($_SESSION['admin_logged_in']) && $role !== 'viewer' && $role !== 'editor';
-        if ($hiddenIds !== [] || $isAdmin) {
-            $transformNav = static function (array $m) use ($hiddenIds, $isAdmin): string {
+        $canManageNav = nav_can_manage();
+        if ($hiddenIds !== [] || $canManageNav) {
+            $transformNav = static function (array $m) use ($hiddenIds, $canManageNav): string {
                 $inner = nav_strip_hidden_links($m[2], $hiddenIds);
-                if ($isAdmin) {
+                if ($canManageNav) {
                     $inner = nav_inject_admin_link($inner);
                 }
                 return $m[1] . $inner . $m[3];

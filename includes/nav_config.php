@@ -16,6 +16,33 @@ declare(strict_types=1);
  *
  * @return list<array{id:string,label:string,href:?string,children:list<array{id:string,label:string,href:string}>}>
  */
+
+/**
+ * Menu settings is restricted to specific named accounts, not the general
+ * admin role — other admins (e.g. other confirmers) should not see or use
+ * it. $_SESSION only carries a display name, not the raw username, so this
+ * looks the username up by user_id.
+ */
+function nav_can_manage(): bool
+{
+    if (empty($_SESSION['admin_logged_in'])) {
+        return false;
+    }
+    $role = $_SESSION['app_role'] ?? '';
+    if ($role === 'viewer' || $role === 'editor') {
+        return false;
+    }
+    $userId = (int)($_SESSION['user_id'] ?? 0);
+    if ($userId <= 0) {
+        return false;
+    }
+    $allowedUsernames = ['ellisw', 'admin', 'wellis'];
+    $stmt = db()->prepare('SELECT username FROM users WHERE id = ?');
+    $stmt->execute([$userId]);
+    $username = strtolower(trim((string)($stmt->fetchColumn() ?: '')));
+    return in_array($username, $allowedUsernames, true);
+}
+
 function nav_definition(): array
 {
     return [
