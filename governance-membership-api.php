@@ -20,6 +20,11 @@ try {
     if ($method === 'GET') {
         $historyId = isset($_GET['historyId']) ? (int)$_GET['historyId'] : 0;
         if ($historyId > 0) {
+            if (!governance_can_view_history()) {
+                http_response_code(403);
+                echo json_encode(['error' => 'Group history is restricted']);
+                exit;
+            }
             $row = governance_get_history($historyId);
             if ($row === null) {
                 http_response_code(404);
@@ -30,6 +35,11 @@ try {
             exit;
         }
         if (isset($_GET['history'])) {
+            if (!governance_can_view_history()) {
+                http_response_code(403);
+                echo json_encode(['error' => 'Group history is restricted']);
+                exit;
+            }
             $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 25;
             $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
             $filter = isset($_GET['filter']) ? (string)$_GET['filter'] : 'all';
@@ -291,9 +301,9 @@ try {
     }
 
     if ($action === 'capture_checkpoint') {
-        if (!governance_can_shape()) {
+        if (!governance_can_view_history()) {
             http_response_code(403);
-            echo json_encode(['error' => 'Only a membership confirmer can save a checkpoint']);
+            echo json_encode(['error' => 'Group history is restricted']);
             exit;
         }
         $captured = governance_capture_history('checkpoint', $user, true);

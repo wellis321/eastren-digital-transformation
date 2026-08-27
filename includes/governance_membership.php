@@ -348,6 +348,17 @@ function governance_can_shape(): bool
     return governance_can_confirm_membership();
 }
 
+/**
+ * Group History was previously open to every signed-in user (by design —
+ * see the "History must NOT move" note elsewhere). Restricted to the site
+ * owner specifically at their request — narrower than confirmer, since
+ * other confirmers (e.g. other admins) should not see it either.
+ */
+function governance_can_view_history(): bool
+{
+    return is_site_owner();
+}
+
 /** Any signed-in user may propose membership changes (tentative until confirmed). */
 function governance_can_propose(): bool
 {
@@ -1047,8 +1058,8 @@ function governance_clear_all_people(string $updatedBy): array
  */
 function governance_restore_from_history(int $historyId, string $updatedBy, bool $force = false): array
 {
-    if (!governance_can_confirm_membership()) {
-        throw new RuntimeException('Only a membership confirmer can restore a history snapshot');
+    if (!governance_can_view_history()) {
+        throw new RuntimeException('Group history is restricted');
     }
     $entry = governance_get_history($historyId);
     if ($entry === null) {
@@ -1410,6 +1421,7 @@ function governance_load_bundle(): array
         'canEdit' => governance_can_edit(),
         'canVote' => governance_can_vote(),
         'canShape' => governance_can_shape(),
+        'canViewHistory' => governance_can_view_history(),
         'canConfirmMembership' => governance_can_confirm_membership(),
         'canPropose' => governance_can_propose(),
         'canSetGroupStatus' => governance_can_set_group_status(),

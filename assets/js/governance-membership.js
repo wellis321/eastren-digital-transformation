@@ -105,6 +105,7 @@
   let canPropose = true;
   let canConfirmMembership = false;
   let canSetGroupStatus = false;
+  let canViewHistory = false;
   let proposals = [];
   let groupStatusLabels = {
     development: 'In development',
@@ -403,6 +404,7 @@
     canPropose = bundle.canPropose !== false;
     canConfirmMembership = !!bundle.canConfirmMembership || !!bundle.canSetGroupStatus;
     canSetGroupStatus = !!bundle.canSetGroupStatus;
+    canViewHistory = !!bundle.canViewHistory;
     proposals = Array.isArray(bundle.proposals) ? bundle.proposals : [];
     if (bundle.groupStatuses && typeof bundle.groupStatuses === 'object' && !Array.isArray(bundle.groupStatuses)) {
       groupStatusLabels = bundle.groupStatuses;
@@ -1431,7 +1433,7 @@
       poolInScope()
         ? `<a href="#pool">Unassigned <span class="gov-jump-count">${poolCount}</span></a>`
         : '',
-      `<a href="#group-history">History</a>`,
+      canViewHistory ? `<a href="#group-history">History</a>` : '',
     ].filter(Boolean);
     jumpEl.innerHTML = links.join('');
   };
@@ -1821,6 +1823,12 @@
     if (profileNavGroup) profileNavGroup.hidden = !canConfirmMembership;
     if (profileMobileNavGroup) profileMobileNavGroup.hidden = !canConfirmMembership;
     if (adminPanel && !canConfirmMembership) adminPanel.hidden = true;
+    // Group History was previously open to every signed-in user — now
+    // restricted to the site owner specifically (see canViewHistory).
+    const historyPanel = document.getElementById('group-history');
+    if (historyPanel) historyPanel.hidden = !canViewHistory;
+    const historyJumpLink = document.querySelector('a.gov-sidebar-jump-btn[href="#group-history"]');
+    if (historyJumpLink) historyJumpLink.hidden = !canViewHistory;
     const profileLabel = document.getElementById('gov-profile-nav-label');
     const profileMobileLabel = document.getElementById('gov-profile-mobile-nav-label');
     if (profileLabel) profileLabel.textContent = currentUser.label || 'Account';
@@ -3192,6 +3200,7 @@
   });
 
   const refreshHistoryQuiet = () => {
+    if (!canViewHistory) return;
     loadHistoryList({ append: false }).catch(() => {});
   };
 
@@ -3254,7 +3263,7 @@
     .then((bundle) => {
       applyBundle(bundle);
       render();
-      return loadHistoryList();
+      return canViewHistory ? loadHistoryList() : Promise.resolve();
     })
     .then(() => {
       if (!location.hash) return;

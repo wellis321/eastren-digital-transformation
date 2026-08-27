@@ -13,6 +13,32 @@ function redirect(string $url): never
 }
 
 /**
+ * True only for the site owner's own account(s) — a narrower check than the
+ * general admin role, used anywhere something should be visible/usable to
+ * William specifically and nobody else (including other admins/confirmers).
+ * Single source of truth so every such gate stays in sync with each other.
+ */
+function is_site_owner(): bool
+{
+    if (empty($_SESSION['admin_logged_in'])) {
+        return false;
+    }
+    $role = $_SESSION['app_role'] ?? '';
+    if ($role === 'viewer' || $role === 'editor') {
+        return false;
+    }
+    $userId = (int)($_SESSION['user_id'] ?? 0);
+    if ($userId <= 0) {
+        return false;
+    }
+    $allowedUsernames = ['ellisw', 'admin', 'wellis'];
+    $stmt = db()->prepare('SELECT username FROM users WHERE id = ?');
+    $stmt->execute([$userId]);
+    $username = strtolower(trim((string)($stmt->fetchColumn() ?: '')));
+    return in_array($username, $allowedUsernames, true);
+}
+
+/**
  * Same disclaimer banner used on the SOR site and the other sibling tools —
  * kept here as a single source so it's identical everywhere it's used,
  * rather than copy-pasted into every page. $namesCouncil is false only for
