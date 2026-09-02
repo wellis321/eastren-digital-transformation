@@ -13,6 +13,10 @@ documents/
 # Programme progress working files (draft CSV, MOU, briefing docs) — do not use in site
 documents/progress/
 
+# Standalone offline copy of the governance tool — a personal desktop utility,
+# not part of the deployed site, not meant for this repo
+standalone-governance-tool/
+
 # Sensitive files — CVs, cover letters, council documents, personal records
 *.pdf
 *.docx
