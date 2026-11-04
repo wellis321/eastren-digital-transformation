@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Outcomes &amp; Goals | ERC Housing Digital Transformation</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="site-topbar">
+    <a href="index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<!-- Site Header -->
+<header class="site-header">
+    <div class="header-inner">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="presentation.html">Programme Overview</a>
+            <a href="continuous-improvement.html">Themes</a>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Tenant Engagement <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="tenant-engagement.html">Why It Matters</a>
+                    <a href="satsd.html">Scottish Approach to Service Design</a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Voids <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="voids.html">Why It Matters</a>
+                    <a href="voids-sector-practice.html">What Others Are Doing</a>
+                    <a href="voids-challenges.html">The Challenges</a>
+                    <a href="voids-best-practice.html">What Works &amp; What Doesn&#039;t</a>
+                    <a href="voids-resources.html">Resources</a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Programme <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="outcomes-goals.html">Outcomes &amp; Goals</a>
+                    <a href="presentations/2026-10-20-development-group-meeting-2.html">Development Group Meeting 2</a>
+                    <a href="progress.html">Progress</a>
+                    <a href="progress-report.html">Progress Report</a>
+                    <a href="governance.html">Governance</a>
+                    <a href="governance-membership.html">Membership tool</a>
+                    <a href="qrcode.php">QR scan tracker</a>
+                    <a href="governance-membership-guide.html">About the membership tool</a>
+                    <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="nav-dropdown">
+                    <a href="how-i-work.html">How I Work</a>
+                    <a href="history.html">ERC Digital History</a>
+                    <a href="scotland-policy.html">Scotland&#039;s Policy</a>
+                    <a href="digital-direction.html">Digital Direction</a>
+                    <a href="best-practice.html">Best Practice</a>
+                    <a href="sector.html">Sector Comparisons</a>
+                    <a href="peer-benchmarks.html">Peer Benchmarks (costs)</a>
+                    <a href="reports.html">Reports</a>
+                    <a href="resources.html">Resources</a>
+                </div>
+            </div>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+        <a href="index.html">Home</a>
+        <a href="presentation.html">Programme Overview</a>
+        <a href="continuous-improvement.html">Themes</a>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Tenant Engagement <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="tenant-engagement.html">Why It Matters</a>
+                <a href="satsd.html">Scottish Approach to Service Design</a>
+            </div>
+        </div>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Voids <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="voids.html">Why It Matters</a>
+                <a href="voids-sector-practice.html">What Others Are Doing</a>
+                <a href="voids-challenges.html">The Challenges</a>
+                <a href="voids-best-practice.html">What Works &amp; What Doesn&#039;t</a>
+                <a href="voids-resources.html">Resources</a>
+            </div>
+        </div>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Programme <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="outcomes-goals.html">Outcomes &amp; Goals</a>
+                <a href="presentations/2026-10-20-development-group-meeting-2.html">Development Group Meeting 2</a>
+                <a href="progress.html">Progress</a>
+                <a href="progress-report.html">Progress Report</a>
+                <a href="governance.html">Governance</a>
+                <a href="governance-membership.html">Membership tool</a>
+                <a href="qrcode.php">QR scan tracker</a>
+                <a href="governance-membership-guide.html">About the membership tool</a>
+                <a href="stakeholder-engagement.html">Stakeholder Engagement</a>
+            </div>
+        </div>
+        <div class="mobile-nav-group">
+            <button class="mobile-nav-group-btn" aria-expanded="false">Reference <svg class="nav-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="mobile-nav-sub">
+                <a href="how-i-work.html">How I Work</a>
+                <a href="history.html">ERC Digital History</a>
+                <a href="scotland-policy.html">Scotland&#039;s Policy</a>
+                <a href="digital-direction.html">Digital Direction</a>
+                <a href="best-practice.html">Best Practice</a>
+                <a href="sector.html">Sector Comparisons</a>
+                <a href="peer-benchmarks.html">Peer Benchmarks (costs)</a>
+                <a href="reports.html">Reports</a>
+                <a href="resources.html">Resources</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="page-wrapper">
+<main class="main-content" id="main">
+
+    <section class="hero" style="margin-top:1.5rem;">
+        <div class="hero-eyebrow">Housing Repairs Digital Transformation</div>
+        <h1>Outcomes &amp; Goals</h1>
+        <p>Why this programme exists, what it's setting out to achieve, and how those goals translate into the phased plan behind mobile working and the replacement of Servitor.</p>
+        <div class="hero-meta">
+            <div class="hero-meta-item"><strong>Target completion:</strong>&nbsp;31 March 2027 (subject to solution procured)</div>
+            <div class="hero-meta-item"><strong>Selected solution:</strong>&nbsp;ROCC</div>
+            <div class="hero-meta-item"><strong>Full detail:</strong>&nbsp;<a href="governance.html">Governance</a> &middot; <a href="progress.html">Progress</a></div>
+        </div>
+    </section>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">3</div>
+            <div class="stat-label">Delivery Phases</div>
+        </div>
+        <div class="stat-card accent">
+            <div class="stat-number">8</div>
+            <div class="stat-label">Benefit Outcomes Tracked</div>
+        </div>
+        <div class="stat-card warning">
+            <div class="stat-number">2027</div>
+            <div class="stat-label">Servitor Becomes Unsupported</div>
+        </div>
+        <div class="stat-card success">
+            <div class="stat-number">97</div>
+            <div class="stat-label">Tenants Already Involved</div>
+        </div>
+    </div>
+
+    <!-- Why This Exists -->
+    <div class="section-header" style="margin-top:2.5rem;">
+        <h2>Why This Programme Exists</h2>
+        <p>Two problems, one plan.</p>
+    </div>
+
+    <div class="callout highlight">
+        <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div>
+            <p style="margin:0 0 0.75rem; font-size:0.92rem;">Housing Repairs has an imperative to replace its store and job costing system, <strong>Servitor</strong>, which becomes unsupported in early 2027. Separately, there's a long-standing need to give trade operatives real mobile working capability &mdash; the information they need to plan and deliver a repair, in their hands, without paper and without re-keying it back at the office.</p>
+            <p style="margin:0; font-size:0.92rem;">Rather than treat these as two projects, the programme delivers the mobile repairs transformation <strong>as part of</strong> the plan to retire Servitor. One procurement, one platform, one connected process &mdash; not a second system bolted on afterwards.</p>
+        </div>
+    </div>
+
+    <!-- Vision -->
+    <div class="section-header" style="margin-top:2.5rem;">
+        <h2>Our Vision</h2>
+        <p>A best-in-class repair service, not a like-for-like swap.</p>
+    </div>
+
+    <div class="card">
+        <p style="margin:0 0 1rem; font-size:0.92rem;">Deliver a best-in-class repair service solution &mdash; selected from proven technology already used widely in local government and housing associations &mdash; covering the whole job from end to end:</p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.1rem;">
+            <span class="badge badge-green">Capture</span>
+            <span class="badge badge-green">Plan</span>
+            <span class="badge badge-green">Schedule</span>
+            <span class="badge badge-green">Stock</span>
+            <span class="badge badge-green">Report</span>
+            <span class="badge badge-green">Pay</span>
+        </div>
+        <p style="margin:0; font-size:0.92rem;">Where necessary, the solution fully integrates with existing systems to keep that a genuinely robust, end-to-end process &mdash; with the least possible manual intervention required at any step.</p>
+    </div>
+
+    <!-- Benefits -->
+    <div class="section-header" style="margin-top:2.5rem;">
+        <h2>The Benefits We're Working Toward</h2>
+        <p>Eight outcomes the programme is tracked against, each tied to a real gap in how the service runs today.</p>
+    </div>
+
+    <div class="three-col">
+        <div class="direction-card">
+            <span class="direction-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M20 7h-9m3-3-3 3 3 3M4 17h9m-3 3 3-3-3-3"/></svg></span>
+            <h3>Stock Control</h3>
+            <p>Stores and vans brought under proper control, replacing today's largely paper-based stock request, replenishment and return processes.</p>
+        </div>
+        <div class="direction-card">
+            <span class="direction-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+            <h3>Lower Emissions</h3>
+            <p>Dynamic, intelligence-led scheduling and better working practices cut unnecessary travel between jobs.</p>
+        </div>
+        <div class="direction-card">
+            <span class="direction-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+            <h3>Less Paper, Fewer Delays</h3>
+            <p>Reducing paper-based processes within repairs so the service relies less on manual re-entry, and less on people being available to do it.</p>
+        </div>
+        <div class="direction-card">
+            <span class="direction-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg></span>
+            <h3>Better Business Intelligence</h3>
+            <p>Real-time KPI visibility and escalation, and reporting that reflects what's actually happening in the service right now.</p>
+        </div>
+        <div class="direction-card">
+            <span class="direction-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+            <h3>Financial Control</h3>
+            <p>Tighter, more accurate financial control and monitoring, from job costing through to invoicing.</p>
+        </div>
+        <div class="direction-card">
+            <span class="direction-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+            <h3>Safer Lone Working</h3>
+            <p>Repairs operatives given real improvements to lone working safety &mdash; not an afterthought, but a named goal of the programme.</p>
+        </div>
+        <div class="direction-card">
+            <span class="direction-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+            <h3>Customer Communication</h3>
+            <p>Improved customer communication and satisfaction &mdash; tenants told what's happening with their repair, not left to chase it by phone.</p>
+        </div>
+        <div class="direction-card">
+            <span class="direction-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            <h3>Void Performance</h3>
+            <p>Better void property performance &mdash; turning empty homes around faster, with proper visibility of where each one stands.</p>
+        </div>
+    </div>
+
+    <!-- Phased delivery -->
+    <div class="section-header" style="margin-top:2.5rem;">
+        <h2>Delivered in Three Phases</h2>
+        <p>Several elements run in parallel, but the priority sequence runs from procurement now through to full replacement by April 2027.</p>
+    </div>
+
+    <div class="timeline">
+
+        <div class="timeline-item">
+            <div class="timeline-date">Phase 1 &mdash; from April 2025</div>
+            <div class="timeline-title">Procure &amp; Replace the Core</div>
+            <div class="timeline-body">
+                <p>Procurement of a mobile working solution for repairs delivery, alongside replacement of Servitor itself (Civica's stock and job costing solution) and integration with Integra for greater financial control and monitoring.</p>
+                <span class="badge badge-green">Underway</span>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">Phase 2</div>
+            <div class="timeline-title">Extend Mobile Working &amp; Core Integrations</div>
+            <div class="timeline-body">
+                <p>Integration with NEC Housing for repairs reporting and monitoring; introducing mobile working capability for inspections, void properties and reactive repairs; the potential replacement of the Dynamic Resource Scheduler (DRS); and deployment and management of suitable handheld devices.</p>
+                <span class="badge badge-grey">Planned</span>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">Phase 3 &mdash; through to April 2027</div>
+            <div class="timeline-title">Complete the Landscape</div>
+            <div class="timeline-body">
+                <p>Replacement of Datastox (barcoding and stock allocation); integration with iTrent for people management; a review of the Repairs Delivery service structure and the Business Support Team's functionality and roles; and support for the wider stores management strategic plan.</p>
+                <span class="badge badge-grey">Planned</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Where we are now -->
+    <div class="section-header" style="margin-top:2.5rem;">
+        <h2>Where We Are Now</h2>
+        <p>These goals sit inside a live, moving programme &mdash; here's what's genuinely happened so far.</p>
+    </div>
+
+    <div class="callout success">
+        <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="site-icon" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div>
+            <ul style="margin:0; padding-left:1.1rem; font-size:0.9rem; line-height:1.8;">
+                <li><strong>ROCC selected</strong> as the repairs and works management solution, replacing Servitor and DRS</li>
+                <li>System walkthroughs completed across NECH, DRS, Integra and APEX, alongside ROCC itself</li>
+                <li>Cross-council learning session held with North Ayrshire Council, an established ROCC user</li>
+                <li>Project Initiation Document (PID) in development with ROCC ahead of the first delivery workshops</li>
+                <li>Governance fully stood up &mdash; see the <a href="governance.html">full governance structure</a></li>
+                <li>The <a href="https://getinvolved.eastrenfrewshire.gov.uk/shaping-the-future-of-housing-repairs" target="_blank" rel="noopener">Get Involved site</a> is live, with 97 tenants already volunteering to help shape the new service</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="callout plain" style="margin-top:1.25rem;">
+        <div>
+            <p style="margin:0; font-size:0.88rem;">This page summarises the programme's stated vision, benefit outcomes and phased scope. For meeting-by-meeting detail see <a href="progress.html">Progress</a> and <a href="progress-report.html">Progress Report</a>; for who oversees delivery, see <a href="governance.html">Governance</a>.</p>
+        </div>
+    </div>
+
+</main>
+</div><!-- /.page-wrapper -->
+
+<!-- Site Footer -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <strong>East Renfrewshire <span class="gold">Council</span></strong>
+            <span>Housing Digital Transformation</span>
+            <span style="margin-top:0.5rem; color: rgba(255,255,255,0.5); font-size:0.75rem;">Outcomes &amp; Goals</span>
+        </div>
+
+        <div class="footer-meta">
+            <p><strong>Programme:</strong> Housing Repairs Digital Transformation</p>
+            <p><strong>Role:</strong> Project Manager (Housing Digital Transformation)</p>
+            <p><strong>William Ellis</strong></p>
+            <p style="margin-top:0.5rem; color: rgba(255,255,255,0.5);">East Renfrewshire Council &mdash; MAP Programme</p>
+        </div>
+
+        <div class="footer-disclaimer">
+            <p>A working reference portal for ERC's Housing Digital Transformation programme. Content drawn from ERC publications, Scottish Government strategy documents, and sector research.</p>
+            <p style="margin-top:0.5rem; color: rgba(255,255,255,0.5);">Information reflects the programme's current understanding and will be updated as delivery progresses.</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        &copy; 2026 William Ellis &mdash; ERC Housing Digital Transformation &mdash; All Rights Reserved
+    </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

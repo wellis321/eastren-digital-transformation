@@ -17,6 +17,18 @@ documents/progress/
 # not part of the deployed site, not meant for this repo
 standalone-governance-tool/
 
+# Board update deck — contains OFFICIAL-SENSITIVE project brief detail,
+# not meant for this repo
+governance-board-update.html
+standalone-board-update/
+2026-09-22-development-group-meeting.html
+standalone-development-group/
+2026-10-20-development-group-meeting-2.html
+standalone-development-group-2/
+standalone-development-group-2.zip
+2026-10-27-project-group-meeting.html
+standalone-project-group/
+
 # Sensitive files — CVs, cover letters, council documents, personal records
 *.pdf
 *.docx
