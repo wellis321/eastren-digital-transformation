@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Quick reference | Project Hub Guide</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="guide.css">
+</head>
+<body class="ph">
+
+<div class="site-topbar">
+    <a href="../index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="../assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="../logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<div class="ph-shell">
+    <aside class="ph-sidebar" id="ph-sidebar" aria-label="Guide navigation"></aside>
+    <div>
+        <button type="button" class="ph-menu-toggle" id="ph-menu-toggle">&#9776; Guide menu</button>
+        <main class="ph-main" id="main">
+            <header class="ph-hero">
+                <p class="ph-eyebrow">Reference</p>
+                <h1>Quick reference</h1>
+                <p class="ph-lede">Everything that's easy to forget, on one page: the rules and common mistakes, what changed from PWA, the jargon, and the links you'll need.</p>
+            </header>
+
+            <section class="ph-section" id="rules">
+                <h2 data-short="Rules & common mistakes">Rules &amp; common mistakes</h2>
+                <p class="ph-sub">The things the training flagged as easy to get wrong.</p>
+                <h3>Always</h3>
+                <div class="rules">
+                    <div class="rule do"><span class="rule-ico">&#10003;</span><div><b>Start risk and issue names with your Project ID</b><span>e.g. PRJ-1004 &ndash; Staff Resource Availability. Duplicate names are blocked.</span><a href="risks-issues.html#naming">Naming &rarr;</a></div></div>
+                    <div class="rule do"><span class="rule-ico">&#10003;</span><div><b>Tick Append and Append to when sharing</b><span>Every time you give someone permissions.</span><a href="sharing.html#permissions">Permissions &rarr;</a></div></div>
+                    <div class="rule do"><span class="rule-ico">&#10003;</span><div><b>Give owners Read access first</b><span>Someone can only own a risk or issue if they can read your project.</span><a href="sharing.html#permissions">Permissions &rarr;</a></div></div>
+                    <div class="rule do"><span class="rule-ico">&#10003;</span><div><b>Set critical milestones to 0 days</b><span>Same start and finish date, duration set manually to 0.</span><a href="tasks.html#milestones">Milestones &rarr;</a></div></div>
+                    <div class="rule do"><span class="rule-ico">&#10003;</span><div><b>Add a Get to Green action when anything is Off Track</b><span>The status report won't save without one.</span><a href="status-reporting.html#get-to-green">Get to Green &rarr;</a></div></div>
+                    <div class="rule do"><span class="rule-ico">&#10003;</span><div><b>Move the lifecycle stage yourself</b><span>It doesn't update on its own.</span><a href="lifecycle-closure.html#move-stage">Lifecycle &rarr;</a></div></div>
+                    <div class="rule do"><span class="rule-ico">&#10003;</span><div><b>Keep the Benefit Tracker updated too</b><span>The Benefits field and Financial Benefit Savings rating don't replace it.</span><a href="new-project.html#financials">Financials &rarr;</a></div></div>
+                    <div class="rule do"><span class="rule-ico">&#10003;</span><div><b>Save the Project Brief and PID</b><span>Every project's documents should have both.</span><a href="sharing.html#folders">Folders &rarr;</a></div></div>
+                </div>
+                <h3>Never</h3>
+                <div class="rules">
+                    <div class="rule dont"><span class="rule-ico">&#10007;</span><div><b>Set a risk or issue's State to Proposed</b><span>Choose another option from the dropdown.</span><a href="risks-issues.html#risks">Risks &rarr;</a></div></div>
+                    <div class="rule dont"><span class="rule-ico">&#10007;</span><div><b>Fill in an issue's Due Date</b><span>Leave it blank &mdash; including on issues escalated from risks.</span><a href="risks-issues.html#issues">Issues &rarr;</a></div></div>
+                    <div class="rule dont"><span class="rule-ico">&#10007;</span><div><b>Link the wrong Teams site</b><span>Once linked, it can't be removed. Double-check first.</span><a href="sharing.html#teams-site">Teams site &rarr;</a></div></div>
+                    <div class="rule dont"><span class="rule-ico">&#10007;</span><div><b>Leave the Original End Date until Delivery</b><span>It locks when you move into Delivery.</span><a href="lifecycle-closure.html#end-date-lock">End date &rarr;</a></div></div>
+                    <div class="rule dont"><span class="rule-ico">&#10007;</span><div><b>Close before the closure reports are approved</b><span>Project Closure Report and Executive Summary Closure Report first.</span><a href="lifecycle-closure.html#close">Closing &rarr;</a></div></div>
+                    <div class="rule dont"><span class="rule-ico">&#10007;</span><div><b>Ask the PMO for a Teams site</b><span>Use the Team request form on the Intranet Applications page.</span><a href="sharing.html#teams-site">Teams site &rarr;</a></div></div>
+                </div>
+            </section>
+
+            <section class="ph-section" id="pwa-changes">
+                <h2 data-short="PWA → Project Hub">What changed from PWA</h2>
+                <table class="fields">
+                    <thead><tr><th>Area</th><th>In PWA</th><th>In Project Hub</th></tr></thead>
+                    <tbody>
+                        <tr><td>Creating a project</td><td>Timed out if you took too long</td><td>No time limit; autosaves on every change; everything happens in the app</td></tr>
+                        <tr><td>Financials</td><td>Not recorded</td><td>Optional Financials tab, reported in the dashboards</td></tr>
+                        <tr><td>Schedule</td><td>PWA schedule</td><td>Microsoft Planner, with grid, board, timeline, charts, people and goals views</td></tr>
+                        <tr><td>Critical milestones</td><td>0-day milestones</td><td>Work the same way &mdash; still what the reports use</td></tr>
+                        <tr><td>Risks</td><td>No update field; no way to escalate</td><td>Managed in the app, with a Risk Update field, and can be escalated to an issue</td></tr>
+                        <tr><td>Issues</td><td>Separate from other sections</td><td>In the same place as everything else, with an Update field; can be created from a risk</td></tr>
+                        <tr><td>Reporting</td><td>Flash Reports</td><td>Status updates with a 3-month look-ahead; previous updates kept</td></tr>
+                        <tr><td>Board updates</td><td>&mdash;</td><td>Each update marked as Programme or Project Board</td></tr>
+                        <tr><td>Power BI</td><td>Dashboards outside the tool</td><td>Opened in the app; a Highlight Report per project; a Financials tab</td></tr>
+                        <tr><td>Project stage</td><td>&mdash;</td><td>Project Lifecycle bar with five stages</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="ph-section" id="glossary">
+                <h2 data-short="Glossary">Glossary</h2>
+                <dl class="glossary">
+                    <dt>Project Hub</dt><dd>ERC's project management reporting tool, replacing PWA.</dd>
+                    <dt>PWA</dt><dd>Project Web App &mdash; the previous tool, retired on 30 September.</dd>
+                    <dt>Plan</dt><dd>The record for one project in Project Hub, with all its tabs.</dd>
+                    <dt>Project ID</dt><dd>The reference Project Hub gives a project when it's first saved (e.g. PRJ-1044). Used at the start of every risk and issue name.</dd>
+                    <dt>Record Owner</dt><dd>Who owns the plan record. You to begin with; your Teams group once it's linked.</dd>
+                    <dt>Planner</dt><dd>Microsoft Planner, which runs the Tasks tab.</dd>
+                    <dt>Parent task / subtask</dt><dd>A phase (parent) and the pieces of work inside it (subtasks).</dd>
+                    <dt>Critical milestone</dt><dd>A zero-duration task marking an important point. Used in the Power BI reports to show progress.</dd>
+                    <dt>Bucket</dt><dd>A column for grouping tasks in Board view.</dd>
+                    <dt>RAG</dt><dd>Red / Amber / Green. Risk RAG is worked out from the risk's Likelihood and Impact.</dd>
+                    <dt>4&times;4 matrix</dt><dd>The risk assessment grid: Likelihood and Impact, each scored one to four stars.</dd>
+                    <dt>Flow</dt><dd>An automated action in the command bar &mdash; e.g. Escalate Risk to Issue.</dd>
+                    <dt>Get to Green</dt><dd>The action you must give when any health rating is Off Track &mdash; how you'll bring it back.</dd>
+                    <dt>3-month look-ahead</dt><dd>The three Narrative questions in a status update: expected, achieved, planned. Replaces the Flash Report.</dd>
+                    <dt>Highlight Report</dt><dd>The one-page report for each project, on the Status Report tab.</dd>
+                    <dt>Project Lifecycle</dt><dd>The five-stage bar at the top of the plan: Initiation, Planning, Delivery, Monitoring &amp; Controlling, Closure.</dd>
+                    <dt>Deactivate</dt><dd>The final step of closing a project, which makes the plan read-only.</dd>
+                    <dt>PMO</dt><dd>Project Management Office.</dd>
+                    <dt>PID</dt><dd>Project Initiation Document &mdash; must be saved in the project's documents.</dd>
+                </dl>
+            </section>
+
+            <section class="ph-section" id="links">
+                <h2 data-short="Links & contacts">Links &amp; contacts</h2>
+                <div class="grid three">
+                    <a class="card" href="https://erc-pf-for-planner-prod.crm11.dynamics.com/main.aspx?appid=3ba2c3fc-6d24-f111-8341-0022481ab95b&amp;pagetype=entitylist&amp;etn=msdyn_project&amp;viewid=a18e3a4a-429d-4a98-9466-f7aa7068b5c3&amp;viewType=1039" target="_blank" rel="noopener"><h4>Project Hub (live)</h4><p>The tool itself.</p><span class="card-go">Open &#8599;</span></a>
+                    <a class="card" href="https://eastrenfrewshire.sharepoint.com/Lists/Team%20Request/NewForm.aspx" target="_blank" rel="noopener"><h4>Request a Teams site</h4><p>The Team request form on the Intranet Applications page.</p><span class="card-go">Open &#8599;</span></a>
+                    <a class="card" href="https://share.articulate.com/0L0wl_sxo71fDcEtNUOkT#/lessons/BYK64bcIXGNVKeWqfPYfLTyLt0QvwECG" target="_blank" rel="noopener"><h4>Planner training</h4><p>M365 Task Management (Planner) in the Course Catalogue. Or book via iTrent.</p><span class="card-go">Open &#8599;</span></a>
+                </div>
+                <div class="card" style="margin-top:1rem;">
+                    <h4>Questions or feedback</h4>
+                    <p>Contact <strong>Ben McKenzie</strong> or <strong>Lynsey Skelton</strong>. Suggested improvements are added to the product backlog and reviewed, with user workshops to help prioritise them.</p>
+                </div>
+            </section>
+
+            <nav class="ph-pager" id="ph-pager" aria-label="Previous and next page"></nav>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="search-index.js"></script>
+<script src="guide.js"></script>
+</body>
+</html>

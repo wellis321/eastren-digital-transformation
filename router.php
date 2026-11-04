@@ -9,6 +9,17 @@ require_once __DIR__ . '/includes/functions.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 
+// Reject dot-segments outright. Without this, /assets/../anything is handed to
+// PHP's built-in server as a static asset, which resolves the ".." itself and
+// serves files (including .env) with no auth check at all.
+$decodedUri = rawurldecode($uri);
+if (preg_match('#(^|/)\.{1,2}(/|$)#', $decodedUri) || str_contains($decodedUri, "\0")) {
+    http_response_code(400);
+    header('Content-Type: text/plain; charset=UTF-8');
+    echo 'Bad request';
+    exit;
+}
+
 $publicPaths = [
     '/login.php',
     '/logout.php',
@@ -78,6 +89,10 @@ if ($uri === '/' || $uri === '') {
 if (is_dir($file)) {
     $index = rtrim($file, '/') . '/index.html';
     if (is_file($index)) {
+        if (!str_ends_with($uri, '/')) {
+            $query = $_SERVER['QUERY_STRING'] ?? '';
+            redirect(APP_URL . $uri . '/' . ($query !== '' ? '?' . $query : ''));
+        }
         $file = $index;
     }
 }
@@ -87,6 +102,30 @@ if (!is_file($file)) {
     header('Content-Type: text/plain; charset=UTF-8');
     echo 'Not found';
     exit;
+}
+
+// The Project Hub guide is private to the site owner — checked against the
+// resolved file path rather than the URL so path tricks can't sidestep it.
+$privateDir = realpath(__DIR__ . '/project-hub');
+$realFile = realpath($file);
+if ($privateDir !== false && $realFile !== false
+    && str_starts_with(strtolower($realFile), strtolower($privateDir . DIRECTORY_SEPARATOR))) {
+    try {
+        $isOwner = is_site_owner();
+    } catch (Throwable) {
+        $isOwner = false;
+    }
+    if (!$isOwner) {
+        http_response_code(403);
+        header('Content-Type: text/html; charset=UTF-8');
+        echo '<!DOCTYPE html><html lang="en-GB"><head><meta charset="UTF-8"><title>Access restricted</title>
+        <link rel="stylesheet" href="' . APP_URL . '/assets/css/style.css"></head><body>
+        <div style="max-width:480px;margin:6rem auto;padding:2rem;text-align:center;">
+        <h1 style="font-size:1.4rem;margin-bottom:0.75rem;">Access restricted</h1>
+        <p style="color:#555;margin-bottom:1.5rem;">This page is private.</p>
+        <a href="' . APP_URL . '/" style="color:#006A51;">Return to home</a></div></body></html>';
+        exit;
+    }
 }
 
 $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));

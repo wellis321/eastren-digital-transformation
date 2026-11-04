@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Tasks &amp; milestones | Project Hub Guide</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="guide.css">
+</head>
+<body class="ph">
+
+<div class="site-topbar">
+    <a href="../index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="../assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="../logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<div class="ph-shell">
+    <aside class="ph-sidebar" id="ph-sidebar" aria-label="Guide navigation"></aside>
+    <div>
+        <button type="button" class="ph-menu-toggle" id="ph-menu-toggle">&#9776; Guide menu</button>
+        <main class="ph-main" id="main">
+            <header class="ph-hero">
+                <p class="ph-eyebrow">Run the project</p>
+                <h1>Tasks &amp; milestones</h1>
+                <p class="ph-lede">Your schedule records the work, captures the milestones, and shows whether you're on track to hit your deadlines. In Project Hub it runs in Microsoft Planner &mdash; easier to add to, edit and assign than PWA, with several ways to look at it.</p>
+                <div class="ph-chips">
+                    <span class="ph-chip green">Powered by Microsoft Planner</span>
+                    <span class="ph-chip">Critical milestones feed the board reports</span>
+                </div>
+            </header>
+
+            <section class="ph-section" id="shape">
+                <h2 data-short="How a schedule is shaped">How a schedule is shaped</h2>
+                <p class="ph-sub">Just like in PWA, break your schedule down by phase. Each phase is a <strong>parent task</strong>; the work inside it is <strong>subtasks</strong>; the key moments are <strong>critical milestones</strong>.</p>
+                <div class="diagram">
+                    <div class="tree">
+                        <div class="tree-node phase">Phase 1 &mdash; Initiation <span class="meta">parent task</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node">Draft the Project Brief <span class="meta">subtask &middot; assigned &middot; dated</span></div>
+                            <div class="tree-node">Agree scope with sponsor <span class="meta">subtask</span></div>
+                            <div class="tree-node"><span class="diamond"></span>Project Brief approved <span class="meta">critical milestone &middot; 0 days</span></div>
+                        </div>
+                        <div class="tree-node phase">Phase 2 &mdash; Planning <span class="meta">parent task</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node">Procurement exercise <span class="meta">subtask</span></div>
+                            <div class="tree-node"><span class="diamond"></span>Supplier appointed <span class="meta">critical milestone &middot; 0 days</span></div>
+                        </div>
+                    </div>
+                    <p class="diagram-cap">Example schedule. Phases are parent tasks, the work sits under them, and diamonds mark critical milestones.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="build">
+                <h2 data-short="Build your schedule">Build your schedule</h2>
+                <p class="ph-sub">Open your plan and select the <strong>Tasks</strong> tab. You'll land on a Planner grid.</p>
+                <ol class="steps">
+                    <li>Select <span class="ui">+ Add new task</span> and name it after your <strong>first project phase</strong>.</li>
+                    <li>Select <span class="ui">+ Add new task</span> again and name it as the first piece of work in that phase.</li>
+                    <li>On that new task, select the <span class="ui">&middot;&middot;&middot;</span> three dots and choose <span class="ui">Make subtask</span>. It tucks in under the phase.</li>
+                    <li>Keep adding subtasks the same way, then fill in their details (below).</li>
+                </ol>
+
+                <h3>What goes on each task</h3>
+                <div class="diagram">
+                    <div class="taskgrid">
+                        <div class="tg-row tg-head"><span>Task name</span><span>Assigned to</span><span>Start</span><span>Finish</span><span>Duration</span><span>% complete</span><span>Priority</span></div>
+                        <div class="tg-row tg-parent"><span>&#9662; Phase 1 &mdash; Initiation</span><span></span><span>01/09</span><span>26/09</span><span>20d</span><span>40%</span><span></span></div>
+                        <div class="tg-row pinwrap"><span class="tg-indent">Draft the Project Brief</span><span class="pinwrap"><i class="sp-av" style="width:20px;height:20px;font-size:0.58rem;display:inline-grid;vertical-align:middle;margin-right:4px;">JS</i>Jo Smith<span class="pin" style="top:-26px;left:30px;">1</span></span><span class="pinwrap">01/09<span class="pin" style="top:-26px;left:10px;">2</span></span><span>12/09</span><span class="auto pinwrap">10d<span class="pin" style="top:-26px;left:6px;">3</span></span><span class="pinwrap">75%<span class="pin" style="top:-26px;left:10px;">4</span></span><span class="pinwrap">Important<span class="pin" style="top:-26px;left:20px;">5</span></span></div>
+                        <div class="tg-row"><span class="tg-indent"><span class="diamond" style="display:inline-block;margin-right:6px;vertical-align:-1px;"></span>Project Brief approved</span><span>Jo Smith</span><span>26/09</span><span>26/09</span><span class="auto">0d</span><span>0%</span><span>Urgent</span></div>
+                    </div>
+                    <ul class="pin-key">
+                        <li><b>1</b><span><strong>Assigned to</strong> &mdash; select the blank box and search for a name.</span></li>
+                        <li><b>2</b><span><strong>Start and Finish</strong> &mdash; type a date, or pick one from the calendar icon.</span></li>
+                        <li><b>3</b><span><strong>Duration</strong> &mdash; worked out for you from the dates, weekends excluded.</span></li>
+                        <li><b>4</b><span><strong>% complete</strong> &mdash; enter a percentage, and keep it updated as work progresses.</span></li>
+                        <li><b>5</b><span><strong>Priority</strong> &mdash; choose from the dropdown. You decide, as project manager.</span></li>
+                    </ul>
+                </div>
+                <details class="screen"><summary>See the real screen <span>&mdash; tasks in the Planner grid</span></summary><img src="img/tasks-grid.jpg" alt="Tasks in the Planner grid view" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="milestones">
+                <h2 data-short="Critical milestones">Critical milestones</h2>
+                <p class="ph-sub">A critical milestone is a task with <strong>zero duration</strong> that marks an important point in the project. They work the same way as in PWA, and they're what the Power BI reports use to show your progress to the programme board.</p>
+                <div class="diagram">
+                    <p class="diagram-title">Task vs. milestone on a timeline</p>
+                    <div class="mtl">
+                        <div class="mtl-axis"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Mon</span><span>Tue</span><span>Wed</span></div>
+                        <div class="mtl-row"><label>Draft the Project Brief</label><div class="mtl-lane"><span class="mtl-bar" style="left:0%;width:62%;">Start &rarr; Finish &middot; 5 days</span></div></div>
+                        <div class="mtl-row"><label>Project Brief approved</label><div class="mtl-lane"><span class="mtl-ms" style="left:75%;"><i></i>Start = Finish &middot; 0 days</span></div></div>
+                    </div>
+                    <div class="rules" style="margin-top:1rem;">
+                        <div class="rule do"><span class="rule-ico">0</span><div><b>Duration set to 0 days</b><span>Set this manually &mdash; it won't do it on its own.</span></div></div>
+                        <div class="rule do"><span class="rule-ico">=</span><div><b>Same start and finish date</b><span>A milestone is a moment, not a stretch of work.</span></div></div>
+                    </div>
+                </div>
+                <ol class="steps">
+                    <li>Add a new task in the subtask list and give it the milestone's name.</li>
+                    <li>Select the date the milestone should be completed.</li>
+                    <li>Manually set <span class="field">Duration</span> to <strong>0</strong> days.</li>
+                </ol>
+                <details class="screen"><summary>See the real screen <span>&mdash; a milestone with 0 days duration</span></summary><img src="img/milestone.jpg" alt="Setting a milestone duration to zero" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="next-phase">
+                <h2 data-short="Start the next phase">Start the next phase</h2>
+                <p class="ph-sub">When a phase's subtasks are all in, start a new section for the next phase. New tasks land inside the current phase, so you <em>promote</em> the new phase back out.</p>
+                <div class="diagram">
+                    <div class="promote">
+                        <div class="pm-col">
+                            <span class="hub-kicker">Before</span>
+                            <div class="tree-node phase">Phase 1 &mdash; Initiation</div>
+                            <div class="tree-children">
+                                <div class="tree-node">Agree scope with sponsor</div>
+                                <div class="tree-node" style="border-color:var(--ph-amber);background:#fff7ea;">Phase 2 &mdash; Planning <span class="meta">&middot;&middot;&middot; &rarr; Promote subtask</span></div>
+                                <div class="tree-node">Procurement exercise</div>
+                            </div>
+                        </div>
+                        <div class="pm-arrow">&rarr;</div>
+                        <div class="pm-col">
+                            <span class="hub-kicker">After</span>
+                            <div class="tree-node phase">Phase 1 &mdash; Initiation</div>
+                            <div class="tree-children"><div class="tree-node">Agree scope with sponsor</div></div>
+                            <div class="tree-node phase">Phase 2 &mdash; Planning</div>
+                            <div class="tree-children"><div class="tree-node">Procurement exercise</div></div>
+                        </div>
+                    </div>
+                </div>
+                <ol class="steps">
+                    <li>Add a new task and name it after your <strong>next project phase</strong>. Add another task below it for that phase's first piece of work.</li>
+                    <li>Select the <span class="ui">&middot;&middot;&middot;</span> three dots on the new phase task and choose <span class="ui">Promote subtask</span>.</li>
+                </ol>
+                <div class="note tip">
+                    <span class="note-ico">&#10003;</span>
+                    <p><strong>Remember the pair</strong><span class="ui">Make subtask</span> moves a task <em>in</em> under the one above. <span class="ui">Promote subtask</span> moves it back <em>out</em> to become a parent.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="views">
+                <h2 data-short="Ways to view your tasks">Ways to view your tasks</h2>
+                <p class="ph-sub">Same tasks, different lenses. Switch views from the toolbar above your schedule.</p>
+                <div class="views">
+                    <div class="view">
+                        <div class="view-art"><div class="va-rows"><i style="width:90%"></i><i style="width:70%;margin-left:12%"></i><i style="width:60%;margin-left:12%"></i><i style="width:80%"></i></div></div>
+                        <div class="view-body"><h4>Grid</h4><p>The default list. Where you add and edit tasks.</p></div>
+                    </div>
+                    <div class="view">
+                        <div class="view-art"><div class="va-col"><i class="h"></i><i></i><i></i></div><div class="va-col"><i class="h"></i><i></i></div><div class="va-col"><i class="h"></i><i></i><i></i><i></i></div></div>
+                        <div class="view-body"><h4>Board</h4><p>Cards in columns by status, bucket or another field. Drag tasks across as work moves; spot blockers fast. Use <span class="ui">Add bucket</span> to group tasks.</p></div>
+                    </div>
+                    <div class="view">
+                        <div class="view-art"><div class="va-rows"><i style="width:40%"></i><i style="width:35%;margin-left:30%"></i><i style="width:8px;height:8px;margin-left:72%;background:#b45309;transform:rotate(45deg);border-radius:1px;"></i><i style="width:30%;margin-left:62%"></i></div></div>
+                        <div class="view-body"><h4>Timeline</h4><p>A Gantt-style view. The diamonds are your critical milestones.</p></div>
+                    </div>
+                    <div class="view">
+                        <div class="view-art"><div class="va-bars"><i style="height:40%"></i><i style="height:75%"></i><i style="height:55%"></i><i style="height:90%"></i></div></div>
+                        <div class="view-body"><h4>Charts</h4><p>How tasks are spread by status, bucket, or who they're assigned to.</p></div>
+                    </div>
+                    <div class="view">
+                        <div class="view-art"><div class="va-ppl"><i></i><i></i><i></i></div></div>
+                        <div class="view-body"><h4>People</h4><p>How many tasks are due from each team member.</p></div>
+                    </div>
+                    <div class="view">
+                        <div class="view-art"><div class="va-rows"><i style="width:55%;background:#b9d6ca"></i><i style="width:80%;margin-left:8%"></i><i style="width:65%;margin-left:8%"></i></div></div>
+                        <div class="view-body"><h4>Goals</h4><p><span class="ui">+ Add goal</span>, name it, then <span class="ui">+ Add new task</span> or <span class="ui">Connect tasks</span> to link existing work to it.</p></div>
+                    </div>
+                </div>
+                <details class="screen"><summary>See the real screen <span>&mdash; Board view</span></summary><img src="img/board.jpg" alt="Board view with buckets" loading="lazy"></details>
+                <details class="screen"><summary>See the real screen <span>&mdash; Timeline view with milestone diamonds</span></summary><img src="img/timeline.jpg" alt="Timeline view showing milestones as diamonds" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="learn-planner">
+                <h2 data-short="Learn more Planner">Get more confident with Planner</h2>
+                <p class="ph-sub">The <strong>M365 Task Management (Planner)</strong> workshop covers managing team and personal tasks, assigning actions, tracking progress and more.</p>
+                <p>Find it in the <a href="https://share.articulate.com/0L0wl_sxo71fDcEtNUOkT#/lessons/BYK64bcIXGNVKeWqfPYfLTyLt0QvwECG" target="_blank" rel="noopener">Course Catalogue &#8599;</a>, or book your place through iTrent.</p>
+            </section>
+
+            <nav class="ph-pager" id="ph-pager" aria-label="Previous and next page"></nav>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="search-index.js"></script>
+<script src="guide.js"></script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Create a project | Project Hub Guide</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="guide.css">
+</head>
+<body class="ph">
+
+<div class="site-topbar">
+    <a href="../index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="../assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="../logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<div class="ph-shell">
+    <aside class="ph-sidebar" id="ph-sidebar" aria-label="Guide navigation"></aside>
+    <div>
+        <button type="button" class="ph-menu-toggle" id="ph-menu-toggle">&#9776; Guide menu</button>
+        <main class="ph-main" id="main">
+            <header class="ph-hero">
+                <p class="ph-eyebrow">Set up</p>
+                <h1>Create a project</h1>
+                <p class="ph-lede">A new plan is three tabs of information &mdash; Summary, Business Case and Financials &mdash; then one <span class="ui">Save &amp; Close</span>. This page tells you what goes in every field, and which ones fill themselves in.</p>
+                <div class="ph-chips">
+                    <span class="ph-chip green">No time limit &mdash; take as long as you need</span>
+                    <span class="ph-chip">Autosaves as you go</span>
+                </div>
+            </header>
+
+            <section class="ph-section" id="create">
+                <h2 data-short="The journey">From blank plan to working project</h2>
+                <p class="ph-sub">Start from <span class="ui">+ New Plan</span> on the home page. Only three tabs are open at first &mdash; the rest unlock once you've saved and closed.</p>
+                <div class="diagram">
+                    <div class="flow">
+                        <div class="flow-step end"><b>+ New Plan</b><span>Home page command bar</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Summary</b><span>Name, type, dates, owners</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Business Case</b><span>Background &amp; scope</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Financials</b><span>Optional</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step key"><b>Save &amp; Close</b><span>Project ID allocated</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step end"><b>Everything unlocks</b><span>Tasks, Risks, Issues, Status&hellip;</span></div>
+                    </div>
+                </div>
+                <div class="note warn">
+                    <span class="note-ico">!</span>
+                    <p><strong>You can't add tasks, risks or issues yet</strong>Those tabs stay locked while you're creating the plan. Save and close first, then reopen it from <strong>My Active Projects</strong>.</p>
+                </div>
+                <div class="note info">
+                    <span class="note-ico">i</span>
+                    <p><strong>Already have a project?</strong>If your project already exists in Project Hub, find it under <strong>My Active Projects</strong> rather than creating a new one.</p>
+                </div>
+                <details class="screen"><summary>See the real screen <span>&mdash; a brand-new plan on the Summary tab</span></summary><img src="img/new-plan.jpg" alt="A new, unsaved plan on the Summary tab" loading="lazy"><figcaption>Note the lifecycle bar starts at Initiation, and the required fields are marked with a red asterisk.</figcaption></details>
+            </section>
+
+            <section class="ph-section" id="summary">
+                <h2 data-short="Summary tab">Summary tab</h2>
+                <p class="ph-sub">The first tab you'll see. It has three sections to complete.</p>
+                <div class="diagram">
+                    <div class="formmap">
+                        <div class="fm-box fm-a"><b>General Information</b><span>What the project is</span><em>7 fields</em></div>
+                        <div class="fm-box fm-b"><b>Summary</b><span>The key dates</span><em>5 fields</em></div>
+                        <div class="fm-box fm-c"><b>Ownership</b><span>Who's responsible</span><em>4 fields</em></div>
+                    </div>
+                    <div class="legend">
+                        <span><span class="tag req">Required</span> you must fill it in</span>
+                        <span><span class="tag auto">Auto</span> filled in for you</span>
+                        <span><span class="tag lock">Locked</span> you can't edit it</span>
+                        <span><span class="tag opt">Optional</span> fine to leave</span>
+                    </div>
+                </div>
+
+                <table class="fields">
+                    <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+                    <tbody>
+                        <tr class="group-row"><td colspan="2">General Information</td></tr>
+                        <tr><td>Name <span class="tag req">Required</span></td><td>The name of your project.</td></tr>
+                        <tr><td>Project Background</td><td>From your Project Brief (or your old PWA record). This is the same field as on the Business Case tab &mdash; <a href="#business-case">edit either, both change</a>.</td></tr>
+                        <tr><td>Project Type <span class="tag req">Required</span></td><td>Choose <strong>Project</strong>, <strong>Programme</strong>, <strong>Small Works</strong> or <strong>Department</strong>.</td></tr>
+                        <tr><td>State <span class="tag auto">Auto</span></td><td>Fills in as <em>Active</em>. Leave it.</td></tr>
+                        <tr><td>Stage <span class="tag lock">Locked</span></td><td>Taken from the <a href="lifecycle-closure.html#lifecycle">Project Lifecycle</a> bar and updates as you move stages.</td></tr>
+                        <tr><td>Project ID <span class="tag auto">Auto</span></td><td>Leave blank. The app gives the project an ID (e.g. PRJ-1044) once you save and close.</td></tr>
+                        <tr><td>Project Documentation</td><td>Leave blank for now. Later you'll paste the link to your Teams documents here. <a href="sharing.html#doc-link">How</a></td></tr>
+                        <tr class="group-row"><td colspan="2">Summary (dates)</td></tr>
+                        <tr><td>Project Approval Date</td><td>The date the project was approved at a Programme or Project Board.</td></tr>
+                        <tr><td>Start Date</td><td>When the project starts.</td></tr>
+                        <tr><td>Original End Date <span class="tag opt">Optional</span></td><td>Your projected end date, if you have one. <strong>Locks once you reach Delivery</strong> &mdash; <a href="lifecycle-closure.html#end-date-lock">see why</a>.</td></tr>
+                        <tr><td>Final Task Date <span class="tag auto">Auto</span></td><td>The latest date in your schedule, picked up once you start adding tasks.</td></tr>
+                        <tr><td>Duration (Days) <span class="tag auto">Auto</span></td><td>Working days from Start Date to Final Task Date (weekends excluded).</td></tr>
+                        <tr class="group-row"><td colspan="2">Ownership</td></tr>
+                        <tr><td>Program</td><td>The programme your project sits under.</td></tr>
+                        <tr><td>Project Manager <span class="tag auto">Auto</span></td><td>Fills in as you. You can change it.</td></tr>
+                        <tr><td>Record Owner <span class="tag req">Required</span></td><td>Put your own name in to start with. Once you link a Teams group, that group becomes the owner. <a href="sharing.html#teams-site">Teams site</a></td></tr>
+                        <tr><td>Project Owner</td><td>The name of the project owner.</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>How the dates relate to each other</h3>
+                <div class="diagram">
+                    <div class="dates">
+                        <div class="dates-track">
+                            <span class="dm" style="left:0%;"><i></i><b>Approval</b><em>you enter</em></span>
+                            <span class="dm" style="left:16%;"><i></i><b>Start Date</b><em>you enter</em></span>
+                            <span class="dm dm-opt dm-up" style="left:68%;"><i></i><b>Original End Date</b><em>optional &middot; locks at Delivery</em></span>
+                            <span class="dm dm-auto" style="left:88%;"><i></i><b>Final Task Date</b><em>auto, from schedule</em></span>
+                            <span class="dspan" style="left:16%;width:72%;">Duration (Days) &mdash; auto, weekdays only</span>
+                        </div>
+                    </div>
+                    <p class="diagram-cap">Final Task Date and Duration follow your schedule, so they move as your tasks move. Original End Date is your baseline promise &mdash; it stays put.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="business-case">
+                <h2 data-short="Business Case tab">Business Case tab</h2>
+                <p class="ph-sub">Where your project narrative lives. Two fields to update.</p>
+                <div class="diagram">
+                    <div class="sync">
+                        <div class="sync-box"><span class="hub-kicker">Summary tab</span><b>Project Background</b></div>
+                        <div class="sync-mid"><span>&#8644;</span>same field &mdash; always in sync</div>
+                        <div class="sync-box"><span class="hub-kicker">Business Case tab</span><b>Project Background</b></div>
+                    </div>
+                </div>
+                <table class="fields">
+                    <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+                    <tbody>
+                        <tr><td>Project Background</td><td>Already pulled through from the Summary tab. Change it here and it changes there too (and vice versa).</td></tr>
+                        <tr><td>Scope Overview</td><td>The boundaries of the project &mdash; what's <strong>included</strong> and what's <strong>excluded</strong>. You can take this from your Project Brief.</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="ph-section" id="financials">
+                <h2 data-short="Financials tab">Financials tab <span class="tag opt" style="font-size:0.7rem;">Optional</span></h2>
+                <p class="ph-sub">New compared to PWA: financial data you enter here goes straight into the dashboards. <strong>If you don't have financial information, skip this tab.</strong></p>
+
+                <div class="diagram">
+                    <p class="diagram-title">What you type vs. what the app works out</p>
+                    <div class="calc">
+                        <div class="box you"><b>Spend this reporting period</b><span>you enter</span></div>
+                        <div class="op">+</div>
+                        <div class="box you"><b>Spend in previous periods</b><span>you enter</span></div>
+                        <div class="op">=</div>
+                        <div class="box app"><b>Total Spend to Date</b><span>calculated &middot; locked</span></div>
+                    </div>
+                    <div class="calc" style="margin-top:0.9rem;">
+                        <div class="box you"><b>Total Budget</b><span>you enter</span></div>
+                        <div class="op">&minus;</div>
+                        <div class="box app"><b>Total Spend to Date</b><span>from above</span></div>
+                        <div class="op">=</div>
+                        <div class="box app"><b>Remaining Budget</b><span>calculated &middot; locked</span></div>
+                    </div>
+                    <div class="legend"><span><i style="background:#f6faf8;border:1px solid #9fcab8;"></i>You enter</span><span><i style="background:#eef4fa;border:1px dashed #9fb7cf;"></i>Project Hub calculates</span></div>
+                    <p class="diagram-cap">Total Spend to Date stays blank until <em>both</em> spend fields have a figure in them.</p>
+                </div>
+
+                <table class="fields">
+                    <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+                    <tbody>
+                        <tr><td>Total Budget</td><td>The total budget for the project.</td></tr>
+                        <tr><td>Total Spending this Reporting Period</td><td>What's been spent during this reporting period.</td></tr>
+                        <tr><td>Total Spend for Previous Reporting Periods</td><td>Spend from all previous reporting periods added together.</td></tr>
+                        <tr><td>Total Spend to Date <span class="tag lock">Locked</span></td><td>Calculated: this period + previous periods.</td></tr>
+                        <tr><td>Remaining Budget <span class="tag lock">Locked</span></td><td>Calculated: Total Budget &minus; Total Spend to Date.</td></tr>
+                        <tr><td>Total Projected Spend this Year</td><td>What you expect to spend this year.</td></tr>
+                        <tr><td>Benefits</td><td>The cashable savings the project will make. <strong>You still need to update the Benefit Tracker</strong> as well.</td></tr>
+                        <tr><td>Funding Available</td><td><strong>Yes</strong>, <strong>No</strong> or <strong>Pending</strong>.</td></tr>
+                        <tr><td>Funding Source</td><td>If there is funding, where the main source comes from. You can pick more than one:
+                            <div class="chiprow"><span class="doc">Modernisation</span><span class="doc">ICT Capital</span><span class="doc">General Capital</span><span class="doc">City Deal</span><span class="doc">Revenue</span><span class="doc">New Bid Pressure</span><span class="doc">Departmental</span></div></td></tr>
+                    </tbody>
+                </table>
+                <details class="screen"><summary>See the real screen <span>&mdash; the Financials tab</span></summary><img src="img/financials.jpg" alt="The Financials tab" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="save-close">
+                <h2 data-short="Save & Close">Save &amp; Close</h2>
+                <p class="ph-sub">Once you've added everything, select <span class="ui">Save &amp; Close</span> in the command bar.</p>
+                <div class="grid three">
+                    <div class="card"><h4>1. You're taken home</h4><p>Your new plan now shows in <strong>My Active Projects</strong>.</p></div>
+                    <div class="card"><h4>2. It gets an ID</h4><p>The <span class="field">Project ID</span> is allocated &mdash; note it, you'll use it to name risks and issues.</p></div>
+                    <div class="card"><h4>3. The rest unlocks</h4><p>Reopen the plan and the remaining tabs &mdash; Tasks, Risks, Issues and more &mdash; are ready to use.</p></div>
+                </div>
+                <div class="note tip">
+                    <span class="note-ico">&#10003;</span>
+                    <p><strong>Next steps</strong>Share permissions with your team, then link your Teams site. <a href="sharing.html">Sharing, Teams &amp; documents</a></p>
+                </div>
+            </section>
+
+            <nav class="ph-pager" id="ph-pager" aria-label="Previous and next page"></nav>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="search-index.js"></script>
+<script src="guide.js"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Start here | Project Hub Guide</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="guide.css">
+</head>
+<body class="ph">
+
+<div class="site-topbar">
+    <a href="../index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="../assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="../logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<div class="ph-shell">
+    <aside class="ph-sidebar" id="ph-sidebar" aria-label="Guide navigation"></aside>
+    <div>
+        <button type="button" class="ph-menu-toggle" id="ph-menu-toggle">&#9776; Guide menu</button>
+        <main class="ph-main" id="main">
+
+            <header class="ph-hero">
+                <p class="ph-eyebrow">Project Hub Guide</p>
+                <h1>Project Hub, made simple</h1>
+                <p class="ph-lede">Project Hub is ERC's project management reporting tool. It replaced Project Web App (PWA), which was retired on 30 September. This guide takes the 143-slide training deck and reorganises it around the job you're actually trying to do &mdash; so you can look something up in seconds instead of scrolling for it.</p>
+                <div class="ph-chips">
+                    <span class="ph-chip green">Replaces PWA</span>
+                    <span class="ph-chip">Schedules run in Microsoft Planner</span>
+                    <span class="ph-chip">Feeds the Power BI board reports</span>
+                    <span class="ph-chip">Still evolving &mdash; improvements on a backlog</span>
+                </div>
+            </header>
+
+            <section class="ph-section" id="how-it-fits">
+                <h2 data-short="How it fits together">How Project Hub fits together</h2>
+                <p class="ph-sub">Everything lives in one <strong>plan</strong> per project. You fill it in through tabs, and what you enter flows out to the dashboards your boards look at. Your documents live alongside it in the project's Teams site.</p>
+
+                <div class="diagram">
+                    <p class="diagram-title">The whole tool on one page</p>
+                    <div class="hubmap">
+                        <div class="hub-col">
+                            <div class="hub-card">
+                                <span class="hub-kicker">1 &middot; Home page</span>
+                                <h4>Where you start</h4>
+                                <ul>
+                                    <li><b>My Active Projects</b> &mdash; every plan you manage</li>
+                                    <li><b>Recent &amp; Pinned</b> &mdash; jump back in fast</li>
+                                    <li><span class="ui">+ New Plan</span> &mdash; create a project</li>
+                                    <li><b>Programme &amp; Portfolio Reports</b> &mdash; the dashboards</li>
+                                </ul>
+                                <a href="getting-started.html#home-page">Home page tour &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="hub-arrow" aria-hidden="true">&rarr;</div>
+                        <div class="hub-col hub-plan">
+                            <div class="hub-card">
+                                <span class="hub-kicker">2 &middot; Your plan</span>
+                                <h4>One record per project</h4>
+                                <div class="hub-life">
+                                    <span>Initiation</span><span>Planning</span><span>Delivery</span><span>Monitoring &amp; Controlling</span><span>Closure</span>
+                                </div>
+                                <div class="hub-tabs">
+                                    <a class="tg tg-describe" href="new-project.html"><b>Describe it</b><span>Summary &middot; Business Case &middot; Financials</span></a>
+                                    <a class="tg tg-plan" href="tasks.html"><b>Plan it</b><span>Tasks (in Planner)</span></a>
+                                    <a class="tg tg-control" href="risks-issues.html"><b>Control it</b><span>Risks &middot; Issues</span></a>
+                                    <a class="tg tg-report" href="status-reporting.html"><b>Report it</b><span>Status &middot; Status Report</span></a>
+                                </div>
+                                <p class="hub-foot">Also on the tab bar: <b>Baseline</b> and <b>Dependencies</b> &mdash; not covered in the training.</p>
+                            </div>
+                            <div class="hub-side">
+                                <span class="hub-kicker">Linked</span>
+                                <b>Teams site</b>
+                                <span>Project Hub has no document storage &mdash; your files live in the project's Teams / SharePoint site, linked from the plan.</span>
+                                <a href="sharing.html#teams-site">How to link it &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="hub-arrow" aria-hidden="true">&rarr;</div>
+                        <div class="hub-col">
+                            <div class="hub-card hub-out">
+                                <span class="hub-kicker">3 &middot; Where it goes</span>
+                                <h4>Boards see it here</h4>
+                                <ul>
+                                    <li><b>Highlight Report</b> &mdash; a one-page view of your project, inside the plan</li>
+                                    <li><b>Power BI dashboards</b> &mdash; programme and project reports</li>
+                                    <li><b>Programme &amp; Project Boards</b> &mdash; review from these</li>
+                                </ul>
+                                <a href="status-reporting.html#where-it-goes">Follow the data &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="diagram-cap">Click any coloured group to go straight to that part of the guide.</p>
+                </div>
+
+                <div class="note info">
+                    <span class="note-ico">i</span>
+                    <p><strong>One thing to know before you start</strong>When you first create a plan, only the <span class="field">Summary</span>, <span class="field">Business Case</span> and <span class="field">Financials</span> tabs can be completed. Tasks, Risks and Issues unlock once you've pressed <span class="ui">Save &amp; Close</span> for the first time.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="whats-new">
+                <h2 data-short="What's new vs PWA">What's different from PWA</h2>
+                <p class="ph-sub">The headline changes the PMO highlighted. If you knew PWA, these are the things that will feel different.</p>
+                <div class="grid three">
+                    <div class="card"><div class="card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h4>No more time-outs</h4><p>There's no time limit when creating a project, and the app autosaves every time you make a change.</p></div>
+                    <div class="card"><div class="card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3z"/><path d="M12 10v4"/></svg></div><h4>Escalate a risk to an issue</h4><p>One flow turns a risk into an issue and carries its details across &mdash; no retyping.</p><a href="risks-issues.html#escalate" class="card-go">How &rarr;</a></div>
+                    <div class="card"><div class="card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h4>Financials (optional)</h4><p>Budget and spend can now be recorded and reported in the dashboards. Not mandatory.</p><a href="new-project.html#financials" class="card-go">How &rarr;</a></div>
+                    <div class="card"><div class="card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg></div><h4>Schedules in Planner</h4><p>Tasks are managed in Microsoft Planner &mdash; easier to add, edit and assign, with board, timeline and chart views.</p><a href="tasks.html" class="card-go">How &rarr;</a></div>
+                    <div class="card"><div class="card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></div><h4>History is kept</h4><p>Every status update is saved, not overwritten &mdash; you can look back at previous reports.</p><a href="status-reporting.html#status-update" class="card-go">How &rarr;</a></div>
+                    <div class="card"><div class="card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7"/></svg></div><h4>Flash Report is gone</h4><p>It's replaced by a 3-month look-ahead in the <span class="field">Status</span> tab, plus a one-page Highlight Report.</p><a href="status-reporting.html" class="card-go">How &rarr;</a></div>
+                </div>
+            </section>
+
+            <section class="ph-section" id="first-time">
+                <h2 data-short="Your first time through">Your first time through, in order</h2>
+                <p class="ph-sub">Setting up a new project? This is the sensible order to do things in &mdash; each step links to the detail.</p>
+                <ol class="steps">
+                    <li><strong>Bookmark Project Hub</strong> so it's always one click away. <a href="getting-started.html#bookmark">How</a></li>
+                    <li><strong>Create the plan</strong> &mdash; complete Summary, Business Case and (optionally) Financials, then <span class="ui">Save &amp; Close</span>. <a href="new-project.html#create">How</a></li>
+                    <li><strong>Share permissions</strong> &mdash; including anyone you'll make a risk or issue owner. <a href="sharing.html#permissions">How</a></li>
+                    <li><strong>Link the Teams site</strong> and paste the documents link into <span class="field">Project Documentation</span>. <a href="sharing.html#teams-site">How</a></li>
+                    <li><strong>Build the schedule</strong> in Tasks, with your critical milestones. <a href="tasks.html#build">How</a></li>
+                    <li><strong>Record risks and issues</strong> using the naming convention. <a href="risks-issues.html#naming">How</a></li>
+                    <li><strong>Submit a Status update</strong> before each board. <a href="status-reporting.html#status-update">How</a></li>
+                    <li><strong>Move the lifecycle stage</strong> on as the project progresses. <a href="lifecycle-closure.html#lifecycle">How</a></li>
+                </ol>
+            </section>
+
+            <section class="ph-section" id="find">
+                <h2 data-short="Find what you need">Find what you need</h2>
+                <p class="ph-sub">Or press <kbd>/</kbd> anywhere to search the whole guide.</p>
+                <div class="grid three">
+                    <a class="card" href="getting-started.html"><h4>Access &amp; finding your way</h4><p>The link, bookmarking, the home page, customising columns and pinning plans.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="new-project.html"><h4>Create a project</h4><p>Every field on Summary, Business Case and Financials &mdash; what to enter and what fills itself in.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="sharing.html"><h4>Sharing, Teams &amp; documents</h4><p>Permissions, linking a Teams site, the documentation link and the folder structure.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="tasks.html"><h4>Tasks &amp; milestones</h4><p>Phases, subtasks, critical milestones and the five Planner views.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="risks-issues.html"><h4>Risks &amp; issues</h4><p>Naming, the 4&times;4 matrix, the forms and escalating a risk to an issue.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="status-reporting.html"><h4>Status &amp; reporting</h4><p>The six health criteria, Get to Green, the 3-month look-ahead and the dashboards.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="lifecycle-closure.html"><h4>Lifecycle &amp; closing</h4><p>The five stages, what locks when, and how to close and deactivate a plan.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="quick-reference.html"><h4>Quick reference</h4><p>The rules on one page, PWA-to-Project Hub changes and a glossary.</p><span class="card-go">Open &rarr;</span></a>
+                </div>
+            </section>
+
+            <section class="ph-section" id="help">
+                <h2 data-short="Help & contacts">Help, feedback and what's next</h2>
+                <div class="grid two">
+                    <div class="card">
+                        <h4>Who to contact</h4>
+                        <p>Questions or feedback go to <strong>Ben McKenzie</strong> or <strong>Lynsey Skelton</strong>, who ran the training workshops.</p>
+                    </div>
+                    <div class="card">
+                        <h4>It's still being improved</h4>
+                        <p>Suggested improvements go onto the product backlog, which is being shared. User workshops help prioritise it and share good practice. Full guidance notes are due to follow &mdash; including how to reopen a closed project.</p>
+                    </div>
+                </div>
+            </section>
+
+            <nav class="ph-pager" id="ph-pager" aria-label="Previous and next page"></nav>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="search-index.js"></script>
+<script src="guide.js"></script>
+</body>
+</html>

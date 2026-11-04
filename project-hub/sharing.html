@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Sharing, Teams &amp; documents | Project Hub Guide</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="guide.css">
+</head>
+<body class="ph">
+
+<div class="site-topbar">
+    <a href="../index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="../assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="../logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<div class="ph-shell">
+    <aside class="ph-sidebar" id="ph-sidebar" aria-label="Guide navigation"></aside>
+    <div>
+        <button type="button" class="ph-menu-toggle" id="ph-menu-toggle">&#9776; Guide menu</button>
+        <main class="ph-main" id="main">
+            <header class="ph-hero">
+                <p class="ph-eyebrow">Set up</p>
+                <h1>Sharing, Teams &amp; documents</h1>
+                <p class="ph-lede">Who can see your project, where its documents live, and how to connect the two. Project Hub has no document storage of its own &mdash; every project needs a Teams site alongside it.</p>
+                <div class="ph-chips">
+                    <span class="ph-chip green">Every project needs a Teams site</span>
+                    <span class="ph-chip">Linking a Teams site can't be undone</span>
+                </div>
+            </header>
+
+            <section class="ph-section" id="permissions">
+                <h2 data-short="Sharing permissions">Sharing permissions</h2>
+                <p class="ph-sub">Permissions decide who can open your project and what they can do with it. Do this straight after creating the plan &mdash; especially for anyone you'll make a risk or issue owner.</p>
+
+                <div class="diagram">
+                    <div class="sharepanel">
+                        <div class="sp-head"><b>Share records</b><span class="pinwrap" style="font-size:1rem;">&times;<span class="pin" style="top:-12px;right:-22px;">6</span></span></div>
+                        <div class="sp-body">
+                            <div class="sp-left">
+                                <div class="sp-search pinwrap">Add user/team<span>Search a name&hellip;</span><span class="pin" style="top:-10px;right:-10px;">2</span></div>
+                                <div class="sp-person pinwrap"><i class="sp-tick">&#10003;</i><span class="sp-av">JS</span>Jo Smith<span class="pin" style="top:7px;right:8px;">3</span></div>
+                                <div class="sp-person"><i class="sp-tick off"></i><span class="sp-av b">AB</span>Alex Brown</div>
+                            </div>
+                            <div class="sp-right pinwrap">
+                                <b>Jo Smith</b>
+                                <span class="sp-label">Permissions</span>
+                                <label><i class="cb on"></i>Read</label>
+                                <label><i class="cb"></i>Write</label>
+                                <label><i class="cb"></i>Delete</label>
+                                <label class="hl"><i class="cb on"></i>Append</label>
+                                <label class="hl"><i class="cb on"></i>Append to</label>
+                                <label><i class="cb"></i>Assign</label>
+                                <label><i class="cb"></i>Share</label>
+                                <span class="pin" style="top:44px;right:12px;">4</span>
+                            </div>
+                        </div>
+                        <div class="sp-foot"><span>Share with 1 users</span><span class="ui primary pinwrap">Share<span class="pin" style="top:-12px;right:-14px;">5</span></span></div>
+                    </div>
+                    <p class="diagram-cap">Reached from <span class="ui pinwrap">Share &#709;<span class="pin" style="top:-10px;right:-14px;position:absolute;">1</span></span> &rarr; <strong>Manage Access</strong> in the plan's command bar. Names are examples.</p>
+                </div>
+
+                <ol class="steps">
+                    <li>In your plan, select <span class="ui">Share</span> in the command bar, then <span class="ui">Manage Access</span>.</li>
+                    <li>Search for the person you want to give access to.</li>
+                    <li>Select their name, then tick the check box next to it.<small>You can tick several people and give them the same permissions in one go.</small></li>
+                    <li>Choose their permission levels &mdash; <strong>always include Append and Append to</strong>.</li>
+                    <li>Select <span class="ui primary">Share</span>. A notification confirms your changes have been saved.</li>
+                    <li>Select the <span class="ui">&times;</span> to close the panel.</li>
+                </ol>
+
+                <div class="note stop">
+                    <span class="note-ico">!</span>
+                    <p><strong>Risk and issue owners need access first</strong>You can only make someone the owner of a risk or issue if they have at least <strong>Read</strong> permission on your project. Share with them before assigning.</p>
+                </div>
+
+                <h3>What each permission means</h3>
+                <table class="fields">
+                    <thead><tr><th>Permission</th><th>Lets the person&hellip;</th></tr></thead>
+                    <tbody>
+                        <tr><td>Read</td><td>See the project. The minimum anyone needs &mdash; including risk and issue owners.</td></tr>
+                        <tr><td>Write</td><td>Edit the project's details.</td></tr>
+                        <tr><td>Delete</td><td>Delete the record.</td></tr>
+                        <tr><td>Append <span class="tag req">Always</span></td><td>Attach other records (like risks and issues) to the project.</td></tr>
+                        <tr><td>Append to <span class="tag req">Always</span></td><td>Let the project be attached to other records.</td></tr>
+                        <tr><td>Assign</td><td>Hand ownership of the record to someone else.</td></tr>
+                        <tr><td>Share</td><td>Share the project onwards with other people.</td></tr>
+                    </tbody>
+                </table>
+                <details class="screen"><summary>See the real screen <span>&mdash; the Share records panel</span></summary><img src="img/permissions.jpg" alt="The Share records panel with permission check boxes" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="teams-site">
+                <h2 data-short="Link a Teams site">Link your project to a Teams site</h2>
+                <p class="ph-sub">Project Hub doesn't store documents. Your project's Teams site does &mdash; and once it's linked, you get your documents and task notifications right from the plan.</p>
+
+                <div class="diagram">
+                    <div class="link-diagram">
+                        <div class="ld-node">
+                            <span class="hub-kicker">Project Hub</span>
+                            <b>Your plan</b>
+                            <ul><li>Tasks in Planner</li><li>Project Documentation link</li><li>Record Owner</li></ul>
+                        </div>
+                        <div class="ld-link">
+                            <div class="ld-line"><span>linked once &mdash; permanently</span></div>
+                            <ul>
+                                <li>Documents open from the plan</li>
+                                <li>People get notified when you assign them a task</li>
+                                <li>The Teams group becomes the Record Owner</li>
+                                <li>Group members = Teams site members</li>
+                            </ul>
+                        </div>
+                        <div class="ld-node teams">
+                            <span class="hub-kicker">Microsoft Teams / SharePoint</span>
+                            <b>Your project's Teams site</b>
+                            <ul><li>Documents library</li><li>Chats</li><li>Members</li></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="note warn">
+                    <span class="note-ico">!</span>
+                    <p><strong>Don't have a Teams site yet?</strong>Request one through the <a href="https://eastrenfrewshire.sharepoint.com/Lists/Team%20Request/NewForm.aspx" target="_blank" rel="noopener">Team request form on the Intranet Applications page &#8599;</a> &mdash; <em>not</em> through the PMO.</p>
+                </div>
+
+                <h3>Link it</h3>
+                <ol class="steps">
+                    <li>From the home page, open your project.</li>
+                    <li>Go to the <strong>Tasks</strong> tab.</li>
+                    <li>Select the <span class="ui">Share</span> icon in the toolbar above your schedule.</li>
+                    <li>Select <span class="ui">Add to an existing group</span>.</li>
+                    <li>Find your Teams site &mdash; search, or pick it from the dropdown.</li>
+                    <li>Select <span class="ui primary">Add</span>. A confirmation shows it's been added.</li>
+                </ol>
+                <div class="note stop">
+                    <span class="note-ico">&#9888;</span>
+                    <p><strong>This can't be undone</strong>Once a Teams site is linked to a project, it can't be removed. Double-check you've picked the right group before selecting Add.</p>
+                </div>
+
+                <h3>Add or remove people</h3>
+                <ol class="steps">
+                    <li>After linking, select <span class="ui">See details</span> to view your group.</li>
+                    <li>Search for a person in <strong>Add members</strong> and select <span class="ui">Invite</span>.</li>
+                </ol>
+                <div class="note info">
+                    <span class="note-ico">i</span>
+                    <p><strong>Membership works both ways</strong>Anyone you add here joins the Teams group and can see <em>everything</em> in the site &mdash; documents, chats and all. Remove someone and they lose access to the Teams site too.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="doc-link">
+                <h2 data-short="Project Documentation link">Add the Project Documentation link</h2>
+                <p class="ph-sub">Paste a link to your Teams documents into the plan, so you (and anyone with access to the site) can open them in one click. Only people with access to the Teams site will be able to see the documents.</p>
+                <div class="diagram">
+                    <div class="flow">
+                        <div class="flow-step"><b>&#9638; Waffle</b><span>Top-left of any Office web app</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>SharePoint</b><span>Opens in a new tab</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Find your site</b><span>Search, or pick it from Overview</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Documents</b><span>Then <em>Copy link</em></span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step key"><b>Paste into Project Hub</b><span>Project Documentation field</span></div>
+                    </div>
+                </div>
+                <ol class="steps">
+                    <li>Select the <span class="ui">&#9638;</span> waffle icon at the top left of any Office app in your browser (Project Hub, OneNote&hellip;).</li>
+                    <li>Select <strong>SharePoint</strong>. It opens in a new tab.</li>
+                    <li>Search for your project's site with the search bar, or select it if it's shown on the Overview page.<small>The site name should match the project name in Project Hub.</small></li>
+                    <li>Select <strong>Documents</strong> to see everything in the site.</li>
+                    <li>Select <span class="ui">Copy link</span>.</li>
+                    <li>Back in Project Hub, paste the link into <span class="field">Project Documentation</span> on the Summary tab.</li>
+                    <li>From now on, select the <span class="ui">&#127760;</span> globe icon next to the link to open the site.</li>
+                </ol>
+                <details class="screen"><summary>See the real screen <span>&mdash; the link in place, with the globe icon</span></summary><img src="img/doc-link.jpg" alt="Project Documentation field with link and globe icon" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="folders">
+                <h2 data-short="Folder structure">Recommended folder structure</h2>
+                <p class="ph-sub">The PMO recommends the same three folders in every project's documents, so everyone's projects look and work the same way.</p>
+                <div class="diagram">
+                    <div class="folders">
+                        <div class="folder-row">
+                            <div class="folder-name"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>0.1 Procurement</div>
+                            <div><div style="font-size:0.82rem;color:#5d6b67;margin-bottom:0.35rem;">Procurement-related documents</div><div class="folder-docs"><span class="doc">Requirements</span><span class="doc">PIN</span><span class="doc">Supplier info</span></div></div>
+                        </div>
+                        <div class="folder-row">
+                            <div class="folder-name"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>0.2 Governance</div>
+                            <div><div style="font-size:0.82rem;color:#5d6b67;margin-bottom:0.35rem;">Project management and governance</div><div class="folder-docs"><span class="doc must">Project Brief</span><span class="doc must">PID</span><span class="doc">DPIA</span><span class="doc">Decision Log</span><span class="doc">Board Papers</span></div></div>
+                        </div>
+                        <div class="folder-row">
+                            <div class="folder-name"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>0.3 Project Delivery</div>
+                            <div><div style="font-size:0.82rem;color:#5d6b67;margin-bottom:0.35rem;">Delivery and operation documents</div><div class="folder-docs"><span class="doc">Analysis</span><span class="doc">Meeting Notes</span><span class="doc">Training Material</span></div></div>
+                        </div>
+                    </div>
+                    <div class="legend"><span><span class="doc must" style="margin-right:0.35rem;">Red</span>every project must have these saved</span></div>
+                </div>
+                <div class="note stop">
+                    <span class="note-ico">!</span>
+                    <p><strong>Must-haves</strong>Every project should have its <strong>Project Brief</strong> and <strong>PID</strong> saved in its documents.</p>
+                </div>
+                <details class="screen"><summary>See the real screen <span>&mdash; the folders in SharePoint</span></summary><img src="img/folders.jpg" alt="Project document folders in SharePoint" loading="lazy"></details>
+            </section>
+
+            <nav class="ph-pager" id="ph-pager" aria-label="Previous and next page"></nav>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="search-index.js"></script>
+<script src="guide.js"></script>
+</body>
+</html>

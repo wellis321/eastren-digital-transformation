@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Risks &amp; issues | Project Hub Guide</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="guide.css">
+</head>
+<body class="ph">
+
+<div class="site-topbar">
+    <a href="../index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="../assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="../logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<div class="ph-shell">
+    <aside class="ph-sidebar" id="ph-sidebar" aria-label="Guide navigation"></aside>
+    <div>
+        <button type="button" class="ph-menu-toggle" id="ph-menu-toggle">&#9776; Guide menu</button>
+        <main class="ph-main" id="main">
+            <header class="ph-hero">
+                <p class="ph-eyebrow">Run the project</p>
+                <h1>Risks &amp; issues</h1>
+                <p class="ph-lede">Every project risk and issue is recorded and kept up to date in Project Hub. Risks are scored on a 4&times;4 matrix; issues are prioritised; and when a risk actually happens, one flow turns it into an issue for you.</p>
+                <div class="ph-chips">
+                    <span class="ph-chip green">New: escalate a risk to an issue</span>
+                    <span class="ph-chip">New: Risk Update &amp; Issue Update fields</span>
+                    <span class="ph-chip">Duplicate names are blocked</span>
+                </div>
+            </header>
+
+            <section class="ph-section" id="risk-vs-issue">
+                <h2 data-short="Risk or issue?">Risk or issue?</h2>
+                <p class="ph-sub">Both live on their own tab in your plan, and work in a similar way. The difference is whether it <em>might</em> happen or <em>has</em> happened.</p>
+                <div class="compare">
+                    <div class="col old" style="background:#fff7ea;border-color:#f2d6a8;color:#5a3a0a;">
+                        <h4>Risk &mdash; it might happen</h4>
+                        <ul>
+                            <li>Scored on a <strong>4&times;4 matrix</strong>: Likelihood &times; Impact</li>
+                            <li>Project Hub works out the Score and Risk RAG</li>
+                            <li>Has a <strong>Mitigation plan</strong></li>
+                            <li>Kept current with the <strong>Risk Update</strong> field</li>
+                        </ul>
+                    </div>
+                    <div class="arrow" title="Escalate when it happens">&rarr;</div>
+                    <div class="col new" style="background:var(--ph-red-tint);border-color:#f1c7c3;color:#5c1a14;">
+                        <h4>Issue &mdash; it has happened</h4>
+                        <ul>
+                            <li>Prioritised <strong>High</strong>, <strong>Moderate</strong> or <strong>Low</strong></li>
+                            <li><strong>Only High</strong> issues are discussed at programme boards</li>
+                            <li>Has a <strong>Resolution Plan</strong></li>
+                            <li>Kept current with the <strong>Update</strong> field</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="diagram-cap" style="text-align:left;margin-top:0.6rem;">When a risk turns into reality, <a href="#escalate">escalate it to an issue</a> rather than starting again.</p>
+            </section>
+
+            <section class="ph-section" id="naming">
+                <h2 data-short="Naming convention">The naming convention</h2>
+                <p class="ph-sub">Project Hub keeps every project's risks and issues in one shared SharePoint list, so two can't have the same name &mdash; the system won't allow it. Start every title with your Project ID to keep it unique.</p>
+                <div class="diagram">
+                    <div class="namer">
+                        <span class="part id">PRJ-1004</span><span class="sep">&mdash;</span><span class="part title">Staff Resource Availability</span>
+                    </div>
+                    <div class="namer-bad">&#10007; Never just <s>Staff Resource Availability</s> &mdash; far too generic, and someone else will already have it.</div>
+                    <div class="legend"><span><i style="background:var(--ph-green);"></i>Your Project ID &mdash; shown at the top of your plan</span><span><i style="background:#eef7f3;border:1px dashed #9fcab8;"></i>A short, specific title</span></div>
+                </div>
+                <div class="note tip">
+                    <span class="note-ico">&#10003;</span>
+                    <p><strong>Same rule for both</strong>Use <em>Project ID &ndash; Risk Title</em> for risks and <em>Project ID &ndash; Issue Title</em> for issues. Before you start, note your Project ID from the top of the page.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="risks">
+                <h2 data-short="Create a risk">Create a risk</h2>
+                <p class="ph-sub">Select the <strong>Risks</strong> tab to see a table of the project's risks, then <span class="ui">+ New Risk</span>. The form has three parts.</p>
+                <div class="diagram">
+                    <div class="riskform">
+                        <div class="rf-sec">
+                            <span class="hub-kicker">1 &middot; General</span>
+                            <div class="rf-field"><label>Name</label><span>PRJ-1044 &ndash; Supplier capacity</span></div>
+                            <div class="rf-field"><label>State</label><span>Active <em class="rf-warn">never Proposed</em></span></div>
+                            <div class="rf-field"><label>Owner</label><span>Jo Smith <em class="rf-warn">needs Read access</em></span></div>
+                            <div class="rf-field"><label>Category</label><span>Choose from the list</span></div>
+                        </div>
+                        <div class="rf-sec">
+                            <span class="hub-kicker">2 &middot; Assessment</span>
+                            <div class="rf-field"><label>Likelihood</label><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></div>
+                            <div class="rf-field"><label>Impact</label><span class="stars">&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></div>
+                            <div class="rf-field auto"><label>Score</label><span>filled in on save</span></div>
+                            <div class="rf-field auto"><label>Risk RAG</label><span>filled in on save</span></div>
+                        </div>
+                        <div class="rf-sec">
+                            <span class="hub-kicker">3 &middot; Narrative</span>
+                            <div class="rf-field tall"><label>Description</label><span>What could happen, and why</span></div>
+                            <div class="rf-field tall"><label>Mitigation plan</label><span>What you're doing to reduce it</span></div>
+                            <div class="rf-field tall"><label>Risk Update</label><span>Latest position, as things change</span></div>
+                        </div>
+                    </div>
+                </div>
+                <ol class="steps">
+                    <li><strong>Name</strong> &mdash; your Project ID, then the risk's title. <a href="#naming">Naming</a></li>
+                    <li><strong>State</strong> &mdash; pick from the dropdown. <strong>Never choose Proposed.</strong></li>
+                    <li><strong>Owner</strong> &mdash; search for a name. They need Read permission on your project first. <a href="sharing.html#permissions">Permissions</a></li>
+                    <li><strong>Category</strong> &mdash; pick from the dropdown.</li>
+                    <li><strong>Likelihood</strong> and <strong>Impact</strong> &mdash; click the stars (1 to 4 each). <a href="#matrix">The matrix</a></li>
+                    <li><strong>Description</strong> and <strong>Mitigation plan</strong> &mdash; describe the risk and what you'll do about it.</li>
+                    <li><strong>Risk Update</strong> &mdash; add news here as the risk develops.</li>
+                    <li>Select <span class="ui">Save &amp; Close</span>. This is what pulls through the <span class="field">Score</span> and <span class="field">Risk RAG</span>.</li>
+                </ol>
+                <details class="screen"><summary>See the real screen <span>&mdash; a new risk form</span></summary><img src="img/risk-form.jpg" alt="The New Risk form with star ratings" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="matrix">
+                <h2 data-short="The 4×4 matrix">The 4&times;4 risk matrix</h2>
+                <p class="ph-sub">Every risk is assessed on two questions, each rated from one to four stars. Together they place the risk on the matrix &mdash; the further up and right, the more serious.</p>
+                <div class="diagram">
+                    <div class="matrix-wrap">
+                        <div class="matrix-y">Likelihood &mdash; how likely is it to happen?</div>
+                        <div class="matrix">
+                            <div style="background:#f7d9b6;">&#9733;4</div><div style="background:#f4c09a;"></div><div style="background:#ee9f86;"></div><div style="background:#e47b72;"></div>
+                            <div style="background:#f8e6bd;">&#9733;3</div><div style="background:#f7d9b6;"></div><div style="background:#f4c09a;"></div><div style="background:#ee9f86;"></div>
+                            <div style="background:#e5f0dc;">&#9733;2</div><div style="background:#f8e6bd;"></div><div style="background:#f7d9b6;"></div><div style="background:#f4c09a;"></div>
+                            <div style="background:#d7eadf;">&#9733;1</div><div style="background:#e5f0dc;"></div><div style="background:#f8e6bd;"></div><div style="background:#f7d9b6;"></div>
+                        </div>
+                        <div class="matrix-x">Impact &mdash; how bad would it be? &nbsp;&#9733;1 &rarr; &#9733;4</div>
+                    </div>
+                    <p class="diagram-cap">Shading is illustrative. Project Hub calculates the actual Score and Risk RAG when you Save &amp; Close.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="escalate">
+                <h2 data-short="Escalate a risk to an issue">Escalate a risk to an issue</h2>
+                <p class="ph-sub">New in Project Hub. When a risk happens, a Flow turns it into an issue and carries its details across, so you don't retype anything.</p>
+                <div class="diagram">
+                    <p class="diagram-title">The clicks, in order &mdash; from the open risk</p>
+                    <div class="flow">
+                        <div class="flow-step"><b>Flow</b><span>in the toolbar</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step key"><b>Escalate Risk to Issue</b></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Continue</b></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Run flow</b></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Done</b></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Save</b></div>
+                    </div>
+                </div>
+
+                <h3>What happens to each record</h3>
+                <div class="diagram">
+                    <div class="transfer">
+                        <div class="rec risk">
+                            <div class="rec-head">The risk <span style="font-size:0.7rem;font-weight:600;">becomes inactive</span></div>
+                            <ul>
+                                <li>Banner at the top <em>read-only &mdash; can't be edited</em></li>
+                                <li>State <em>Closed</em></li>
+                                <li>Related Issue <em>link to the new issue</em></li>
+                                <li>Risks tab <em>no longer listed</em></li>
+                            </ul>
+                        </div>
+                        <div class="mid"><b>&rarr;</b>details carried across</div>
+                        <div class="rec issue">
+                            <div class="rec-head">The new issue <span style="font-size:0.7rem;font-weight:600;">active</span></div>
+                            <ul>
+                                <li>Name <em>copied &mdash; edit if needed</em></li>
+                                <li>Description <em>copied &mdash; reword it as an issue</em></li>
+                                <li>State <em>Active</em></li>
+                                <li>Owner <em>copied &mdash; change if needed</em></li>
+                                <li>Due Date <em>leave blank</em></li>
+                                <li>Priority <em>you set it</em></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Finish off the new issue</h3>
+                <ol class="steps">
+                    <li>On the old risk, select the <strong>Related Issue</strong> link to open the new issue.</li>
+                    <li>Check the <strong>Name</strong>, and reword the <strong>Description</strong> so it reads as something that has happened.</li>
+                    <li>Change the <strong>Owner</strong> if needed. <strong>Don't</strong> fill in Due Date.</li>
+                    <li>Set the <strong>Priority</strong> &mdash; High, Moderate or Low.</li>
+                    <li>Add your <strong>Resolution Plan</strong>, and any news in <strong>Update</strong> with the date in the text.</li>
+                    <li>Select <span class="ui">Save &amp; Close</span>. You'll go back to the inactive risk &mdash; select the back arrow to return to your plan.</li>
+                    <li>Open the <strong>Issues</strong> tab: your new issue is in the table.</li>
+                </ol>
+                <details class="screen"><summary>See the real screen <span>&mdash; the Escalate Risk to Issue option</span></summary><img src="img/escalate.jpg" alt="Flow menu showing Escalate Risk to Issue" loading="lazy"></details>
+                <details class="screen"><summary>See the real screen <span>&mdash; the risk after escalation</span></summary><img src="img/risk-escalated.jpg" alt="Escalated risk showing read-only banner, Closed state and related issue link" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="issues">
+                <h2 data-short="Create an issue">Create an issue</h2>
+                <p class="ph-sub">For issues that weren't a risk first. Select the <strong>Issues</strong> tab, note your Project ID, then <span class="ui">+ New Issue</span>.</p>
+                <table class="fields">
+                    <thead><tr><th>Field</th><th>What to do</th></tr></thead>
+                    <tbody>
+                        <tr><td>Name</td><td>Your Project ID, then the issue title. <a href="#naming">Naming</a></td></tr>
+                        <tr><td>State</td><td>Pick from the dropdown. <strong>Never Proposed.</strong></td></tr>
+                        <tr><td>Owner</td><td>Search for a name. They need Read permission on your project. <a href="sharing.html#permissions">Permissions</a></td></tr>
+                        <tr><td>Due Date <span class="tag dont">Don't fill</span></td><td>Leave it blank.</td></tr>
+                        <tr><td>Priority</td><td><strong>High</strong>, <strong>Moderate</strong> or <strong>Low</strong>. Only High issues go to programme boards.</td></tr>
+                        <tr><td>Description</td><td>What has happened.</td></tr>
+                        <tr><td>Resolution Plan</td><td>How you'll resolve it.</td></tr>
+                        <tr><td>Update</td><td>Your latest position, whenever things change. Put the date in the text.</td></tr>
+                    </tbody>
+                </table>
+                <p>Then select <span class="ui">Save &amp; Close</span>. Your issue appears in the table on the Issues tab.</p>
+
+                <div class="diagram">
+                    <p class="diagram-title">Where each priority goes</p>
+                    <div class="prio">
+                        <div class="prio-row hi"><b>High</b><span>&rarr;</span><em>Discussed at the programme board</em></div>
+                        <div class="prio-row mid"><b>Moderate</b><span>&rarr;</span><em>Not taken to the programme board</em></div>
+                        <div class="prio-row lo"><b>Low</b><span>&rarr;</span><em>Not taken to the programme board</em></div>
+                    </div>
+                </div>
+                <details class="screen"><summary>See the real screen <span>&mdash; a new issue form</span></summary><img src="img/issue-form.jpg" alt="The New Issue form" loading="lazy"></details>
+            </section>
+
+            <nav class="ph-pager" id="ph-pager" aria-label="Previous and next page"></nav>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="search-index.js"></script>
+<script src="guide.js"></script>
+</body>
+</html>

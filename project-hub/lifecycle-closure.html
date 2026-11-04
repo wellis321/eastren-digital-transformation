@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Lifecycle &amp; closing | Project Hub Guide</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="guide.css">
+</head>
+<body class="ph">
+
+<div class="site-topbar">
+    <a href="../index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="../assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="../logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<div class="ph-shell">
+    <aside class="ph-sidebar" id="ph-sidebar" aria-label="Guide navigation"></aside>
+    <div>
+        <button type="button" class="ph-menu-toggle" id="ph-menu-toggle">&#9776; Guide menu</button>
+        <main class="ph-main" id="main">
+            <header class="ph-hero">
+                <p class="ph-eyebrow">Run the project</p>
+                <h1>Lifecycle &amp; closing</h1>
+                <p class="ph-lede">Every plan carries a Project Lifecycle bar showing which of five stages it's in, so anyone can see at a glance where the project sits in its journey. You move it on yourself &mdash; and some things lock as you do. At the end, you close and deactivate the plan.</p>
+                <div class="ph-chips">
+                    <span class="ph-chip green">New in Project Hub</span>
+                    <span class="ph-chip">Updated manually, by you</span>
+                </div>
+            </header>
+
+            <section class="ph-section" id="lifecycle">
+                <h2 data-short="The five stages">The five stages</h2>
+                <p class="ph-sub">The lifecycle bar sits at the top of every tab in your plan.</p>
+                <div class="diagram">
+                    <div class="life">
+                        <div class="life-stage"><div class="life-node">1</div><h4>Initiation</h4><p>After approval. Create the project record and finish gathering what's needed to define scope, objectives and requirements.</p></div>
+                        <div class="life-stage"><div class="life-node">2</div><h4>Planning</h4><p>Resource allocation, detailed planning and any procurement needed before delivery can start.</p></div>
+                        <div class="life-stage"><div class="life-node">3</div><h4>Delivery</h4><p>The main execution phase &mdash; planned work is carried out and deliverables produced.</p></div>
+                        <div class="life-stage"><div class="life-node">4</div><h4>Monitoring &amp; Controlling</h4><p>As deliverables are implemented: tracking progress, managing performance, making sure benefits and outcomes land.</p></div>
+                        <div class="life-stage"><div class="life-node">5</div><h4>Closure</h4><p>All activity complete, objectives met, and ownership formally handed to the business or operational owner.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ph-section" id="move-stage">
+                <h2 data-short="Move to the next stage">Move to the next stage</h2>
+                <p class="ph-sub">The lifecycle doesn't move on its own &mdash; update it as the project progresses.</p>
+                <ol class="steps">
+                    <li>Select the dot where the lifecycle currently sits.</li>
+                    <li>Select <span class="ui primary">Next Stage</span>. The lifecycle moves on one stage.</li>
+                </ol>
+                <p>The <span class="field">Stage</span> field on the Summary tab updates automatically to match.</p>
+                <div class="note info">
+                    <span class="note-ico">i</span>
+                    <p><strong>Project manager must be filled in</strong>The stage pop-up shows the Project manager field, marked as required. If it's empty, add a name before moving on.</p>
+                </div>
+                <details class="screen"><summary>See the real screen <span>&mdash; moving to the next stage</span></summary><img src="img/lifecycle.jpg" alt="Selecting Next Stage on the lifecycle bar" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="end-date-lock">
+                <h2 data-short="Original End Date locks">Original End Date locks at Delivery</h2>
+                <p class="ph-sub">You can change the Original End Date during Initiation and Planning. The moment the project moves into Delivery, it's locked for good.</p>
+                <div class="diagram">
+                    <div class="life" style="margin-bottom:0;">
+                        <div class="life-stage"><div class="life-node">1</div><h4>Initiation</h4></div>
+                        <div class="life-stage"><div class="life-node">2</div><h4>Planning</h4></div>
+                        <div class="life-stage"><div class="life-node" style="border-color:var(--ph-amber);color:var(--ph-amber);">3</div><h4>Delivery</h4></div>
+                        <div class="life-stage"><div class="life-node">4</div><h4>Monitoring &amp; Controlling</h4></div>
+                        <div class="life-stage"><div class="life-node">5</div><h4>Closure</h4></div>
+                    </div>
+                    <div class="life-band">
+                        <div class="open span2">&#9998; Original End Date can be edited</div>
+                        <div class="shut span3">&#128274; Original End Date locked &mdash; can't be changed</div>
+                    </div>
+                </div>
+                <div class="note warn">
+                    <span class="note-ico">!</span>
+                    <p><strong>Get it right before Delivery</strong>Check your Original End Date is what you want to be measured against before you select Next Stage out of Planning.</p>
+                </div>
+                <details class="screen"><summary>See the real screen <span>&mdash; the locked field in Delivery</span></summary><img src="img/end-date-lock.jpg" alt="Original End Date shown locked during Delivery" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="close">
+                <h2 data-short="Close a project">Close a project</h2>
+                <p class="ph-sub">Closing makes the plan read-only and takes it off your Active Projects list.</p>
+                <div class="note stop">
+                    <span class="note-ico">!</span>
+                    <p><strong>Only close once the paperwork is approved</strong>A <strong>Project Closure Report</strong> and an <strong>Executive Summary Closure Report</strong> must be completed and approved by the appropriate board first.</p>
+                </div>
+                <div class="diagram">
+                    <div class="flow">
+                        <div class="flow-step"><b>Lifecycle &rarr; Closure</b><span>Stage shows Closure</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Finish</b><span>A Finished icon appears</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Deactivate</b><span>in the command bar</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Closed</b><span>select it</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step"><b>Deactivate</b><span>confirm</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-step key"><b>Read-only</b><span>off your Active Projects</span></div>
+                    </div>
+                </div>
+                <ol class="steps">
+                    <li>Move the Project Lifecycle on to <strong>Closure</strong>. The Stage field now shows Closure.</li>
+                    <li>Select <span class="ui">Finish</span>. A Finished icon appears.</li>
+                    <li>Select <span class="ui">Deactivate</span>.</li>
+                    <li>Select <strong>Closed</strong>.</li>
+                    <li>Select <span class="ui primary">Deactivate</span> to confirm.</li>
+                    <li>The plan is now read-only. Select <strong>Plans</strong> in the left rail &mdash; it no longer shows in your active projects.</li>
+                </ol>
+                <details class="screen"><summary>See the real screen <span>&mdash; Finished, ready to deactivate</span></summary><img src="img/deactivate.jpg" alt="Plan showing Finished with the Deactivate option" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="find-closed">
+                <h2 data-short="Find a closed project">Find a closed project</h2>
+                <ol class="steps">
+                    <li>On the home page, select <strong>My Active Projects</strong> (the view name above the list).</li>
+                    <li>Choose <strong>Closed Projects</strong>.</li>
+                    <li>Select a project's name to open its read-only version.</li>
+                </ol>
+                <div class="note info">
+                    <span class="note-ico">i</span>
+                    <p><strong>Need to reopen one?</strong>Instructions for reopening a closed project will be in the full guidance notes, which the PMO is still to issue.</p>
+                </div>
+            </section>
+
+            <nav class="ph-pager" id="ph-pager" aria-label="Previous and next page"></nav>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="search-index.js"></script>
+<script src="guide.js"></script>
+</body>
+</html>

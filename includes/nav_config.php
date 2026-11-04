@@ -224,13 +224,22 @@ function nav_strip_hidden_cards(string $html, array $hiddenIds): string
  */
 function nav_inject_admin_link(string $navBlockHtml): string
 {
-    if (str_contains($navBlockHtml, 'nav-admin.php')) {
-        return $navBlockHtml;
+    if (!str_contains($navBlockHtml, 'nav-admin.php')) {
+        $navBlockHtml = preg_replace(
+            '#(>Programme\s*<svg.*?</button>\s*<div class="(?:nav-dropdown|mobile-nav-sub)">)#s',
+            '$1<a href="nav-admin.php">Menu settings</a>',
+            $navBlockHtml,
+            1
+        ) ?? $navBlockHtml;
     }
-    return preg_replace(
-        '#(>Programme\s*<svg.*?</button>\s*<div class="(?:nav-dropdown|mobile-nav-sub)">)#s',
-        '$1<a href="nav-admin.php">Menu settings</a>',
-        $navBlockHtml,
-        1
-    ) ?? $navBlockHtml;
+    if (!str_contains($navBlockHtml, '/project-hub/')) {
+        $guideHref = htmlspecialchars((defined('APP_URL') ? APP_URL : '') . '/project-hub/', ENT_QUOTES, 'UTF-8');
+        $navBlockHtml = preg_replace(
+            '#(>Reference\s*<svg.*?</button>\s*<div class="(?:nav-dropdown|mobile-nav-sub)">)#s',
+            '$1<a href="' . $guideHref . '">Project Hub guide</a>',
+            $navBlockHtml,
+            1
+        ) ?? $navBlockHtml;
+    }
+    return $navBlockHtml;
 }
