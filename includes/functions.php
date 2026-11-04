@@ -31,7 +31,7 @@ function is_site_owner(): bool
     if ($userId <= 0) {
         return false;
     }
-    $allowedUsernames = ['ellisw', 'admin', 'wellis'];
+    $allowedUsernames = ['ellisw'];
     $stmt = db()->prepare('SELECT username FROM users WHERE id = ?');
     $stmt->execute([$userId]);
     $username = strtolower(trim((string)($stmt->fetchColumn() ?: '')));
