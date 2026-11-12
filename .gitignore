@@ -28,6 +28,8 @@ standalone-development-group-2/
 standalone-development-group-2.zip
 2026-10-27-project-group-meeting.html
 standalone-project-group/
+2026-11-workshop-outcomes.html
+standalone-workshop-outcomes/
 
 # Sensitive files — CVs, cover letters, council documents, personal records
 *.pdf
@@ -47,3 +49,14 @@ website/config/database.php
 .env
 vendor/
 sql/seed_users.sql
+
+# Offline copy of the Project Hub guide (built by scripts/build-project-hub-standalone.py)
+standalone-project-hub/
+standalone-project-hub.zip
+
+# Head of Service deck and its notes, plus the deck build scripts (they hold the deck text) — kept local only
+2026-11-10-head-of-service-update.html
+standalone-head-of-service/
+presentations/head of Housing/
+scripts/build-head-of-service-deck.py
+scripts/build-workshop-outcomes-deck.py

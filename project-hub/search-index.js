@@ -33,7 +33,7 @@ window.PH_INDEX = [
 "pageTitle": "Start here",
 "id": "find",
 "title": "Find what you need",
-"text": "Or press / anywhere to search the whole guide. Access & finding your way The link, bookmarking, the home page, customising columns and pinning plans. Open → Create a project Every field on Summary, Business Case and Financials — what to enter and what fills itself in. Open → Sharing, Teams & documents Permissions, linking a Teams site, the documentation link and the folder structure. Open → Tasks & milestones Phases, subtasks, critical milestones and the five Planner views. Open → Risks & issues Naming, the 4×4 matrix, the forms and escalating a risk to an issue. Open → Status & reporting The six health criteria, Get to Green, the 3-month look-ahead and the dashboards. Open → Lifecycle & closing The five stages, what locks when, and how to close and deactivate a plan. Open → Quick reference The rules on one page, PWA-to-Project Hub changes and a glossary. Open →"
+"text": "Or press / anywhere to search the whole guide. Access & finding your way The link, bookmarking, the home page, customising columns and pinning plans. Open → Create a project Every field on Summary, Business Case and Financials — what to enter and what fills itself in. Open → Sharing, Teams & documents Permissions, linking a Teams site, the documentation link and the folder structure. Open → Tasks & milestones Phases, subtasks, critical milestones and the five Planner views. Open → Risks & issues Naming, the 4×4 matrix, the forms and escalating a risk to an issue. Open → Status & reporting The six health criteria, Get to Green, the 3-month look-ahead and the dashboards. Open → Lifecycle & closing The five stages, what locks when, and how to close and deactivate a plan. Open → Quick reference The rules on one page, PWA-to-Project Hub changes and a glossary. Open → Filling our plan What to type into each tab for our project: phases, workshops, data sheets, milestones, risks and the first status update. Open →"
 },
 {
 "page": "index.html",
@@ -405,5 +405,138 @@ window.PH_INDEX = [
 "id": "links",
 "title": "Links & contacts",
 "text": "Project Hub (live) The tool itself. Open ↗ Request a Teams site The Team request form on the Intranet Applications page. Open ↗ Planner training M365 Task Management (Planner) in the Course Catalogue. Or book via iTrent. Open ↗ Questions or feedback Contact Ben McKenzie or Lynsey Skelton . Suggested improvements are added to the product backlog and reviewed, with user workshops to help prioritise them."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "main",
+"title": "Filling our plan in Project Hub",
+"text": "Our project What to type into each tab for Housing Digital Transformation: Mobile Working & Servitor Replacement , so the strategic group sees a clear, honest high-level plan. It's drawn from the board and group decks, the Head of Service update, the Workshop Outcomes deck, the Outcomes & Goals page and the ROCC Data Sheets guide. Working draft · as at 12 November 2026 Workshops = subtasks Data sheets = a parallel phase Benefits = Planner Goals"
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "short-answer",
+"title": "Buckets, milestones or phases? All three — each does a different job",
+"text": "Only some of what you put in Planner reaches the boards. Use each feature for what it's good at. Phases (parent tasks) — the timeline Use ROCC's delivery stages, plus parallel strands for data, integration and engagement. This is what the Timeline view and the board read as “the plan”. See the plan → Critical milestones — what the board sees 0-day tasks are the only part of the schedule that reaches the Highlight Report and the Power BI programme dashboard. Keep to about 15. See the milestones → Buckets — for the team only Columns in Board view. Nothing in them reaches the boards, so use them for workstreams (Data, Interfaces…) to show who owns what. See the buckets → Goals — the eight benefits Planner's Goals view fits the benefits exactly. Connect each workshop to the benefits it drives, and the hub shows the workshop-to-benefit map. See the goals → ✓ Where the workshops and data sheets go The 14 workshops are subtasks under the Design phase, one per session; “all workshops held” is a milestone. The data sheets are a parallel Data readiness & migration phase, with one subtask per sheet group in loading order — not 22 separate tasks."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "dates",
+"title": "Before you type: the end dates don't agree",
+"text": "The Original End Date is your baseline promise, and it locks the moment the lifecycle moves into Delivery. Three sources point in different directions. Source What it says Outcomes & Goals page Target completion 31 March 2027 (“subject to solution procured”) Every deck Servitor becomes unsupported in early 2027 ROCC's stage lengths Design to go-live is 8–12 months from 10 November, so go-live around July–November 2027 ! What to do Keep the lifecycle at Planning (the design workshops count as detailed planning in the guide's terms). Leave Original End Date blank until ROCC's firm plan, with a Servitor fallback, is agreed, and set it before you select Next Stage into Delivery. Rate Timescale At Risk in the first status update; the Head of Service deck already says this openly."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "timeline",
+"title": "The plan on a page",
+"text": "How the phases below should look in the Timeline view. Solid bars are firm; hatched bars are ROCC's typical ranges (earliest start to latest finish) until their plan is agreed. Apr 26 Jul 26 Oct 26 Jan 27 Apr 27 Jul 27 Oct 27 Discovery & Mobilisation 20 Apr – 5 Oct 2026 · done ROCC Initiate 11 Aug – Nov 2026 · PID open Design 10 Nov 2026 – Feb/Mar 2027 Data readiness & migration Sep 2026 → go-live Integration, devices & sign-in Sep 2026 → end of testing Build 6–10 weeks · indicative Testing 8–12 weeks · indicative Training & adoption 4–8 weeks · indicative Go-Live & Close ~6 weeks · indicative Engagement, comms & change ongoing Done Under way / firm The 14 workshops Indicative range Servitor unsupported (early 2027) 31 Mar 2027 target Today"
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "summary-tab",
+"title": "Summary tab",
+"text": "The first tab you complete. How the fields work → Field What to enter Name Housing Digital Transformation: Mobile Working & Servitor Replacement — the Project Brief's own name for the single initiative. Project Type Project. Check with the PMO whether they'd rather it was Programme, given it sits under MAP. Program MAP / Systems & Technology — use whatever the PMO's dropdown calls it. Project Background Copy the text below. It's the same field as on the Business Case tab. Project Approval Date From the Project Brief or the board minutes — not in our documents . Start Date 20 April 2026 (team established). The Outcomes page also says Phase 1 procurement began April 2025 — pick one and say which in the background. Original End Date Leave blank for now. Why → Project Manager William Ellis (fills in automatically). Record Owner You to start with; the Teams group once it's linked. Project Owner The Project Owner who chairs the Project Board. Project Background Copy Housing Repairs must replace Servitor (Civica's stock and job costing system), which becomes unsupported in early 2027. There is also a long-standing need to give trade operatives real mobile working: the information they need to plan and deliver a repair, in their hands, without paper and without re-keying it at the office. The programme treats these as one initiative: one procurement, one platform (ROCC, selected to replace Servitor and DRS) and one connected process from capture to plan, schedule, stock, report and pay, integrated with NEC, Integra, APEX, iTrent and DATAstox with the least possible manual intervention. Improved customer experience is the driver: repairs right first time, appointments kept, homes re-let sooner, and tenants told what is happening with their repair."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "business-case",
+"title": "Business Case & Financials",
+"text": "The Scope Overview field: what's included and what's excluded. In scope The ROCC suite: Core, Resolve, Orchestrator, Contractor, Attend, Tracker, Focus, Connect, Cloud Replacing Servitor and DRS Interfaces with NEC, Integra, APEX, iTrent, DATAstox, GOSS and the new fleet system Data cleansing and migration Mobile devices and sign-in for trades Voids brought into the same record (Orchestrator) Training, change and adoption Tenant involvement and communication Out of scope, or changed DATAstox stays. ROCC doesn't provide the barcoding we need, so we link the two rather than replace it. The fleet system is a separate project. We design alongside it so operatives do one vehicle check, not two. NEC Housing isn't being replaced. The Outcomes & Goals page still says “Replacement of Datastox” in Phase 3 — worth fixing so the hub and the portal agree. i Financials tab: skip for now It's optional, and none of our documents has the contract value, spend or cashable savings. Fill it in if Finance gives you figures — and if you use the Benefits field, keep the Benefit Tracker in SharePoint updated too."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "plan",
+"title": "Tasks: the phases and what sits under them",
+"text": "Each green bar is a parent task; the rows under it are subtasks; diamonds are critical milestones. ✓ marks what's already done — set those to 100%. For Build onwards, put “(indicative)” in the phase name until ROCC's dates land: Final Task Date and Duration work themselves out from these, and the boards see them. 1 · Discovery & Mobilisation 20 Apr – 5 Oct 2026 · 100% Programme team and SharePoint (ENV/99/24) set up ✓ 20 Apr Current process mapping: Payroll, Mobile, Scheduling, Job Costing, Stores, Compliance ✓ System walkthroughs: NECH, DRS, Integra, APEX, ROCC ✓ 18 May North Ayrshire shared learning (ROCC users) ✓ 26 May Discovery with 20+ teams (Stores, HMT, Customer First, BST, Property, Transport, Allocations…) ✓ Mobile phones to HMT; full mobile device audit ✓ May – Sep Schedule of Rates redesigned; void followed end to end ✓ Governance cycle started (first Project Board) ✓ 22 Jul 2 · ROCC Initiate 11 Aug – Nov 2026 · ~80% ROCC introductions meeting ✓ 11 Aug Draft PID v0.1 received ✓ 21 Aug ROCC kick-off and demo (~30 staff) ✓ 6 Oct Delivery Group set up; workshop nominations requested (by 23 Oct) ✓ Oct Fife learning (ROCC users since January) ✓ Oct PID completed and signed off open Delivery plan agreed with ROCC, including a Servitor fallback open · most important 3 · Design 10 Nov 2026 – about Feb/Mar 2027 Design workshops start ✓ 10 Nov 14 workshop subtasks — see the table 10 Nov – 14 Dec All 14 design workshops held 7 Dec All workshop decisions circulated; RAID log updated 14 Dec Workshop outcomes to the Head of Service group ~22 Dec Follow-on sessions for objectives not met as booked Solution Design Document signed off ~Feb/Mar 2027 4 · Data readiness & migration Sep 2026 → go-live · parallel Six sheet-group subtasks in loading order, plus register, trial load and sign-off — see below 5 · Integration, devices & sign-in parallel Interface list agreed: NEC, Integra, APEX, iTrent, DATAstox, GOSS, fleet system, DRS run-down at / after Workshop 10 Fleet system scope, supplier and timeline obtained before 26 Nov IT meeting on device sign-in design (Intune, single sign-on, FIDO2) not yet arranged Sign-in design agreed with IT and Cyber TBC iTrent absence feed into scheduling designed TBC 6 · Build (indicative) 6–10 weeks · ~Mar–May 2027 ROCC configured to the agreed design First trial data load indicative 7 · Testing (indicative) 8–12 weeks · ~May–Aug 2027 UAT with our own data, with trades and tenants involved UAT signed off indicative 8 · Training & adoption (indicative) 4–8 weeks · ~Jun–Sep 2027 Training materials; staff trained; devices ready for Attend 9 · Go-Live & Close (indicative) ~6 weeks · ~Jul–Nov 2027 Back-office go-live indicative Mobile (Attend) go-live indicative Servitor decommissioned indicative Project Closure Report and Executive Summary Closure Report Ongoing · Engagement, comms & change Apr 2026 → Get Involved site live; 97 tenants volunteered ✓ by 28 Sep Teams spaces for every group, including ROCC, Tenants and Tradespeople ✓ Manager conversations about releasing staff ongoing Tenant and trades involvement in testing with Testing ROCC's stage lengths come from its own PRINCE2-based framework. They're typical ranges, not our agreed plan."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "workshops",
+"title": "The 14 design workshops",
+"text": "One subtask per workshop under Design. Set the Start to the session day and the Finish a week later — the deadline for circulating decisions and updating the RAID log — so % complete measures outputs, not attendance. Assign each to its ERC lead. # Workshop Session Finish Drives 1 Core Overview: Routine & Emergency Works Tue 10 Nov · full day ✓ 17 Nov B7 2 Scheduling (Resolve) Thu 12 Nov · full day 19 Nov B2 B7 3 Attend (Mobile Working) Mon 16 Nov · AM 23 Nov B3 B6 4 Contractor Allocations Thu 19 Nov · AM 26 Nov B3 B5 5 Voids: Orchestrator Process Fri 20 Nov · full day 27 Nov B8 6 Stores, Van Stock & Purchasing Mon 23 Nov · AM 30 Nov B1 B3 B5 7 Planned, Cyclical, Safety & Compliance Wed 25 Nov · AM 2 Dec B6 B7 8 Vehicle, Plant & Equipment Thu 26 Nov · AM 3 Dec B3 B6 9 Media & Documents Thu 26 Nov · PM 3 Dec B3 10 Interfaces & Integration Tue 1 Dec · full day 8 Dec B3 B7 11 Finance & Financial Integration Wed 2 Dec · AM 9 Dec B5 12 eTrading Thu 3 Dec · AM or PM? 10 Dec B1 B3 B5 13 Dashboard & Reporting (Focus) Fri 4 Dec · full day 11 Dec B4 14 Data Migration Mon 7 Dec · or Tue 8? 14 Dec All Put this in each workshop's checklist Planner tasks have a checklist. Use the six asks from the Workshop Outcomes deck, plus that workshop's own “sign it worked” check: Concerns raised in the room If no objection is raised, agreement is assumed. Anything needing board approval leaves with an owner and a date. Every data template has a named ERC owner and source system Decisions circulated and RAID log updated within a week Today's process captured, not just the future one Unmet objectives listed, with a follow-on session booked Attendees can explain the decisions to their team by their next team meeting"
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "data-sheets",
+"title": "Data sheets: the Data readiness & migration phase",
+"text": "One subtask per sheet group, in loading order — the lists other sheets point at go first. Assign each to its lead owner and list the group's sheets in its checklist. The per-sheet detail stays in the ROCC Data Sheets app, linked from the task notes. 4 · Data readiness & migration Sep 2026 → go-live Data readiness review: where data lives, who owns it, how good it is started Sep ROCC Data Sheets guide and three video lessons issued to teams ✓ Nov 1 · Agree First: Terms and Codes agreed before Foundations 2 · Foundations — 7 sheets loads first 3 · Repairs & Jobs — 5 sheets 4 · Scheduling & Mobile Working — 4 sheets 5 · Contractors, Voids, Stores & Vehicles — 4 sheets 6 · Reporting — 1 sheet Dataset register complete: owner and source system for every dataset after Workshop 14 First trial load and correction cycle in Build Data owners validate and sign off before UAT The checklist for each group Group Sheets (checklist items) Lead owners Foundations Property and Tenant · Property and Tenant Attributes · Asbestos (ACM) Records · Users and Groups · Permissions Matrix · Employees, Trades and Timesheets · Finance Codes and Rules Housing IT Systems; Compliance; Repairs management; Business Support; Finance Repairs & Jobs Diagnostics, SORs and Jobs · Contractor SOR Price Overrides · Work Programmes · Hazard Cases · Enquiries Repairs management and Technical Officers; Purchasing & Contracts; compliance leads; Customer First Scheduling & Mobile Resolve Scheduling · Attend (Mobile App) Set-up · Attend Forms and Surveys · Tracker Planning Officer and Planners; Repairs supervisors with operatives; compliance leads; project team Contractors, Voids, Stores & Vehicles Contractor Portal · Orchestrator (Voids and Projects) · Purchasing and Van Stock · Vehicles, Plant and Equipment Purchasing, Stores & Contracts; Voids and Technical Officers; Senior Storekeeper; fleet project Reporting Focus Dashboard Users Project team with Repairs managers and BI reporting i ROCC's reply of 11 November — add to the task notes Asbestos: start now; it's sample data for UAT, and the APEX-or-NEC route is confirmed at Workshop 10. Enquiries and Orchestrator: nothing to complete yet — leave them not started so they don't show as overdue."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "milestones",
+"title": "Critical milestones",
+"text": "What the strategic group actually sees on the Highlight Report and dashboards. Each is a 0-day task: same start and finish, duration set to 0 by hand. How → Date Milestone Status 20 Apr 2026 Programme team established ✓ Done 22 Jul 2026 Governance cycle started (first Project Board) ✓ Done 21 Aug 2026 ROCC draft PID received ✓ Done 6 Oct 2026 ROCC kick-off ✓ Done 10 Nov 2026 Design workshops start ✓ Done TBC PID signed off Open TBC — ASAP ROCC delivery plan and Servitor fallback agreed Open 7 Dec 2026 All 14 design workshops held Planned 14 Dec 2026 All workshop decisions circulated; RAID updated Planned TBC Dataset register complete (no blank owners) Planned ~Feb/Mar 2027 Solution Design Document signed off Indicative Indicative First trial data load Indicative Indicative UAT signed off Indicative Indicative Back-office go-live Indicative Indicative Mobile (Attend) go-live Indicative Indicative Servitor decommissioned Indicative"
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "buckets",
+"title": "Buckets: workstreams for the Board view",
+"text": "Every task sits in one phase and one bucket. Phases tell the board when ; buckets tell the team whose . In Board view, choose Add bucket . Governance & reporting PID, delivery plan, status reports, RAID. Design workshops The 14 sessions, follow-ons and the Solution Design Document. Data readiness Terms and Codes, the sheet groups, register, trial loads. Interfaces & integration NEC, Integra, APEX, iTrent, DATAstox, GOSS, fleet. Mobile, devices & sign-in Devices, Intune, single sign-on, FIDO2, Attend. Engagement, comms & change Tenants, trades, managers, Get Involved, Teams spaces. Test, train & go-live UAT, training, cutover, Servitor run-down."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "goals",
+"title": "Goals: the eight benefits",
+"text": "In Planner's Goals view, select + Add goal for each, then Connect tasks to link the workshops that drive it. This puts the Workshop Outcomes deck's benefit map inside the hub. Goal What it means Connect Improved Customer Experience — the reason for all of it B1 Stock Control Operatives have the part and fix it first time. Workshops 6, 12 B2 Lower Emissions Smarter scheduling cuts travel; appointments easier to keep. Workshop 2 B3 Less Paper, Fewer Delays Less re-keying, so jobs move on without waiting. Workshops 3, 4, 6, 8, 9, 10, 12 B4 Business Intelligence Live data spots problems before tenants chase us. Workshop 13 B5 Financial Control Job costing to invoicing under control. Workshops 4, 6, 11, 12 B6 Safer Working Operatives safer on every job. Workshops 3, 7, 8 B7 Customer Communication Tenants told at every step. Workshops 1, 2, 7, 10 B8 Void Performance Empty homes turned around faster. Workshop 5 Workshop 14 (Data Migration) underpins all eight — connect it to every goal, or to Improved Customer Experience only."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "risks",
+"title": "Risks",
+"text": "Name each one with the Project ID first, e.g. PRJ-xxxx – Servitor support ends before go-live . Scores are a suggested starting point: likelihood × impact, each out of 4. How → Risk L×I Mitigation Servitor support ends before ROCC go-live 4×4 Firm plan with ROCC; Servitor fallback agreed early Future processes not agreed before system design 3×4 Each workshop captures today's process first; decisions confirmed in the room and recorded Integration complexity (NEC, Integra, APEX, iTrent, DATAstox, fleet, GOSS) 3×4 Dedicated Interfaces and Finance workshops; one master system per dataset; missing interfaces raised at Workshop 10 Service capacity to release staff for design and data work 4×3 Delivery Group nominations, manager conversations, protected time (the May Stores session fell through without it) Data quality and migration effort underestimated 3×4 Data run as its own strand; named owner per sheet; early review; trial loads (Aberdeenshire's migration ran three months late) Mobile working doesn't fit how trades work; too many sign-ins 3×3 Operatives design their own day in Workshop 3; sign-in designed with IT (Intune, SSO, FIDO2) Workshop attendees lack authority to decide 3×3 Managers asked to nominate decision-makers; decisions circulated within a week for challenge Reporting gap: BI not renewed, Servitor extracts relied on today 2×3 Workshop 13 go-live report list; Focus alongside Power BI Data protection (Tracker location data, devices, migration) 2×4 Information Governance at Workshop 9; DPIA Fleet system out of step with ROCC 2×3 Fleet colleagues in Workshop 8; scope obtained beforehand Change fatigue 3×2 Regular communication through each group's Teams space and the Get Involved site"
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "issues",
+"title": "Issues",
+"text": "Things that have already happened. Only High issues go to the programme board. Leave Due Date blank. If one started life as a risk, use the Escalate Risk to Issue flow instead. Issue Priority Health and Safety manager leaving; no H&S cover for Workshops 3 and 7 High — safety is one of the eight benefits IT meeting on device sign-in not yet arranged; mobile working blocked High or Moderate Information Governance missing from Workshop 9; APEX owner missing from Workshop 10 Moderate Discovery sessions falling through when the day job takes priority Moderate Workshop dates disagree across sources (eTrading AM/PM; Data Migration 7 or 8 Dec) Low"
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "status",
+"title": "The first status update",
+"text": "Set Project Level Update to Programme Board Update if the strategic group is the Systems & Technology Programme Board — that puts it on the programme dashboard. How → Scope — On Track Clear and agreed; the DATAstox decision is made. Timescale — At Risk ROCC's ranges put go-live after Servitor's support ends. Financial Benefit Savings — your call No baselines or cashable figures yet. Non-Financial Resource — At Risk Releasing staff; H&S cover for Workshops 3 and 7. Issue Health — At Risk H&S cover and the IT sign-in meeting. Risk Health — At Risk Servitor timing, process, integration, capacity. ! Get to Green Only needed if you rate anything Off Track. If Timescale goes Off Track, use: “Agree ROCC delivery plan with a Servitor fallback by [date].” The three-month look-ahead Previously expected Copy ROCC kick-off held PID completed 14-workshop schedule confirmed, with nominated attendees Data readiness review started Actually achieved Copy Kick-off on 6 Oct with about 30 staff; ROCC called it one of the best they've attended 14 workshops scheduled, 10 Nov to 7 Dec, each with a defined “what good looks like” outcome Delivery Group set up; Fife learning gathered ROCC Data Sheets guide and video lessons issued to teams Head of Service update on 10 Nov; workshops started the same day PID still being finalised Planned next Copy Run all 14 workshops; circulate decisions within a week of each Complete the dataset register with named owners Agree the delivery plan and Servitor fallback with ROCC Arrange interim H&S input and the IT sign-in design meeting Take workshop outcomes to the Head of Service in about six weeks"
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "documents",
+"title": "Sharing and documents",
+"text": "Do this straight after the first Save & Close. How → Permissions: Calum, Laura and Ian get Write. Every risk or issue owner gets at least Read before you assign them. Always tick Append and Append to. Teams site: link the ENV/99/24 site from the Tasks tab. This can't be undone — double-check you're picking the right group. Project Documentation: paste the site's Documents link into the field on the Summary tab. Our documents in the PMO's three folders Folder What goes in it 0.1 Procurement ROCC procurement papers 0.2 Governance Project Brief and PID (must-haves), RAID log, board and group decks (Development Group, Project Group, Board update, Head of Service) 0.3 Project Delivery Workshop agendas and crib sheets, Workshop Outcomes deck, ROCC data templates, the Data Sheets app and videos, process maps, the 6 October kick-off recording"
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "gaps",
+"title": "Still to confirm",
+"text": "None of our documents answers these. Get them before you finish the Summary tab. ? Project Approval Date From the Project Brief or the board minutes. ? Project Owner's name Whoever chairs the Project Board. ? Programme name As it appears in the PMO's dropdown. ? Start date April 2026 (team) or April 2025 (procurement). ? Contract value and spend Only if you want the Financials tab. ? Which board is “strategic” Programme Board or Project Board update."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "order",
+"title": "The order to fill it in",
+"text": "Summary and Business Case , then Save & Close to get the Project ID. Share permissions and link the Teams site . Set the lifecycle to Planning. Leave Original End Date blank. Build the phases , then the subtasks, then the milestones (0 days). Mark the done ones 100%. Add the buckets and drop each task into one. Add the Goals and connect the workshops. Record the risks and issues , with the Project ID at the start of each name. Submit the first status update before the strategic group meets, then check the Highlight Report."
+},
+{
+"page": "our-project.html",
+"pageTitle": "Filling our plan",
+"id": "sources",
+"title": "Where this came from",
+"text": "Head of Service update 10 Nov 2026: findings, benefits, risks, choices. Open → Workshop Outcomes What good looks like for each of the 14 workshops. Open → Project Group, 27 Oct Kick-off recap, Fife, every workshop in depth. Open → Project Board update Case for change, PID, products, data readiness. Open → Development Group meetings Who owns what, systems crossover, ROCC team. Open → Outcomes & Goals Vision, eight benefits, three phases. Open →"
 }
 ];

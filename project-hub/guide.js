@@ -13,7 +13,8 @@
         risk: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/>',
         chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
         cycle: '<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/>',
-        book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>'
+        book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>',
+        flag: '<path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/>'
     };
 
     var PAGES = [
@@ -25,7 +26,8 @@
         { file: 'risks-issues.html', title: 'Risks & issues', icon: 'risk', group: 'Run the project' },
         { file: 'status-reporting.html', title: 'Status & reporting', icon: 'chart', group: 'Run the project' },
         { file: 'lifecycle-closure.html', title: 'Lifecycle & closing', icon: 'cycle', group: 'Run the project' },
-        { file: 'quick-reference.html', title: 'Quick reference', icon: 'book', group: 'Reference' }
+        { file: 'quick-reference.html', title: 'Quick reference', icon: 'book', group: 'Reference' },
+        { file: 'our-project.html', title: 'Filling our plan', icon: 'flag', group: 'Our project' }
     ];
 
     function svg(name, size) {

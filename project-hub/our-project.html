@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23006A51'/%3E%3Ctext x='16' y='23' font-family='Arial%2C sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+    <title>Filling our plan | Project Hub Guide</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="guide.css">
+</head>
+<body class="ph">
+
+<div class="site-topbar">
+    <a href="../index.html" class="topbar-left" aria-label="ERC Housing Digital Transformation — Home">
+        <img src="../assets/media/leaves.png" alt="East Renfrewshire Council" class="topbar-leaves" width="28" height="20">
+        <span>East Renfrewshire Council &mdash; Housing Digital Transformation</span>
+    </a>
+    <div class="topbar-right">
+        <a href="../logout.php" class="topbar-signout">Sign out</a>
+        <div id="current-date" style="color: rgba(255,255,255,0.6); font-size: 0.72rem;"></div>
+    </div>
+</div>
+
+<div class="ph-shell">
+    <aside class="ph-sidebar" id="ph-sidebar" aria-label="Guide navigation"></aside>
+    <div>
+        <button type="button" class="ph-menu-toggle" id="ph-menu-toggle">&#9776; Guide menu</button>
+        <main class="ph-main pg-page" id="main">
+            <header class="ph-hero">
+                <p class="ph-eyebrow">Our project</p>
+                <h1>Filling our plan in Project Hub</h1>
+                <p class="ph-lede">What to type into each tab for <strong>Housing Digital Transformation: Mobile Working &amp; Servitor Replacement</strong>, so the strategic group sees a clear, honest high-level plan. It's drawn from the board and group decks, the Head of Service update, the Workshop Outcomes deck, the Outcomes &amp; Goals page and the ROCC Data Sheets guide.</p>
+                <div class="ph-chips">
+                    <span class="ph-chip green">Working draft &middot; as at 12 November 2026</span>
+                    <span class="ph-chip">Workshops = subtasks</span>
+                    <span class="ph-chip">Data sheets = a parallel phase</span>
+                    <span class="ph-chip">Benefits = Planner Goals</span>
+                </div>
+            </header>
+
+            <section class="ph-section" id="short-answer">
+                <h2 data-short="The short answer">Buckets, milestones or phases? All three &mdash; each does a different job</h2>
+                <p class="ph-sub">Only some of what you put in Planner reaches the boards. Use each feature for what it's good at.</p>
+                <div class="grid two">
+                    <div class="card"><h4>Phases (parent tasks) &mdash; the timeline</h4><p>Use ROCC's delivery stages, plus parallel strands for data, integration and engagement. This is what the Timeline view and the board read as &ldquo;the plan&rdquo;.</p><a class="card-go" href="#plan">See the plan &rarr;</a></div>
+                    <div class="card"><h4>Critical milestones &mdash; what the board sees</h4><p>0-day tasks are the only part of the schedule that reaches the Highlight Report and the Power BI programme dashboard. Keep to about 15.</p><a class="card-go" href="#milestones">See the milestones &rarr;</a></div>
+                    <div class="card"><h4>Buckets &mdash; for the team only</h4><p>Columns in Board view. Nothing in them reaches the boards, so use them for workstreams (Data, Interfaces&hellip;) to show who owns what.</p><a class="card-go" href="#buckets">See the buckets &rarr;</a></div>
+                    <div class="card"><h4>Goals &mdash; the eight benefits</h4><p>Planner's Goals view fits the benefits exactly. Connect each workshop to the benefits it drives, and the hub shows the workshop-to-benefit map.</p><a class="card-go" href="#goals">See the goals &rarr;</a></div>
+                </div>
+                <div class="note tip">
+                    <span class="note-ico">&#10003;</span>
+                    <p><strong>Where the workshops and data sheets go</strong>The <a href="#workshops">14 workshops</a> are subtasks under the Design phase, one per session; &ldquo;all workshops held&rdquo; is a milestone. The <a href="#data-sheets">data sheets</a> are a parallel <em>Data readiness &amp; migration</em> phase, with one subtask per sheet group in loading order &mdash; not 22 separate tasks.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="dates">
+                <h2 data-short="Check the dates first">Before you type: the end dates don't agree</h2>
+                <p class="ph-sub">The <span class="field">Original End Date</span> is your baseline promise, and it locks the moment the lifecycle moves into Delivery. Three sources point in different directions.</p>
+                <table class="fields">
+                    <thead><tr><th>Source</th><th>What it says</th></tr></thead>
+                    <tbody>
+                        <tr><td>Outcomes &amp; Goals page</td><td>Target completion <strong>31 March 2027</strong> (&ldquo;subject to solution procured&rdquo;)</td></tr>
+                        <tr><td>Every deck</td><td>Servitor becomes unsupported in <strong>early 2027</strong></td></tr>
+                        <tr><td>ROCC's stage lengths</td><td>Design to go-live is 8&ndash;12 months from 10 November, so go-live around <strong>July&ndash;November 2027</strong></td></tr>
+                    </tbody>
+                </table>
+                <div class="note warn">
+                    <span class="note-ico">!</span>
+                    <p><strong>What to do</strong>Keep the lifecycle at <strong>Planning</strong> (the design workshops count as detailed planning in the guide's terms). Leave <span class="field">Original End Date</span> blank until ROCC's firm plan, with a Servitor fallback, is agreed, and set it before you select <span class="ui">Next Stage</span> into Delivery. Rate <strong>Timescale At Risk</strong> in the first status update; the Head of Service deck already says this openly.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="timeline">
+                <h2 data-short="The plan on a page">The plan on a page</h2>
+                <p class="ph-sub">How the phases below should look in the Timeline view. Solid bars are firm; hatched bars are ROCC's typical ranges (earliest start to latest finish) until their plan is agreed.</p>
+                <div class="pg-wrap">
+                    <div class="pg">
+                        <div class="pg-axis">
+                            <span style="left:0%">Apr 26</span><span style="left:14.22%">Jul 26</span><span style="left:28.59%">Oct 26</span><span style="left:42.97%">Jan 27</span><span style="left:57.03%">Apr 27</span><span style="left:71.25%">Jul 27</span><span style="left:85.62%">Oct 27</span>
+                        </div>
+                        <div class="pg-body">
+                            <div class="pg-overlay" aria-hidden="true">
+                                <div class="pg-band" style="left:42.97%;width:14.06%"></div>
+                                <div class="pg-line target" style="left:56.88%"></div>
+                                <div class="pg-line today" style="left:35.16%"></div>
+                            </div>
+                            <div class="pg-row"><b>Discovery &amp; Mobilisation<small>20 Apr &ndash; 5 Oct 2026 &middot; done</small></b><div class="pg-lane"><div class="pg-bar done" style="left:2.97%;width:26.25%"></div></div></div>
+                            <div class="pg-row"><b>ROCC Initiate<small>11 Aug &ndash; Nov 2026 &middot; PID open</small></b><div class="pg-lane"><div class="pg-bar now" style="left:20.62%;width:14.07%"></div></div></div>
+                            <div class="pg-row"><b>Design<small>10 Nov 2026 &ndash; Feb/Mar 2027</small></b><div class="pg-lane"><div class="pg-bar ind" style="left:34.84%;width:17.5%"></div><div class="pg-bar now" style="left:34.84%;width:13.13%"></div><div class="pg-bar ws" style="left:34.84%;width:5.32%" title="14 workshops, 10 Nov – 14 Dec"></div></div></div>
+                            <div class="pg-row"><b>Data readiness &amp; migration<small>Sep 2026 &rarr; go-live</small></b><div class="pg-lane"><div class="pg-bar now" style="left:23.91%;width:24.06%"></div><div class="pg-bar ind" style="left:47.97%;width:43.75%"></div></div></div>
+                            <div class="pg-row"><b>Integration, devices &amp; sign-in<small>Sep 2026 &rarr; end of testing</small></b><div class="pg-lane"><div class="pg-bar now" style="left:23.91%;width:24.06%"></div><div class="pg-bar ind" style="left:47.97%;width:28.44%"></div></div></div>
+                            <div class="pg-row"><b>Build <small>6&ndash;10 weeks &middot; indicative</small></b><div class="pg-lane"><div class="pg-bar ind" style="left:47.97%;width:15.31%"></div></div></div>
+                            <div class="pg-row"><b>Testing <small>8&ndash;12 weeks &middot; indicative</small></b><div class="pg-lane"><div class="pg-bar ind" style="left:54.53%;width:21.88%"></div></div></div>
+                            <div class="pg-row"><b>Training &amp; adoption <small>4&ndash;8 weeks &middot; indicative</small></b><div class="pg-lane"><div class="pg-bar ind" style="left:63.28%;width:21.88%"></div></div></div>
+                            <div class="pg-row"><b>Go-Live &amp; Close <small>~6 weeks &middot; indicative</small></b><div class="pg-lane"><div class="pg-bar ind" style="left:67.66%;width:24.06%"></div></div></div>
+                            <div class="pg-row"><b>Engagement, comms &amp; change<small>ongoing</small></b><div class="pg-lane"><div class="pg-bar ongoing" style="left:2.97%;width:88.75%"></div></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="legend">
+                    <span><i style="background:var(--ph-green)"></i>Done</span>
+                    <span><i style="background:#9fcab8"></i>Under way / firm</span>
+                    <span><i style="background:#0f4535"></i>The 14 workshops</span>
+                    <span><i class="pg-key-ind"></i>Indicative range</span>
+                    <span><i style="background:rgba(180,35,24,.14)"></i>Servitor unsupported (early 2027)</span>
+                    <span><i class="pg-key-line" style="border-color:var(--ph-amber)"></i>31 Mar 2027 target</span>
+                    <span><i class="pg-key-line solid" style="border-color:var(--ph-blue)"></i>Today</span>
+                </div>
+            </section>
+
+            <section class="ph-section" id="summary-tab">
+                <h2 data-short="Summary tab">Summary tab</h2>
+                <p class="ph-sub">The first tab you complete. <a href="new-project.html#summary">How the fields work &rarr;</a></p>
+                <table class="fields">
+                    <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+                    <tbody>
+                        <tr><td>Name</td><td><strong>Housing Digital Transformation: Mobile Working &amp; Servitor Replacement</strong> &mdash; the Project Brief's own name for the single initiative.</td></tr>
+                        <tr><td>Project Type</td><td>Project. Check with the PMO whether they'd rather it was Programme, given it sits under MAP.</td></tr>
+                        <tr><td>Program</td><td>MAP / Systems &amp; Technology &mdash; use whatever the PMO's dropdown calls it.</td></tr>
+                        <tr><td>Project Background</td><td>Copy the text below. It's the same field as on the Business Case tab.</td></tr>
+                        <tr><td>Project Approval Date</td><td>From the Project Brief or the board minutes &mdash; <span class="st-tbc">not in our documents</span>.</td></tr>
+                        <tr><td>Start Date</td><td><strong>20 April 2026</strong> (team established). The Outcomes page also says Phase 1 procurement began April 2025 &mdash; pick one and say which in the background.</td></tr>
+                        <tr><td>Original End Date</td><td>Leave blank for now. <a href="#dates">Why &rarr;</a></td></tr>
+                        <tr><td>Project Manager</td><td>William Ellis (fills in automatically).</td></tr>
+                        <tr><td>Record Owner</td><td>You to start with; the Teams group once it's linked.</td></tr>
+                        <tr><td>Project Owner</td><td>The Project Owner who chairs the Project Board.</td></tr>
+                    </tbody>
+                </table>
+                <div class="pg-copybox">
+                    <div class="pg-copyhead"><b>Project Background</b><button type="button" class="pg-copy" data-copy="copy-background">Copy</button></div>
+                    <p id="copy-background">Housing Repairs must replace Servitor (Civica's stock and job costing system), which becomes unsupported in early 2027. There is also a long-standing need to give trade operatives real mobile working: the information they need to plan and deliver a repair, in their hands, without paper and without re-keying it at the office. The programme treats these as one initiative: one procurement, one platform (ROCC, selected to replace Servitor and DRS) and one connected process from capture to plan, schedule, stock, report and pay, integrated with NEC, Integra, APEX, iTrent and DATAstox with the least possible manual intervention. Improved customer experience is the driver: repairs right first time, appointments kept, homes re-let sooner, and tenants told what is happening with their repair.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="business-case">
+                <h2 data-short="Business Case &amp; Financials">Business Case &amp; Financials</h2>
+                <p class="ph-sub">The <span class="field">Scope Overview</span> field: what's included and what's excluded.</p>
+                <div class="grid two">
+                    <div class="card">
+                        <h4>In scope</h4>
+                        <ul class="pg-list">
+                            <li>The ROCC suite: Core, Resolve, Orchestrator, Contractor, Attend, Tracker, Focus, Connect, Cloud</li>
+                            <li>Replacing Servitor and DRS</li>
+                            <li>Interfaces with NEC, Integra, APEX, iTrent, DATAstox, GOSS and the new fleet system</li>
+                            <li>Data cleansing and migration</li>
+                            <li>Mobile devices and sign-in for trades</li>
+                            <li>Voids brought into the same record (Orchestrator)</li>
+                            <li>Training, change and adoption</li>
+                            <li>Tenant involvement and communication</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Out of scope, or changed</h4>
+                        <ul class="pg-list">
+                            <li><strong>DATAstox stays.</strong> ROCC doesn't provide the barcoding we need, so we link the two rather than replace it.</li>
+                            <li><strong>The fleet system</strong> is a separate project. We design alongside it so operatives do one vehicle check, not two.</li>
+                            <li><strong>NEC Housing</strong> isn't being replaced.</li>
+                        </ul>
+                        <p style="margin-top:0.6rem;font-size:0.82rem;color:var(--ph-muted);">The Outcomes &amp; Goals page still says &ldquo;Replacement of Datastox&rdquo; in Phase 3 &mdash; worth fixing so the hub and the portal agree.</p>
+                    </div>
+                </div>
+                <div class="note info">
+                    <span class="note-ico">i</span>
+                    <p><strong>Financials tab: skip for now</strong>It's optional, and none of our documents has the contract value, spend or cashable savings. Fill it in if Finance gives you figures &mdash; and if you use the Benefits field, keep the Benefit Tracker in SharePoint updated too.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="plan">
+                <h2 data-short="Tasks: the phases">Tasks: the phases and what sits under them</h2>
+                <p class="ph-sub">Each green bar is a parent task; the rows under it are subtasks; diamonds are critical milestones. &#10003; marks what's already done &mdash; set those to 100%. For Build onwards, put &ldquo;(indicative)&rdquo; in the phase name until ROCC's dates land: <span class="field">Final Task Date</span> and <span class="field">Duration</span> work themselves out from these, and the boards see them.</p>
+                <div class="diagram">
+                    <div class="tree">
+                        <div class="tree-node phase">1 &middot; Discovery &amp; Mobilisation <span class="meta">20 Apr &ndash; 5 Oct 2026 &middot; 100%</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node"><span class="diamond"></span>Programme team and SharePoint (ENV/99/24) set up <span class="meta">&#10003; 20 Apr</span></div>
+                            <div class="tree-node">Current process mapping: Payroll, Mobile, Scheduling, Job Costing, Stores, Compliance <span class="meta">&#10003;</span></div>
+                            <div class="tree-node">System walkthroughs: NECH, DRS, Integra, APEX, ROCC <span class="meta">&#10003; 18 May</span></div>
+                            <div class="tree-node">North Ayrshire shared learning (ROCC users) <span class="meta">&#10003; 26 May</span></div>
+                            <div class="tree-node">Discovery with 20+ teams (Stores, HMT, Customer First, BST, Property, Transport, Allocations&hellip;) <span class="meta">&#10003;</span></div>
+                            <div class="tree-node">Mobile phones to HMT; full mobile device audit <span class="meta">&#10003; May &ndash; Sep</span></div>
+                            <div class="tree-node">Schedule of Rates redesigned; void followed end to end <span class="meta">&#10003;</span></div>
+                            <div class="tree-node"><span class="diamond"></span>Governance cycle started (first Project Board) <span class="meta">&#10003; 22 Jul</span></div>
+                        </div>
+                        <div class="tree-node phase">2 &middot; ROCC Initiate <span class="meta">11 Aug &ndash; Nov 2026 &middot; ~80%</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node">ROCC introductions meeting <span class="meta">&#10003; 11 Aug</span></div>
+                            <div class="tree-node"><span class="diamond"></span>Draft PID v0.1 received <span class="meta">&#10003; 21 Aug</span></div>
+                            <div class="tree-node"><span class="diamond"></span>ROCC kick-off and demo (~30 staff) <span class="meta">&#10003; 6 Oct</span></div>
+                            <div class="tree-node">Delivery Group set up; workshop nominations requested (by 23 Oct) <span class="meta">&#10003; Oct</span></div>
+                            <div class="tree-node">Fife learning (ROCC users since January) <span class="meta">&#10003; Oct</span></div>
+                            <div class="tree-node"><span class="diamond"></span>PID completed and signed off <span class="meta st-open">open</span></div>
+                            <div class="tree-node"><span class="diamond"></span>Delivery plan agreed with ROCC, including a Servitor fallback <span class="meta st-open">open &middot; most important</span></div>
+                        </div>
+                        <div class="tree-node phase">3 &middot; Design <span class="meta">10 Nov 2026 &ndash; about Feb/Mar 2027</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node"><span class="diamond"></span>Design workshops start <span class="meta">&#10003; 10 Nov</span></div>
+                            <div class="tree-node">14 workshop subtasks &mdash; <a href="#workshops">see the table</a> <span class="meta">10 Nov &ndash; 14 Dec</span></div>
+                            <div class="tree-node"><span class="diamond"></span>All 14 design workshops held <span class="meta">7 Dec</span></div>
+                            <div class="tree-node"><span class="diamond"></span>All workshop decisions circulated; RAID log updated <span class="meta">14 Dec</span></div>
+                            <div class="tree-node">Workshop outcomes to the Head of Service group <span class="meta">~22 Dec</span></div>
+                            <div class="tree-node">Follow-on sessions for objectives not met <span class="meta">as booked</span></div>
+                            <div class="tree-node"><span class="diamond"></span>Solution Design Document signed off <span class="meta">~Feb/Mar 2027</span></div>
+                        </div>
+                        <div class="tree-node phase">4 &middot; Data readiness &amp; migration <span class="meta">Sep 2026 &rarr; go-live &middot; parallel</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node">Six sheet-group subtasks in loading order, plus register, trial load and sign-off &mdash; <a href="#data-sheets">see below</a></div>
+                        </div>
+                        <div class="tree-node phase">5 &middot; Integration, devices &amp; sign-in <span class="meta">parallel</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node">Interface list agreed: NEC, Integra, APEX, iTrent, DATAstox, GOSS, fleet system, DRS run-down <span class="meta">at / after Workshop 10</span></div>
+                            <div class="tree-node">Fleet system scope, supplier and timeline obtained <span class="meta">before 26 Nov</span></div>
+                            <div class="tree-node">IT meeting on device sign-in design (Intune, single sign-on, FIDO2) <span class="meta st-open">not yet arranged</span></div>
+                            <div class="tree-node"><span class="diamond"></span>Sign-in design agreed with IT and Cyber <span class="meta">TBC</span></div>
+                            <div class="tree-node">iTrent absence feed into scheduling designed <span class="meta">TBC</span></div>
+                        </div>
+                        <div class="tree-node phase">6 &middot; Build (indicative) <span class="meta">6&ndash;10 weeks &middot; ~Mar&ndash;May 2027</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node">ROCC configured to the agreed design</div>
+                            <div class="tree-node"><span class="diamond"></span>First trial data load <span class="meta">indicative</span></div>
+                        </div>
+                        <div class="tree-node phase">7 &middot; Testing (indicative) <span class="meta">8&ndash;12 weeks &middot; ~May&ndash;Aug 2027</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node">UAT with our own data, with trades and tenants involved</div>
+                            <div class="tree-node"><span class="diamond"></span>UAT signed off <span class="meta">indicative</span></div>
+                        </div>
+                        <div class="tree-node phase">8 &middot; Training &amp; adoption (indicative) <span class="meta">4&ndash;8 weeks &middot; ~Jun&ndash;Sep 2027</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node">Training materials; staff trained; devices ready for Attend</div>
+                        </div>
+                        <div class="tree-node phase">9 &middot; Go-Live &amp; Close (indicative) <span class="meta">~6 weeks &middot; ~Jul&ndash;Nov 2027</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node"><span class="diamond"></span>Back-office go-live <span class="meta">indicative</span></div>
+                            <div class="tree-node"><span class="diamond"></span>Mobile (Attend) go-live <span class="meta">indicative</span></div>
+                            <div class="tree-node"><span class="diamond"></span>Servitor decommissioned <span class="meta">indicative</span></div>
+                            <div class="tree-node">Project Closure Report and Executive Summary Closure Report</div>
+                        </div>
+                        <div class="tree-node phase">Ongoing &middot; Engagement, comms &amp; change <span class="meta">Apr 2026 &rarr;</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node">Get Involved site live; 97 tenants volunteered <span class="meta">&#10003; by 28 Sep</span></div>
+                            <div class="tree-node">Teams spaces for every group, including ROCC, Tenants and Tradespeople <span class="meta">&#10003;</span></div>
+                            <div class="tree-node">Manager conversations about releasing staff <span class="meta">ongoing</span></div>
+                            <div class="tree-node">Tenant and trades involvement in testing <span class="meta">with Testing</span></div>
+                        </div>
+                    </div>
+                    <p class="diagram-cap">ROCC's stage lengths come from its own PRINCE2-based framework. They're typical ranges, not our agreed plan.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="workshops">
+                <h2 data-short="The 14 workshops">The 14 design workshops</h2>
+                <p class="ph-sub">One subtask per workshop under Design. Set the <strong>Start to the session day</strong> and the <strong>Finish a week later</strong> &mdash; the deadline for circulating decisions and updating the RAID log &mdash; so % complete measures outputs, not attendance. Assign each to its ERC lead.</p>
+                <div class="pg-scroll"><table class="fields">
+                    <thead><tr><th>#</th><th>Workshop</th><th>Session</th><th>Finish</th><th>Drives</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>Core Overview: Routine &amp; Emergency Works</td><td>Tue 10 Nov &middot; full day <span class="st-done">&#10003;</span></td><td>17 Nov</td><td><span class="bt">B7</span></td></tr>
+                        <tr><td>2</td><td>Scheduling (Resolve)</td><td>Thu 12 Nov &middot; full day</td><td>19 Nov</td><td><span class="bt">B2</span><span class="bt">B7</span></td></tr>
+                        <tr><td>3</td><td>Attend (Mobile Working)</td><td>Mon 16 Nov &middot; AM</td><td>23 Nov</td><td><span class="bt">B3</span><span class="bt">B6</span></td></tr>
+                        <tr><td>4</td><td>Contractor Allocations</td><td>Thu 19 Nov &middot; AM</td><td>26 Nov</td><td><span class="bt">B3</span><span class="bt">B5</span></td></tr>
+                        <tr><td>5</td><td>Voids: Orchestrator Process</td><td>Fri 20 Nov &middot; full day</td><td>27 Nov</td><td><span class="bt">B8</span></td></tr>
+                        <tr><td>6</td><td>Stores, Van Stock &amp; Purchasing</td><td>Mon 23 Nov &middot; AM</td><td>30 Nov</td><td><span class="bt">B1</span><span class="bt">B3</span><span class="bt">B5</span></td></tr>
+                        <tr><td>7</td><td>Planned, Cyclical, Safety &amp; Compliance</td><td>Wed 25 Nov &middot; AM</td><td>2 Dec</td><td><span class="bt">B6</span><span class="bt">B7</span></td></tr>
+                        <tr><td>8</td><td>Vehicle, Plant &amp; Equipment</td><td>Thu 26 Nov &middot; AM</td><td>3 Dec</td><td><span class="bt">B3</span><span class="bt">B6</span></td></tr>
+                        <tr><td>9</td><td>Media &amp; Documents</td><td>Thu 26 Nov &middot; PM</td><td>3 Dec</td><td><span class="bt">B3</span></td></tr>
+                        <tr><td>10</td><td>Interfaces &amp; Integration</td><td>Tue 1 Dec &middot; full day</td><td>8 Dec</td><td><span class="bt">B3</span><span class="bt">B7</span></td></tr>
+                        <tr><td>11</td><td>Finance &amp; Financial Integration</td><td>Wed 2 Dec &middot; AM</td><td>9 Dec</td><td><span class="bt">B5</span></td></tr>
+                        <tr><td>12</td><td>eTrading</td><td>Thu 3 Dec &middot; <span class="st-open">AM or PM?</span></td><td>10 Dec</td><td><span class="bt">B1</span><span class="bt">B3</span><span class="bt">B5</span></td></tr>
+                        <tr><td>13</td><td>Dashboard &amp; Reporting (Focus)</td><td>Fri 4 Dec &middot; full day</td><td>11 Dec</td><td><span class="bt">B4</span></td></tr>
+                        <tr><td>14</td><td>Data Migration</td><td>Mon 7 Dec &middot; <span class="st-open">or Tue 8?</span></td><td>14 Dec</td><td><span class="bt">All</span></td></tr>
+                    </tbody>
+                </table></div>
+                <h3>Put this in each workshop's checklist</h3>
+                <p>Planner tasks have a checklist. Use the six asks from the Workshop Outcomes deck, plus that workshop's own &ldquo;sign it worked&rdquo; check:</p>
+                <ol class="steps">
+                    <li>Concerns raised in the room <small>If no objection is raised, agreement is assumed. Anything needing board approval leaves with an owner and a date.</small></li>
+                    <li>Every data template has a named ERC owner and source system</li>
+                    <li>Decisions circulated and RAID log updated within a week</li>
+                    <li>Today's process captured, not just the future one</li>
+                    <li>Unmet objectives listed, with a follow-on session booked</li>
+                    <li>Attendees can explain the decisions to their team by their next team meeting</li>
+                </ol>
+            </section>
+
+            <section class="ph-section" id="data-sheets">
+                <h2 data-short="Data sheets">Data sheets: the Data readiness &amp; migration phase</h2>
+                <p class="ph-sub">One subtask per sheet group, <strong>in loading order</strong> &mdash; the lists other sheets point at go first. Assign each to its lead owner and list the group's sheets in its checklist. The per-sheet detail stays in the ROCC Data Sheets app, linked from the task notes.</p>
+                <div class="diagram">
+                    <div class="tree">
+                        <div class="tree-node phase">4 &middot; Data readiness &amp; migration <span class="meta">Sep 2026 &rarr; go-live</span></div>
+                        <div class="tree-children">
+                            <div class="tree-node">Data readiness review: where data lives, who owns it, how good it is <span class="meta">started Sep</span></div>
+                            <div class="tree-node">ROCC Data Sheets guide and three video lessons issued to teams <span class="meta">&#10003; Nov</span></div>
+                            <div class="tree-node"><span class="diamond"></span>1 &middot; Agree First: Terms and Codes agreed <span class="meta">before Foundations</span></div>
+                            <div class="tree-node">2 &middot; Foundations &mdash; 7 sheets <span class="meta">loads first</span></div>
+                            <div class="tree-node">3 &middot; Repairs &amp; Jobs &mdash; 5 sheets</div>
+                            <div class="tree-node">4 &middot; Scheduling &amp; Mobile Working &mdash; 4 sheets</div>
+                            <div class="tree-node">5 &middot; Contractors, Voids, Stores &amp; Vehicles &mdash; 4 sheets</div>
+                            <div class="tree-node">6 &middot; Reporting &mdash; 1 sheet</div>
+                            <div class="tree-node"><span class="diamond"></span>Dataset register complete: owner and source system for every dataset <span class="meta">after Workshop 14</span></div>
+                            <div class="tree-node"><span class="diamond"></span>First trial load and correction cycle <span class="meta">in Build</span></div>
+                            <div class="tree-node"><span class="diamond"></span>Data owners validate and sign off <span class="meta">before UAT</span></div>
+                        </div>
+                    </div>
+                </div>
+                <h3>The checklist for each group</h3>
+                <table class="fields">
+                    <thead><tr><th>Group</th><th>Sheets (checklist items)</th><th>Lead owners</th></tr></thead>
+                    <tbody>
+                        <tr><td>Foundations</td><td>Property and Tenant &middot; Property and Tenant Attributes &middot; Asbestos (ACM) Records &middot; Users and Groups &middot; Permissions Matrix &middot; Employees, Trades and Timesheets &middot; Finance Codes and Rules</td><td>Housing IT Systems; Compliance; Repairs management; Business Support; Finance</td></tr>
+                        <tr><td>Repairs &amp; Jobs</td><td>Diagnostics, SORs and Jobs &middot; Contractor SOR Price Overrides &middot; Work Programmes &middot; Hazard Cases &middot; Enquiries</td><td>Repairs management and Technical Officers; Purchasing &amp; Contracts; compliance leads; Customer First</td></tr>
+                        <tr><td>Scheduling &amp; Mobile</td><td>Resolve Scheduling &middot; Attend (Mobile App) Set-up &middot; Attend Forms and Surveys &middot; Tracker</td><td>Planning Officer and Planners; Repairs supervisors with operatives; compliance leads; project team</td></tr>
+                        <tr><td>Contractors, Voids, Stores &amp; Vehicles</td><td>Contractor Portal &middot; Orchestrator (Voids and Projects) &middot; Purchasing and Van Stock &middot; Vehicles, Plant and Equipment</td><td>Purchasing, Stores &amp; Contracts; Voids and Technical Officers; Senior Storekeeper; fleet project</td></tr>
+                        <tr><td>Reporting</td><td>Focus Dashboard Users</td><td>Project team with Repairs managers and BI reporting</td></tr>
+                    </tbody>
+                </table>
+                <div class="note info">
+                    <span class="note-ico">i</span>
+                    <p><strong>ROCC's reply of 11 November &mdash; add to the task notes</strong><strong style="display:inline;margin:0;">Asbestos:</strong> start now; it's sample data for UAT, and the APEX-or-NEC route is confirmed at Workshop 10. <strong style="display:inline;margin:0;">Enquiries and Orchestrator:</strong> nothing to complete yet &mdash; leave them not started so they don't show as overdue.</p>
+                </div>
+            </section>
+
+            <section class="ph-section" id="milestones">
+                <h2 data-short="Critical milestones">Critical milestones</h2>
+                <p class="ph-sub">What the strategic group actually sees on the Highlight Report and dashboards. Each is a 0-day task: same start and finish, duration set to 0 by hand. <a href="tasks.html#milestones">How &rarr;</a></p>
+                <table class="fields">
+                    <thead><tr><th>Date</th><th>Milestone</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>20 Apr 2026</td><td>Programme team established</td><td><span class="st-done">&#10003; Done</span></td></tr>
+                        <tr><td>22 Jul 2026</td><td>Governance cycle started (first Project Board)</td><td><span class="st-done">&#10003; Done</span></td></tr>
+                        <tr><td>21 Aug 2026</td><td>ROCC draft PID received</td><td><span class="st-done">&#10003; Done</span></td></tr>
+                        <tr><td>6 Oct 2026</td><td>ROCC kick-off</td><td><span class="st-done">&#10003; Done</span></td></tr>
+                        <tr><td>10 Nov 2026</td><td>Design workshops start</td><td><span class="st-done">&#10003; Done</span></td></tr>
+                        <tr><td>TBC</td><td>PID signed off</td><td><span class="st-open">Open</span></td></tr>
+                        <tr><td>TBC &mdash; ASAP</td><td>ROCC delivery plan and Servitor fallback agreed</td><td><span class="st-open">Open</span></td></tr>
+                        <tr><td>7 Dec 2026</td><td>All 14 design workshops held</td><td>Planned</td></tr>
+                        <tr><td>14 Dec 2026</td><td>All workshop decisions circulated; RAID updated</td><td>Planned</td></tr>
+                        <tr><td>TBC</td><td>Dataset register complete (no blank owners)</td><td>Planned</td></tr>
+                        <tr><td>~Feb/Mar 2027</td><td>Solution Design Document signed off</td><td><span class="st-tbc">Indicative</span></td></tr>
+                        <tr><td>Indicative</td><td>First trial data load</td><td><span class="st-tbc">Indicative</span></td></tr>
+                        <tr><td>Indicative</td><td>UAT signed off</td><td><span class="st-tbc">Indicative</span></td></tr>
+                        <tr><td>Indicative</td><td>Back-office go-live</td><td><span class="st-tbc">Indicative</span></td></tr>
+                        <tr><td>Indicative</td><td>Mobile (Attend) go-live</td><td><span class="st-tbc">Indicative</span></td></tr>
+                        <tr><td>Indicative</td><td>Servitor decommissioned</td><td><span class="st-tbc">Indicative</span></td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="ph-section" id="buckets">
+                <h2 data-short="Buckets">Buckets: workstreams for the Board view</h2>
+                <p class="ph-sub">Every task sits in one phase and one bucket. Phases tell the board <em>when</em>; buckets tell the team <em>whose</em>. In Board view, choose <span class="ui">Add bucket</span>.</p>
+                <div class="grid four">
+                    <div class="card"><h4>Governance &amp; reporting</h4><p>PID, delivery plan, status reports, RAID.</p></div>
+                    <div class="card"><h4>Design workshops</h4><p>The 14 sessions, follow-ons and the Solution Design Document.</p></div>
+                    <div class="card"><h4>Data readiness</h4><p>Terms and Codes, the sheet groups, register, trial loads.</p></div>
+                    <div class="card"><h4>Interfaces &amp; integration</h4><p>NEC, Integra, APEX, iTrent, DATAstox, GOSS, fleet.</p></div>
+                    <div class="card"><h4>Mobile, devices &amp; sign-in</h4><p>Devices, Intune, single sign-on, FIDO2, Attend.</p></div>
+                    <div class="card"><h4>Engagement, comms &amp; change</h4><p>Tenants, trades, managers, Get Involved, Teams spaces.</p></div>
+                    <div class="card"><h4>Test, train &amp; go-live</h4><p>UAT, training, cutover, Servitor run-down.</p></div>
+                </div>
+            </section>
+
+            <section class="ph-section" id="goals">
+                <h2 data-short="Goals: the benefits">Goals: the eight benefits</h2>
+                <p class="ph-sub">In Planner's Goals view, select <span class="ui">+ Add goal</span> for each, then <span class="ui">Connect tasks</span> to link the workshops that drive it. This puts the Workshop Outcomes deck's benefit map inside the hub.</p>
+                <table class="fields">
+                    <thead><tr><th>Goal</th><th>What it means</th><th>Connect</th></tr></thead>
+                    <tbody>
+                        <tr class="group-row"><td colspan="3">Improved Customer Experience &mdash; the reason for all of it</td></tr>
+                        <tr><td>B1 Stock Control</td><td>Operatives have the part and fix it first time.</td><td>Workshops 6, 12</td></tr>
+                        <tr><td>B2 Lower Emissions</td><td>Smarter scheduling cuts travel; appointments easier to keep.</td><td>Workshop 2</td></tr>
+                        <tr><td>B3 Less Paper, Fewer Delays</td><td>Less re-keying, so jobs move on without waiting.</td><td>Workshops 3, 4, 6, 8, 9, 10, 12</td></tr>
+                        <tr><td>B4 Business Intelligence</td><td>Live data spots problems before tenants chase us.</td><td>Workshop 13</td></tr>
+                        <tr><td>B5 Financial Control</td><td>Job costing to invoicing under control.</td><td>Workshops 4, 6, 11, 12</td></tr>
+                        <tr><td>B6 Safer Working</td><td>Operatives safer on every job.</td><td>Workshops 3, 7, 8</td></tr>
+                        <tr><td>B7 Customer Communication</td><td>Tenants told at every step.</td><td>Workshops 1, 2, 7, 10</td></tr>
+                        <tr><td>B8 Void Performance</td><td>Empty homes turned around faster.</td><td>Workshop 5</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:0.88rem;color:var(--ph-muted);">Workshop 14 (Data Migration) underpins all eight &mdash; connect it to every goal, or to Improved Customer Experience only.</p>
+            </section>
+
+            <section class="ph-section" id="risks">
+                <h2 data-short="Risks">Risks</h2>
+                <p class="ph-sub">Name each one with the Project ID first, e.g. <em>PRJ-xxxx &ndash; Servitor support ends before go-live</em>. Scores are a suggested starting point: likelihood &times; impact, each out of 4. <a href="risks-issues.html#risks">How &rarr;</a></p>
+                <table class="fields pg-wide">
+                    <thead><tr><th>Risk</th><th>L&times;I</th><th>Mitigation</th></tr></thead>
+                    <tbody>
+                        <tr><td>Servitor support ends before ROCC go-live</td><td>4&times;4</td><td>Firm plan with ROCC; Servitor fallback agreed early</td></tr>
+                        <tr><td>Future processes not agreed before system design</td><td>3&times;4</td><td>Each workshop captures today's process first; decisions confirmed in the room and recorded</td></tr>
+                        <tr><td>Integration complexity (NEC, Integra, APEX, iTrent, DATAstox, fleet, GOSS)</td><td>3&times;4</td><td>Dedicated Interfaces and Finance workshops; one master system per dataset; missing interfaces raised at Workshop 10</td></tr>
+                        <tr><td>Service capacity to release staff for design and data work</td><td>4&times;3</td><td>Delivery Group nominations, manager conversations, protected time (the May Stores session fell through without it)</td></tr>
+                        <tr><td>Data quality and migration effort underestimated</td><td>3&times;4</td><td>Data run as its own strand; named owner per sheet; early review; trial loads (Aberdeenshire's migration ran three months late)</td></tr>
+                        <tr><td>Mobile working doesn't fit how trades work; too many sign-ins</td><td>3&times;3</td><td>Operatives design their own day in Workshop 3; sign-in designed with IT (Intune, SSO, FIDO2)</td></tr>
+                        <tr><td>Workshop attendees lack authority to decide</td><td>3&times;3</td><td>Managers asked to nominate decision-makers; decisions circulated within a week for challenge</td></tr>
+                        <tr><td>Reporting gap: BI not renewed, Servitor extracts relied on today</td><td>2&times;3</td><td>Workshop 13 go-live report list; Focus alongside Power BI</td></tr>
+                        <tr><td>Data protection (Tracker location data, devices, migration)</td><td>2&times;4</td><td>Information Governance at Workshop 9; DPIA</td></tr>
+                        <tr><td>Fleet system out of step with ROCC</td><td>2&times;3</td><td>Fleet colleagues in Workshop 8; scope obtained beforehand</td></tr>
+                        <tr><td>Change fatigue</td><td>3&times;2</td><td>Regular communication through each group's Teams space and the Get Involved site</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="ph-section" id="issues">
+                <h2 data-short="Issues">Issues</h2>
+                <p class="ph-sub">Things that have already happened. Only <strong>High</strong> issues go to the programme board. Leave Due Date blank. If one started life as a risk, use the <a href="risks-issues.html#escalate">Escalate Risk to Issue</a> flow instead.</p>
+                <table class="fields pg-wide">
+                    <thead><tr><th>Issue</th><th>Priority</th></tr></thead>
+                    <tbody>
+                        <tr><td>Health and Safety manager leaving; no H&amp;S cover for Workshops 3 and 7</td><td><strong>High</strong> &mdash; safety is one of the eight benefits</td></tr>
+                        <tr><td>IT meeting on device sign-in not yet arranged; mobile working blocked</td><td>High or Moderate</td></tr>
+                        <tr><td>Information Governance missing from Workshop 9; APEX owner missing from Workshop 10</td><td>Moderate</td></tr>
+                        <tr><td>Discovery sessions falling through when the day job takes priority</td><td>Moderate</td></tr>
+                        <tr><td>Workshop dates disagree across sources (eTrading AM/PM; Data Migration 7 or 8 Dec)</td><td>Low</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="ph-section" id="status">
+                <h2 data-short="First status update">The first status update</h2>
+                <p class="ph-sub">Set <span class="field">Project Level Update</span> to <strong>Programme Board Update</strong> if the strategic group is the Systems &amp; Technology Programme Board &mdash; that puts it on the programme dashboard. <a href="status-reporting.html#status-update">How &rarr;</a></p>
+                <div class="health">
+                    <div><b><i class="dot g"></i>Scope &mdash; On Track</b><span>Clear and agreed; the DATAstox decision is made.</span></div>
+                    <div><b><i class="dot a"></i>Timescale &mdash; At Risk</b><span>ROCC's ranges put go-live after Servitor's support ends.</span></div>
+                    <div><b>Financial Benefit Savings &mdash; your call</b><span>No baselines or cashable figures yet.</span></div>
+                    <div><b><i class="dot a"></i>Non-Financial Resource &mdash; At Risk</b><span>Releasing staff; H&amp;S cover for Workshops 3 and 7.</span></div>
+                    <div><b><i class="dot a"></i>Issue Health &mdash; At Risk</b><span>H&amp;S cover and the IT sign-in meeting.</span></div>
+                    <div><b><i class="dot a"></i>Risk Health &mdash; At Risk</b><span>Servitor timing, process, integration, capacity.</span></div>
+                </div>
+                <div class="note warn">
+                    <span class="note-ico">!</span>
+                    <p><strong>Get to Green</strong>Only needed if you rate anything Off Track. If Timescale goes Off Track, use: &ldquo;Agree ROCC delivery plan with a Servitor fallback by [date].&rdquo;</p>
+                </div>
+                <h3>The three-month look-ahead</h3>
+                <div class="grid three">
+                    <div class="pg-copybox">
+                        <div class="pg-copyhead"><b>Previously expected</b><button type="button" class="pg-copy" data-copy="copy-expected">Copy</button></div>
+                        <div id="copy-expected"><ul class="pg-list">
+                            <li>ROCC kick-off held</li>
+                            <li>PID completed</li>
+                            <li>14-workshop schedule confirmed, with nominated attendees</li>
+                            <li>Data readiness review started</li>
+                        </ul></div>
+                    </div>
+                    <div class="pg-copybox">
+                        <div class="pg-copyhead"><b>Actually achieved</b><button type="button" class="pg-copy" data-copy="copy-achieved">Copy</button></div>
+                        <div id="copy-achieved"><ul class="pg-list">
+                            <li>Kick-off on 6 Oct with about 30 staff; ROCC called it one of the best they've attended</li>
+                            <li>14 workshops scheduled, 10 Nov to 7 Dec, each with a defined &ldquo;what good looks like&rdquo; outcome</li>
+                            <li>Delivery Group set up; Fife learning gathered</li>
+                            <li>ROCC Data Sheets guide and video lessons issued to teams</li>
+                            <li>Head of Service update on 10 Nov; workshops started the same day</li>
+                            <li>PID still being finalised</li>
+                        </ul></div>
+                    </div>
+                    <div class="pg-copybox">
+                        <div class="pg-copyhead"><b>Planned next</b><button type="button" class="pg-copy" data-copy="copy-next">Copy</button></div>
+                        <div id="copy-next"><ul class="pg-list">
+                            <li>Run all 14 workshops; circulate decisions within a week of each</li>
+                            <li>Complete the dataset register with named owners</li>
+                            <li>Agree the delivery plan and Servitor fallback with ROCC</li>
+                            <li>Arrange interim H&amp;S input and the IT sign-in design meeting</li>
+                            <li>Take workshop outcomes to the Head of Service in about six weeks</li>
+                        </ul></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ph-section" id="documents">
+                <h2 data-short="Sharing &amp; documents">Sharing and documents</h2>
+                <p class="ph-sub">Do this straight after the first Save &amp; Close. <a href="sharing.html">How &rarr;</a></p>
+                <ol class="steps">
+                    <li><strong>Permissions:</strong> Calum, Laura and Ian get Write. Every risk or issue owner gets at least Read <em>before</em> you assign them. Always tick Append and Append to.</li>
+                    <li><strong>Teams site:</strong> link the ENV/99/24 site from the Tasks tab. <small>This can't be undone &mdash; double-check you're picking the right group.</small></li>
+                    <li><strong>Project Documentation:</strong> paste the site's Documents link into the field on the Summary tab.</li>
+                </ol>
+                <h3>Our documents in the PMO's three folders</h3>
+                <table class="fields">
+                    <thead><tr><th>Folder</th><th>What goes in it</th></tr></thead>
+                    <tbody>
+                        <tr><td>0.1 Procurement</td><td>ROCC procurement papers</td></tr>
+                        <tr><td>0.2 Governance</td><td><strong>Project Brief and PID</strong> (must-haves), RAID log, board and group decks (Development Group, Project Group, Board update, Head of Service)</td></tr>
+                        <tr><td>0.3 Project Delivery</td><td>Workshop agendas and crib sheets, Workshop Outcomes deck, ROCC data templates, the Data Sheets app and videos, process maps, the 6 October kick-off recording</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="ph-section" id="gaps">
+                <h2 data-short="Still to confirm">Still to confirm</h2>
+                <p class="ph-sub">None of our documents answers these. Get them before you finish the Summary tab.</p>
+                <div class="rules">
+                    <div class="rule dont"><span class="rule-ico">?</span><div><b>Project Approval Date</b><span>From the Project Brief or the board minutes.</span></div></div>
+                    <div class="rule dont"><span class="rule-ico">?</span><div><b>Project Owner's name</b><span>Whoever chairs the Project Board.</span></div></div>
+                    <div class="rule dont"><span class="rule-ico">?</span><div><b>Programme name</b><span>As it appears in the PMO's dropdown.</span></div></div>
+                    <div class="rule dont"><span class="rule-ico">?</span><div><b>Start date</b><span>April 2026 (team) or April 2025 (procurement).</span></div></div>
+                    <div class="rule dont"><span class="rule-ico">?</span><div><b>Contract value and spend</b><span>Only if you want the Financials tab.</span></div></div>
+                    <div class="rule dont"><span class="rule-ico">?</span><div><b>Which board is &ldquo;strategic&rdquo;</b><span>Programme Board or Project Board update.</span></div></div>
+                </div>
+            </section>
+
+            <section class="ph-section" id="order">
+                <h2 data-short="Order of work">The order to fill it in</h2>
+                <ol class="steps">
+                    <li><strong>Summary and Business Case</strong>, then <span class="ui">Save &amp; Close</span> to get the Project ID.</li>
+                    <li><strong>Share permissions</strong> and <strong>link the Teams site</strong>.</li>
+                    <li><strong>Set the lifecycle to Planning.</strong> Leave Original End Date blank.</li>
+                    <li><strong>Build the phases</strong>, then the subtasks, then the milestones (0 days). Mark the done ones 100%.</li>
+                    <li><strong>Add the buckets</strong> and drop each task into one.</li>
+                    <li><strong>Add the Goals</strong> and connect the workshops.</li>
+                    <li><strong>Record the risks and issues</strong>, with the Project ID at the start of each name.</li>
+                    <li><strong>Submit the first status update</strong> before the strategic group meets, then check the Highlight Report.</li>
+                </ol>
+            </section>
+
+            <section class="ph-section" id="sources">
+                <h2 data-short="Where this came from">Where this came from</h2>
+                <div class="grid three">
+                    <a class="card" href="../presentations/2026-11-10-head-of-service-update.html"><h4>Head of Service update</h4><p>10 Nov 2026: findings, benefits, risks, choices.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="../presentations/2026-11-workshop-outcomes.html"><h4>Workshop Outcomes</h4><p>What good looks like for each of the 14 workshops.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="../presentations/2026-10-27-project-group-meeting.html"><h4>Project Group, 27 Oct</h4><p>Kick-off recap, Fife, every workshop in depth.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="../presentations/governance-board-update.html"><h4>Project Board update</h4><p>Case for change, PID, products, data readiness.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="../presentations/2026-09-22-development-group-meeting.html"><h4>Development Group meetings</h4><p>Who owns what, systems crossover, ROCC team.</p><span class="card-go">Open &rarr;</span></a>
+                    <a class="card" href="../outcomes-goals.html"><h4>Outcomes &amp; Goals</h4><p>Vision, eight benefits, three phases.</p><span class="card-go">Open &rarr;</span></a>
+                </div>
+            </section>
+
+            <nav class="ph-pager" id="ph-pager" aria-label="Previous and next page"></nav>
+        </main>
+    </div>
+</div>
+
+<script>
+(function () {
+    document.querySelectorAll('.pg-copy').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var el = document.getElementById(btn.getAttribute('data-copy'));
+            if (!el) { return; }
+            var text = el.innerText.trim();
+            var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done, function () { btn.textContent = 'Select and copy'; });
+            } else {
+                var r = document.createRange(); r.selectNodeContents(el);
+                var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+                btn.textContent = 'Press Ctrl+C';
+            }
+        });
+    });
+})();
+</script>
+<script src="../assets/js/main.js"></script>
+<script src="search-index.js"></script>
+<script src="guide.js"></script>
+</body>
+</html>

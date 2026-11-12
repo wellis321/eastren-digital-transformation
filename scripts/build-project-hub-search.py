@@ -21,6 +21,7 @@ PAGES = [
     ("status-reporting.html", "Status & reporting"),
     ("lifecycle-closure.html", "Lifecycle & closing"),
     ("quick-reference.html", "Quick reference"),
+    ("our-project.html", "Filling our plan"),
 ]
 
 

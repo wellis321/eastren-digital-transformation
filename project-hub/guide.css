@@ -760,3 +760,47 @@ details.screen figcaption { font-size: 0.78rem; color: var(--ph-muted); padding:
     .ph-shell { display: block; }
     details.screen { border: none; }
 }
+
+/* ---------- Our project page (our-project.html) ---------- */
+/* Let wide diagrams scroll inside their box instead of widening the page */
+.ph-shell > div { min-width: 0; }
+.pg-wrap { overflow-x: auto; background: #fff; border: 1px solid var(--ph-line); padding: 1rem 1rem 0.5rem; }
+.pg { min-width: 760px; font-size: 0.78rem; }
+.pg-axis { position: relative; height: 1.4rem; margin-left: 210px; border-bottom: 1px solid var(--ph-line); color: var(--ph-muted); font-size: 0.68rem; }
+.pg-axis span { position: absolute; top: 0; padding-left: 4px; border-left: 1px solid var(--ph-line); line-height: 1.3rem; }
+.pg-body { position: relative; }
+.pg-overlay { position: absolute; top: 0; bottom: 0; left: 210px; right: 0; pointer-events: none; z-index: 1; }
+.pg-band { position: absolute; top: 0; bottom: 0; background: rgba(180, 35, 24, 0.07); border-left: 1px dashed #e4a8a2; border-right: 1px dashed #e4a8a2; }
+.pg-line { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px dashed var(--ph-amber); }
+.pg-line.today { border-left-style: solid; border-color: var(--ph-blue); }
+.pg-row { display: grid; grid-template-columns: 210px 1fr; align-items: center; min-height: 38px; border-bottom: 1px dashed #edf1ef; }
+.pg-row > b { font-weight: 600; padding-right: 0.6rem; line-height: 1.25; }
+.pg-row > b small { display: block; font-weight: 400; color: var(--ph-muted); font-size: 0.68rem; }
+.pg-lane { position: relative; height: 38px; }
+.pg-bar { position: absolute; top: 10px; height: 18px; background: #9fcab8; }
+.pg-bar.done { background: var(--ph-green); }
+.pg-bar.ws { background: #0f4535; top: 14px; height: 10px; }
+.pg-bar.ongoing { background: #dcebe5; }
+.pg-bar.ind, .pg-key-ind { background: repeating-linear-gradient(135deg, #eef4f1 0 5px, #cfe0d9 5px 10px); border: 1px dashed #8fbfab; }
+.pg-key-line { width: 0 !important; height: 14px; border-left: 2px dashed; background: none !important; }
+.pg-key-line.solid { border-left-style: solid; }
+.bt { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 0.08rem 0.38rem; margin: 0 0.25rem 0.2rem 0; background: var(--ph-tint); color: var(--ph-green-dark); border: 1px solid #cfe5db; border-radius: 0; }
+.st-done { color: var(--ph-green-dark); font-weight: 700; }
+.st-open { color: var(--ph-amber); font-weight: 700; }
+.st-tbc { color: var(--ph-muted); }
+.tree-node .meta.st-open { color: var(--ph-amber); }
+.pg-wide td:first-child { white-space: normal; width: 40%; font-weight: 600; }
+.pg-list { margin: 0.4rem 0 0; padding-left: 1.1rem; font-size: 0.88rem; line-height: 1.55; color: #3d4b47; }
+.pg-list li + li { margin-top: 0.2rem; }
+.pg-copybox { background: #fff; border: 1px solid var(--ph-line); border-radius: 0; padding: 0.9rem 1rem; margin: 1rem 0; }
+.pg-copybox p { margin: 0.4rem 0 0; font-size: 0.9rem; line-height: 1.6; }
+.pg-copyhead { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.pg-copy { font: inherit; font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.6rem; background: var(--ph-tint); color: var(--ph-green-dark); border: 1px solid #cfe5db; border-radius: 0; cursor: pointer; }
+.pg-copy:hover { background: var(--ph-green); color: #fff; border-color: var(--ph-green); }
+.grid .pg-copybox { margin: 0; }
+.pg-scroll { overflow-x: auto; }
+.pg-scroll .fields { min-width: 520px; }
+@media (max-width: 640px) {
+    .pg-wide td:first-child { width: auto; }
+    .pg-page .fields { display: block; overflow-x: auto; }
+}
