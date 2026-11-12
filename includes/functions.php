@@ -147,7 +147,7 @@ function enhance_static_html(string $html, string $baseDir, string $fileName = '
     $html = preg_replace('/\s*<!--\s*Breadcrumb\s*-->\s*/i', "\n", $html);
 
     $html = preg_replace_callback(
-        '#\b(href|src)=(["\'])([^"\']*(?:assets/css/style\.css|assets/js/[\w.-]+\.js))\2#',
+        '#\b(href|src)=(["\'])([^"\']*(?:assets/css/style\.css|assets/js/[\w.-]+\.js)|(?:guide\.css|guide\.js|search-index\.js))\2#',
         static function (array $m) use ($root, $baseDir): string {
             $url = $m[3];
             $assetPath = $baseDir . '/' . $url;
