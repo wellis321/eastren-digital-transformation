@@ -149,7 +149,15 @@ $types = [
 ];
 header('Content-Type: ' . ($types[$ext] ?? 'application/octet-stream'));
 
-if ($ext === 'html') {
+// Self-contained apps (e.g. the 19 MB ROCC Data Sheets app, videos built in) are
+// served exactly as built: no banner or nav injection, and no regex pass over the
+// whole file. They live under project-hub/apps/, so the owner check above has
+// already run.
+$appsDir = $privateDir !== false ? $privateDir . DIRECTORY_SEPARATOR . 'apps' . DIRECTORY_SEPARATOR : null;
+$isPrivateApp = $appsDir !== null && $realFile !== false
+    && str_starts_with(strtolower($realFile), strtolower($appsDir));
+
+if ($ext === 'html' && !$isPrivateApp) {
     render_static_html($file);
 }
 

@@ -283,7 +283,7 @@
 
             <section class="ph-section" id="data-sheets">
                 <h2 data-short="Data sheets">Data sheets: the Data readiness &amp; migration phase</h2>
-                <p class="ph-sub">One subtask per sheet group, <strong>in loading order</strong> &mdash; the lists other sheets point at go first. Assign each to its lead owner and list the group's sheets in its checklist. The per-sheet detail stays in the ROCC Data Sheets app, linked from the task notes.</p>
+                <p class="ph-sub">One subtask per sheet group, <strong>in loading order</strong> &mdash; the lists other sheets point at go first. Assign each to its lead owner and list the group's sheets in its checklist. The per-sheet detail stays in the <a href="data-sheets.html">ROCC Data Sheets app</a>, linked from the task notes.</p>
                 <div class="diagram">
                     <div class="tree">
                         <div class="tree-node phase">4 &middot; Data readiness &amp; migration <span class="meta">Sep 2026 &rarr; go-live</span></div>
@@ -381,7 +381,7 @@
 
             <section class="ph-section" id="risks">
                 <h2 data-short="Risks">Risks</h2>
-                <p class="ph-sub">Name each one with the Project ID first, e.g. <em>PRJ-xxxx &ndash; Servitor support ends before go-live</em>. Scores are a suggested starting point: likelihood &times; impact, each out of 4. <a href="risks-issues.html#risks">How &rarr;</a></p>
+                <p class="ph-sub">Name each one with the Project ID first, e.g. <em>PRJ-xxxx &ndash; Servitor support ends before go-live</em>. Scores are a suggested starting point: likelihood &times; impact, each out of 4. <a href="risks-issues.html#risks">How &rarr;</a> New ones that come up along the way: <a href="risks-issues.html#ad-hoc">adding a risk as it comes up &rarr;</a></p>
                 <table class="fields pg-wide">
                     <thead><tr><th>Risk</th><th>L&times;I</th><th>Mitigation</th></tr></thead>
                     <tbody>
@@ -390,7 +390,7 @@
                         <tr><td>Integration complexity (NEC, Integra, APEX, iTrent, DATAstox, fleet, GOSS)</td><td>3&times;4</td><td>Dedicated Interfaces and Finance workshops; one master system per dataset; missing interfaces raised at Workshop 10</td></tr>
                         <tr><td>Service capacity to release staff for design and data work</td><td>4&times;3</td><td>Delivery Group nominations, manager conversations, protected time (the May Stores session fell through without it)</td></tr>
                         <tr><td>Data quality and migration effort underestimated</td><td>3&times;4</td><td>Data run as its own strand; named owner per sheet; early review; trial loads (Aberdeenshire's migration ran three months late)</td></tr>
-                        <tr><td>Mobile working doesn't fit how trades work; too many sign-ins</td><td>3&times;3</td><td>Operatives design their own day in Workshop 3; sign-in designed with IT (Intune, SSO, FIDO2)</td></tr>
+                        <tr><td>Mobile devices hard to set up and sign in to; operatives fall back on phone and paper</td><td>3&times;4</td><td>Escalate the ICT device meeting; operatives design their own day in Workshop 3; set-up and sign-in designed with ICT and tested before rollout. <a href="risks-issues.html#worked-example">Worked example &rarr;</a></td></tr>
                         <tr><td>Workshop attendees lack authority to decide</td><td>3&times;3</td><td>Managers asked to nominate decision-makers; decisions circulated within a week for challenge</td></tr>
                         <tr><td>Reporting gap: BI not renewed, Servitor extracts relied on today</td><td>2&times;3</td><td>Workshop 13 go-live report list; Focus alongside Power BI</td></tr>
                         <tr><td>Data protection (Tracker location data, devices, migration)</td><td>2&times;4</td><td>Information Governance at Workshop 9; DPIA</td></tr>
@@ -407,7 +407,7 @@
                     <thead><tr><th>Issue</th><th>Priority</th></tr></thead>
                     <tbody>
                         <tr><td>Health and Safety manager leaving; no H&amp;S cover for Workshops 3 and 7</td><td><strong>High</strong> &mdash; safety is one of the eight benefits</td></tr>
-                        <tr><td>IT meeting on device sign-in not yet arranged; mobile working blocked</td><td>High or Moderate</td></tr>
+                        <tr><td>ICT device meeting requested July 2026, not yet arranged; device set-up and sign-in can't be designed</td><td>Moderate; High if it delays Workshop 3 or ROCC's mobile build. <a href="risks-issues.html#worked-example">Worked example &rarr;</a></td></tr>
                         <tr><td>Information Governance missing from Workshop 9; APEX owner missing from Workshop 10</td><td>Moderate</td></tr>
                         <tr><td>Discovery sessions falling through when the day job takes priority</td><td>Moderate</td></tr>
                         <tr><td>Workshop dates disagree across sources (eTrading AM/PM; Data Migration 7 or 8 Dec)</td><td>Low</td></tr>
@@ -528,25 +528,6 @@
     </div>
 </div>
 
-<script>
-(function () {
-    document.querySelectorAll('.pg-copy').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            var el = document.getElementById(btn.getAttribute('data-copy'));
-            if (!el) { return; }
-            var text = el.innerText.trim();
-            var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); };
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(done, function () { btn.textContent = 'Select and copy'; });
-            } else {
-                var r = document.createRange(); r.selectNodeContents(el);
-                var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-                btn.textContent = 'Press Ctrl+C';
-            }
-        });
-    });
-})();
-</script>
 <script src="../assets/js/main.js"></script>
 <script src="search-index.js"></script>
 <script src="guide.js"></script>

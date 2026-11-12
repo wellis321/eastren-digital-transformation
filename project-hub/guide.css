@@ -804,3 +804,21 @@ details.screen figcaption { font-size: 0.78rem; color: var(--ph-muted); padding:
     .pg-wide td:first-child { width: auto; }
     .pg-page .fields { display: block; overflow-x: auto; }
 }
+
+/* ---------- Risk sentence (Risks & issues: adding a risk as it comes up) ---------- */
+.rsent { display: grid; grid-template-columns: max-content 1fr; gap: 0.4rem 0; font-size: 0.92rem; }
+.rsent b { background: var(--ph-green); color: #fff; padding: 0.5rem 0.75rem; font-weight: 600; }
+.rsent span { background: var(--ph-tint); border: 1px dashed #9fcab8; border-left: 0; padding: 0.5rem 0.75rem; color: var(--ph-green-dark); font-weight: 600; }
+.rsent em { display: block; font-style: normal; font-weight: 400; color: var(--ph-muted); font-size: 0.85rem; margin-top: 0.15rem; }
+@media (max-width: 640px) {
+    .rsent { grid-template-columns: 1fr; gap: 0; }
+    .rsent span { border-left: 1px dashed #9fcab8; border-top: 0; margin-bottom: 0.4rem; }
+}
+
+/* ---------- Data sheets page ---------- */
+.ds-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.1rem; }
+.ds-actions a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1rem; font-weight: 600; font-size: 0.9rem; text-decoration: none; border: 1px solid var(--ph-green); }
+.ds-actions a.primary { background: var(--ph-green); color: #fff; }
+.ds-actions a.primary:hover { background: var(--ph-green-dark); }
+.ds-actions a.ghost { background: #fff; color: var(--ph-green-dark); }
+.ds-actions a.ghost:hover { background: var(--ph-tint); }

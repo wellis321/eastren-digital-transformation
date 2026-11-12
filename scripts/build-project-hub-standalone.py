@@ -34,6 +34,8 @@ os.makedirs(os.path.join(OUT, "assets", "media"))
 shutil.copy(os.path.join(ROOT, "assets", "css", "style.css"), os.path.join(OUT, "assets", "css", "style.css"))
 shutil.copy(os.path.join(ROOT, "assets", "media", "leaves.png"), os.path.join(OUT, "assets", "media", "leaves.png"))
 shutil.copytree(os.path.join(SRC, "img"), os.path.join(OUT, "img"))
+if os.path.isdir(os.path.join(SRC, "apps")):
+    shutil.copytree(os.path.join(SRC, "apps"), os.path.join(OUT, "apps"))
 for f in ("guide.css", "search-index.js"):
     shutil.copy(os.path.join(SRC, f), os.path.join(OUT, f))
 

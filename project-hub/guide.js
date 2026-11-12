@@ -14,7 +14,8 @@
         chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
         cycle: '<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/>',
         book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>',
-        flag: '<path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/>'
+        flag: '<path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/>',
+        sheet: '<path d="M4 4h16v16H4z"/><path d="M4 10h16M4 15h16M10 4v16"/>'
     };
 
     var PAGES = [
@@ -27,7 +28,8 @@
         { file: 'status-reporting.html', title: 'Status & reporting', icon: 'chart', group: 'Run the project' },
         { file: 'lifecycle-closure.html', title: 'Lifecycle & closing', icon: 'cycle', group: 'Run the project' },
         { file: 'quick-reference.html', title: 'Quick reference', icon: 'book', group: 'Reference' },
-        { file: 'our-project.html', title: 'Filling our plan', icon: 'flag', group: 'Our project' }
+        { file: 'our-project.html', title: 'Filling our plan', icon: 'flag', group: 'Our project' },
+        { file: 'data-sheets.html', title: 'ROCC Data Sheets', icon: 'sheet', group: 'Our project' }
     ];
 
     function svg(name, size) {
@@ -260,5 +262,24 @@
     if (opener) { opener.addEventListener('click', function () { openSearch(); }); }
     document.querySelectorAll('[data-open-search]').forEach(function (el) {
         el.addEventListener('click', function () { openSearch(el.getAttribute('data-open-search')); });
+    });
+})();
+
+/* Copy buttons: <button class="pg-copy" data-copy="ID"> copies the text of #ID. */
+(function () {
+    document.querySelectorAll('.pg-copy').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var el = document.getElementById(btn.getAttribute('data-copy'));
+            if (!el) { return; }
+            var text = el.innerText.trim();
+            var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done, function () { btn.textContent = 'Select and copy'; });
+            } else {
+                var r = document.createRange(); r.selectNodeContents(el);
+                var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+                btn.textContent = 'Press Ctrl+C';
+            }
+        });
     });
 })();

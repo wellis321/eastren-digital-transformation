@@ -35,6 +35,7 @@
                     <span class="ph-chip green">New: escalate a risk to an issue</span>
                     <span class="ph-chip">New: Risk Update &amp; Issue Update fields</span>
                     <span class="ph-chip">Duplicate names are blocked</span>
+                    <span class="ph-chip">Worked example: mobile devices</span>
                 </div>
             </header>
 
@@ -119,6 +120,117 @@
                     <li>Select <span class="ui">Save &amp; Close</span>. This is what pulls through the <span class="field">Score</span> and <span class="field">Risk RAG</span>.</li>
                 </ol>
                 <details class="screen"><summary>See the real screen <span>&mdash; a new risk form</span></summary><img src="img/risk-form.jpg" alt="The New Risk form with star ratings" loading="lazy"></details>
+            </section>
+
+            <section class="ph-section" id="ad-hoc">
+                <h2 data-short="Adding a risk as it comes up">Adding a risk as it comes up</h2>
+                <p class="ph-sub">Most risks don't arrive at a planning session. They turn up in a workshop, an email, a supplier update or a chat in the corridor. Add them the same day, even roughly: a rough risk on the register can be managed; a perfect one in your head can't.</p>
+
+                <h3>Risk, issue or task?</h3>
+                <table class="fields">
+                    <thead><tr><th>What you've noticed</th><th>Record it as</th></tr></thead>
+                    <tbody>
+                        <tr><td>Something that <em>might</em> happen and would hurt time, cost, quality or the benefits</td><td><strong>Risk</strong></td></tr>
+                        <tr><td>Something that <em>has</em> happened and is causing a problem now</td><td><strong>Issue</strong> &mdash; <a href="#issues">Create an issue</a></td></tr>
+                        <tr><td>Something that just needs doing</td><td><strong>Task</strong> in Planner &mdash; <a href="tasks.html">Tasks</a></td></tr>
+                        <tr><td>Something that has already happened <em>and</em> makes a bigger future problem more likely</td><td><strong>Both:</strong> an issue for the thing that's happened, a risk for what it could lead to</td></tr>
+                    </tbody>
+                </table>
+                <div class="note info">
+                    <span class="note-ico">i</span>
+                    <p><strong>The last row is the common one</strong>&ldquo;ICT haven't met us since July&rdquo; has already happened, so it's an issue. &ldquo;Operatives find the devices too hard to use and mobile working doesn't land&rdquo; might happen, so it's a risk. The <a href="#worked-example">worked example</a> below records both.</p>
+                </div>
+
+                <h3>Write it as one sentence first</h3>
+                <div class="diagram">
+                    <div class="rsent">
+                        <b>Because&hellip;</b><span>the cause: a fact today <em>device set-up and sign-in are poor, and ICT haven't met us since July</em></span>
+                        <b>there is a risk that&hellip;</b><span>the event that might happen <em>operatives find mobile working too hard and fall back on phone and paper</em></span>
+                        <b>which would&hellip;</b><span>the effect on the project or its benefits <em>undermine first-time fix, scheduling and keeping tenants informed</em></span>
+                    </div>
+                    <p class="diagram-cap">If you can't fill all three parts, it's probably a worry or a task rather than a risk, at least for now.</p>
+                </div>
+
+                <h3>The ten-minute routine</h3>
+                <ol class="steps">
+                    <li><strong>Check it isn't already there.</strong> Scan the Risks tab. If a similar risk exists, add a dated <span class="field">Risk Update</span> to it instead of starting a new one.</li>
+                    <li><span class="ui">+ New Risk</span>. <strong>Name</strong>: Project ID, then a short title saying what could go wrong. <a href="#naming">Naming</a></li>
+                    <li><strong>State</strong>: Active. <strong>Owner</strong>: the person best placed to act on it, not necessarily whoever spotted it. Give them Read access first.</li>
+                    <li><strong>Likelihood</strong> and <strong>Impact</strong>: score it <em>as things stand today</em>, not as they'll be once your mitigations work. Lower the score later, when the actions have actually happened.</li>
+                    <li><strong>Description</strong>: the one sentence, then the facts behind it: dates, who's been asked, what's been tried. Add a line on why you scored it as you did.</li>
+                    <li><strong>Mitigation plan</strong>: numbered actions, each with who and by when. If an action is real work, add it as a Planner task too so it gets tracked.</li>
+                    <li><strong>Risk Update</strong>: start with today's date and where things stand.</li>
+                    <li><span class="ui">Save &amp; Close</span> to pull through the Score and Risk RAG.</li>
+                </ol>
+
+                <h3>After you've added it</h3>
+                <ul>
+                    <li><strong>High-scoring risks:</strong> if it lands top-right on the <a href="#matrix">matrix</a>, tell your sponsor now rather than waiting for the next report.</li>
+                    <li><strong>Next status update:</strong> let it shape <span class="field">Risk Health</span>, and if it threatens dates, the Timescale rating and Get to Green. <a href="status-reporting.html">Status</a></li>
+                    <li><strong>At every status update:</strong> add a dated Risk Update, re-score if anything has changed, and close it (State: Closed, with a last update saying why) once it no longer applies.</li>
+                    <li><strong>If it happens:</strong> don't start again. <a href="#escalate">Escalate it to an issue</a>.</li>
+                </ul>
+            </section>
+
+            <section class="ph-section" id="worked-example">
+                <h2 data-short="Worked example: mobile devices">Worked example: mobile devices</h2>
+                <p class="ph-sub">Our risk about mobile device set-up and sign-in, written out field by field. Swap <em>PRJ-xxxx</em> for the Project ID, fill in the dates in brackets, and change anything that isn't quite right before you save.</p>
+
+                <table class="fields">
+                    <thead><tr><th>Field</th><th>What to put</th></tr></thead>
+                    <tbody>
+                        <tr><td>Name</td><td>PRJ-xxxx &ndash; Mobile devices hard to set up and sign in to</td></tr>
+                        <tr><td>State</td><td>Active</td></tr>
+                        <tr><td>Owner</td><td>You, for now. Once ICT name a device lead, consider handing it to them, or keep it and make them owner of the actions.</td></tr>
+                        <tr><td>Category</td><td>Whichever option in the list is closest to technology or ICT.</td></tr>
+                        <tr><td>Likelihood</td><td><strong>3 stars.</strong> Set-up and sign-in are already poor today, and the meeting needed to fix them hasn't happened in four months.</td></tr>
+                        <tr><td>Impact</td><td><strong>4 stars.</strong> Mobile working is how most of the eight benefits are delivered: first-time fix, less paper, scheduling, keeping tenants informed and safer working. If operatives avoid the devices, those benefits don't arrive.</td></tr>
+                        <tr><td>Score and Risk RAG</td><td>Filled in on Save &amp; Close.</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="pg-copybox">
+                    <div class="pg-copyhead"><b>Description</b><button type="button" class="pg-copy" data-copy="copy-risk-desc">Copy</button></div>
+                    <div id="copy-risk-desc">
+                        <p>Because device configuration is slow and complicated, and signing in and day-to-day use (passwords, repeated log-ins, general reliability) are poor on today's mobile devices, there is a risk that operatives find mobile working with ROCC hard to use and fall back on phone calls and paper. That would undermine first-time fixes, accurate job and stock updates, real-time scheduling and keeping tenants informed, and would limit the benefits the programme can show.</p>
+                        <p>We asked ICT in July 2026 to meet the people responsible for mobile devices in Azure. No meeting has taken place yet, so device set-up and sign-in can't be designed alongside the ROCC mobile app. This can be improved, but it needs ICT's involvement to do so.</p>
+                        <p>Scored Likelihood 3 (the problems exist today and the fix hasn't started) and Impact 4 (mobile working delivers most of the programme's benefits).</p>
+                    </div>
+                </div>
+
+                <div class="pg-copybox">
+                    <div class="pg-copyhead"><b>Mitigation plan</b><button type="button" class="pg-copy" data-copy="copy-risk-mit">Copy</button></div>
+                    <div id="copy-risk-mit">
+                        <p>1. Escalate the meeting request to ICT management through the Head of Service, asking for a named device lead. Owner: William. By [date].</p>
+                        <p>2. Gather operatives' real experience of set-up and sign-in (time to get a device working, log-ins a day, common faults) at the mobile working workshop, as evidence for ICT.</p>
+                        <p>3. With ICT, agree the set-up and sign-in design for go-live, for example signing in to ROCC with the council account, fewer password prompts, and devices that arrive ready to use. By [date].</p>
+                        <p>4. Include device set-up and sign-in in ROCC user testing, and pilot with a small group of operatives before rollout.</p>
+                        <p>5. Plan training and on-the-ground support for operatives in the first weeks after go-live.</p>
+                    </div>
+                </div>
+
+                <div class="pg-copybox">
+                    <div class="pg-copyhead"><b>Risk Update</b><button type="button" class="pg-copy" data-copy="copy-risk-upd">Copy</button></div>
+                    <div id="copy-risk-upd">
+                        <p>12 Nov 2026 &ndash; Risk added. ICT first asked in July 2026 for a meeting with the Azure device team; no date offered yet. Next step: escalate through the Head of Service.</p>
+                    </div>
+                </div>
+
+                <h3>And the issue that goes with it</h3>
+                <p>The overdue meeting has already happened, so record it as an issue too:</p>
+                <table class="fields">
+                    <thead><tr><th>Field</th><th>What to put</th></tr></thead>
+                    <tbody>
+                        <tr><td>Name</td><td>PRJ-xxxx &ndash; ICT device meeting not arranged since July</td></tr>
+                        <tr><td>Priority</td><td><strong>Moderate</strong> today. Make it <strong>High</strong> if it starts to delay the mobile working workshop or ROCC's mobile build, which takes it to the programme board.</td></tr>
+                        <tr><td>Description</td><td>Meeting with the people responsible for mobile devices in Azure requested in July 2026; not yet arranged. Device set-up and sign-in can't be designed until it happens.</td></tr>
+                        <tr><td>Resolution Plan</td><td>Escalate through the Head of Service for a named ICT lead and a date.</td></tr>
+                    </tbody>
+                </table>
+                <div class="note tip">
+                    <span class="note-ico">&#10003;</span>
+                    <p><strong>Link the two</strong>Mention each in the other's update (&ldquo;see issue PRJ-xxxx &ndash; ICT device meeting&hellip;&rdquo;) so anyone reading one finds the other. When the meeting happens, close the issue. The risk stays open until the design is agreed and tested.</p>
+                </div>
             </section>
 
             <section class="ph-section" id="matrix">
