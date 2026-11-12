@@ -551,7 +551,7 @@ window.PH_INDEX = [
 "pageTitle": "Filling our plan",
 "id": "sources",
 "title": "Where this came from",
-"text": "Head of Service update 10 Nov 2026: findings, benefits, risks, choices. Open → Workshop Outcomes What good looks like for each of the 14 workshops. Open → Project Group, 27 Oct Kick-off recap, Fife, every workshop in depth. Open → Project Board update Case for change, PID, products, data readiness. Open → Development Group meetings Who owns what, systems crossover, ROCC team. Open → Outcomes & Goals Vision, eight benefits, three phases. Open →"
+"text": "Outcomes & Goals Vision, eight benefits, three phases. Open → ROCC Data Sheets The data sheets app and its three video lessons. Open → Also drawn from the slide decks, which are kept on your computer rather than on the site: the Head of Service update (10 Nov 2026), Workshop Outcomes , the Project Group meeting (27 Oct), the Project Board update and the Development Group meetings."
 },
 {
 "page": "data-sheets.html",
